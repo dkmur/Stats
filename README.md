@@ -43,5 +43,5 @@ cd /PATH_TO_STATS/ && mysql < tables.sql
 
 Create triggers required:
 ```
-cd /PATH_TO_STATS/ && mysql < triggers.sql
+cd /PATH_TO_STATS/ && mysql MAD_DB pokemon < triggers.sql
 ```
