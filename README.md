@@ -8,6 +8,7 @@ Surely it can be done more efficient and some will surely have a good laugh when
 
 Anyway/anyhow......like me.....steal with pride.....(ab)use it the way you see fit or just ignore it all together.
 
+
 Use it at you own risk, because bare in mind this was all done by an idiot!
 
 
@@ -38,7 +39,7 @@ grant all privileges on pokemon_history_temp.* to MYSELF@localhost;
 grant all privileges on pokemon_history.* to MYSELF@localhost;
 ```
 
-create tables required:
+Create tables required:
 ```
 cd /PATH_TO_STATS/ && mysql < tables.sql
 ``` 
