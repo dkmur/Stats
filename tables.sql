@@ -1,0 +1,168 @@
+use pogodb;
+
+CREATE TABLE `Area` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `Area` varchar(50) NOT NULL,
+  `Origin` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=90 DEFAULT CHARSET=latin1;
+
+CREATE TABLE `spawn_unused` (
+  `spawnpoint` varchar(16) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `latitude` double NOT NULL,
+  `longitude` double NOT NULL,
+  `spawndef` int(11) NOT NULL DEFAULT 240,
+  `earliest_unseen` int(6) NOT NULL,
+  `last_scanned` datetime DEFAULT NULL,
+  `first_detection` datetime NOT NULL DEFAULT current_timestamp(),
+  `last_non_scanned` datetime DEFAULT NULL,
+  `calc_endminsec` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  UNIQUE KEY `spawnpoint_2` (`spawnpoint`),
+  KEY `spawnpoint` (`spawnpoint`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE `stats_area` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `Datetime` datetime NOT NULL,
+  `RPL` smallint(6) NOT NULL,
+  `TRPL` smallint(6) NOT NULL,
+  `Area` varchar(40) NOT NULL,
+  `Spawnpoints` smallint(6) DEFAULT NULL,
+  `Mons_all` int(10) DEFAULT NULL,
+  `Mons_nonIV` int(10) DEFAULT NULL,
+  `MonsIV` int(10) DEFAULT NULL,
+  `Iv100` int(6) DEFAULT NULL,
+  `Iv0` int(6) DEFAULT NULL,
+  `MinutesLeft` int(10) DEFAULT NULL,
+  `AvgMinutesLeft` int(6) DEFAULT NULL,
+  `Spawndef15` int(6) DEFAULT NULL,
+  `SpawndefNot15` int(6) DEFAULT NULL,
+  `Raid_Egg` int(6) DEFAULT NULL,
+  `DBspawns` smallint(6) DEFAULT NULL,
+  `Spawn_add` smallint(6) DEFAULT NULL,
+  `Spawn_NULL` smallint(6) DEFAULT NULL,
+  `Last_scanned_today_acc` smallint(6) DEFAULT NULL,
+  `Last_scanned_1d` smallint(6) DEFAULT NULL,
+  `Last_scanned_2d` smallint(6) DEFAULT NULL,
+  `Last_scanned_3d` smallint(6) DEFAULT NULL,
+  `Last_scanned_7dp` smallint(6) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `stats_area_Datetime` (`Datetime`),
+  KEY `stats_area_RPL` (`RPL`),
+  KEY `stats_area_Area` (`Area`)
+) ENGINE=InnoDB AUTO_INCREMENT=112148 DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `stats_worker` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `Datetime` datetime NOT NULL,
+  `RPL` smallint(6) NOT NULL,
+  `TRPL` smallint(6) NOT NULL,
+  `Worker` varchar(100) NOT NULL,
+  `Tmon` int(255) DEFAULT NULL,
+  `IVmon` int(255) DEFAULT NULL,
+  `Mon` int(255) DEFAULT NULL,
+  `Quest` int(100) DEFAULT NULL,
+  `Raid` int(255) DEFAULT NULL,
+  `Tloc` int(11) DEFAULT NULL,
+  `LocOk` int(11) DEFAULT NULL,
+  `LocNok` int(11) DEFAULT NULL,
+  `LocFR` int(11) DEFAULT NULL,
+  `Tp` int(11) DEFAULT NULL,
+  `TpOk` int(11) DEFAULT NULL,
+  `TpNok` int(11) DEFAULT NULL,
+  `TpFR` int(11) DEFAULT NULL,
+  `TpSt` int(100) DEFAULT NULL,
+  `Wk` int(11) DEFAULT NULL,
+  `WkOk` int(11) DEFAULT NULL,
+  `WkNok` int(11) DEFAULT NULL,
+  `WkFR` int(11) DEFAULT NULL,
+  `WkSt` int(100) DEFAULT NULL,
+  `Shiny` int(6) DEFAULT NULL,
+  `Res` int(11) DEFAULT NULL,
+  `Reb` int(11) DEFAULT NULL,
+  `ResTot` int(11) DEFAULT NULL,
+  `RebTot` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `stats_worker_Datetime` (`Datetime`),
+  KEY `stats_worker_Worker` (`Worker`),
+  KEY `stats_worker_RPL` (`RPL`)
+) ENGINE=InnoDB AUTO_INCREMENT=1235551 DEFAULT CHARSET=utf8mb4;
+
+use mons;
+
+CREATE TABLE `pokemon_history` (
+  `encounter_id` bigint(20) unsigned NOT NULL,
+  `spawnpoint_id` bigint(20) unsigned NOT NULL,
+  `pokemon_id` smallint(6) NOT NULL,
+  `latitude` double NOT NULL,
+  `longitude` double NOT NULL,
+  `disappear_time` datetime NOT NULL,
+  `individual_attack` smallint(6) DEFAULT NULL,
+  `individual_defense` smallint(6) DEFAULT NULL,
+  `individual_stamina` smallint(6) DEFAULT NULL,
+  `move_1` smallint(6) DEFAULT NULL,
+  `move_2` smallint(6) DEFAULT NULL,
+  `cp` smallint(6) DEFAULT NULL,
+  `cp_multiplier` float DEFAULT NULL,
+  `weight` float DEFAULT NULL,
+  `height` float DEFAULT NULL,
+  `gender` smallint(6) DEFAULT NULL,
+  `form` smallint(6) DEFAULT NULL,
+  `costume` smallint(6) DEFAULT NULL,
+  `catch_prob_1` double DEFAULT NULL,
+  `catch_prob_2` double DEFAULT NULL,
+  `catch_prob_3` double DEFAULT NULL,
+  `rating_attack` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `rating_defense` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `weather_boosted_condition` smallint(6) DEFAULT NULL,
+  `last_modified` datetime DEFAULT NULL,
+  `is_shiny` tinyint(1) DEFAULT NULL,
+  `first_scanned` datetime DEFAULT utc_timestamp(),
+  PRIMARY KEY (`encounter_id`),
+  KEY `pokemon_history_frist_scanned` (`first_scanned`),
+  KEY `pokemon_history_spawnpoint_id` (`spawnpoint_id`),
+  KEY `pokemon_history_latitude` (`latitude`),
+  KEY `pokemon_history_longitude` (`longitude`),
+  KEY `pokemon_history_last_modified` (`last_modified`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `pokemon_history_temp` (
+  `encounter_id` bigint(20) unsigned NOT NULL,
+  `spawnpoint_id` bigint(20) unsigned NOT NULL,
+  `pokemon_id` smallint(6) NOT NULL,
+  `latitude` double NOT NULL,
+  `longitude` double NOT NULL,
+  `disappear_time` datetime NOT NULL,
+  `individual_attack` smallint(6) DEFAULT NULL,
+  `individual_defense` smallint(6) DEFAULT NULL,
+  `individual_stamina` smallint(6) DEFAULT NULL,
+  `move_1` smallint(6) DEFAULT NULL,
+  `move_2` smallint(6) DEFAULT NULL,
+  `cp` smallint(6) DEFAULT NULL,
+  `cp_multiplier` float DEFAULT NULL,
+  `weight` float DEFAULT NULL,
+  `height` float DEFAULT NULL,
+  `gender` smallint(6) DEFAULT NULL,
+  `form` smallint(6) DEFAULT NULL,
+  `costume` smallint(6) DEFAULT NULL,
+  `catch_prob_1` double DEFAULT NULL,
+  `catch_prob_2` double DEFAULT NULL,
+  `catch_prob_3` double DEFAULT NULL,
+  `rating_attack` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `rating_defense` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `weather_boosted_condition` smallint(6) DEFAULT NULL,
+  `last_modified` datetime DEFAULT NULL,
+  `is_shiny` tinyint(1) DEFAULT NULL,
+  `first_scanned` datetime NOT NULL DEFAULT utc_timestamp(),
+  PRIMARY KEY (`encounter_id`),
+  KEY `pokemon_history_temp_spawnpoint_id` (`spawnpoint_id`),
+  KEY `pokemon_history_temp_latitude` (`latitude`),
+  KEY `pokemon_history_temp_longitude` (`longitude`),
+  KEY `pokemon_history_temp_last_modified` (`last_modified`),
+  KEY `pokemon_history_temp_first_scanned` (`first_scanned`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+
+
