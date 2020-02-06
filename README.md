@@ -14,7 +14,7 @@ Use it at you own risk, because bare in mind this was all done by an idiot!
 
 
 ## Prerequisites
-Ofcourse MAD scanning setup but also activation of (raw)stats in config.ini (statistic,game_stats,game_stats_raw).
+Ofcourse MAD scanning fully setup but also activation of (raw)stats in config.ini (statistic,game_stats,game_stats_raw).
 
 
 
@@ -45,3 +45,10 @@ Create triggers required:
 ```
 cd /PATH_TO_STATS/ && mysql MAD_DB pokemon < triggers.sql
 ```
+
+## Defining area's
+
+## Crontab
+optionally clear pokemon, raw stats, trs_spawn for questing hours
+
+## Settings Stats
