@@ -13,17 +13,32 @@ Use it at you own risk, because bare in mind this was all done by an idiot!
 
 
 ## Prerequisites
-Ofcourse MAD scanning setup but also activation of (raw)stats in config.ini.
+Ofcourse MAD scanning setup but also activation of (raw)stats in config.ini (statistic,game_stats,game_stats_raw).
 
-list parameters!!!!!!!!!!!!!
 
 
 ## Creating database and tables
 
-
 Tables I use are:
-1 pogodb
-2 pokemon_history
-3 pokemon_history_temp
+1 pogodb : for aggregated stats on worker/area level for different reporting periods
+2 pokemon_history_temp : copy of table Pokemon with added columns first_scanned and is_shiny for current day
+3 pokemon_history : final destination, for future reference or whatever, of data from table pokemon_history_temp
 
-add dir, table structures etc
+If you choose to use different names, start editing files from now on, else in mysql:
+```
+create database pogodb;
+create database pokemon_history_temp;
+create database pokemon_history;
+```
+
+Make sure to grant privileges to all 3 tables for your user account:
+```
+grant all privileges on pogodb.* to MYSELF@localhost;
+grant all privileges on pokemon_history_temp.* to MYSELF@localhost;
+grant all privileges on pokemon_history.* to MYSELF@localhost;
+```
+
+create tables required:
+```
+cd /PATH_TO_STATS/ && mysql < tables.sql
+``` 
