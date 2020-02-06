@@ -12,13 +12,13 @@ Use it at you own risk, because bare in mind this was all done by an idiot!
 
 
 
-#prerequisites
+## Prerequisites
 Ofcourse MAD scanning setup but also activation of (raw)stats in config.ini.
 
 list parameters!!!!!!!!!!!!!
 
 
-#Creating database and tables:
+## Creating database and tables
 
 
 Tables I use are:
