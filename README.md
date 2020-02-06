@@ -18,7 +18,7 @@ Ofcourse MAD scanning setup but also activation of (raw)stats in config.ini (sta
 
 
 
-## Creating database and tables
+## Creating databases, tables and triggers
 
 Tables I use are:  
 1 pogodb : for aggregated stats on worker/area level for different reporting periods  
@@ -40,3 +40,8 @@ Create tables required:
 ```
 cd /PATH_TO_STATS/ && mysql < tables.sql
 ``` 
+
+Create triggers required:
+```
+cd /PATH_TO_STATS/ && mysql < triggers.sql
+```
