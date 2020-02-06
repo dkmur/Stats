@@ -21,7 +21,6 @@ Ofcourse MAD scanning setup but also activation of (raw)stats in config.ini (sta
 ## Creating database and tables
 
 Tables I use are:
-
 1 pogodb : for aggregated stats on worker/area level for different reporting periods
 2 pokemon_history_temp : copy of table Pokemon with added columns first_scanned and is_shiny for current day
 3 pokemon_history : final destination, for future reference or whatever, of data from table pokemon_history_temp
