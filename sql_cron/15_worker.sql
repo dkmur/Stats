@@ -1,0 +1,165 @@
+-- Settings
+
+select @Datetime := concat(date(now() - interval 15 minute),' ', SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 15 minute)) DIV 900) * 900));
+select @Datetime_p1 := concat(date(now() - interval 15 minute),' ', (SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 15 minute)) DIV 900) * 900)));
+select @Datetime_p16 := concat(date(now() - interval 0 minute),' ', (SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 0 minute)) DIV 900) * 900)));
+select @Datetime_m15 := concat(date(now() - interval 30 minute),' ', (SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 30 minute)) DIV 900) * 900)));
+select @RPL := '15';
+
+
+-- table trs_stats_detect data
+
+Create TEMPORARY TABLE rmdb.tmp41
+AS(
+select
+count(timestamp_scan)*5 as TRPL,
+worker,
+sum(mon) as Tmon,
+sum(mon_iv) as IVmon ,
+sum(mon)-sum(mon_iv) as Mon,
+sum(quest) as Quest,
+sum(raid) as Raid
+from rmdb.trs_stats_detect
+where from_unixtime(timestamp_scan) >= @Datetime_p1 and from_unixtime(timestamp_scan) < @Datetime_p16
+group by worker
+);
+
+
+-- table trs_stats_location_raw data
+
+
+Create TEMPORARY TABLE rmdb.tmp42
+AS(
+select
+worker,
+count(period) as `Tloc`,
+sum(success) as `LocOk`,
+count(period)-sum(success) as `LocNok`,
+(count(period)-sum(success))/(count(period)+1)*100 as `LocFR`
+from rmdb.trs_stats_location_raw
+where
+transporttype <> 99 and from_unixtime(period) >= @Datetime_p1 and from_unixtime(period) < @Datetime_p16
+group by worker
+);
+alter table rmdb.tmp42 modify worker varchar(100) character set utf8mb4;
+
+Create TEMPORARY TABLE rmdb.tmp45
+AS(
+select
+worker,
+count(transporttype) as Tp,
+sum(success) as TpOk,
+count(transporttype)-sum(success) as TpNok,
+(count(transporttype)-sum(success))/(count(transporttype)+0.000001)*100 as TpFR
+from rmdb.trs_stats_location_raw
+where 
+transporttype = 0 and from_unixtime(period) >= @Datetime_p1 and from_unixtime(period) < @Datetime_p16
+group by worker
+);
+alter table rmdb.tmp45 modify worker varchar(100) character set utf8mb4;
+
+Create TEMPORARY TABLE rmdb.tmp46
+AS(
+select
+worker,
+count(transporttype) as Wk,
+sum(success) as WkOk,
+count(transporttype)-sum(success) as WkNok,
+(count(transporttype)-sum(success))/(count(transporttype)+0.00001)*100 as WkFR
+from rmdb.trs_stats_location_raw
+where
+transporttype = 1 and from_unixtime(period) >= @Datetime_p1 and from_unixtime(period) < @Datetime_p16
+group by worker
+);
+alter table rmdb.tmp46 modify worker varchar(100) character set utf8mb4;
+
+Create TEMPORARY TABLE rmdb.tmp47
+AS(
+select
+worker,
+sum(timestampdiff(second,from_unixtime(fix_ts),from_unixtime(data_ts))) as TpSt
+from rmdb.trs_stats_location_raw
+where 
+transporttype = 0 and success = 1 and from_unixtime(period) >= @Datetime_p1 and from_unixtime(period) < @Datetime_p16
+group by worker
+);
+alter table rmdb.tmp47 modify worker varchar(100) character set utf8mb4;
+
+Create TEMPORARY TABLE rmdb.tmp48
+AS(
+select
+worker,
+sum(timestampdiff(second,from_unixtime(fix_ts),from_unixtime(data_ts))) as WkSt
+from rmdb.trs_stats_location_raw
+where 
+transporttype = 1 and success = 1 and from_unixtime(period) >= @Datetime_p1 and from_unixtime(period) < @Datetime_p16
+group by worker
+);
+alter table rmdb.tmp48 modify worker varchar(100) character set utf8mb4;
+
+-- table trs_status data
+
+Create TEMPORARY TABLE rmdb.tmp43
+AS(
+select
+a.Worker,
+avg(a.ResTot) as ResTot,
+avg(a.RebTot) as Rebtot
+from pogodb.stats_worker a
+where a.Datetime = @Datetime_m15 and a.RPL = 15
+group by a.Worker
+);
+
+Create TEMPORARY TABLE rmdb.tmp44
+AS(
+select
+c.name as worker,
+a.globalrestartcount-b.ResTot as Res,
+a.globalrebootcount-b.RebTot as Reb,
+a.globalrestartcount as ResTot,
+a.globalrebootcount as RebTot
+from rmdb.trs_status a
+left join rmdb.settings_device c on a.device_id = c.device_id
+left join rmdb.tmp43 b on c.name = b.Worker COLLATE utf8mb4_unicode_ci
+);
+
+-- table trs_stats_detect_raw data
+
+Create TEMPORARY TABLE rmdb.tmp49
+AS(
+select
+worker,
+sum(is_shiny) as `Shiny`
+from rmdb.trs_stats_detect_raw
+where
+from_unixtime(timestamp_scan) >= @Datetime_p1 and from_unixtime(timestamp_scan) < @Datetime_p16
+group by worker
+);
+
+
+-- insert data
+
+INSERT INTO pogodb.stats_worker (Datetime,RPL, TRPL, Worker, Tmon, IVmon, Mon, Quest, Raid, Tloc,LocOk,LocNok,LocFR,Tp,TpOk,TpNok,TpFR,TpSt,Wk,WkOk,WkNok,WkFR,WkSt,Shiny,Res,Reb,ResTot,RebTot)
+select
+@Datetime, @RPL, b.TRPL, a.worker,b.Tmon,b.IVmon,b.Mon,b.Quest,b.Raid,c.Tloc,c.LocOk,c.LocNok,c.LocFR,d.Tp,d.TpOk,d.TpNok,d.TpFR,f.TpSt,e.Wk,e.WkOk,e.WkNok,e.WkFR,g.WkSt,h.Shiny,a.Res,a.Reb,a.ResTot,a.RebTot
+from rmdb.tmp44 a
+left join rmdb.tmp41 b on a.worker = b.worker COLLATE utf8mb4_unicode_ci
+left join rmdb.tmp42 c on a.worker = c.worker COLLATE utf8mb4_unicode_ci
+left join rmdb.tmp45 d on a.worker = d.worker COLLATE utf8mb4_unicode_ci
+left join rmdb.tmp46 e on a.worker = e.worker COLLATE utf8mb4_unicode_ci
+left join rmdb.tmp47 f on a.worker = f.worker COLLATE utf8mb4_unicode_ci
+left join rmdb.tmp48 g on a.worker = g.worker COLLATE utf8mb4_unicode_ci
+left join rmdb.tmp49 h on a.worker = h.worker
+;
+
+
+-- drop temp tables
+drop table rmdb.tmp41;
+drop table rmdb.tmp42;
+drop table rmdb.tmp43;
+drop table rmdb.tmp44;
+drop table rmdb.tmp45;
+drop table rmdb.tmp46;
+drop table rmdb.tmp47;
+drop table rmdb.tmp48;
+drop table rmdb.tmp49;
