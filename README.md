@@ -52,3 +52,10 @@ cd /PATH_TO_STATS/ && mysql MAD_DB pokemon < triggers.sql
 optionally clear pokemon, raw stats, trs_spawn for questing hours
 
 ## Settings Stats
+
+## Additional options
+add stats to autostart or wtf I ever did
+
+Will require some editing :P
+poracle
+restart/update shit
