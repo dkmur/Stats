@@ -16,7 +16,7 @@ Use it at you own risk, because bare in mind this was all done by an idiot!
 ## Prerequisites
 Activation of (raw)stats in MAD config.ini (statistic,game_stats,game_stats_raw).
 
-Get Stats ``git clone https://github.com/dkmur/Stats.git``
+Get Stats ``git clone https://github.com/dkmur/Stats.git && cd /Stats/``
 
 ## Creating database, tables and triggers
 
@@ -28,9 +28,9 @@ grant all privileges on pogodb.* to MYSELF@localhost;
 
 If you will use a different database name, start editing files from now on, else.....  
 
-Create tables, will not work for mariadb 10.1:``cd /Stats/ && mysql pogodb < tables.sql`` 
+Create tables, will not work for mariadb 10.1:``mysql pogodb < tables.sql`` 
 
-Create triggers:``cd /Stats/ && mysql MAD_DB pokemon < triggers.sql``
+Create triggers:``mysql MAD_DB pokemon < triggers.sql``
 
 ## Defining area's/towns
 
@@ -50,9 +50,9 @@ insert into pogodb.Area (Area,Origin) values
 ## Set MAD database name
 
 assuming Stats is located in /home/USER/Stats/  
-``cd /home/USER/Stats/sql_cron/ && sed -i 's/rmdb/YOUR_MAD_DB/g' *.sql``  
+``cd cd /home/USER/Stats//sql_cron/ && sed -i 's/rmdb/YOUR_MAD_DB/g' *.sql``  
 
-## Crontab
+## Cronta
 
 Edit crontab ``crontab -e`` and insert
 ```
