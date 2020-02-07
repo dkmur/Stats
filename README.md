@@ -4,7 +4,7 @@ This idiot once had the idea it would be good to analyze statistics in more deta
 
 With limited knowlegde, help from my best friend Google, the attitude "steal with pride" and some perseverance this is what I cooked up.
 
-Surely it can be done more efficient and some will surely have a good laugh when looking this. 
+Surely it can be done more efficient and some will have a good laugh when looking this. 
 
 Anyway/anyhow......like me.....steal with pride.....(ab)use it the way you see fit or just ignore it all together.
 
