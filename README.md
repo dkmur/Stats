@@ -32,7 +32,21 @@ Create tables:``cd /PATH_TO_Stats/ && mysql < tables.sql``
 
 Create triggers:``cd /PATH_TO_Stats/ && mysql MAD_DB pokemon < triggers.sql``
 
-## Defining area's
+## Defining area's/towns
+
+For each area or town you want to define:  
+1 copy the 3 ``.sql.default`` files and replace ``town`` with it's repective name, leave out ``.default``  
+2 edit each file and put in the correct information for ``@area``, ``@LatMax``, ``@LatMin``, ``@LonMin``, ``@LonMax``
+
+
+Time to link workers/origin as defined in MAD to the created area's/towns above:
+```
+insert into pogodb.Area (Area,Origin) values
+('Town1','Device01'),
+('Town1','Device02'),
+('Town2','Device01')
+;
+```
 
 ## Crontab
 optionally clear pokemon, raw stats, trs_spawn for questing hours
@@ -46,3 +60,7 @@ delete pokemon + raw_stats
 Will require some editing :P  
 poracle  
 restart/update shit  
+
+## Notes
+
+Not all information stored in tables stats_worker and stats_area are included in Stats menu options.
