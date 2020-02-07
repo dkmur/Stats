@@ -1,5 +1,3 @@
-use pogodb;
-
 CREATE TABLE `Area` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `Area` varchar(50) NOT NULL,
@@ -124,7 +122,6 @@ CREATE TABLE `pokemon_history` (
   KEY `pokemon_history_last_modified` (`last_modified`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `pokemon_history_temp` (
   `encounter_id` bigint(20) unsigned NOT NULL,
   `spawnpoint_id` bigint(20) unsigned NOT NULL,
