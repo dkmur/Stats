@@ -87,14 +87,19 @@ assuming Stats is located in /home/USER/Stats/
 ``cd /home/USER/Stats/ && sed -i 's/pathToStats/\/home\/USER\/Stats\//g' *.sh``  
 ``cd /home/USER/Stats/progs/ && sed -i 's/pathToStats/\/home\/USER\/Stats\//g' *.sh``  
 
+add stats to /usr/local/bin in order to start from any location:
+``sudo nano /usr/local/bin/stats`` add /PATHtoStats/stats.sh and save file
+``sudo chmod +x /usr/local/bin/stats``
 
-## Additional options
-add stats to autostart or wtf I ever did  
-delete pokemon + raw_stats  
+Hopefully that's it.....else......blame someone else :)
 
-Will require some editing :P  
+
+## Optionally
+
+I left some stuff in there about poracle and restarting/updating.......should you wish to use it......it will require adaptations
 poracle V3  ``cd /home/USER/Stats/sql/ && sed -i 's/poracle/PORACLE_DB_NAME/g' *``
-restart/update shit  
+for the rest......maybe someday I look into it....your on you own
+
 
 ## Notes
 
