@@ -49,7 +49,8 @@ insert into pogodb.Area (Area,Origin) values
 ```
 ## Set MAD database name
 
-!!!!!!!!!!!!!!!!!!!!!!! ADDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD
+assuming Stats is located in /home/USER/Stats/  
+``cd /home/USER/Stats/sql_cron/ && sed -i 's/rmdb/YOUR_MAD_DB/g' *.sql``  
 
 ## Crontab
 
@@ -82,9 +83,9 @@ Note 2: check the 3 delete sections in query ``pokemon_hourly.sql`` as this will
 
 ## Settings Stats
 
-assuming Stats is located in /home/USER/Stats/
-``cd /home/USER/Stats/ && sed -i 's/pathToStats/\/home\/USER\/Stats\//g' *``
-``cd /home/USER/Stats/progs/ && sed -i 's/pathToStats/\/home\/USER\/Stats\//g' *``
+assuming Stats is located in /home/USER/Stats/  
+``cd /home/USER/Stats/ && sed -i 's/pathToStats/\/home\/USER\/Stats\//g' *.sh``  
+``cd /home/USER/Stats/progs/ && sed -i 's/pathToStats/\/home\/USER\/Stats\//g' *.sh``  
 
 
 ## Additional options
