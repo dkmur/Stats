@@ -25,7 +25,7 @@ create database pogodb;
 grant all privileges on pogodb.* to MYSELF@localhost;
 ```
 
-If you choose to use different names, start editing files from now on, else.....  
+If you will use a different database name, start editing files from now on, else.....  
 
 Create tables required:
 ```
