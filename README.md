@@ -14,8 +14,12 @@ Use it at you own risk, because bare in mind this was all done by an idiot!
 
 
 ## Prerequisites
-Ofcourse MAD scanning fully setup but also activation of (raw)stats in config.ini (statistic,game_stats,game_stats_raw).
+Activation of (raw)stats in config.ini (statistic,game_stats,game_stats_raw).
 
+Clone:
+```
+git clone https://github.com/dkmur/Stats.git
+```
 
 ## Creating database, tables and triggers
 
@@ -29,12 +33,12 @@ If you will use a different database name, start editing files from now on, else
 
 Create tables required:
 ```
-cd /PATH_TO_STATS/ && mysql < tables.sql
+cd /PATH_TO_Stats/ && mysql < tables.sql
 ``` 
 
 Create triggers required:
 ```
-cd /PATH_TO_STATS/ && mysql MAD_DB pokemon < triggers.sql
+cd /PATH_TO_Stats/ && mysql MAD_DB pokemon < triggers.sql
 ```
 
 ## Defining area's
