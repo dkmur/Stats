@@ -14,7 +14,7 @@ Use it at you own risk, because bare in mind this was all done by an idiot!
 
 
 ## Prerequisites
-Activation of (raw)stats in config.ini (statistic,game_stats,game_stats_raw).
+Activation of (raw)stats in MAD config.ini (statistic,game_stats,game_stats_raw).
 
 Clone:
 ```
