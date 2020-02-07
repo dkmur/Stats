@@ -30,7 +30,7 @@ If you will use a different database name, start editing files from now on, else
 
 Create tables, will not work for mariadb 10.1:``mysql pogodb < tables.sql`` 
 
-Create triggers:``mysql MAD_DB YOUR_MAD_DB pokemon < triggers.sql``
+Create triggers:``mysql YOUR_MAD_DB < triggers.sql``
 
 ## Defining area's/towns
 
