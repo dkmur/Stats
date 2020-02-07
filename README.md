@@ -54,8 +54,9 @@ optionally clear pokemon, raw stats, trs_spawn for questing hours
 ## Settings Stats
 
 ## Additional options
-add stats to autostart or wtf I ever did
+add stats to autostart or wtf I ever did  
+delete pokemon + raw_stats  
 
-Will require some editing :P
-poracle
-restart/update shit
+Will require some editing :P  
+poracle  
+restart/update shit  
