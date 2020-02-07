@@ -17,24 +17,15 @@ Use it at you own risk, because bare in mind this was all done by an idiot!
 Ofcourse MAD scanning fully setup but also activation of (raw)stats in config.ini (statistic,game_stats,game_stats_raw).
 
 
+## Creating database, tables and triggers
 
-## Creating databases, tables and triggers
-
-Tables I use are:  
-1 pogodb : for aggregated stats on worker/area level for different reporting periods  
-2 mons : copy of table Pokemon with added columns first_scanned and is_shiny for current day and permanent storage    
-
-If you choose to use different names, start editing files from now on, else in mysql:
+Create database and grant privileges:
 ```
 create database pogodb;
-create database mons;
+grant all privileges on pogodb.* to MYSELF@localhost;
 ```
 
-Make sure to grant privileges to all 3 tables for your user account:
-```
-grant all privileges on pogodb.* to MYSELF@localhost;
-grant all privileges on mons.* to MYSELF@localhost;
-```
+If you choose to use different names, start editing files from now on, else.....  
 
 Create tables required:
 ```
