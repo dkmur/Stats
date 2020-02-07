@@ -49,7 +49,33 @@ insert into pogodb.Area (Area,Origin) values
 ```
 
 ## Crontab
-optionally clear pokemon, raw stats, trs_spawn for questing hours
+
+Edit crontab ``crontab -e`` and insert
+```
+## Cleanup and backup
+5 * * * * mysql < /PATHtoStats/sql_cron/pokemon_hourly.sql
+7 1 * * * mysql < /PATHtoStats/sql_cron/pokemon_daily.sql
+## Area stats
+0 * * * * cd /PATHtoStats/sql_cron/ && mysql < 15_TOWN1_area.sql && mysql < 15_TOWN2_area.sql && ETC
+15 * * * * cd /PATHtoStats/sql_cron/ && mysql < 15_TOWN1_area.sql && mysql < 15_TOWN2_area.sql && ETC
+30 * * * * cd /PATHtoStats/sql_cron/ && mysql < 15_TOWN1_area.sql && mysql < 15_TOWN2_area.sql && ETC
+45 * * * * cd /PATHtoStats/sql_cron/ && mysql < 15_TOWN1_area.sql && mysql < 15_TOWN2_area.sql && ETC
+0 * * * * cd /PATHtoStats/sql_cron/ && mysql < 60_TOWN1_area.sql && mysql < 60_TOWN2_area.sql && ETC
+1 0 * * * cd /PATHtoStats/sql_cron/ && mysql < 1440_TOWN1_area.sql && mysql < 1440_TOWN2_area.sql && ETC
+10 0 * * 1 mysql < /PATHtoStats/sql_cron/10080_area.sql
+## Worker stats
+2 * * * * mysql < /PATHtoStats/sql_cron/15_worker.sql
+17 * * * * mysql < /PATHtoStats/sql_cron/15_worker.sql
+32 * * * * mysql < /PATHtoStats/sql_cron/15_worker.sql
+47 * * * * mysql < /PATHtoStats/sql_cron/15_worker.sql
+4 * * * * mysql < /PATHtoStats/sql_cron/60_worker.sql
+7 0 * * * mysql < /PATHtoStats/sql_cron/1440_worker.sql
+9 0 * * 1 mysql < /PATHtoStats/sql_cron/10080_worker.sql
+```
+Note 1: edit ``PATHtoStats`` and edit/include all previously defined area's/towns  
+Note 2: check the 3 delete sections in query ``pokemon_hourly.sql`` as this will have an effect on representation of stats in MADmin. I choose to keep table pokemon small/cleaned up. 
+
+
 
 ## Settings Stats
 
