@@ -28,15 +28,9 @@ grant all privileges on pogodb.* to MYSELF@localhost;
 
 If you will use a different database name, start editing files from now on, else.....  
 
-Create tables required:
-```
-cd /PATH_TO_Stats/ && mysql < tables.sql
-``` 
+Create tables:``cd /PATH_TO_Stats/ && mysql < tables.sql`` 
 
-Create triggers required:
-```
-cd /PATH_TO_Stats/ && mysql MAD_DB pokemon < triggers.sql
-```
+Create triggers:``cd /PATH_TO_Stats/ && mysql MAD_DB pokemon < triggers.sql``
 
 ## Defining area's
 
