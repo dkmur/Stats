@@ -88,8 +88,6 @@ CREATE TABLE `stats_worker` (
   KEY `stats_worker_RPL` (`RPL`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1235551 DEFAULT CHARSET=utf8mb4;
 
-use mons;
-
 CREATE TABLE `pokemon_history` (
   `encounter_id` bigint(20) unsigned NOT NULL,
   `spawnpoint_id` bigint(20) unsigned NOT NULL,
