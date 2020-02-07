@@ -28,7 +28,7 @@ grant all privileges on pogodb.* to MYSELF@localhost;
 
 If you will use a different database name, start editing files from now on, else.....  
 
-Create tables:``cd /Stats/ && mysql pogodb < tables.sql`` 
+Create tables, will not work for mariadb 10.1:``cd /Stats/ && mysql pogodb < tables.sql`` 
 
 Create triggers:``cd /Stats/ && mysql MAD_DB pokemon < triggers.sql``
 
