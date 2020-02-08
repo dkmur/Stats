@@ -51,7 +51,7 @@ insert into pogodb.Area (Area,Origin) values
 ## Set MAD database name
 
 assuming Stats is located in /home/USER/Stats/  
-``cd cd /home/USER/Stats//sql_cron/ && sed -i 's/rmdb/YOUR_MAD_DB/g' *.sql``  
+``cd /home/USER/Stats//sql_cron/ && sed -i 's/rmdb/YOUR_MAD_DB/g' *.sql``  
 
 ## Crontab
 
