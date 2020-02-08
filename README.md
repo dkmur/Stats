@@ -46,7 +46,7 @@ Create triggers, in terminal :``mysql **YOUR_MAD_DB** < triggers.sql``, replace 
 ### Defining areas/towns
 
 **Create sql queries per area**  
-in /sql_cron there are 3 .default files located, each area or town you which to define requires those to be copied and adjusted.  
+in /sql_cron there are 3 .default files located, each area/town you want to define requires those to be copied and adjusted.  
 So for each area:  
 1 copy all 3 ``.sql.default`` files and replace ``town`` with it's repective (area)name, leaving out ``.default``  
 ``example cp 15_town_area.sql.default 15_paris_area.sql``  
