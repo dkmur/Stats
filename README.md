@@ -36,7 +36,7 @@ Create triggers:``mysql **YOUR_MAD_DB** < triggers.sql``
 
 For each area or town you want to define:  
 1 copy the 3 ``.sql.default`` files and replace ``town`` with it's repective (area)name, leave out ``.default``  
-- example ``cp 15_town_area.sql.default 15_paris_area.sql``  
+<li> example ``cp 15_town_area.sql.default 15_paris_area.sql``  
 2 edit each file and put in the correct information for ``@area``, ``@LatMax``, ``@LatMin``, ``@LonMin``, ``@LonMax``
 
 
@@ -53,7 +53,7 @@ insert into pogodb.Area (Area,Origin) values
 assuming Stats is located in /home/USER/Stats/  
 ``cd cd /home/USER/Stats//sql_cron/ && sed -i 's/rmdb/YOUR_MAD_DB/g' *.sql``  
 
-## Cronta
+## Crontab
 
 Edit crontab ``crontab -e`` and insert
 ```
