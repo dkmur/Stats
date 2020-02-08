@@ -13,7 +13,7 @@ select @LonMax := '4.973';
 Create TEMPORARY TABLE rmdb.tmp50
 AS(
 select a.spawnpoint_id, a.first_scanned, disappear_time, a.individual_attack, a.individual_defense, a.individual_stamina
-from mons.pokemon_history_temp a
+from pogodb.pokemon_history_temp a
 where
 CONVERT_TZ(a.first_scanned, '+00:00', @@global.time_zone) >= @Start and
 CONVERT_TZ(a.first_scanned, '+00:00', @@global.time_zone) < @Stop and

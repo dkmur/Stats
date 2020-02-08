@@ -33,7 +33,7 @@ case $opt in
 		routine=1
 		exit
 		;;
-         0)    pathToStatsprogsNew/poke_seen.sh
+         0)    pathToStatsprogs/poke_seen.sh
                 ;;
 
 esac

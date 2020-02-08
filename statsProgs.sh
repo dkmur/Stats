@@ -41,11 +41,11 @@ case $opt in
 		routine=1
 		exit
 		;;
-         1)    pathToStatsprogsNew/madRestart.sh
+         1)    pathToStatsprogs/madRestart.sh
                 ;;
-         6)    pathToStatsprogsNew/poracleRestart.sh
+         6)    pathToStatsprogs/poracleRestart.sh
                 ;;
-        10)    pathToStatsprogsNew/madUpdateRestart.sh
+        10)    pathToStatsprogs/madUpdateRestart.sh
                 ;;
 
 esac

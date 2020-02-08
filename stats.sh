@@ -86,45 +86,45 @@ case $opt in
 		routine=1
 		exit
 		;;
-         0)    pathToStatsprogsNew/n_mons_scanned.sh
+         0)    pathToStatsprogs/n_mons_scanned.sh
                 ;;
-         0a)    pathToStatsprogsNew/n_mons_scanned_ndal.sh
+         0a)    pathToStatsprogs/n_mons_scanned_ndal.sh
                 ;;
-         1)    pathToStatsprogsNew/n_spawnpoints.sh
+         1)    pathToStatsprogs/n_spawnpoints.sh
                 ;;
-         2)    pathToStatsprogsNew/n_area_overview.sh
+         2)    pathToStatsprogs/n_area_overview.sh
                 ;;
-         3)    pathToStatsprogsNew/n_mons_scanned_w.sh
+         3)    pathToStatsprogs/n_mons_scanned_w.sh
                 ;;
-         4)    pathToStatsprogsNew/n_location.sh
+         4)    pathToStatsprogs/n_location.sh
                 ;;
-         5)    pathToStatsprogsNew/n_rebres.sh
+         5)    pathToStatsprogs/n_rebres.sh
                 ;;
-         6)    pathToStatsprogsNew/n_quests.sh
+         6)    pathToStatsprogs/n_quests.sh
                 ;;
-	 10)	pathToStatsprogsNew/mons_scanned.sh
+	 10)	pathToStatsprogs/mons_scanned.sh
 		;;
-	 11)	pathToStatsprogsNew/spawnpoints.sh
+	 11)	pathToStatsprogs/spawnpoints.sh
 		;;
-	 12)	pathToStatsprogsNew/worker_overview.sh
+	 12)	pathToStatsprogs/worker_overview.sh
 		;; 
-	 13)	pathToStatsprogsNew/mons_scanned_w.sh
+	 13)	pathToStatsprogs/mons_scanned_w.sh
 		;;
-	 14)	pathToStatsprogsNew/location.sh
+	 14)	pathToStatsprogs/location.sh
 		;;
-         15)     pathToStatsprogsNew/rebres.sh
+         15)     pathToStatsprogs/rebres.sh
                 ;;
-         16)     pathToStatsprogsNew/quests.sh
+         16)     pathToStatsprogs/quests.sh
                 ;;
-	 20)	pathToStatsprogsNew/mons_scanned_worker.sh
+	 20)	pathToStatsprogs/mons_scanned_worker.sh
 		;;
-	 21)	pathToStatsprogsNew/location_worker.sh
+	 21)	pathToStatsprogs/location_worker.sh
 		;;
-	 22)	pathToStatsprogsNew/rebres_worker.sh
+	 22)	pathToStatsprogs/rebres_worker.sh
 		;;
-	 23)	pathToStatsprogsNew/quests_worker.sh
+	 23)	pathToStatsprogs/quests_worker.sh
 		;;
-         23a)   pathToStatsprogsNew/quests_all_worker_summed.sh
+         23a)   pathToStatsprogs/quests_all_worker_summed.sh
                 ;;
          30)    pathToStatsstatsPoracle.sh
                 ;;
