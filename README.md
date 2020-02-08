@@ -52,7 +52,7 @@ So for each area:
 ``example cp 15_town_area.sql.default 15_paris_area.sql``  
 - edit each file and put in the correct information for ``@area``, ``@LatMax``, ``@LatMin``, ``@LonMin``, ``@LonMax``
 
-**Assign devices to area**
+**Assign devices to area**  
 Time to link workers/origin as defined in MAD to the created area's/towns above, in mysql:
 ```
 insert into pogodb.Area (Area,Origin) values
