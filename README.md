@@ -120,24 +120,29 @@ Guess some explanation wouldn't hurt so.....
 **RPL** Report :Length Period will be 15, 60, 1440 or 10080 minutes  
 **TRPL** True RPL : doubt if that is still in use today but was once used to identify missing periode due too i.e. downtime  
 **DevRPL** Device RPL : each device will store stats every 5 minutes, depending on missing periods this value might me lower that RPL  
+
 **Spawn60** spawndef=15 so 60 minute spawn (events do mess this number up, cleanup after event is needed)  
 **Spawn30** spawndef<>15 so most likely 30 minute spawn  
 **%timeleft** average % of despawn time left for all mons scanned in area/network  
+
 **Tmon** total mons scanned based on worker stats so not table pokemon  
 **Tloc** total locations (route position) scanned  
 **LocOk** number of correctly handled locations  
 **LocNok** as above but incorrectly handled  
 **LocFR** Location Failure Rate : % route positions incorrectly handled  
+
 **Tp** number of TelePorts when changing route position  
 **TpOk** successfull handled locations when teleporting  
 **TpNok** as above but unsuccessfull  
 **TpFr** TelePort Failure Rate  
 **TpT** Teleport Time : average time required after expiration of post_teleport_delay until gmo is received  
+
 **Wk** Waking to next route position counter  
 **TkOk** successfull handled locations when walking  
 **TkNok** as above but unsuccessfull  
 **WkT** Walk Time : average time required after expiration of post_walk_delay until gmo is received  
 **WkFr** Walk Failure Rate  
+
 **Res** number of pogo restarts  
 **Reb** number of device reboots  
 
