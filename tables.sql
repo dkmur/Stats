@@ -3,7 +3,7 @@ CREATE TABLE `Area` (
   `Area` varchar(50) NOT NULL,
   `Origin` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=90 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `spawn_unused` (
   `spawnpoint` varchar(16) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -48,7 +48,7 @@ CREATE TABLE `stats_area` (
   KEY `stats_area_Datetime` (`Datetime`),
   KEY `stats_area_RPL` (`RPL`),
   KEY `stats_area_Area` (`Area`)
-) ENGINE=InnoDB AUTO_INCREMENT=112148 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `stats_worker` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -84,7 +84,7 @@ CREATE TABLE `stats_worker` (
   KEY `stats_worker_Datetime` (`Datetime`),
   KEY `stats_worker_Worker` (`Worker`),
   KEY `stats_worker_RPL` (`RPL`)
-) ENGINE=InnoDB AUTO_INCREMENT=1235551 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `pokemon_history` (
   `encounter_id` bigint(20) unsigned NOT NULL,
