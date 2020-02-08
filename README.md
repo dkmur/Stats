@@ -2,6 +2,17 @@
 
 This idiot once had the idea it would be good to analyze statistics in more detail in order to copare different area's, measure the effect of parameter changes in order to properly tune the setup as well as creating the ability to evaluate functionality like i.e. PrioQ.
 
+Available data:  
+- interval period of 15, 60, 1440 and 10080 minutes  
+- per device, area and network  
+- locations handling  
+- detection stats  
+- quest, raid, mon stats  
+- restart / reboot data  
+- despawn time left  
+- spawnpoint statistics (added, known, last scanned etc)  
+
+
 With limited knowlegde, help from my best friend Google, the attitude "steal with pride" and some perseverance this is what I cooked up.
 
 Surely it can be done more efficient and some will have a good laugh when looking this. 
