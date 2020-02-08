@@ -25,13 +25,13 @@ Use it at you own risk, because bare in mind this was all done by an idiot!
 ## Setting up
 
 ### Prerequisites
-Activation of (raw)stats in MAD config.ini (statistic,game_stats,game_stats_raw).
+- Activation of (raw)stats in MAD config.ini (statistic,game_stats,game_stats_raw).
 
-Get Stats ``git clone https://github.com/dkmur/Stats.git && cd /Stats/``
+- Get Stats ``git clone https://github.com/dkmur/Stats.git && cd /Stats/``
 
 ### Creating database, tables and triggers
 
-Create database and grant privileges:
+In mysql create database and grant privileges:
 ```
 create database pogodb;
 grant all privileges on pogodb.* to MYSELF@localhost;
@@ -39,9 +39,9 @@ grant all privileges on pogodb.* to MYSELF@localhost;
 
 If you will use a different database name, start editing files from now on, else.....  
 
-Create tables, will not work for mariadb 10.1:``mysql pogodb < tables.sql`` 
+Create tables, in terminal: ``mysql pogodb < tables.sql`` ( there seems to be an issue with mariadb 10.1)
 
-Create triggers:``mysql **YOUR_MAD_DB** < triggers.sql``
+Create triggers, in terminal :``mysql **YOUR_MAD_DB** < triggers.sql``, replace YOUR_MAD_DB
 
 ### Defining areas/towns
 
@@ -63,7 +63,9 @@ insert into pogodb.Area (Area,Origin) values
 ```
 ### Set MAD database name
 
-assuming Stats is located in /home/USER/Stats/, replace ``USER`` with ``your username``  
+assuming Stats is located in /home/USER/Stats/:
+- replace ``USER`` with ``your username``  
+- replace YOUR_MAD_DB with MAD dabase name 
 ``cd /home/USER/Stats//sql_cron/ && sed -i 's/rmdb/YOUR_MAD_DB/g' *.sql``  
 
 ### Crontab
@@ -92,21 +94,23 @@ Edit crontab ``crontab -e`` and insert
 ## Cleanup spawnpoints discovered during Quest hours
 # 13 6 * * 1 mysql < /PATHtoStats/sql_cron/quest_spawn_cleanup.sql
 ```
-**Note 1:** adjust ``PATHtoStats`` and edit/include all previously defined area's/towns in section ``## Area stats`` where TOWNx is mentioned. If only one area is defined remove the TOWN2 and ETC part.  
+Changes required:  
+- replace ``PATHtoStats`` with actual path i.e. /home/dkmur/Stats/... 
+- edit/include all previously defined area's/towns in section ``## Area stats`` where TOWNx is mentioned. If only one area is defined remove the TOWN2 and ETC part.  
 
-**Note 2:** check the 3 delete sections in query ``pokemon_hourly.sql`` as this will have an effect on representation of stats in MADmin. I choose to keep table pokemon small/cleaned up so delete there after one hour. In order to maintain data stored in table pokemon just comment out the 3 delete sections by putting ``--`` in front of each line. 
+**NOTE:** check the 3 delete sections in query ``pokemon_hourly.sql`` as this WILL have an effect on representation of stats in MADmin. I choose to keep table pokemon small/cleaned up so delete there after one hour. In order to maintain data stored in table pokemon just comment out the 3 delete sections by putting ``--`` in front of each line. 
 
 
 
 ### Settings Stats
 
 assuming Stats is located in /home/USER/Stats/:
-- replace ``USER`` with ``your username``  
+- replace USER with ``your username``  
 ``cd /home/USER/Stats/ && sed -i 's/pathToStats/\/home\/USER\/Stats\//g' *.sh``  
 ``cd /home/USER/Stats/progs/ && sed -i 's/pathToStats/\/home\/USER\/Stats\//g' *.sh``  
-- replace YOUR_DEFINED_AREAS (Paris, London)  
+- replace YOUR_DEFINED_AREAS in i.e. Paris, London  
 ``cd /home/USER/Stats/progs/ && sed -i 's/AllAreas/YOUR_DEFINED_AREAS/g' *.sh``  
-- replace YOUR_PREFFERED_DEFAULT_AREA  
+- replace YOUR_PREFFERED_DEFAULT_AREA i.e. Paris  
 ``cd /home/USER/Stats/progs/ && sed -i 's/DefaultArea/YOUR_PREFFERED_DEFAULT_AREA/g' *.sh``  
   
 
