@@ -43,9 +43,10 @@ Create tables, will not work for mariadb 10.1:``mysql pogodb < tables.sql``
 
 Create triggers:``mysql **YOUR_MAD_DB** < triggers.sql``
 
-### Defining area's/towns
+### Defining areas/towns
 
-For each area or town you want to define:  
+in /sql_cron there are 3 .default files located, each area or town you which to define requires those to be copied and adjusted.
+So for each area:  
 1 copy all 3 ``.sql.default`` files and replace ``town`` with it's repective (area)name, leave out ``.default``  
 ``example cp 15_town_area.sql.default 15_paris_area.sql``  
 2 edit each file and put in the correct information for ``@area``, ``@LatMax``, ``@LatMin``, ``@LonMin``, ``@LonMax``
