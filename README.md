@@ -86,7 +86,7 @@ Edit crontab ``crontab -e`` and insert
 
 ## Settings Stats
 
-assuming Stats is located in /home/USER/Stats/  
+assuming Stats is located in /home/USER/Stats/, replace ``USER`` with ``your username``:  
 ``cd /home/USER/Stats/ && sed -i 's/pathToStats/\/home\/USER\/Stats\//g' *.sh``  
 ``cd /home/USER/Stats/progs/ && sed -i 's/pathToStats/\/home\/USER\/Stats\//g' *.sh``  
 ``cd /home/USER/Stats/progs/ && sed -i 's/AllAreas/YOUR_DEFINED_S_AREAS/g' *.sh``  
