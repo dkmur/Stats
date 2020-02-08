@@ -103,10 +103,11 @@ Hopefully that's it.....else......blame someone else :)
 
 I left some stuff in there about poracle and restarting/updating.......should you wish to use it......it will require adaptations  
 1 poracle V3  ``cd /home/USER/Stats/sql/ && sed -i 's/poracle/PORACLE_DB_NAME/g' *`` 
-2 I run quests between 2am and 6am, so all spawpoints discovered between those hours are dumped into seperate table and removed from trs_spawn, see Crontab example
-3 for the rest......maybe someday I look into it....your on you own  
+2 I run quests between 2am and 6am, so all spawpoints discovered between those hours are dumped into seperate table and removed from trs_spawn, see Crontab example  
+3 for the rest......maybe someday I look into it....  
 
 
 ## Notes
 
 Not all information stored in tables stats_worker and stats_area are included in Stats menu options.  
+Pretty sure after making these changes you wil never be able to pull any change from here hence this most likely won't be updated :P
