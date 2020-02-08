@@ -2,7 +2,7 @@
 Home=$HOME
 
 echo "Enter Area - Enter defaults to DefaultArea"
-echo "  AllAreas"
+echo "  Defined areas: AllAreas"
 
 read area
 if [ -z $area ]
