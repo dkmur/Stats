@@ -103,7 +103,7 @@ Hopefully that's it.....else......blame someone else :)
 
 I left some stuff in there about poracle and restarting/updating.......should you wish to use it......it will require adaptations  
 1 poracle V3  ``cd /home/USER/Stats/sql/ && sed -i 's/poracle/PORACLE_DB_NAME/g' *`` 
-2 I run quests between 2am and 6am, so all spawpoints discovered between those hours are dumped into seperate table and removed from trs_spawn, see Crontab example  
+2 I run quests between 2am and 6am, so all spawpoints discovered between those hours are dumped into seperate table and removed from trs_spawn as well as everything not seen for the last 5 days, see Crontab example  
 3 for the rest......maybe someday I look into it....  
 
 
