@@ -103,8 +103,8 @@ Edit crontab ``crontab -e`` and insert
 assuming Stats is located in /home/USER/Stats/, replace ``USER`` with ``your username``:  
 ``cd /home/USER/Stats/ && sed -i 's/pathToStats/\/home\/USER\/Stats\//g' *.sh``  
 ``cd /home/USER/Stats/progs/ && sed -i 's/pathToStats/\/home\/USER\/Stats\//g' *.sh``  
-``cd /home/USER/Stats/progs/ && sed -i 's/AllAreas/YOUR_DEFINED_S_AREAS/g' *.sh``  
-``cd /home/USER/Stats/progs/ && sed -i 's/DefaultArea/YOUR_PREFFERED_DEFAULT_AREA/g' *.sh``  
+``cd /home/USER/Stats/progs/ && sed -i 's/AllAreas/YOUR_DEFINED_AREAS/g' *.sh``, replace YOUR_DEFINED_AREAS i.e. Paris, London 
+``cd /home/USER/Stats/progs/ && sed -i 's/DefaultArea/YOUR_PREFFERED_DEFAULT_AREA/g' *.sh``, replace YOUR_PREFFERED_DEFAULT_AREA    
 
 add stats to /usr/local/bin in order to start from any location:  
 ``sudo nano /usr/local/bin/stats`` add /PATHtoStats/stats.sh and save file  
