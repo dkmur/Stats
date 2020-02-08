@@ -1,6 +1,6 @@
 # Stats
 
-This idiot once had the idea it would be good to analyze statistics in more detail in order to measure the effect of parameter changes in order to properly tune the setup as well as creating the ability to evaluate functionality like i.e. PrioQ.
+This idiot once had the idea it would be good to analyze statistics in more detail in order to copare different area's, measure the effect of parameter changes in order to properly tune the setup as well as creating the ability to evaluate functionality like i.e. PrioQ.
 
 With limited knowlegde, help from my best friend Google, the attitude "steal with pride" and some perseverance this is what I cooked up.
 
