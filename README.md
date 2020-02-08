@@ -11,14 +11,14 @@ Anyway/anyhow......like me.....steal with pride.....(ab)use it the way you see f
 
 Use it at you own risk, because bare in mind this was all done by an idiot!
 
+## Setting up
 
-
-## Prerequisites
+### Prerequisites
 Activation of (raw)stats in MAD config.ini (statistic,game_stats,game_stats_raw).
 
 Get Stats ``git clone https://github.com/dkmur/Stats.git && cd /Stats/``
 
-## Creating database, tables and triggers
+### Creating database, tables and triggers
 
 Create database and grant privileges:
 ```
@@ -32,7 +32,7 @@ Create tables, will not work for mariadb 10.1:``mysql pogodb < tables.sql``
 
 Create triggers:``mysql **YOUR_MAD_DB** < triggers.sql``
 
-## Defining area's/towns
+### Defining area's/towns
 
 For each area or town you want to define:  
 1 copy all 3 ``.sql.default`` files and replace ``town`` with it's repective (area)name, leave out ``.default``  
@@ -48,12 +48,12 @@ insert into pogodb.Area (Area,Origin) values
 ('Town2','Device01')
 ;
 ```
-## Set MAD database name
+### Set MAD database name
 
 assuming Stats is located in /home/USER/Stats/, replace ``USER`` with ``your username``  
 ``cd /home/USER/Stats//sql_cron/ && sed -i 's/rmdb/YOUR_MAD_DB/g' *.sql``  
 
-## Crontab
+### Crontab
 
 Edit crontab ``crontab -e`` and insert
 ```
@@ -84,7 +84,7 @@ Edit crontab ``crontab -e`` and insert
 
 
 
-## Settings Stats
+### Settings Stats
 
 assuming Stats is located in /home/USER/Stats/, replace ``USER`` with ``your username``:  
 ``cd /home/USER/Stats/ && sed -i 's/pathToStats/\/home\/USER\/Stats\//g' *.sh``  
@@ -99,7 +99,7 @@ add stats to /usr/local/bin in order to start from any location:
 Hopefully that's it.....else......blame someone else :)  
 
 
-## Optionally
+### Some other stuuf, not MAD stats related
 
 I left some stuff in there about poracle settings and restarting/updating.......should you wish to use it......it will require adaptations  
 1 poracle V3  ``cd /home/USER/Stats/sql/ && sed -i 's/poracle/PORACLE_DB_NAME/g' *`` 
@@ -107,7 +107,39 @@ I left some stuff in there about poracle settings and restarting/updating.......
 3 for the rest......maybe someday I look into it....  
 
 
-## Notes
+### Notes
 
 Not all information stored in tables stats_worker and stats_area are included in Stats menu options.  
 Pretty sure after making these changes you wil never be able to pull any change from here hence this most likely won't be updated :P
+
+
+## Meaning of Stats columns
+
+Guess some explanation wouldn't hurt so.....
+
+**RPL** Report :Length Period will be 15, 60, 1440 or 10080 minutes  
+**TRPL** True RPL : doubt if that is still in use today but was once used to identify missing periode due too i.e. downtime  
+**DevRPL** Device RPL : each device will store stats every 5 minutes, depending on missing periods this value might me lower that RPL  
+**Spawn60** spawndef=15 so 60 minute spawn (events do mess this number up, cleanup after event is needed)  
+**Spawn30** spawndef<>15 so most likely 30 minute spawn  
+**%timeleft** average % of despawn time left for all mons scanned in area/network  
+**Tmon** total mons scanned based on worker stats so not table pokemon  
+**Tloc** total locations (route position) scanned  
+**LocOk** number of correctly handled locations  
+**LocNok** as above but incorrectly handled  
+**LocFR** Location Failure Rate : % route positions incorrectly handled  
+**Tp** number of TelePorts when changing route position  
+**TpOk** successfull handled locations when teleporting  
+**TpNok** as above but unsuccessfull  
+**TpFr** TelePort Failure Rate  
+**TpT** Teleport Time : average time required after expiration of post_teleport_delay until gmo is received  
+**Wk** Waking to next route position counter  
+**TkOk** successfull handled locations when walking  
+**TkNok** as above but unsuccessfull  
+**WkT** Walk Time : average time required after expiration of post_walk_delay until gmo is received  
+**WkFr** Walk Failure Rate  
+**Res** number of pogo restarts  
+**Reb** number of device reboots  
+
+Or at least this is my understanding of them :)
+
