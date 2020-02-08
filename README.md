@@ -45,13 +45,14 @@ Create triggers:``mysql **YOUR_MAD_DB** < triggers.sql``
 
 ### Defining areas/towns
 
-in /sql_cron there are 3 .default files located, each area or town you which to define requires those to be copied and adjusted.
+**Create sql queries per area**  
+in /sql_cron there are 3 .default files located, each area or town you which to define requires those to be copied and adjusted.  
 So for each area:  
-1 copy all 3 ``.sql.default`` files and replace ``town`` with it's repective (area)name, leave out ``.default``  
+1 copy all 3 ``.sql.default`` files and replace ``town`` with it's repective (area)name, leaving out ``.default``  
 ``example cp 15_town_area.sql.default 15_paris_area.sql``  
 2 edit each file and put in the correct information for ``@area``, ``@LatMax``, ``@LatMin``, ``@LonMin``, ``@LonMax``
 
-
+**Assign devices to area**
 Time to link workers/origin as defined in MAD to the created area's/towns above, in mysql:
 ```
 insert into pogodb.Area (Area,Origin) values
@@ -91,8 +92,9 @@ Edit crontab ``crontab -e`` and insert
 ## Cleanup spawnpoints discovered during Quest hours
 # 13 6 * * 1 mysql < /PATHtoStats/sql_cron/quest_spawn_cleanup.sql
 ```
-**Note 1:** adjust ``PATHtoStats`` and edit/include all previously defined area's/towns in section ``Area stats`` where TOWNx is mentioned  
-**Note 2:** check the 3 delete sections in query ``pokemon_hourly.sql`` as this will have an effect on representation of stats in MADmin. I choose to keep table pokemon small/cleaned up else, edit the file and comment them out by putting ``--`` in front of each line. 
+**Note 1:** adjust ``PATHtoStats`` and edit/include all previously defined area's/towns in section ``## Area stats`` where TOWNx is mentioned. If only one area is defined remove the TOWN2 and ETC part.  
+
+**Note 2:** check the 3 delete sections in query ``pokemon_hourly.sql`` as this will have an effect on representation of stats in MADmin. I choose to keep table pokemon small/cleaned up so delete there after one hour. In order to maintain data stored in table pokemon just comment out the 3 delete sections by putting ``--`` in front of each line. 
 
 
 
@@ -111,7 +113,7 @@ add stats to /usr/local/bin in order to start from any location:
 Hopefully that's it.....else......blame someone else :)  
 
 
-### Some other stuuf, not MAD stats related
+### Some other stuff, not MAD stats related
 
 I left some stuff in there about poracle settings and restarting/updating.......should you wish to use it......it will require adaptations  
 1 poracle V3  ``cd /home/USER/Stats/sql/ && sed -i 's/poracle/PORACLE_DB_NAME/g' *`` 
@@ -121,7 +123,7 @@ I left some stuff in there about poracle settings and restarting/updating.......
 
 ### Notes
 
-Not all information stored in tables stats_worker and stats_area are included in Stats menu options.  
+Not all information stored in tables stats_worker and stats_area in included in Stats menu options, adapt as you see fit.  
 Pretty sure after making these changes you wil never be able to pull any change from here hence this most likely won't be updated :P
 
 
