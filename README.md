@@ -78,7 +78,7 @@ Edit crontab ``crontab -e`` and insert
 9 0 * * 1 mysql < /PATHtoStats/sql_cron/10080_worker.sql
 ```
 **Note 1:** adjust ``PATHtoStats`` and edit/include all previously defined area's/towns in section ``Area stats`` where TOWNx is mentioned  
-**Note 2:** check the 3 delete sections in query ``pokemon_hourly.sql`` as this will have an effect on representation of stats in MADmin. I choose to keep table pokemon small/cleaned up else, comment them out by putting ``--`` in front of each line. 
+**Note 2:** check the 3 delete sections in query ``pokemon_hourly.sql`` as this will have an effect on representation of stats in MADmin. I choose to keep table pokemon small/cleaned up else, edit the file and comment them out by putting ``--`` in front of each line. 
 
 
 
