@@ -76,6 +76,8 @@ Edit crontab ``crontab -e`` and insert
 4 * * * * mysql < /PATHtoStats/sql_cron/60_worker.sql
 7 0 * * * mysql < /PATHtoStats/sql_cron/1440_worker.sql
 9 0 * * 1 mysql < /PATHtoStats/sql_cron/10080_worker.sql
+## Cleanup spawnpoints discovered during Quest hours
+# 13 6 * * 1 mysql < /PATHtoStats/sql_cron/quest_spawn_cleanup.sql
 ```
 **Note 1:** adjust ``PATHtoStats`` and edit/include all previously defined area's/towns in section ``Area stats`` where TOWNx is mentioned  
 **Note 2:** check the 3 delete sections in query ``pokemon_hourly.sql`` as this will have an effect on representation of stats in MADmin. I choose to keep table pokemon small/cleaned up else, edit the file and comment them out by putting ``--`` in front of each line. 
@@ -100,8 +102,9 @@ Hopefully that's it.....else......blame someone else :)
 ## Optionally
 
 I left some stuff in there about poracle and restarting/updating.......should you wish to use it......it will require adaptations  
-poracle V3  ``cd /home/USER/Stats/sql/ && sed -i 's/poracle/PORACLE_DB_NAME/g' *``  
-for the rest......maybe someday I look into it....your on you own  
+1 poracle V3  ``cd /home/USER/Stats/sql/ && sed -i 's/poracle/PORACLE_DB_NAME/g' *`` 
+2 I run quests between 2am and 6am, so all spawpoints discovered between those hours are dumped into seperate table and removed from trs_spawn, see Crontab example
+3 for the rest......maybe someday I look into it....your on you own  
 
 
 ## Notes
