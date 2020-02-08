@@ -1,13 +1,13 @@
 #!/bin/bash
 Home=$HOME
 
-echo "Enter Area - Enter defaults to Rijen"
-echo "  Rijen, Ndal Ohout or Breda"
+echo "Enter Area - Enter defaults to DefaultArea"
+echo "  AllAreas"
 
 read area
 if [ -z $area ]
         then
-        area="Rijen"
+        area="DefaultArea"
 fi
 
 
