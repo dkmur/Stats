@@ -40,7 +40,7 @@ For each area or town you want to define:
 2 edit each file and put in the correct information for ``@area``, ``@LatMax``, ``@LatMin``, ``@LonMin``, ``@LonMax``
 
 
-Time to link workers/origin as defined in MAD to the created area's/towns above:
+Time to link workers/origin as defined in MAD to the created area's/towns above, in mysql:
 ```
 insert into pogodb.Area (Area,Origin) values
 ('Town1','Device01'),
@@ -87,6 +87,8 @@ Edit crontab ``crontab -e`` and insert
 assuming Stats is located in /home/USER/Stats/  
 ``cd /home/USER/Stats/ && sed -i 's/pathToStats/\/home\/USER\/Stats\//g' *.sh``  
 ``cd /home/USER/Stats/progs/ && sed -i 's/pathToStats/\/home\/USER\/Stats\//g' *.sh``  
+``cd /home/USER/Stats/progs/ && sed -i 's/AllAreas/YOUR_DEFINED_S_AREAS/g' *.sh``  
+``cd /home/USER/Stats/progs/ && sed -i 's/DefaultArea/YOUR_PREFFERED_DEFAULT_AREA/g' *.sh``  
 
 add stats to /usr/local/bin in order to start from any location:  
 ``sudo nano /usr/local/bin/stats`` add /PATHtoStats/stats.sh and save file  
