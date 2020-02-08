@@ -48,9 +48,9 @@ Create triggers, in terminal :``mysql **YOUR_MAD_DB** < triggers.sql``, replace 
 **Create sql queries per area**  
 in /sql_cron there are 3 .default files located, each area/town you want to define requires those to be copied and adjusted.  
 So for each area:  
-1 copy all 3 ``.sql.default`` files and replace ``town`` with it's repective (area)name, leaving out ``.default``  
+- copy all 3 ``.sql.default`` files and replace ``town`` with it's repective (area)name, leaving out ``.default``  
 ``example cp 15_town_area.sql.default 15_paris_area.sql``  
-2 edit each file and put in the correct information for ``@area``, ``@LatMax``, ``@LatMin``, ``@LonMin``, ``@LonMax``
+- edit each file and put in the correct information for ``@area``, ``@LatMax``, ``@LatMin``, ``@LonMin``, ``@LonMax``
 
 **Assign devices to area**
 Time to link workers/origin as defined in MAD to the created area's/towns above, in mysql:
