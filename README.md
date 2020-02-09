@@ -114,9 +114,11 @@ assuming Stats is located in /home/USER/Stats/:
 ``cd /home/USER/Stats/progs/ && sed -i 's/DefaultArea/YOUR_PREFFERED_DEFAULT_AREA/g' *.sh``  
   
 
-add stats to /usr/local/bin in order to start from any location:  
+Optionally, add stats to /usr/local/bin in order to start from any location:  
 ``sudo nano /usr/local/bin/stats`` add /PATHtoStats/stats.sh and save file  
 ``sudo chmod +x /usr/local/bin/stats``  
+
+Run stats, but give it some time to fill the tables.
 
 Hopefully that's it.....else......blame someone else :)  
 
