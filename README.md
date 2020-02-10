@@ -98,7 +98,7 @@ Changes required:
 - replace ``PATHtoStats`` with actual path i.e. /home/dkmur/Stats/... 
 - edit/include all previously defined area's/towns in section ``## Area stats`` where TOWNx is mentioned. If only one area is defined remove the TOWN2 and ETC part.  
 
-**NOTE:** check the 3 delete sections in query ``pokemon_hourly.sql`` as this WILL have an effect on representation of stats in MADmin. I choose to keep table pokemon small/cleaned up so delete there after one hour. In order to maintain data stored in table pokemon just comment out the 3 delete sections by putting ``--`` in front of each line. 
+NOTE: query ``pokemon_hourly.sql`` contains cleanup queries for tables pokemon, trs_detect_raw and trs_location_raw. They are disbled by default as it will have an impact on representation of stats in MADmin. I choose to enable them, by removing ``--``, in order to keep tables small/cleaned up.   
 
 
 
