@@ -37,7 +37,7 @@ create database pogodb;
 grant all privileges on pogodb.* to MYSELF@localhost;
 ```
 
-If you will use a different database name make sure to execute:
+If you want use a different database name make sure to execute:
 - change USER and NEWB
 - ``grep -rl pogodb /home/USER/Stats | xargs sed -i 's/pogodb/NEWDB/g'``  
 
