@@ -1,11 +1,11 @@
-CREATE TABLE TABLE IF NOT EXISTS `Area` (
+CREATE TABLE IF NOT EXISTS `Area` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `Area` varchar(50) NOT NULL,
   `Origin` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=latin1;
 
-CREATE TABLE TABLE IF NOT EXISTS `spawn_unused` (
+CREATE TABLE IF NOT EXISTS `spawn_unused` (
   `spawnpoint` varchar(16) COLLATE utf8mb4_unicode_ci NOT NULL,
   `latitude` double NOT NULL,
   `longitude` double NOT NULL,
@@ -19,7 +19,7 @@ CREATE TABLE TABLE IF NOT EXISTS `spawn_unused` (
   KEY `spawnpoint` (`spawnpoint`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE TABLE IF NOT EXISTS `stats_area` (
+CREATE TABLE IF NOT EXISTS `stats_area` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `Datetime` datetime NOT NULL,
   `RPL` smallint(6) NOT NULL,
@@ -50,7 +50,7 @@ CREATE TABLE TABLE IF NOT EXISTS `stats_area` (
   KEY `stats_area_Area` (`Area`)
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE TABLE IF NOT EXISTS `stats_worker` (
+CREATE TABLE IF NOT EXISTS `stats_worker` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `Datetime` datetime NOT NULL,
   `RPL` smallint(6) NOT NULL,
@@ -86,7 +86,7 @@ CREATE TABLE TABLE IF NOT EXISTS `stats_worker` (
   KEY `stats_worker_RPL` (`RPL`)
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE TABLE IF NOT EXISTS `pokemon_history` (
+CREATE TABLE IF NOT EXISTS `pokemon_history` (
   `encounter_id` bigint(20) unsigned NOT NULL,
   `spawnpoint_id` bigint(20) unsigned NOT NULL,
   `pokemon_id` smallint(6) NOT NULL,
@@ -113,7 +113,7 @@ CREATE TABLE TABLE IF NOT EXISTS `pokemon_history` (
   `weather_boosted_condition` smallint(6) DEFAULT NULL,
   `last_modified` datetime DEFAULT NULL,
   `is_shiny` tinyint(1) DEFAULT NULL,
-  `first_scanned` datetime NOT NULL DEFAULT utc_timestamp(),
+  `first_scanned` datetime NOT NULL DEFAULT now(),
   PRIMARY KEY (`encounter_id`),
   KEY `pokemon_history_frist_scanned` (`first_scanned`),
   KEY `pokemon_history_spawnpoint_id` (`spawnpoint_id`),
@@ -122,7 +122,7 @@ CREATE TABLE TABLE IF NOT EXISTS `pokemon_history` (
   KEY `pokemon_history_last_modified` (`last_modified`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE TABLE IF NOT EXISTS `pokemon_history_temp` (
+CREATE TABLE IF NOT EXISTS `pokemon_history_temp` (
   `encounter_id` bigint(20) unsigned NOT NULL,
   `spawnpoint_id` bigint(20) unsigned NOT NULL,
   `pokemon_id` smallint(6) NOT NULL,
@@ -149,7 +149,7 @@ CREATE TABLE TABLE IF NOT EXISTS `pokemon_history_temp` (
   `weather_boosted_condition` smallint(6) DEFAULT NULL,
   `last_modified` datetime DEFAULT NULL,
   `is_shiny` tinyint(1) DEFAULT NULL,
-  `first_scanned` datetime NOT NULL DEFAULT utc_timestamp(),
+  `first_scanned` datetime NOT NULL DEFAULT now(),
   PRIMARY KEY (`encounter_id`),
   KEY `pokemon_history_temp_spawnpoint_id` (`spawnpoint_id`),
   KEY `pokemon_history_temp_latitude` (`latitude`),
