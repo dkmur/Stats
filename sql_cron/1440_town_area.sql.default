@@ -14,8 +14,8 @@ AS(
 select a.spawnpoint_id, a.first_scanned, disappear_time, a.individual_attack, a.individual_defense, a.individual_stamina
 from pogodb.pokemon_history_temp a
 where
-CONVERT_TZ(a.first_scanned, '+00:00', @@global.time_zone) >= @Start and
-CONVERT_TZ(a.first_scanned, '+00:00', @@global.time_zone) < @Stop and
+a.first_scanned >= @Start and
+a.first_scanned < @Stop and
 a.latitude < @LatMax and a.latitude > @LatMin and a.longitude > @LonMin and a.longitude < @LonMax
 );
 
