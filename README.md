@@ -39,7 +39,7 @@ grant all privileges on pogodb.* to MYSELF@localhost;
 
 If you will use a different database name make sure to execute:
 - change USER and NEWDBBBBBBBBBBBBBB
-- ``grep -rl pogodb /home/USER/Stats | xargs sed -i 's/pogodb/NEWDBBBBBBBBBBBBBBB/g'``
+- ``grep -rl pogodb /home/USER/Stats | xargs sed -i 's/pogodb/NEWDBBBBBBBBBBBBBBB/g'``  
 
 Create tables, in terminal: ``mysql pogodb < tables.sql`` ( there seems to be an issue with mariadb 10.1)
 
