@@ -38,8 +38,9 @@ grant all privileges on pogodb.* to MYSELF@localhost;
 ```
 
 If you will use a different database name make sure to execute:
-- change USER and NEWDBBBBBBBBBBBBBB
-- ``grep -rl pogodb /home/USER/Stats | xargs sed -i 's/pogodb/NEWDBBBBBBBBBBBBBBB/g'``  
+- change USER and NEWB
+- ``grep -rl pogodb /home/USER/Stats | xargs sed -i 's/pogodb/NEWDB/g'``  
+
 
 Create tables, in terminal: ``mysql pogodb < tables.sql`` ( there seems to be an issue with mariadb 10.1)
 
@@ -107,7 +108,7 @@ NOTE: query ``pokemon_hourly.sql`` contains cleanup queries for tables pokemon, 
 ### Settings Stats
 
 assuming Stats is located in /home/USER/Stats/:
-- replace USER with ``your username``  
+- replace USER with ``your username``, do not replace **pathToStats**  
 ``cd /home/USER/Stats/ && sed -i 's/pathToStats/\/home\/USER\/Stats\//g' *.sh``  
 ``cd /home/USER/Stats/progs/ && sed -i 's/pathToStats/\/home\/USER\/Stats\//g' *.sh``  
 - replace YOUR_DEFINED_AREAS in i.e. Paris, London  
@@ -120,7 +121,7 @@ Optionally, add stats to /usr/local/bin in order to start from any location:
 ``sudo nano /usr/local/bin/stats`` add /PATHtoStats/stats.sh and save file  
 ``sudo chmod +x /usr/local/bin/stats``  
 
-Run stats or stats.sh, but give it some time to fill the tables.
+Run stats or ./stats.sh, but give it some time to fill the tables.
 
 Hopefully that's it.....else......blame someone else :)  
 
