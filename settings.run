@@ -1,0 +1,26 @@
+# This script will adjust Stats files #
+# Adjust settings below:              #
+
+PATH_TO_STATS=/home/dkmur/tempstats/Stats/
+MAD_DB=joehoe
+STATS_DB=fuckit
+DEFINED_SCAN_AREAS='Amsterdam, London, Paris'
+DEFAULT_AREA=London
+
+
+# Do not edit below this line !! #
+
+PATH_TO_STATS2=$(sed 's@/@\\/@g' <<< $PATH_TO_STATS)
+cd $PATH_TO_STATS && sed -i "s/pathToStats/$PATH_TO_STATS2/g" *.sh
+cd $PATH_TO_STATS && sed -i "s/pathToStats/$PATH_TO_STATS2/g" *.txt
+cd $PATH_TO_STATS && cd progs/ && sed -i "s/pathToStats/$PATH_TO_STATS2/g" *.sh
+cd $PATH_TO_STATS && sed -i "s/pogodb/$STATS_DB/g" *.sql
+cd $PATH_TO_STATS && cd sql/ && sed -i "s/pogodb/$STATS_DB/g" *.sql
+cd $PATH_TO_STATS && cd sql_cron/ && sed -i "s/pogodb/$STATS_DB/g" *.sql
+cd $PATH_TO_STATS && cd sql_cron/ && sed -i "s/pogodb/$STATS_DB/g" *.default
+cd $PATH_TO_STATS && sed -i "s/rmdb/$MAD_DB/g" *.sql
+cd $PATH_TO_STATS && cd sql/ && sed -i "s/rmdb/$MAD_DB/g" *.sql
+cd $PATH_TO_STATS && cd sql_cron/ && sed -i "s/rmdb/$MAD_DB/g" *.sql
+cd $PATH_TO_STATS && cd sql_cron/ && sed -i "s/rmdb/$MAD_DB/g" *.default
+cd $PATH_TO_STATS && cd progs/ && sed -i "s/AllAreas/$DEFINED_SCAN_AREAS/g" *.sh
+cd $PATH_TO_STATS && cd progs/ && sed -i "s/DefaultArea/$DEFAULT_AREA/g" *.sh
