@@ -31,7 +31,7 @@ Use it at you own risk, because bare in mind this was all done by an idiot!
 
 ### Setting path and DB names
 
-edit file ``settings.run`` and execute it ``./settings.run``  
+Edit file ``settings.run`` and execute it ``./settings.run``  
 Note the actual DB for STATS_DB name to be set is defined in next paragraph.
 
 ### Creating database, tables and triggers
@@ -71,7 +71,8 @@ insert into pogodb.Area (Area,Origin) values
 Edit crontab ``crontab -e`` and insert content of ``crontab.txt`` located in Stats home.
 
 Changes required:  
-- edit/include all previously defined area's/towns in section ``## Area stats`` where TOWNx is mentioned. If only one area is defined remove the TOWN2 and ETC part.  
+- Edit/include all previously defined area's/towns in section ``## Area stats`` where TOWNx is mentioned.  
+- If only one area is defined remove the TOWN2 and ETC part.  
 
 ### Settings Stats
 
