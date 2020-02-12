@@ -29,22 +29,22 @@ Use it at you own risk, because bare in mind this was all done by an idiot!
 
 - Get Stats ``git clone https://github.com/dkmur/Stats.git && cd /Stats/``
 
+### Setting path and DB names
+
+edit file ``settings.run`` and execute it ``./settings.run``  
+Note the actual DB for STATS_DB name to be set is defined in next paragraph.
+
 ### Creating database, tables and triggers
 
-In mysql create database and grant privileges:
+In mysql create database (replace ##STATS_DB##) and grant privileges:
 ```
 create database pogodb;
-grant all privileges on pogodb.* to MYSELF@localhost;
-```
+grant all privileges on ##STATS_DB##.* to MYSELF@localhost;
+```  
 
-If you want use a different database name make sure to execute:
-- change USER and NEWB
-- ``grep -rl pogodb /home/USER/Stats | xargs sed -i 's/pogodb/NEWDB/g'``  
+Create tables, in terminal: ``mysql ##STATS_DB## < tables.sql``, replace ##STATS_DB##
 
-
-Create tables, in terminal: ``mysql pogodb < tables.sql`` ( there seems to be an issue with mariadb 10.1)
-
-Create triggers, in terminal :``mysql **YOUR_MAD_DB** < triggers.sql``, replace YOUR_MAD_DB
+Create triggers, in terminal :``mysql ##YOUR_MAD_DB## < triggers.sql``, replace ##YOUR_MAD_DB##
 
 ### Defining areas/towns
 
@@ -64,58 +64,16 @@ insert into pogodb.Area (Area,Origin) values
 ('Town2','Device01')
 ;
 ```
-### Set MAD database name
-
-assuming Stats is located in /home/USER/Stats/:
-- replace ``USER`` with ``your username``  
-- replace YOUR_MAD_DB with MAD dabase name 
-``cd /home/USER/Stats/sql_cron/ && sed -i 's/rmdb/YOUR_MAD_DB/g' *.sql``  
+  
 
 ### Crontab
 
-Edit crontab ``crontab -e`` and insert
-```
-## Cleanup and backup
-5 * * * * mysql < /PATHtoStats/sql_cron/pokemon_hourly.sql
-7 1 * * * mysql < /PATHtoStats/sql_cron/pokemon_daily.sql
-## Area stats
-0 * * * * cd /PATHtoStats/sql_cron/ && mysql < 15_TOWN1_area.sql && mysql < 15_TOWN2_area.sql && ETC
-15 * * * * cd /PATHtoStats/sql_cron/ && mysql < 15_TOWN1_area.sql && mysql < 15_TOWN2_area.sql && ETC
-30 * * * * cd /PATHtoStats/sql_cron/ && mysql < 15_TOWN1_area.sql && mysql < 15_TOWN2_area.sql && ETC
-45 * * * * cd /PATHtoStats/sql_cron/ && mysql < 15_TOWN1_area.sql && mysql < 15_TOWN2_area.sql && ETC
-0 * * * * cd /PATHtoStats/sql_cron/ && mysql < 60_TOWN1_area.sql && mysql < 60_TOWN2_area.sql && ETC
-1 0 * * * cd /PATHtoStats/sql_cron/ && mysql < 1440_TOWN1_area.sql && mysql < 1440_TOWN2_area.sql && ETC
-10 0 * * 1 mysql < /PATHtoStats/sql_cron/10080_area.sql
-## Worker stats
-2 * * * * mysql < /PATHtoStats/sql_cron/15_worker.sql
-17 * * * * mysql < /PATHtoStats/sql_cron/15_worker.sql
-32 * * * * mysql < /PATHtoStats/sql_cron/15_worker.sql
-47 * * * * mysql < /PATHtoStats/sql_cron/15_worker.sql
-4 * * * * mysql < /PATHtoStats/sql_cron/60_worker.sql
-7 0 * * * mysql < /PATHtoStats/sql_cron/1440_worker.sql
-9 0 * * 1 mysql < /PATHtoStats/sql_cron/10080_worker.sql
-## Cleanup spawnpoints discovered during Quest hours
-# 13 6 * * 1 mysql < /PATHtoStats/sql_cron/quest_spawn_cleanup.sql
-```
+Edit crontab ``crontab -e`` and insert content of ``crontab.txt`` located in Stats home.
+
 Changes required:  
-- replace ``PATHtoStats`` with actual path i.e. /home/dkmur/Stats/... 
 - edit/include all previously defined area's/towns in section ``## Area stats`` where TOWNx is mentioned. If only one area is defined remove the TOWN2 and ETC part.  
 
-NOTE: query ``pokemon_hourly.sql`` contains cleanup queries for tables pokemon, trs_detect_raw and trs_location_raw. They are disbled by default as it will have an impact on representation of stats in MADmin. I choose to enable them, by removing ``--``, in order to keep tables small/cleaned up.   
-
-
-
 ### Settings Stats
-
-assuming Stats is located in /home/USER/Stats/:
-- replace USER with ``your username``, do not replace **pathToStats**  
-``cd /home/USER/Stats/ && sed -i 's/pathToStats/\/home\/USER\/Stats\//g' *.sh``  
-``cd /home/USER/Stats/progs/ && sed -i 's/pathToStats/\/home\/USER\/Stats\//g' *.sh``  
-- replace YOUR_DEFINED_AREAS in i.e. Paris, London  
-``cd /home/USER/Stats/progs/ && sed -i 's/AllAreas/YOUR_DEFINED_AREAS/g' *.sh``  
-- replace YOUR_PREFFERED_DEFAULT_AREA i.e. Paris  
-``cd /home/USER/Stats/progs/ && sed -i 's/DefaultArea/YOUR_PREFFERED_DEFAULT_AREA/g' *.sh``  
-  
 
 Optionally, add stats to /usr/local/bin in order to start from any location:  
 ``sudo nano /usr/local/bin/stats`` add /PATHtoStats/stats.sh and save file  
@@ -131,7 +89,8 @@ Hopefully that's it.....else......blame someone else :)
 I left some stuff in there about poracle settings and restarting/updating.......should you wish to use it......it will require adaptations  
 - poracle V3  ``cd /home/USER/Stats/sql/ && sed -i 's/poracle/PORACLE_DB_NAME/g' *``  
 - I run quests between 2am and 6am, so all spawpoints discovered between those hours are dumped into seperate table and removed from trs_spawn as well as everything not seen for the last 5 days, see Crontab example  
-- for the rest......maybe someday I look into it....  
+- query ``pokemon_hourly.sql`` contains cleanup queries for tables pokemon, trs_detect_raw and trs_location_raw. They are disbled by default as it will have an impact on representation of stats in MADmin. I choose to enable them, by removing ``--``, in order to keep tables small/cleaned up  
+- for the rest......maybe someday I look into it.... 
 
 
 ### Notes
