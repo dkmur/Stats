@@ -1,9 +1,9 @@
 # This script will adjust Stats files #
 # Adjust settings below:              #
 
-PATH_TO_STATS=/home/dkmur/tempstats/Stats/
-MAD_DB=joehoe
-STATS_DB=fuckit
+PATH_TO_STATS=/home/dkmur/Stats/
+MAD_DB=rmdb
+STATS_DB=pogodb
 DEFINED_SCAN_AREAS='Amsterdam, London, Paris'
 DEFAULT_AREA=London
 
