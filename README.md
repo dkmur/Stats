@@ -69,7 +69,7 @@ insert into pogodb.Area (Area,Origin) values
 assuming Stats is located in /home/USER/Stats/:
 - replace ``USER`` with ``your username``  
 - replace YOUR_MAD_DB with MAD dabase name 
-``cd /home/USER/Stats//sql_cron/ && sed -i 's/rmdb/YOUR_MAD_DB/g' *.sql``  
+``cd /home/USER/Stats/sql_cron/ && sed -i 's/rmdb/YOUR_MAD_DB/g' *.sql``  
 
 ### Crontab
 
