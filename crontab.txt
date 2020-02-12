@@ -1,0 +1,21 @@
+## Cleanup and backup
+5 * * * * mysql < pathToStatssql_cron/pokemon_hourly.sql
+7 1 * * * mysql < pathToStatssql_cron/pokemon_daily.sql
+## Area stats
+0 * * * * cd pathToStatssql_cron/ && mysql < 15_TOWN1_area.sql && mysql < 15_TOWN2_area.sql && ETC
+15 * * * * cd pathToStatssql_cron/ && mysql < 15_TOWN1_area.sql && mysql < 15_TOWN2_area.sql && ETC
+30 * * * * cd pathToStatssql_cron/ && mysql < 15_TOWN1_area.sql && mysql < 15_TOWN2_area.sql && ETC
+45 * * * * cd pathToStatssql_cron/ && mysql < 15_TOWN1_area.sql && mysql < 15_TOWN2_area.sql && ETC
+0 * * * * cd pathToStatssql_cron/ && mysql < 60_TOWN1_area.sql && mysql < 60_TOWN2_area.sql && ETC
+1 0 * * * cd pathToStatssql_cron/ && mysql < 1440_TOWN1_area.sql && mysql < 1440_TOWN2_area.sql && ETC
+10 0 * * 1 mysql < pathToStatssql_cron/10080_area.sql
+## Worker stats
+2 * * * * mysql < pathToStatssql_cron/15_worker.sql
+17 * * * * mysql < pathToStatssql_cron/15_worker.sql
+32 * * * * mysql < pathToStatssql_cron/15_worker.sql
+47 * * * * mysql < pathToStatssql_cron/15_worker.sql
+4 * * * * mysql < pathToStatssql_cron/60_worker.sql
+7 0 * * * mysql < pathToStatssql_cron/1440_worker.sql
+9 0 * * 1 mysql < pathToStatssql_cron/10080_worker.sql
+## Cleanup spawnpoints discovered during Quest hours
+# 13 6 * * 1 mysql < pathToStatssql_cron/quest_spawn_cleanup.sql
