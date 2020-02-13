@@ -31,8 +31,8 @@ Use it at you own risk, because bare in mind this was all done by an idiot!
 
 ### Setting path and DB names
 
-Edit file ``settings.run`` and execute it ``./settings.run``  
-Note the actual DB for STATS_DB name to be set is defined in next paragraph.
+Edit settings in file ``settings.run`` and execute it ``./settings.run``  
+**Note** STATS_DB itself is created in next paragraph
 
 ### Creating database, tables and triggers
 
