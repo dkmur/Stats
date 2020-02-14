@@ -5,9 +5,9 @@ This idiot once had the idea it would be good to analyze statistics in more deta
 Available data:  
 - interval period of 15, 60, 1440 and 10080 minutes  
 - per device, area and network  
-- locations handling  
-- detection stats  
-- quest, raid, mon stats  
+- locations handling (split between walk and teleport for #locations handled/success/failure/time required etc)  
+- detection stats (mons,iv,raid,quest on device level)  
+- mon stats (from table pokemon)  
 - restart / reboot data  
 - despawn time left  
 - spawnpoint statistics (added, known, last scanned etc)  
