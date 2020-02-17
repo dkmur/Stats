@@ -32,7 +32,7 @@ Use it at you own risk, because bare in mind this was all done by an idiot!
 ### Setting path and DB names
 
 Edit settings in file ``settings.run`` and execute it ``./settings.run``  
-**Note** STATS_DB itself is created in next paragraph
+**Note** STATS_DB and SCAN_AREAS are created in next paragraphs so remember the names you put in :P
 
 ### Creating database, tables and triggers
 
