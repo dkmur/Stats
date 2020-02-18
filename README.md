@@ -94,10 +94,10 @@ I left some stuff in there about poracle settings and restarting/updating.......
 - for the rest......maybe someday I look into it.... 
 
 
-### Notes
+### Note
 
-Not all information stored in tables stats_worker and stats_area in included in Stats menu options, adapt as you see fit.  
-Pretty sure after making these changes you wil never be able to pull any change from here hence this most likely won't be updated :P
+Not all information stored in tables stats_worker and stats_area is included in Stats menu options, adapt as you see fit.  
+
 
 
 ## Meaning of Stats columns
