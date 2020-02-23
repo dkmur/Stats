@@ -1,6 +1,8 @@
 # This script will adjust Stats files #
 # Adjust settings below:              #
 
+SQL_user=dkmur
+SQL_password=dkmur123
 PATH_TO_STATS=/home/dkmur/Stats/
 MAD_DB=rmdb
 STATS_DB=pogodb
