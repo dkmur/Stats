@@ -1,6 +1,8 @@
 # This script will adjust Stats files #
 # Adjust settings below:              #
 
+SQL_user=dkmur
+SQL_password=dkmur123
 PATH_TO_STATS=/home/dkmur/Stats/
 MAD_DB=rmdb
 STATS_DB=pogodb
@@ -24,3 +26,18 @@ cd $PATH_TO_STATS && cd sql_cron/ && sed -i "s/rmdb/$MAD_DB/g" *.sql
 cd $PATH_TO_STATS && cd sql_cron/ && sed -i "s/rmdb/$MAD_DB/g" *.default
 cd $PATH_TO_STATS && cd progs/ && sed -i "s/AllAreas/$DEFINED_SCAN_AREAS/g" *.sh
 cd $PATH_TO_STATS && cd progs/ && sed -i "s/DefaultArea/$DEFAULT_AREA/g" *.sh
+
+if [ -z "$SQL_user" ]
+then
+      echo "No SQL user set, assuming unix user has correct privileges"
+else
+      if [ -z "$SQL_password" ]
+      then
+           echo "Adding user $SQL_user without password"
+           cd $PATH_TO_STATS && sed -i "s/mysql/mysql -u$SQL_user/g" *.txt
+           cd $PATH_TO_STATS && cd progs/ && sed -i "s/127.0.0.1/127.0.0.1 -u$SQL_user/g" *.sh
+      else
+           cd $PATH_TO_STATS && sed -i "s/mysql/mysql -u$SQL_user -p$SQL_password/g" *.txt
+           cd $PATH_TO_STATS && cd progs/ && sed -i "s/127.0.0.1/127.0.0.1 -u$SQL_user -p$SQL_password/g" *.sh
+      fi
+fi
