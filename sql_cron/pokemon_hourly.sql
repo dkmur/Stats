@@ -13,7 +13,7 @@ from rmdb.trs_stats_detect_raw b
 where b.is_shiny = 1
 );
 
-update mons.pokemon_history_temp a, rmdb.tmp100 b
+update pogodb.pokemon_history_temp a, rmdb.tmp100 b
 set a.is_shiny = b.is_shiny
 where  a.encounter_id = b.type_id
 ;
