@@ -1,6 +1,6 @@
 -- daily
 -- add to pokemon_history
-insert ignore into mons.pokemon_history select * from mons.pokemon_history_temp where date(first_scanned) = curdate() - interval 1 day;
+insert ignore into pogodb.pokemon_history select * from mons.pokemon_history_temp where date(first_scanned) = curdate() - interval 1 day;
 
 -- delete from pokemon_history_temp
-delete from mons.pokemon_history_temp where date(first_scanned) = curdate() - interval 1 day;
+delete from pogodb.pokemon_history_temp where date(first_scanned) = curdate() - interval 1 day;
