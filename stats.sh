@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source config.ini
+
 function View
 {
 clear
@@ -74,7 +76,7 @@ echo ""
 date '+%m%d%y_%H%M' | read -r AUTODATE
 
 read opt
-echo $USER $AUTODATE $opt >> pathToStatsLog.txt
+echo $USER $AUTODATE $opt >> Log.txt
 
 clear
 
@@ -86,53 +88,49 @@ case $opt in
 		routine=1
 		exit
 		;;
-         0)    pathToStatsprogs/n_mons_scanned.sh
+         0)     $PATH_TO_STATS/progs/n_mons_scanned.sh
                 ;;
-         0a)    pathToStatsprogs/n_mons_scanned_ndal.sh
+         1)     $PATH_TO_STATS/progs/n_spawnpoints.sh
                 ;;
-         1)    pathToStatsprogs/n_spawnpoints.sh
+         2)     $PATH_TO_STATS/progs/n_area_overview.sh
                 ;;
-         2)    pathToStatsprogs/n_area_overview.sh
+         3)     $PATH_TO_STATS/progs/n_mons_scanned_w.sh
                 ;;
-         3)    pathToStatsprogs/n_mons_scanned_w.sh
+         4)     $PATH_TO_STATS/progs/n_location.sh
                 ;;
-         4)    pathToStatsprogs/n_location.sh
+         5)     $PATH_TO_STATS/progs/n_rebres.sh
                 ;;
-         5)    pathToStatsprogs/n_rebres.sh
+         6)     $PATH_TO_STATS/progs/n_quests.sh
                 ;;
-         6)    pathToStatsprogs/n_quests.sh
-                ;;
-	 10)	pathToStatsprogs/mons_scanned.sh
+	 10)	$PATH_TO_STATS/progs/mons_scanned.sh
 		;;
-	 11)	pathToStatsprogs/spawnpoints.sh
+	 11)	$PATH_TO_STATS/progs/spawnpoints.sh
 		;;
-	 12)	pathToStatsprogs/worker_overview.sh
-		;; 
-	 13)	pathToStatsprogs/mons_scanned_w.sh
+	 12)	$PATH_TO_STATS/progs/worker_overview.sh
 		;;
-	 14)	pathToStatsprogs/location.sh
+	 13)	$PATH_TO_STATS/progs/mons_scanned_w.sh
 		;;
-         15)     pathToStatsprogs/rebres.sh
+	 14)	$PATH_TO_STATS/progs/location.sh
+		;;
+         15)    $PATH_TO_STATS/progs/rebres.sh
                 ;;
-         16)     pathToStatsprogs/quests.sh
+         16)    $PATH_TO_STATS/progs/quests.sh
                 ;;
-	 20)	pathToStatsprogs/mons_scanned_worker.sh
+	 20)	$PATH_TO_STATS/progs/mons_scanned_worker.sh
 		;;
-	 21)	pathToStatsprogs/location_worker.sh
+	 21)	$PATH_TO_STATS/progs/location_worker.sh
 		;;
-	 22)	pathToStatsprogs/rebres_worker.sh
+	 22)	$PATH_TO_STATS/progs/rebres_worker.sh
 		;;
-	 23)	pathToStatsprogs/quests_worker.sh
+	 23)	$PATH_TO_STATS/progs/quests_worker.sh
 		;;
-         23a)   pathToStatsprogs/quests_all_worker_summed.sh
+         23a)   $PATH_TO_STATS/progs/quests_all_worker_summed.sh
                 ;;
-         30)    pathToStatsstatsPoracle.sh
+         30)    $PATH_TO_STATS/statsPoracle.sh
                 ;;
-         40)    pathToStatsstatsProgs.sh
+         40)    $PATH_TO_STATS/statsProgs.sh
                 ;;
-         50)    pathToStatspokeStats.sh
-                ;;
-         60)    pathToStatsstatsOld.sh
+         50)    $PATH_TO_STATS/pokeStats.sh
                 ;;
 esac
 # echo ""

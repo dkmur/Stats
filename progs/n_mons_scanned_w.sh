@@ -1,5 +1,6 @@
 #!/bin/bash
 Home=$HOME
+source config.ini
 
 echo "Enter resolution - Enter defaults to 1440 (Daily statistics) "
 echo "  15: quarterly, 60: hourly, 1440: daily, 10080: weekly"
@@ -39,9 +40,9 @@ if [ -z $DB ]
 fi
 
 echo ""
-sed -e s/XXA/$DB/ -e s/XXB/$res/ pathToStatssql/n_mons_scanned_w.sql > $Home/temp.sql
+sed -e s/rmdb/$MAD_DB/ -e s/pogodb/$STATS_DB/ -e s/XXA/$DB/ -e s/XXB/$res/ $PATH_TO_STATS/sql/n_mons_scanned_w.sql > $Home/temp.sql
 
-mysql -h 127.0.0.1 < $Home/temp.sql > $Home/tempstats.txt
+mysql -h 127.0.0.1 -u$SQL_user -p$SQL_password < $Home/temp.sql > $Home/tempstats.txt
 cat $Home/tempstats.txt
 
 

@@ -33,7 +33,7 @@ echo ""
 date '+%m%d%y_%H%M' | read -r AUTODATE
 
 read opt
-echo $USER $AUTODATE $opt >> pathToStatsLog.txt
+echo $USER $AUTODATE $opt >> $PATH_TO_STATSLog.txt
 
 clear
 
@@ -45,25 +45,25 @@ case $opt in
 		routine=1
 		exit
 		;;
-         0)    pathToStatsprogs/poracle_users.sh
+         0)    $PATH_TO_STATS/progs/poracle_users.sh
                 ;;
-         1)    pathToStatsprogs/poracle_user_details.sh
+         1)    $PATH_TO_STATS/progs/poracle_user_details.sh
                 ;;
-         2)    pathToStatsprogs/poracle_user_mon.sh
+         2)    $PATH_TO_STATS/progs/poracle_user_mon.sh
                 ;;
-         3)    pathToStatsprogs/poracle_user_quest.sh
+         3)    $PATH_TO_STATS/progs/poracle_user_quest.sh
                 ;;
-         4)    pathToStatsprogs/poracle_user_incident.sh
+         4)    $PATH_TO_STATS/progs/poracle_user_incident.sh
                 ;;
-         5)    pathToStatsprogs/poracle_user_raid.sh
+         5)    $PATH_TO_STATS/progs/poracle_user_raid.sh
                 ;;
-         6)    pathToStatsprogs/poracle_user_egg.sh
+         6)    $PATH_TO_STATS/progs/poracle_user_egg.sh
                 ;;
-         7)    pathToStatsprogs/poracle_user_delete.sh
+         7)    $PATH_TO_STATS/progs/poracle_user_delete.sh
                 ;;
-         8)    pathToStatsprogs/poracle_user_stop.sh
+         8)    $PATH_TO_STATS/progs/poracle_user_stop.sh
                 ;;
-         9)    pathToStatsprogs/poracle_user_remove.sh
+         9)    $PATH_TO_STATS/progs/poracle_user_remove.sh
                 ;;
 esac
 # echo ""

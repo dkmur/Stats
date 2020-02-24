@@ -13,31 +13,31 @@ DEFAULT_AREA=London
 # Do not edit below this line !! #
 
 PATH_TO_STATS2=$(sed 's@/@\\/@g' <<< $PATH_TO_STATS)
-cd $PATH_TO_STATS && sed -i "s/pathToStats/$PATH_TO_STATS2/g" *.sh
+#cd $PATH_TO_STATS && sed -i "s/pathToStats/$PATH_TO_STATS2/g" *.sh
 cd $PATH_TO_STATS && sed -i "s/pathToStats/$PATH_TO_STATS2/g" *.txt
-cd $PATH_TO_STATS && cd progs/ && sed -i "s/pathToStats/$PATH_TO_STATS2/g" *.sh
+#cd $PATH_TO_STATS && cd progs/ && sed -i "s/pathToStats/$PATH_TO_STATS2/g" *.sh
 cd $PATH_TO_STATS && sed -i "s/pogodb/$STATS_DB/g" *.sql
-cd $PATH_TO_STATS && cd sql/ && sed -i "s/pogodb/$STATS_DB/g" *.sql
+#cd $PATH_TO_STATS && cd sql/ && sed -i "s/pogodb/$STATS_DB/g" *.sql
 cd $PATH_TO_STATS && cd sql_cron/ && sed -i "s/pogodb/$STATS_DB/g" *.sql
 cd $PATH_TO_STATS && cd sql_cron/ && sed -i "s/pogodb/$STATS_DB/g" *.default
-cd $PATH_TO_STATS && sed -i "s/rmdb/$MAD_DB/g" *.sql
-cd $PATH_TO_STATS && cd sql/ && sed -i "s/rmdb/$MAD_DB/g" *.sql
+#cd $PATH_TO_STATS && sed -i "s/rmdb/$MAD_DB/g" *.sql
+#cd $PATH_TO_STATS && cd sql/ && sed -i "s/rmdb/$MAD_DB/g" *.sql
 cd $PATH_TO_STATS && cd sql_cron/ && sed -i "s/rmdb/$MAD_DB/g" *.sql
 cd $PATH_TO_STATS && cd sql_cron/ && sed -i "s/rmdb/$MAD_DB/g" *.default
-cd $PATH_TO_STATS && cd progs/ && sed -i "s/AllAreas/$DEFINED_SCAN_AREAS/g" *.sh
-cd $PATH_TO_STATS && cd progs/ && sed -i "s/DefaultArea/$DEFAULT_AREA/g" *.sh
+#cd $PATH_TO_STATS && cd progs/ && sed -i "s/AllAreas/$DEFINED_SCAN_AREAS/g" *.sh
+#cd $PATH_TO_STATS && cd progs/ && sed -i "s/DefaultArea/$DEFAULT_AREA/g" *.sh
 
-if [ -z "$SQL_user" ]
-then
-      echo "No SQL user set, assuming unix user has correct privileges"
-else
-      if [ -z "$SQL_password" ]
-      then
-           echo "Adding user $SQL_user without password"
-           cd $PATH_TO_STATS && sed -i "s/mysql/mysql -u$SQL_user/g" *.txt
-           cd $PATH_TO_STATS && cd progs/ && sed -i "s/127.0.0.1/127.0.0.1 -u$SQL_user/g" *.sh
-      else
-           cd $PATH_TO_STATS && sed -i "s/mysql/mysql -u$SQL_user -p$SQL_password/g" *.txt
-           cd $PATH_TO_STATS && cd progs/ && sed -i "s/127.0.0.1/127.0.0.1 -u$SQL_user -p$SQL_password/g" *.sh
-      fi
-fi
+#if [ -z "$SQL_user" ]
+#then
+#      echo "No SQL user set, assuming unix user has correct privileges"
+#else
+#      if [ -z "$SQL_password" ]
+#      then
+#           echo "Adding user $SQL_user without password"
+#           cd $PATH_TO_STATS && sed -i "s/mysql/mysql -u$SQL_user/g" *.txt
+#           cd $PATH_TO_STATS && cd progs/ && sed -i "s/127.0.0.1/127.0.0.1 -u$SQL_user/g" *.sh
+#      else
+#           cd $PATH_TO_STATS && sed -i "s/mysql/mysql -u$SQL_user -p$SQL_password/g" *.txt
+#           cd $PATH_TO_STATS && cd progs/ && sed -i "s/127.0.0.1/127.0.0.1 -u$SQL_user -p$SQL_password/g" *.sh
+#      fi
+#fi
