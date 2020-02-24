@@ -1,4 +1,4 @@
-use mons
+use pogodb
 
 Create TEMPORARY TABLE mons.tmp400
 AS(
