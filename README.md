@@ -37,7 +37,7 @@ create database ##STATS_DB##;
 grant all privileges on ##STATS_DB##.* to ##MYSELF##@localhost;
 ```  
 - Edit settings in file ``config.ini``. Make sure SQL_user has privileges to both STATS_DB and MAD_DB  
-- Execute it ``./settings.run``, this will create stats table, triggers and prep files  
+- Execute ``./settings.run``, this will create required stats tables, triggers and prep files  
 
 ### Defining areas/towns
 
