@@ -42,7 +42,7 @@ grant all privileges on ##STATS_DB##.* to ##MYSELF##@localhost;
 ### Defining areas/towns
 
 **Create sql queries per area**  
-in /sql_cron there are 3 .template files located, each area/town you want to define requires those to be copied and adjusted.  
+In /sql_cron there are 3 .template files located, each area/town you want to define requires those to be copied and adjusted.  
 So for each area:  
 - copy all 3 ``.sql.template`` files and replace ``town`` with it's repective (area)name, leaving out ``.template``  
 ``example cp 15_town_area.sql.template 15_paris_area.sql``  
