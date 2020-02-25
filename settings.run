@@ -3,7 +3,7 @@
 source config.ini
 
 # Create crontab file
-cp crontab.txt.example crontab.txt
+cp crontab.txt.default crontab.txt
 PATH_TO_STATS2=$(sed 's@/@\\/@g' <<< $PATH_TO_STATS)
 cd $PATH_TO_STATS && sed -i "s/pathToStats/$PATH_TO_STATS2/g" *.txt
 
