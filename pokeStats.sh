@@ -21,7 +21,7 @@ echo ""
 date '+%m%d%y_%H%M' | read -r AUTODATE
 
 read opt
-echo $USER $AUTODATE $opt >> pathToStatsLog.txt
+echo $USER $AUTODATE $opt >> $PATH_TO_STATS/Log.txt
 
 clear
 
@@ -33,7 +33,7 @@ case $opt in
 		routine=1
 		exit
 		;;
-         0)    pathToStatsprogs/poke_seen.sh
+         0)    $PATH_TO_STATS/progs/poke_seen.sh
                 ;;
 
 esac

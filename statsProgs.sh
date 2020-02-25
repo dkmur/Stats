@@ -29,7 +29,7 @@ echo ""
 date '+%m%d%y_%H%M' | read -r AUTODATE
 
 read opt
-echo $USER $AUTODATE $opt >> pathToStatsLog.txt
+echo $USER $AUTODATE $opt >> $PATH_TO_STATS/Log.txt
 
 clear
 
@@ -41,11 +41,11 @@ case $opt in
 		routine=1
 		exit
 		;;
-         1)    pathToStatsprogs/madRestart.sh
+         1)    $PATH_TO_STATS/progs/madRestart.sh
                 ;;
-         6)    pathToStatsprogs/poracleRestart.sh
+         6)    $PATH_TO_STATS/progs/poracleRestart.sh
                 ;;
-        10)    pathToStatsprogs/madUpdateRestart.sh
+        10)    $PATH_TO_STATS/progs/madUpdateRestart.sh
                 ;;
 
 esac

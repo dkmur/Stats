@@ -1,5 +1,6 @@
 #!/bin/bash
 Home=$HOME
+source config.ini
 
 echo "Enter Worker name - eg MAD"
 
@@ -43,9 +44,9 @@ if [ -z $DB ]
 fi
 
 echo ""
-sed -e s/XXA/$DB/ -e s/XXB/$res/ -e s/XXC/$wor/ pathToStatssql/rebres_worker.sql > $Home/temp.sql
+sed -e s/rmdb/$MAD_DB/ -e s/pogodb/$STATS_DB/ -e s/XXA/$DB/ -e s/XXB/$res/ -e s/XXC/$wor/ $PATH_TO_STATS/sql/rebres_worker.sql > $Home/temp.sql
 
-mysql -h 127.0.0.1 < $Home/temp.sql > $Home/tempstats.txt
+mysql -h 127.0.0.1 -u$SQL_user -p$SQL_password < $Home/temp.sql > $Home/tempstats.txt
 cat $Home/tempstats.txt
 
 

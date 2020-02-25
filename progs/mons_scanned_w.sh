@@ -1,13 +1,14 @@
 #!/bin/bash
 Home=$HOME
+source config.ini
 
-echo "Enter Area - Enter defaults to DefaultArea"
-echo "  Defined areas: AllAreas"
+echo "Enter Area - Enter defaults $DEFAULT_AREA "
+echo "  Defined areas: $DEFINED_SCAN_AREAS"
 
 read area
 if [ -z $area ]
         then
-        area="DefaultArea"
+        area=$DEFAULT_AREA
 fi
 
 
@@ -49,9 +50,9 @@ if [ -z $DB ]
 fi
 
 echo ""
-sed -e s/XXA/$DB/ -e s/XXB/$res/ -e s/XXC/$area/ pathToStatssql/mons_scanned_w.sql > $Home/temp.sql
+sed -e s/rmdb/$MAD_DB/ -e s/pogodb/$STATS_DB/ -e s/XXA/$DB/ -e s/XXB/$res/ -e s/XXC/$area/ $PATH_TO_STATS/sql/mons_scanned_w.sql > $Home/temp.sql
 
-mysql -h 127.0.0.1 < $Home/temp.sql > $Home/tempstats.txt
+mysql -h 127.0.0.1 -u$SQL_user -p$SQL_password < $Home/temp.sql > $Home/tempstats.txt
 cat $Home/tempstats.txt
 
 

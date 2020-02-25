@@ -27,32 +27,25 @@ Use it at you own risk, because bare in mind this was all done by an idiot!
 ### Prerequisites
 - Activation of (raw)stats in MAD config.ini (statistic,game_stats,game_stats_raw).
 
-- Get Stats ``git clone https://github.com/dkmur/Stats.git && cd /Stats/``
+- Get Stats ``git clone https://github.com/dkmur/Stats.git && cd Stats/ && cp config.ini.example config.ini``
 
-### Setting path and DB names
+### Creating database, tables, triggers and file prep
 
-Edit settings in file ``settings.run`` and execute it ``./settings.run``  
-**Note** STATS_DB and SCAN_AREAS are created in next paragraphs so remember the names you put in :P
-
-### Creating database, tables and triggers
-
-In mysql create database (replace ##STATS_DB##) and grant privileges:
+- In mysql create stats database and grant privileges. i.e.:  
 ```
-create database pogodb;
-grant all privileges on ##STATS_DB##.* to MYSELF@localhost;
+create database ##STATS_DB##;
+grant all privileges on ##STATS_DB##.* to ##MYSELF##@localhost;
 ```  
-
-Create tables, in terminal: ``mysql ##STATS_DB## < tables.sql``, replace ##STATS_DB##
-
-Create triggers, in terminal :``mysql ##YOUR_MAD_DB## < triggers.sql``, replace ##YOUR_MAD_DB##
+- Edit settings in file ``config.ini``. Make sure SQL_user has privileges to both STATS_DB and MAD_DB  
+- Execute ``./settings.run``, this will create required stats tables, triggers and prep files  
 
 ### Defining areas/towns
 
 **Create sql queries per area**  
-in /sql_cron there are 3 .default files located, each area/town you want to define requires those to be copied and adjusted.  
+In /sql_cron there are 3 .template files located, each area/town you want to define requires those to be copied and adjusted.  
 So for each area:  
-- copy all 3 ``.sql.default`` files and replace ``town`` with it's repective (area)name, leaving out ``.default``  
-``example cp 15_town_area.sql.default 15_paris_area.sql``  
+- copy all 3 ``.sql.template`` files and add it's repective (area)name, leaving out ``.template``  
+``example cp 15_area.sql.template 15_paris_area.sql``  
 - edit each file and put in the correct information for ``@area``, ``@LatMax``, ``@LatMin``, ``@LonMin``, ``@LonMax``
 
 **Assign devices to area**  
@@ -74,7 +67,7 @@ Changes required:
 - Edit/include all previously defined area's/towns in section ``## Area stats`` where TOWNx is mentioned.  
 - If only one area is defined remove the TOWN2 and ETC part.  
 
-### Settings Stats
+### Starting Stats menu
 
 Optionally, add stats to /usr/local/bin in order to start from any location:  
 ``sudo nano /usr/local/bin/stats`` add /PATHtoStats/stats.sh and save file  
@@ -88,7 +81,6 @@ Hopefully that's it.....else......blame someone else :)
 ### Some other stuff, not MAD stats related
 
 I left some stuff in there about poracle settings and restarting/updating.......should you wish to use it......it will require adaptations  
-- poracle V3  ``cd /home/USER/Stats/sql/ && sed -i 's/poracle/PORACLE_DB_NAME/g' *``  
 - I run quests between 2am and 6am, so all spawpoints discovered between those hours are dumped into seperate table and removed from trs_spawn as well as everything not seen for the last 5 days, see Crontab example  
 - query ``pokemon_hourly.sql`` contains cleanup queries for tables pokemon, trs_detect_raw and trs_location_raw. They are disbled by default as it will have an impact on representation of stats in MADmin. I choose to enable them, by removing ``--``, in order to keep tables small/cleaned up  
 - for the rest......maybe someday I look into it.... 
@@ -102,7 +94,6 @@ Not all information stored in tables stats_worker and stats_area is included in 
 
 ## Meaning of Stats columns
 
-Guess some explanation wouldn't hurt so.....
 
 **RPL** Report Length Period : will be 15, 60, 1440 or 10080 minutes  
 **TRPL** True RPL : doubt if that is still in use today but was once used to identify missing periods due too i.e. downtime  

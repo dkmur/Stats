@@ -1,0 +1,7 @@
+SQL_user=dkmur
+SQL_password=dkmur123
+PATH_TO_STATS=/home/dkmur/temp/Stats/
+MAD_DB=rmdb
+STATS_DB=pogodb
+DEFINED_SCAN_AREAS='Amsterdam, London, Paris'
+DEFAULT_AREA=London
