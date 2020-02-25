@@ -2,13 +2,13 @@
 Home=$HOME
 source config.ini
 
-echo "Enter Area - Enter defaults to "
+echo "Enter Area - Enter defaults $DEFAULT_AREA "
 echo "  Defined areas: $DEFINED_SCAN_AREAS"
 
 read area
 if [ -z $area ]
         then
-        area=""
+        area=$DEFAULT_AREA
 fi
 
 
