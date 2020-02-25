@@ -44,8 +44,8 @@ grant all privileges on ##STATS_DB##.* to ##MYSELF##@localhost;
 **Create sql queries per area**  
 In /sql_cron there are 3 .template files located, each area/town you want to define requires those to be copied and adjusted.  
 So for each area:  
-- copy all 3 ``.sql.template`` files and replace ``town`` with it's repective (area)name, leaving out ``.template``  
-``example cp 15_town_area.sql.template 15_paris_area.sql``  
+- copy all 3 ``.sql.template`` files and add it's repective (area)name, leaving out ``.template``  
+``example cp 15_area.sql.template 15_paris_area.sql``  
 - edit each file and put in the correct information for ``@area``, ``@LatMax``, ``@LatMin``, ``@LonMin``, ``@LonMax``
 
 **Assign devices to area**  
