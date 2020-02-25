@@ -56,10 +56,6 @@ echo ""
 echo "					 23 = Quests scanned "
 echo "					    23a All wokers Quest scanned summed by date"
 echo ""
-echo "				PoracleJS "
-echo ""
-echo "					 30 = Goto Poracle menu "
-echo ""
 echo "				Program restart/update "
 echo ""
 echo "					 40 = Goto restart/update menu "
@@ -125,8 +121,6 @@ case $opt in
 	 23)	$PATH_TO_STATS/progs/quests_worker.sh
 		;;
          23a)   $PATH_TO_STATS/progs/quests_all_worker_summed.sh
-                ;;
-         30)    $PATH_TO_STATS/statsPoracle.sh
                 ;;
          40)    $PATH_TO_STATS/statsProgs.sh
                 ;;
