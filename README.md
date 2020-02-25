@@ -29,30 +29,23 @@ Use it at you own risk, because bare in mind this was all done by an idiot!
 
 - Get Stats ``git clone https://github.com/dkmur/Stats.git && cd /Stats/ && cp config.ini.example config.ini``
 
-### Setting path and DB names
+### Creating database, tables, triggers and file prep
 
-Edit settings in file ``config.ini`` and execute it ``./settings.run``.  
-**Note** STATS_DB and SCAN_AREAS are created in next paragraphs so remember the names you put in :P
-
-### Creating database, tables and triggers
-
-In mysql create database (replace ##STATS_DB##) and grant privileges:
+- In mysql create stats database and grant privileges. i.e.:  
 ```
 create database pogodb;
 grant all privileges on ##STATS_DB##.* to MYSELF@localhost;
 ```  
-
-Create tables, in terminal: ``mysql ##STATS_DB## < tables.sql``, replace ##STATS_DB##
-
-Create triggers, in terminal :``mysql ##YOUR_MAD_DB## < triggers.sql``, replace ##YOUR_MAD_DB##
+- Edit settings in file ``config.ini``. Make sure SQL_user has privileges to both STATS_DB and MAD_DB  
+- Execute it ``./settings.run``, this will create stats table, triggers and prep files  
 
 ### Defining areas/towns
 
 **Create sql queries per area**  
-in /sql_cron there are 3 .default files located, each area/town you want to define requires those to be copied and adjusted.  
+in /sql_cron there are 3 .template files located, each area/town you want to define requires those to be copied and adjusted.  
 So for each area:  
-- copy all 3 ``.sql.default`` files and replace ``town`` with it's repective (area)name, leaving out ``.default``  
-``example cp 15_town_area.sql.default 15_paris_area.sql``  
+- copy all 3 ``.sql.template`` files and replace ``town`` with it's repective (area)name, leaving out ``.template``  
+``example cp 15_town_area.sql.template 15_paris_area.sql``  
 - edit each file and put in the correct information for ``@area``, ``@LatMax``, ``@LatMin``, ``@LonMin``, ``@LonMax``
 
 **Assign devices to area**  
