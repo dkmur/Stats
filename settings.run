@@ -30,8 +30,8 @@ cd $PATH_TO_STATS && cd sql_cron/ && sed -i "s/rmdb/$MAD_DB/g" *.sql
 cd $PATH_TO_STATS && cd sql_cron/ && sed -i "s/rmdb/$MAD_DB/g" *.template
 
 # Create tables
-mysql -h 127.0.0.1 -u$SQL_user -p$SQL_password $STATS_DB < tables.sql
+mysql -h 127.0.0.1 -u$SQL_user -p$SQL_password $STATS_DB < $PATH_TO_STATS/tables.sql
 
 # Create triggers
-mysql -h 127.0.0.1 -u$SQL_user -p$SQL_password $MAD_DB < triggers.sql
+mysql -h 127.0.0.1 -u$SQL_user -p$SQL_password $MAD_DB < $PATH_TO_STATS/triggers.sql
 
