@@ -1,6 +1,6 @@
 # Stats
 
-This idiot once had the idea it would be good to analyze statistics in more detail in order to compare different area's and devices, measure the effect of parameter changes in order to properly tune the setup as well as creating the ability to evaluate functionality like i.e. PrioQ.
+This idiot once had the idea it would be good to analyze statistics in more detail in order to compare different area's, devices and measure the effect of parameter changes in order to properly tune the setup as well as creating the ability to evaluate functionality like i.e. PrioQ.
 
 Available data:  
 - interval period of 15, 60, 1440 and 10080 minutes  
