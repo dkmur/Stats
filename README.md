@@ -27,11 +27,11 @@ Use it at you own risk, because bare in mind this was all done by an idiot!
 ### Prerequisites
 - Activation of (raw)stats in MAD config.ini (statistic,game_stats,game_stats_raw).
 
-- Get Stats ``git clone https://github.com/dkmur/Stats.git && cd /Stats/``
+- Get Stats ``git clone https://github.com/dkmur/Stats.git && cd /Stats/ && cp config.ini.example config.ini``
 
 ### Setting path and DB names
 
-Edit settings in file ``settings.run`` and execute it ``./settings.run``  
+Edit settings in file ``config.ini`` and execute it ``./settings.run``.  
 **Note** STATS_DB and SCAN_AREAS are created in next paragraphs so remember the names you put in :P
 
 ### Creating database, tables and triggers
