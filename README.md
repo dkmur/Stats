@@ -67,7 +67,7 @@ Changes required:
 - Edit/include all previously defined area's/towns in section ``## Area stats`` where TOWNx is mentioned.  
 - If only one area is defined remove the TOWN2 and ETC part.  
 
-### Settings Stats
+### Starting Stats menu
 
 Optionally, add stats to /usr/local/bin in order to start from any location:  
 ``sudo nano /usr/local/bin/stats`` add /PATHtoStats/stats.sh and save file  
