@@ -6,6 +6,12 @@ source config.ini
 cp crontab.txt.default crontab.txt
 PATH_TO_STATS2=$(sed 's@/@\\/@g' <<< $PATH_TO_STATS)
 cd $PATH_TO_STATS && sed -i "s/pathToStats/$PATH_TO_STATS2/g" *.txt
+if [ -z "$SQL_password" ]
+then
+  sed -i "s/userpass/-u$SQL_user/g" crontab.txt
+else
+  sed -i "s/userpass/-u$SQL_user -p$SQL_password/g" crontab.txt
+fi
 
 # Create sql table and trigger files
 cp tables.sql.default tables.sql
