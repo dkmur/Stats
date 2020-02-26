@@ -38,11 +38,11 @@ insert ignore into pogodb.spawn_unused (spawnpoint,latitude,longitude,spawndef,e
 select spawnpoint,latitude,longitude,spawndef,earliest_unseen,last_scanned,first_detection,last_non_scanned,calc_endminsec
 from rmdb.trs_spawn
 where
-date(first_detection) < curdate - interval 5 day and last_scanned is NULL;
+date(first_detection) < curdate() - interval 5 day and last_scanned is NULL;
 ;
 -- remove backed up
 delete
 from rmdb.trs_spawn
 where
-date(first_detection) < curdate - interval 5 day and last_scanned is NULL;
+date(first_detection) < curdate() - interval 5 day and last_scanned is NULL;
 ;
