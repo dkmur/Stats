@@ -8,9 +8,10 @@
 -- append shiny stats
 Create TEMPORARY TABLE rmdb.tmp100
 AS(
-select distinct(cast(b.type_id as unsigned)) as type_id, b.is_shiny
+select cast(b.type_id as unsigned) as type_id, sum(b.is_shiny) as is_shiny
 from rmdb.trs_stats_detect_raw b
 where b.is_shiny = 1
+group by b.type_id
 );
 
 update pogodb.pokemon_history_temp a, rmdb.tmp100 b
