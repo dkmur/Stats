@@ -8,7 +8,7 @@
 -- append shiny stats
 Create TEMPORARY TABLE rmdb.tmp100
 AS(
-select cast(b.type_id as unsigned) as type_id, count(distinct(b.worker) as is_shiny
+select cast(b.type_id as unsigned) as type_id, count(distinct(b.worker)) as is_shiny
 from rmdb.trs_stats_detect_raw b
 where b.is_shiny = 1
 group by b.type_id
