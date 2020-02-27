@@ -37,35 +37,24 @@ create database ##STATS_DB##;
 grant all privileges on ##STATS_DB##.* to ##MYSELF##@localhost;
 ```  
 - Edit settings in file ``config.ini``. Make sure SQL_user has privileges to both STATS_DB and MAD_DB  
-- Execute ``./settings.run``, this will create required stats tables, triggers and prep files  
+- for each Area or Town you whish to define: in /areas i.e. ``cp area.ini.example paris.ini`` and edit the settings  
+- Execute ``./settings.run``, this will create required stats tables, triggers, sql queries and crontab file    
 
-### Defining areas/towns
+### Assign devices to area
 
-**Create sql queries per area**  
-In /sql_cron there are 3 .template files located, each area/town you want to define requires those to be copied and adjusted.  
-So for each area:  
-- copy all 3 ``.sql.template`` files and add it's repective (area)name, leaving out ``.template``  
-``example cp 15_area.sql.template 15_paris_area.sql``  
-- edit each file and put in the correct information for ``@area``, ``@LatMax``, ``@LatMin``, ``@LonMin``, ``@LonMax``
-
-**Assign devices to area**  
-Time to link workers/origin as defined in MAD to the created area's/towns above, in mysql:
+Time to link workers/origin as defined in MAD to the created area's/towns on previous step, in mysql:
 ```
-insert into pogodb.Area (Area,Origin) values
+insert into ##STATS_DB##.Area (Area,Origin) values
 ('Town1','Device01'),
 ('Town1','Device02'),
 ('Town2','Device01')
 ;
 ```
-  
 
 ### Crontab
 
 Edit crontab ``crontab -e`` and insert content of ``crontab.txt`` located in Stats home.
 
-Changes required:  
-- Edit/include all previously defined area's/towns in section ``## Area stats`` where TOWNx is mentioned.  
-- If only one area is defined remove the TOWN2 and ETC part.  
 
 ### Starting Stats menu
 

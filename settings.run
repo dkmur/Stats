@@ -6,6 +6,39 @@ source config.ini
 cp crontab.txt.default crontab.txt
 PATH_TO_STATS2=$(sed 's@/@\\/@g' <<< $PATH_TO_STATS)
 cd $PATH_TO_STATS && sed -i "s/pathToStats/$PATH_TO_STATS2/g" *.txt
+
+# Create Area files and add to crontab.txt
+for area in "$PATH_TO_STATS"areas/*.ini
+do
+  echo "$area"
+  source $area
+  cp $PATH_TO_STATS/sql_cron/15_area.sql.default $PATH_TO_STATS/sql_cron/15_"$AREA_NAME"_area.sql
+  sed -i "s/Alphen/$AREA_NAME/g" $PATH_TO_STATS/sql_cron/15_"$AREA_NAME"_area.sql
+  sed -i "s/51.491/$MAX_LAT/g" $PATH_TO_STATS/sql_cron/15_"$AREA_NAME"_area.sql
+  sed -i "s/51.471/$MIN_LAT/g" $PATH_TO_STATS/sql_cron/15_"$AREA_NAME"_area.sql
+  sed -i "s/4.946/$MIN_LON/g" $PATH_TO_STATS/sql_cron/15_"$AREA_NAME"_area.sql
+  sed -i "s/4.973/$MAX_LON/g" $PATH_TO_STATS/sql_cron/15_"$AREA_NAME"_area.sql
+  sed -i "s/AREA15/\&\& mysql userpass < 15_"$AREA_NAME"_area.sql AREA15/g" crontab.txt
+  cp $PATH_TO_STATS/sql_cron/60_area.sql.default $PATH_TO_STATS/sql_cron/60_"$AREA_NAME"_area.sql
+  sed -i "s/Alphen/$AREA_NAME/g" $PATH_TO_STATS/sql_cron/60_"$AREA_NAME"_area.sql
+  sed -i "s/51.491/$MAX_LAT/g" $PATH_TO_STATS/sql_cron/60_"$AREA_NAME"_area.sql
+  sed -i "s/51.471/$MIN_LAT/g" $PATH_TO_STATS/sql_cron/60_"$AREA_NAME"_area.sql
+  sed -i "s/4.946/$MIN_LON/g" $PATH_TO_STATS/sql_cron/60_"$AREA_NAME"_area.sql
+  sed -i "s/4.973/$MAX_LON/g" $PATH_TO_STATS/sql_cron/60_"$AREA_NAME"_area.sql
+  sed -i "s/AREA60/\&\& mysql userpass < 60_"$AREA_NAME"_area.sql AREA60/g" crontab.txt
+  cp $PATH_TO_STATS/sql_cron/1440_area.sql.default $PATH_TO_STATS/sql_cron/1440_"$AREA_NAME"_area.sql
+  sed -i "s/Alphen/$AREA_NAME/g" $PATH_TO_STATS/sql_cron/1440_"$AREA_NAME"_area.sql
+  sed -i "s/51.491/$MAX_LAT/g" $PATH_TO_STATS/sql_cron/1440_"$AREA_NAME"_area.sql
+  sed -i "s/51.471/$MIN_LAT/g" $PATH_TO_STATS/sql_cron/1440_"$AREA_NAME"_area.sql
+  sed -i "s/4.946/$MIN_LON/g" $PATH_TO_STATS/sql_cron/1440_"$AREA_NAME"_area.sql
+  sed -i "s/4.973/$MAX_LON/g" $PATH_TO_STATS/sql_cron/1440_"$AREA_NAME"_area.sql
+  sed -i "s/AREA1440/\&\& mysql userpass < 1440_"$AREA_NAME"_area.sql AREA1440/g" crontab.txt
+done
+
+# Cleanup cron and add sql User_Password
+sed -i "s/AREA15//g" crontab.txt
+sed -i "s/AREA60//g" crontab.txt
+sed -i "s/AREA1440//g" crontab.txt
 if [ -z "$SQL_password" ]
 then
   sed -i "s/userpass/-u$SQL_user/g" crontab.txt
