@@ -2,11 +2,11 @@
 select @Start := concat(date(now() - interval 1440 minute),' ', SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 1440 minute)) DIV 86400) * 86400));
 select @Stop := concat(date(now() - interval 0 minute),' ', SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 0 minute)) DIV 86400) * 86400));
 select @RPL := '1440';
-select @Area := 'town1';
-select @LatMax := 'xx';
-select @LatMin := 'xx';
-select @LonMin := 'xx';
-select @LonMax := 'xx';
+select @Area := 'Alphen';
+select @LatMax := '51.491';
+select @LatMin := '51.471';
+select @LonMin := '4.946';
+select @LonMax := '4.973';
 
 -- Get Pokemon data
 Create TEMPORARY TABLE rmdb.tmp50
