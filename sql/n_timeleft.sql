@@ -16,7 +16,7 @@ date(b.Datetime) >= curdate() - interval XXA day
 group by b.Datetime
 );
 
-select 
+select
 date(a.Datetime) as 'Date      ',
 time(a.Datetime) as 'Time    ',
 a.RPL as 'RPL',
@@ -24,13 +24,12 @@ a.TRPL 'Trpl',
 b.worker 'Workers',
 b.DevRPL 'DevRPL',
 count(Area) 'Areas',
-sum(Spawnpoints) as 'Spawns',
-sum(Mons_all) as 'Mons',
-sum(MonsIV) as 'IVmons',
-sum(Mons_all)-sum(MonsIV) as  'nonIV',
-round(sum(MonsIV)/sum(Mons_all)*100,2) as '%IV',
--- ifnull(sum(a.Spawndef15),0) as 'Spawn60',
--- ifnull(sum(a.SpawndefNot15),0) as 'Spawn30',
+ifnull(sum(a.Spawndef15),0) as 'Spawn60',
+ifnull(sum(a.SpawndefNot15),0) as 'Spawn30',
+sum(round(100*w5/Mons_all,1)) as '%5min',
+sum(round(100*w10/Mons_all,1)) as '%10min',
+sum(round(100*w15/Mons_all,1)) as '%15min',
+sum(round(100*w20/Mons_all,1)) as '%20min',
 ifnull(round(100*sum(a.MinutesLeft)/((sum(a.Spawndef15) * 60)+(sum(a.SpawndefNot15) * 30)),1),0) as '%timeLeft'
 from stats_area a, pogodb.tmp400 b
 

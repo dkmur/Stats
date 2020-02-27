@@ -80,7 +80,11 @@ set
 Spawndef15 = (select count(b.spawnpoint) from rmdb.tmp50 a, rmdb.tmp51 b where a.spawnpoint_id = b.spawnpoint and b.spawndef = 15),
 SpawndefNot15 = (select count(b.spawnpoint) from rmdb.tmp50 a, rmdb.tmp51 b where a.spawnpoint_id = b.spawnpoint and b.spawndef <> 15),
 MinutesLeft = (select sum(timestampdiff(minute,first_scanned,disappear_time)) from rmdb.tmp50),
-AvgMinutesLeft = (select round(avg(timestampdiff(minute,first_scanned,disappear_time))) from rmdb.tmp50)
+AvgMinutesLeft = (select round(avg(timestampdiff(minute,first_scanned,disappear_time))) from rmdb.tmp50),
+w5 = (select count(b.spawnpoint) from rmdb.tmp50 a, rmdb.tmp51 b where a.spawnpoint_id = b.spawnpoint and ((b.spawndef <> 15 and timestampdiff(second,first_scanned,disappear_time) >= 1500) or(b.spawndef = 15 and timestampdiff(second,first_scanned,disappear_time) >= 3300))),
+w10 = (select count(b.spawnpoint) from rmdb.tmp50 a, rmdb.tmp51 b where a.spawnpoint_id = b.spawnpoint and ((b.spawndef <> 15 and timestampdiff(second,first_scanned,disappear_time) >= 1200) or(b.spawndef = 15 and timestampdiff(second,first_scanned,disappear_time) >= 3000))),
+w15 = (select count(b.spawnpoint) from rmdb.tmp50 a, rmdb.tmp51 b where a.spawnpoint_id = b.spawnpoint and ((b.spawndef <> 15 and timestampdiff(second,first_scanned,disappear_time) >= 900) or(b.spawndef = 15 and timestampdiff(second,first_scanned,disappear_time) >= 2700))),
+w20 = (select count(b.spawnpoint) from rmdb.tmp50 a, rmdb.tmp51 b where a.spawnpoint_id = b.spawnpoint and ((b.spawndef <> 15 and timestampdiff(second,first_scanned,disappear_time) >= 600) or(b.spawndef = 15 and timestampdiff(second,first_scanned,disappear_time) >= 2400)))
 where
 pogodb.stats_area.Area = @Area and
 pogodb.stats_area.RPL = @RPL and
