@@ -17,9 +17,11 @@ With limited knowlegde, help from my best friend Google, the attitude "steal wit
 
 Surely it can be done more efficient and some will have a good laugh when looking this. 
 
-Anyway/anyhow......like me.....steal with pride.....(ab)use it the way you see fit or just ignore it all together.
-
-
+Anyway/anyhow......like me.....steal with pride.....(ab)use it the way you see fit or just ignore it all together.  
+  
+If you want to keep updated on Stats or some other great tools https://discord.gg/vXnwgT5  
+  
+  
 Use it at you own risk, because bare in mind this was all done by an idiot!
 
 ## Setting up
