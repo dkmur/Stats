@@ -32,12 +32,11 @@ rpad(a.Area,8,' ') 'Area    ',
 rpad(ifnull(AvgMinutesLeft,0),10,' ') as 'avgMinLeft',
 ifnull(a.Spawndef15,0) as 'Spawn60',
 ifnull(a.SpawndefNot15,0) as 'Spawn30',
-ifnull(round(100*a.MinutesLeft/((a.Spawndef15 * 60)+(a.SpawndefNot15 * 30)),1),0) as '%timeLeft',
 round(100*w5/Mons_all,1) as '%5min',
 round(100*w10/Mons_all,1) as '%10min',
 round(100*w15/Mons_all,1) as '%15min',
-round(100*w20/Mons_all,1) as '%20min'
-
+round(100*w20/Mons_all,1) as '%20min',
+ifnull(round(100*a.MinutesLeft/((a.Spawndef15 * 60)+(a.SpawndefNot15 * 30)),1),0) as '%timeLeft'
 from stats_area a, pogodb.tmp400 b
 
 where
