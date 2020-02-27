@@ -35,8 +35,8 @@ a.MonsIV as 'IVmons',
 a.Mons_all-a.MonsIV as  'nonIV',
 round(100*a.MonsIV/a.Mons_all,2) as '%IV',
 rpad(ifnull(AvgMinutesLeft,0),10,' ') as 'avgMinLeft',
-ifnull(a.Spawndef15,0) as 'Spawn60',
-ifnull(a.SpawndefNot15,0) as 'Spawn30',
+-- ifnull(a.Spawndef15,0) as 'Spawn60',
+-- ifnull(a.SpawndefNot15,0) as 'Spawn30',
 ifnull(round(100*a.MinutesLeft/((a.Spawndef15 * 60)+(a.SpawndefNot15 * 30)),1),0) as '%timeLeft'
 
 from stats_area a, pogodb.tmp400 b
