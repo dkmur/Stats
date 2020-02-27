@@ -29,8 +29,8 @@ sum(Mons_all) as 'Mons',
 sum(MonsIV) as 'IVmons',
 sum(Mons_all)-sum(MonsIV) as  'nonIV',
 round(sum(MonsIV)/sum(Mons_all)*100,2) as '%IV',
-ifnull(sum(a.Spawndef15),0) as 'Spawn60',
-ifnull(sum(a.SpawndefNot15),0) as 'Spawn30',
+-- ifnull(sum(a.Spawndef15),0) as 'Spawn60',
+-- ifnull(sum(a.SpawndefNot15),0) as 'Spawn30',
 ifnull(round(100*sum(a.MinutesLeft)/((sum(a.Spawndef15) * 60)+(sum(a.SpawndefNot15) * 30)),1),0) as '%timeLeft'
 from stats_area a, pogodb.tmp400 b
 
