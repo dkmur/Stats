@@ -42,7 +42,7 @@ grant all privileges on ##STATS_DB##.* to ##MYSELF##@localhost;
 
 ### Assign devices to area
 
-Time to link workers/origin as defined in MAD to the created area's/towns above, in mysql:
+Time to link workers/origin as defined in MAD to the created area's/towns on previous step, in mysql:
 ```
 insert into ##STATS_DB##.Area (Area,Origin) values
 ('Town1','Device01'),
