@@ -91,6 +91,7 @@ Not all information stored in tables stats_worker and stats_area is included in 
 **Spawn60** spawndef=15 so 60 minute spawn (events do mess this number up, cleanup after event is needed)  
 **Spawn30** spawndef<>15 so most likely 30 minute spawn  
 **%timeleft** average % of despawn time left  
+**%5min** % of mons scanned within the first 5 minutes of spawntime  
 
 **Tmon** total mons scanned based on worker stats so not table pokemon  
 **Tloc** total locations (route position) scanned  
