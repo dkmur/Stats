@@ -61,7 +61,7 @@ Edit crontab ``crontab -e`` and insert content of ``crontab.txt`` located in Sta
 ### Starting Stats menu
 
 Optionally, add stats to /usr/local/bin in order to start from any location:  
-``sudo nano /usr/local/bin/stats`` add /PATHtoStats/stats.sh and save file  
+``sudo nano /usr/local/bin/stats`` add ``cd /PATHtoStats/ && ./stats.sh`` and save file  
 ``sudo chmod +x /usr/local/bin/stats``  
 
 Run stats or ./stats.sh, but give it some time to fill the tables.
