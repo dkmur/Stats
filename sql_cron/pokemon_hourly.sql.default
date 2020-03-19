@@ -2,8 +2,8 @@
 -- Cleanup of pokemon
 -- delete from rmdb.pokemon
 -- where
--- first_scanned < now() - interval 1 hour
--- ;
+-- CONVERT_TZ(last_modified, '+00:00', @@global.time_zone) < now() - interval 1 hour
+;
 
 -- append shiny stats
 Create TEMPORARY TABLE rmdb.tmp100
