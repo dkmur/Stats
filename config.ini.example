@@ -9,7 +9,7 @@ PATH_TO_STATS=/home/dkmur/temp/Stats/
 DEFINED_SCAN_AREAS='Amsterdam, London, Paris'
 DEFAULT_AREA=London
 
-## Stats Cleanup for different ReportPeriodLength in months##
+## Stats Cleanup for different ReportPeriodLength in months ##
 RPL15=1
 RPL60=3
 RPL1440=6
