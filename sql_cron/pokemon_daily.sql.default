@@ -5,6 +5,23 @@ insert ignore into pogodb.pokemon_history select * from pogodb.pokemon_history_t
 -- delete from pokemon_history_temp
 delete from pogodb.pokemon_history_temp where date(first_scanned) = curdate() - interval 1 day;
 
+-- cleanup Stats tables
+delete from pogodb.stats_worker
+where
+(RPL = 15 and date(Datetime) < curdate() - interval RPL15 day) or
+(RPL = 60 and date(Datetime) < curdate() - interval RPL60 day) or
+(RPL = 1440 and date(Datetime) < curdate() - interval RPL1440 day) or
+(RPL = 10080 and date(Datetime) < curdate() - interval RPL10080 day)
+;
+
+delete from pogodb.stats_area
+where
+(RPL = 15 and date(Datetime) < curdate() - interval RPL15 day) or
+(RPL = 60 and date(Datetime) < curdate() - interval RPL60 day) or
+(RPL = 1440 and date(Datetime) < curdate() - interval RPL1440 day) or
+(RPL = 10080 and date(Datetime) < curdate() - interval RPL10080 day)
+;
+
 -- cleanup detect
 -- delete
 -- from rmdb.trs_stats_detect
