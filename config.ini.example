@@ -1,7 +1,16 @@
+## Database ##
 SQL_user=dkmur
 SQL_password=dkmur123
-PATH_TO_STATS=/home/dkmur/temp/Stats/
 MAD_DB=rmdb
 STATS_DB=pogodb
+
+## Stats ##
+PATH_TO_STATS=/home/dkmur/temp/Stats/
 DEFINED_SCAN_AREAS='Amsterdam, London, Paris'
 DEFAULT_AREA=London
+
+## Stats Cleanup for different ReportPeriodLength in days ##
+RPL15=90
+RPL60=180
+RPL1440=9999
+RPL10080=9999

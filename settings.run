@@ -67,6 +67,10 @@ cd $PATH_TO_STATS && cd sql_cron/ && sed -i "s/pogodb/$STATS_DB/g" *.sql
 cd $PATH_TO_STATS && cd sql_cron/ && sed -i "s/pogodb/$STATS_DB/g" *.template
 cd $PATH_TO_STATS && cd sql_cron/ && sed -i "s/rmdb/$MAD_DB/g" *.sql
 cd $PATH_TO_STATS && cd sql_cron/ && sed -i "s/rmdb/$MAD_DB/g" *.template
+cd $PATH_TO_STATS && cd sql_cron/ && sed -i "s/RPL15/$RPL15/g" *.sql
+cd $PATH_TO_STATS && cd sql_cron/ && sed -i "s/RPL60/$RPL60/g" *.sql
+cd $PATH_TO_STATS && cd sql_cron/ && sed -i "s/RPL1440/$RPL1440/g" *.sql
+cd $PATH_TO_STATS && cd sql_cron/ && sed -i "s/RPL10080/$RPL10080/g" *.sql
 
 # Create tables
 if [ -z "$SQL_password" ]
