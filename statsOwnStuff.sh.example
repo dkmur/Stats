@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source config.ini
+
 function View
 {
 clear
