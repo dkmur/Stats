@@ -60,13 +60,13 @@ echo ""
 echo "                                   23 = Quests scanned "
 echo "                                      23a All wokers Quest scanned summed by date"
 echo ""
-echo "                          Program restart/update "
-echo ""
-echo "                                   40 = Goto restart/update menu "
-echo ""
 echo "                          Poke stats "
 echo ""
-echo "                                   50 = Goto Poke stats menu "
+echo "                                   30 = Goto Poke stats menu "
+echo ""
+echo "                          Own stuff "
+echo ""
+echo "                                   40 = Goto own stuff "
 echo ""
 echo ""
 echo "                                   q = QUIT "
@@ -130,10 +130,11 @@ case $opt in
                 ;;
          23a)   $PATH_TO_STATS/progs/quests_all_worker_summed.sh
                 ;;
-         40)    $PATH_TO_STATS/statsProgs.sh
+         30)    $PATH_TO_STATS/pokeStats.sh
                 ;;
-         50)    $PATH_TO_STATS/pokeStats.sh
+         40)    $PATH_TO_STATS/statsOwnStuff.sh
                 ;;
+
 esac
 # echo ""
 echo "                          Press ENTER to return to main menu"

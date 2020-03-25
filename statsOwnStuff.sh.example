@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source config.ini
+
 function View
 {
 clear
@@ -11,15 +13,12 @@ echo ""
 echo "				SELECT AN OPTION FROM BELOW  "
 echo ""
 echo ""
-echo "				Restarting/upgrading "
+echo "					Own Stuff "
 echo ""
 echo ""
-echo "					 1 = Restart MAD scanner"
+echo "					 1 = Restart example"
 echo ""
-echo "					 6 = Restart Poracle"
-echo ""
-echo ""
-echo "					10 = Update and restart MAD scanner"
+echo "					 6 = Query example"
 echo ""
 echo ""
 echo "					 q = QUIT "
@@ -41,11 +40,9 @@ case $opt in
 		routine=1
 		exit
 		;;
-         1)    $PATH_TO_STATS/progs/madRestart.sh
+         1)    $PATH_TO_STATS/personal/progs/restartExample.sh
                 ;;
-         6)    $PATH_TO_STATS/progs/poracleRestart.sh
-                ;;
-        10)    $PATH_TO_STATS/progs/madUpdateRestart.sh
+         6)    $PATH_TO_STATS/personal/progs/queryExample.sh
                 ;;
 
 esac
