@@ -4,8 +4,8 @@
 ## Area stats
 */15 * * * * cd pathToStatssql_cron/ AREA15
 0 * * * * cd pathToStatssql_cron/ AREA60
-1 0 * * * cd pathToStatssql_cron/ AREA1440
-10 0 * * 1 cd pathToStatssql_cron/ && mysql userpass < 10080_area.sql
+6 0 * * * cd pathToStatssql_cron/ AREA1440
+21 0 * * 1 cd pathToStatssql_cron/ && mysql userpass < 10080_area.sql
 ## Worker stats
 2-59/15 * * * * cd pathToStatssql_cron/ && mysql userpass < 15_worker.sql
 4 * * * * cd pathToStatssql_cron/ && mysql userpass < 60_worker.sql
