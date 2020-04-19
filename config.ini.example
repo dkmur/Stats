@@ -14,3 +14,11 @@ RPL15=90
 RPL60=180
 RPL1440=9999
 RPL10080=9999
+
+## Cleanup of MAD tables true/false ##
+pokemon=false
+trs_stats_detect=false
+trs_stats_detect_raw=false
+trs_stats_location=false
+trs_stats_location_raw=false
+trs_usage=false
