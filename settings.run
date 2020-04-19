@@ -72,6 +72,32 @@ cd $PATH_TO_STATS && cd sql_cron/ && sed -i "s/RPL60/$RPL60/g" *.sql
 cd $PATH_TO_STATS && cd sql_cron/ && sed -i "s/RPL1440/$RPL1440/g" *.sql
 cd $PATH_TO_STATS && cd sql_cron/ && sed -i "s/RPL10080/$RPL10080/g" *.sql
 
+# set MAD clean tables
+
+if "$pokemon"
+then sed -i "s/--pokemon--//g" $PATH_TO_STATS/sql_cron/pokemon_hourly.sql
+fi
+
+if "$trs_stats_detect_raw"
+then sed -i "s/--detect_raw--//g" $PATH_TO_STATS/sql_cron/pokemon_hourly.sql
+fi
+
+if "$trs_stats_location_raw"
+then sed -i "s/--location_raw--//g" $PATH_TO_STATS/sql_cron/pokemon_hourly.sql
+fi
+
+if "$trs_stats_detect"
+then sed -i "s/--detect--//g" $PATH_TO_STATS/sql_cron/pokemon_daily.sql
+fi
+
+if "$trs_stats_location"
+then sed -i "s/--location--//g" $PATH_TO_STATS/sql_cron/pokemon_daily.sql
+fi
+
+if "$trs_usage"
+then sed -i "s/--usage--//g" $PATH_TO_STATS/sql_cron/pokemon_daily.sql
+fi
+
 # Create tables
 if [ -z "$SQL_password" ]
 then
