@@ -1,7 +1,7 @@
 use pogodb
 
 select 
-rpad(worker,12,' ') 'Worker   ',
+rpad(worker,15,' ') 'Worker   ',
 date(datetime) as 'Date      ',
 sum(RPL) as 'RPL',
 sum(TRPL) 'Trpl',
