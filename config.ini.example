@@ -14,3 +14,11 @@ RPL15=90
 RPL60=180
 RPL1440=9999
 RPL10080=9999
+
+## Cleanup of MAD tables true/false ##
+pokemon=false                     # delete data older then 1 hour
+trs_stats_detect=false            # delete yesterdays data
+trs_stats_detect_raw=false        # delete data older then 1 hour
+trs_stats_location=false          # delete yesterdays data
+trs_stats_location_raw=false      # delete data older then 1 hour
+trs_usage=false                   # delete data older then 30 days
