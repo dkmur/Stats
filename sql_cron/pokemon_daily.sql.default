@@ -22,10 +22,10 @@ where
 ;
 
 -- cleanup detect
---detect--delete from rmdb.trs_stats_detect where date(from_unixtime(timestamp_scan)) < curdate();
+-- delete from rmdb.trs_stats_detect where date(from_unixtime(timestamp_scan)) < curdate();
 
 -- cleanup location
---location--delete from rmdb.trs_stats_location where date(from_unixtime(timestamp_scan)) < curdate();
+-- delete from rmdb.trs_stats_location where date(from_unixtime(timestamp_scan)) < curdate();
 
 -- cleanup status
---usage--delete from rmdb.trs_usage where from_unixtime(timestamp) < curdate() - interval 30 day;
+-- delete from rmdb.trs_usage where from_unixtime(timestamp) < curdate() - interval 30 day;
