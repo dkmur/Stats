@@ -54,6 +54,7 @@ echo ""
 echo "                                   20 = Mons scanned "
 echo ""
 echo "                                   21 = Location handling "
+echo "				      21a = Top 20 worst location handling devices"
 echo ""
 echo "                                   22 = Reboot/restart data "
 echo ""
@@ -123,6 +124,8 @@ case $opt in
          20)    $PATH_TO_STATS/progs/mons_scanned_worker.sh
                 ;;
          21)    $PATH_TO_STATS/progs/location_worker.sh
+                ;;
+         21a)    $PATH_TO_STATS/progs/location_noobs.sh
                 ;;
          22)    $PATH_TO_STATS/progs/rebres_worker.sh
                 ;;
