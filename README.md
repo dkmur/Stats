@@ -71,11 +71,7 @@ Hopefully that's it.....else......blame someone else :)
 
 ### Some other stuff, not MAD stats related
 
-I left some stuff in there about poracle settings and restarting/updating.......should you wish to use it......it will require adaptations  
-- I run quests between 2am and 6am, so all spawpoints discovered between those hours are dumped into seperate table and removed from trs_spawn as well as everything not seen for the last 5 days, see Crontab example  
-- query ``pokemon_hourly.sql`` contains cleanup queries for tables pokemon, trs_detect_raw and trs_location_raw. They are disbled by default as it will have an impact on representation of stats in MADmin. I choose to enable them, by removing ``--``, in order to keep tables small/cleaned up  
-- for the rest......maybe someday I look into it.... 
-
+I run quests between 2am and 6am, so all spawpoints discovered between those hours are dumped into seperate table and removed from trs_spawn as well as everything not seen for the last 5 days, see Crontab example  
 
 ### Note
 
