@@ -60,6 +60,7 @@ echo "                                   22 = Reboot/restart data "
 echo ""
 echo "                                   23 = Quests scanned "
 echo "                                      23a All wokers Quest scanned summed by date"
+echo "                                      23b #quest hours per device"
 echo ""
 echo "                          Poke stats "
 echo ""
@@ -132,6 +133,8 @@ case $opt in
          23)    $PATH_TO_STATS/progs/quests_worker.sh
                 ;;
          23a)   $PATH_TO_STATS/progs/quests_all_worker_summed.sh
+                ;;
+         23b)   $PATH_TO_STATS/progs/quest_hours_device.sh
                 ;;
          30)    $PATH_TO_STATS/pokeStats.sh
                 ;;
