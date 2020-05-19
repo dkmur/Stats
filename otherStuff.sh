@@ -15,7 +15,9 @@ echo ""
 echo ""
 echo "					 0 = Pokemon seen"
 echo ""
-echo "					 1 = ATV SW overview"
+echo "					 1 = SW overview"
+echo ""
+echo "					 2 = Temperature details"
 echo ""
 echo "					 q = QUIT "
 echo ""
@@ -39,6 +41,8 @@ case $opt in
          0)    $PATH_TO_STATS/progs/poke_seen.sh
                 ;;
          1)    $PATH_TO_STATS/progs/atv_sw_overview.sh
+                ;;
+         2)    $PATH_TO_STATS/progs/temperature_details.sh
                 ;;
 
 esac
