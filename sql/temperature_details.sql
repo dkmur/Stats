@@ -39,7 +39,7 @@ limit 5
 
 select "By temperature" as '';
 select
-date as 'date      ', temperature, count(origin) as '#devices' 
+date as 'date      ', rpad(temperature,11," ") as 'temperature', count(origin) as '#devices' 
 from ATVdetails
 
 where
