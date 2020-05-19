@@ -15,6 +15,7 @@ echo ""
 echo ""
 echo "					 0 = Pokemon seen"
 echo ""
+echo "					 1 = ATV SW overview"
 echo ""
 echo "					 q = QUIT "
 echo ""
@@ -36,6 +37,8 @@ case $opt in
 		exit
 		;;
          0)    $PATH_TO_STATS/progs/poke_seen.sh
+                ;;
+         1)    $PATH_TO_STATS/progs/atv_sw_overview.sh
                 ;;
 
 esac
