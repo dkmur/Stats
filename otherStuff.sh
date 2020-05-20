@@ -19,6 +19,8 @@ echo "					 1 = SW overview"
 echo ""
 echo "					 2 = Temperature details"
 echo ""
+echo "					 3 = all Device IP (eth)"
+echo ""
 echo "					 q = QUIT "
 echo ""
 echo ""
@@ -43,6 +45,8 @@ case $opt in
          1)    $PATH_TO_STATS/progs/atv_sw_overview.sh
                 ;;
          2)    $PATH_TO_STATS/progs/temperature_details.sh
+                ;;
+         3)    $PATH_TO_STATS/progs/ipadresses.sh
                 ;;
 
 esac
