@@ -62,9 +62,9 @@ echo "                                   23 = Quests scanned "
 echo "                                      23a All wokers Quest scanned summed by date"
 echo "                                      23b #quest hours per device"
 echo ""
-echo "                          Poke stats "
+echo "                          Non performance stuff "
 echo ""
-echo "                                   30 = Goto Poke stats menu "
+echo "                                   30 = Non performance stuff "
 echo ""
 echo "                          Own stuff "
 echo ""
@@ -136,7 +136,7 @@ case $opt in
                 ;;
          23b)   $PATH_TO_STATS/progs/quest_hours_device.sh
                 ;;
-         30)    $PATH_TO_STATS/pokeStats.sh
+         30)    $PATH_TO_STATS/otherStuff.sh
                 ;;
          40)    $PATH_TO_STATS/statsOwnStuff.sh
                 ;;

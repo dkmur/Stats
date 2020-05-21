@@ -15,6 +15,14 @@ echo ""
 echo ""
 echo "					 0 = Pokemon seen"
 echo ""
+echo "					 1 = SW overview"
+echo ""
+echo "					 2 = Temperature details"
+echo ""
+echo "					 3 = all Device IP"
+echo ""
+echo "					 4 = all device gmail"
+echo ""
 echo ""
 echo "					 q = QUIT "
 echo ""
@@ -36,6 +44,14 @@ case $opt in
 		exit
 		;;
          0)    $PATH_TO_STATS/progs/poke_seen.sh
+                ;;
+         1)    $PATH_TO_STATS/progs/atv_sw_overview.sh
+                ;;
+         2)    $PATH_TO_STATS/progs/temperature_details.sh
+                ;;
+         3)    $PATH_TO_STATS/progs/ipadresses.sh
+                ;;
+         4)    $PATH_TO_STATS/progs/gmail.sh
                 ;;
 
 esac
