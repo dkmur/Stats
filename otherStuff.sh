@@ -19,7 +19,10 @@ echo "					 1 = SW overview"
 echo ""
 echo "					 2 = Temperature details"
 echo ""
-echo "					 3 = all Device IP (eth)"
+echo "					 3 = all Device IP"
+echo ""
+echo "					 4 = all device gmail"
+echo ""
 echo ""
 echo "					 q = QUIT "
 echo ""
@@ -47,6 +50,8 @@ case $opt in
          2)    $PATH_TO_STATS/progs/temperature_details.sh
                 ;;
          3)    $PATH_TO_STATS/progs/ipadresses.sh
+                ;;
+         4)    $PATH_TO_STATS/progs/gmail.sh
                 ;;
 
 esac
