@@ -1,6 +1,7 @@
 ## Database ##
 SQL_user=dkmur
 SQL_password=dkmur123
+DB_IP=127.0.0.1
 MAD_DB=rmdb
 STATS_DB=pogodb
 

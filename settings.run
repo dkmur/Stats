@@ -41,9 +41,9 @@ sed -i "s/AREA60//g" crontab.txt
 sed -i "s/AREA1440//g" crontab.txt
 if [ -z "$SQL_password" ]
 then
-  sed -i "s/userpass/-u$SQL_user/g" crontab.txt
+  sed -i "s/userpass/-h$DB_IP -u$SQL_user/g" crontab.txt
 else
-  sed -i "s/userpass/-u$SQL_user -p$SQL_password/g" crontab.txt
+  sed -i "s/userpass/-h$DB_IP -u$SQL_user -p$SQL_password/g" crontab.txt
 fi
 
 # Create sql table and trigger files
@@ -101,17 +101,17 @@ fi
 # Create tables
 if [ -z "$SQL_password" ]
 then
-  mysql -h 127.0.0.1 -u$SQL_user $STATS_DB < $PATH_TO_STATS/tables.sql
+  mysql -h$DB_IP -u$SQL_user $STATS_DB < $PATH_TO_STATS/tables.sql
 else
-  mysql -h 127.0.0.1 -u$SQL_user -p$SQL_password $STATS_DB < $PATH_TO_STATS/tables.sql
+  mysql -h$DB_IP -u$SQL_user -p$SQL_password $STATS_DB < $PATH_TO_STATS/tables.sql
 fi
 
 # Create triggers
 if [ -z "$SQL_password" ]
 then
-  mysql -h 127.0.0.1 -u$SQL_user $MAD_DB < $PATH_TO_STATS/triggers.sql
+  mysql -h$DB_IP -u$SQL_user $MAD_DB < $PATH_TO_STATS/triggers.sql
 else
-  mysql -h 127.0.0.1 -u$SQL_user -p$SQL_password $MAD_DB < $PATH_TO_STATS/triggers.sql
+  mysql -h$DB_IP -u$SQL_user -p$SQL_password $MAD_DB < $PATH_TO_STATS/triggers.sql
 fi
 
 
