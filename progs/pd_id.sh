@@ -11,7 +11,7 @@ if [ -z $DB ]
 fi
 
 echo ""
-sed -e s/pogodb/$STATS_DB/ -e s/XXA/$DB/ $PATH_TO_STATS/sql/ipadresses.sql > $Home/temp.sql
+sed -e s/pogodb/$STATS_DB/ -e s/XXA/$DB/ $PATH_TO_STATS/sql/pd_id.sql > $Home/temp.sql
 
 mysql -h$DB_IP -u$SQL_user -p$SQL_password < $Home/temp.sql > $Home/tempstats.txt
 cat $Home/tempstats.txt
