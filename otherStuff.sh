@@ -17,11 +17,17 @@ echo "					 0 = Pokemon seen"
 echo ""
 echo "					 1 = SW overview"
 echo ""
-echo "					 2 = Temperature details"
+echo "					 2 = PD setting overview"
 echo ""
-echo "					 3 = all Device IP"
+echo "					 3 = RGC setting overview"
 echo ""
-echo "					 4 = all device gmail"
+echo "					 4 = Temperature details"
+echo ""
+echo "					 5 = all Device IP"
+echo ""
+echo "					 6 = all device gmail"
+echo ""
+echo "					 7 = PD id"
 echo ""
 echo ""
 echo "					 q = QUIT "
@@ -47,11 +53,17 @@ case $opt in
                 ;;
          1)    $PATH_TO_STATS/progs/atv_sw_overview.sh
                 ;;
-         2)    $PATH_TO_STATS/progs/temperature_details.sh
+         2)    $PATH_TO_STATS/progs/pd_setting_overview.sh
                 ;;
-         3)    $PATH_TO_STATS/progs/ipadresses.sh
+         3)    $PATH_TO_STATS/progs/rgc_setting_overview.sh
                 ;;
-         4)    $PATH_TO_STATS/progs/gmail.sh
+         4)    $PATH_TO_STATS/progs/temperature_details.sh
+                ;;
+         5)    $PATH_TO_STATS/progs/ipadresses.sh
+                ;;
+         6)    $PATH_TO_STATS/progs/gmail.sh
+                ;;
+         7)    $PATH_TO_STATS/progs/pd_id.sh
                 ;;
 
 esac
