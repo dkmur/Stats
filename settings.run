@@ -114,4 +114,18 @@ else
   mysql -h$DB_IP -u$SQL_user -p$SQL_password $MAD_DB < $PATH_TO_STATS/triggers.sql
 fi
 
+#Check MAD collation, else 15_worker will fail
+table_check=$(mysql $MAD_DB -h$DB_IP -u$SQL_user -p$SQL_password -se "SELECT TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME, TABLE_COLLATION FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'rmdb' and (((TABLE_NAME = 'trs_stats_detect' or TABLE_NAME = 'trs_stats_detect_raw' or TABLE_NAME = 'trs_stats_location' or TABLE_NAME = 'trs_stats_loction_raw') and TABLE_COLLATION <>'utf8mb4_general_ci' ) or (TABLE_NAME = 'trs_status' and TABLE_COLLATION <> 'utf8mb4_unicode_ci'));")
+column_check=$(mysql $MAD_DB -h$DB_IP -u$SQL_user -p$SQL_password -se "SELECT TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME, COLUMN_NAME, COLLATION_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = 'rmdb' and (((TABLE_NAME = 'trs_stats_detect' or TABLE_NAME = 'trs_stats_detect_raw' or TABLE_NAME = 'trs_stats_location' or TABLE_NAME = 'trs_stats_loction_raw') and COLLATION_NAME <>'utf8mb4_general_ci' ) or (TABLE_NAME = 'trs_status' and COLLATION_NAME <> 'utf8mb4_unicode_ci'));")
 
+echo 'Checking MAD collation'
+echo ''
+if [[ -z $table_check || -z $column_check ]]; then
+  echo 'MAD table/column collation set correctly'
+  else
+  echo '(some) MAD table/column collation set incorrect'
+  echo 'Check https://github.com/Map-A-Droid/MAD/tree/master/scripts/SQL and adapt accordingly'
+  mysql $MAD_DB -h$DB_IP -u$SQL_user -p$SQL_password -se "SELECT TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME, TABLE_COLLATION FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'rmdb' and (((TABLE_NAME = 'trs_stats_detect' or TABLE_NAME = 'trs_stats_detect_raw' or TABLE_NAME = 'trs_stats_location' or TABLE_NAME = 'trs_stats_loction_raw') and TABLE_COLLATION <>'utf8mb4_general_ci' ) or (TABLE_NAME = 'trs_status' and TABLE_COLLATION <> 'utf8mb4_unicode_ci'));"
+  mysql $MAD_DB -h$DB_IP -u$SQL_user -p$SQL_password -se "SELECT TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME, COLUMN_NAME, COLLATION_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = 'rmdb' and (((TABLE_NAME = 'trs_stats_detect' or TABLE_NAME = 'trs_stats_detect_raw' or TABLE_NAME = 'trs_stats_location' or TABLE_NAME = 'trs_stats_loction_raw') and COLLATION_NAME <>'utf8mb4_general_ci' ) or (TABLE_NAME = 'trs_status' and COLLATION_NAME <> 'utf8mb4_unicode_ci'));;"
+fi
+echo ''
