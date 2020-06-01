@@ -75,7 +75,8 @@ I run quests between 2am and 6am, so all spawpoints discovered between those hou
 
 ### Note
 
-Not all information stored in tables stats_worker and stats_area is included in Stats menu options, adapt as you see fit.  
+Not all information stored in tables stats_worker and stats_area is included in Stats menu options, adapt as you see fit. <br>
+Menu option 30 contains several queries regarding device setting/information but requires https://github.com/dkmur/ATVdetails <br>
 
 
 
