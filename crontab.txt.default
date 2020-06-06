@@ -2,10 +2,10 @@
 5 * * * * cd pathToStatssql_cron/ && mysql userpass < pokemon_hourly.sql
 7 1 * * * cd pathToStatssql_cron/ && mysql userpass < pokemon_daily.sql
 ## Area stats
-*/15 * * * * cd pathToStatssql_cron/ AREA15
-0 * * * * cd pathToStatssql_cron/ AREA60
-6 0 * * * cd pathToStatssql_cron/ AREA1440
-21 0 * * 1 cd pathToStatssql_cron/ && mysql userpass < 10080_area.sql
+*/15 * * * * cat pathToStatssql_cron/15_*_area.sql | mysql userpass STATS_DB
+0 * * * * cat pathToStatssql_cron/60_*_area.sql | mysql userpass STATS_DB
+6 0 * * * cat pathToStatssql_cron/1440_*_area.sql | mysql userpass STATS_DB
+21 0 * * 1 cat pathToStatssql_cron/10080_area.sql | mysql userpass STATS_DB
 ## Worker stats
 2-59/15 * * * * cd pathToStatssql_cron/ && mysql userpass < 15_worker.sql
 4 * * * * cd pathToStatssql_cron/ && mysql userpass < 60_worker.sql
