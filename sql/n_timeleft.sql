@@ -26,10 +26,10 @@ b.DevRPL 'DevRPL',
 count(Area) 'Areas',
 ifnull(sum(a.Spawndef15),0) as 'Spawn60',
 ifnull(sum(a.SpawndefNot15),0) as 'Spawn30',
-sum(round(100*w5/Mons_all,1)) as '%5min',
-sum(round(100*w10/Mons_all,1)) as '%10min',
-sum(round(100*w15/Mons_all,1)) as '%15min',
-sum(round(100*w20/Mons_all,1)) as '%20min',
+round(100*sum(w5)/sum(Mons_all),1) as '%5min',
+round(100*sum(w10)/sum(Mons_all),1) as '%10min',
+round(100*sum(w15)/sum(Mons_all),1) as '%15min',
+round(100*sum(w20)/sum(Mons_all),1) as '%20min',
 ifnull(round(100*sum(a.MinutesLeft)/((sum(a.Spawndef15) * 60)+(sum(a.SpawndefNot15) * 30)),1),0) as '%timeLeft'
 from stats_area a, pogodb.tmp400 b
 
