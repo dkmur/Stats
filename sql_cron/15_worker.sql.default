@@ -123,14 +123,14 @@ left join rmdb.settings_device c on a.device_id = c.device_id
 left join rmdb.tmp43 b on c.name = b.Worker COLLATE utf8mb4_unicode_ci
 );
 
--- table trs_stats_detect_raw data
+-- table trs_stats_detect_mon_raw data
 
 Create TEMPORARY TABLE rmdb.tmp49
 AS(
 select
 worker,
 sum(is_shiny) as `Shiny`
-from rmdb.trs_stats_detect_raw
+from rmdb.trs_stats_detect_mon_raw
 where
 from_unixtime(timestamp_scan) >= @Datetime_p1 and from_unixtime(timestamp_scan) < @Datetime_p16
 group by worker
