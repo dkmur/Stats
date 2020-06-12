@@ -149,7 +149,7 @@ left join rmdb.tmp45 d on a.worker = d.worker COLLATE utf8mb4_unicode_ci
 left join rmdb.tmp46 e on a.worker = e.worker COLLATE utf8mb4_unicode_ci
 left join rmdb.tmp47 f on a.worker = f.worker COLLATE utf8mb4_unicode_ci
 left join rmdb.tmp48 g on a.worker = g.worker COLLATE utf8mb4_unicode_ci
-left join rmdb.tmp49 h on a.worker = h.worker COLLATE utf8mb4_unicode_ci
+left join rmdb.tmp49 h on a.worker = h.worker COLLATE
 ;
 
 
