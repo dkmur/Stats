@@ -1,15 +1,15 @@
 -- append shiny stats
 Create TEMPORARY TABLE rmdb.tmp100
 AS(
-select cast(b.type_id as unsigned) as type_id, count(distinct(b.worker)) as is_shiny
-from rmdb.trs_stats_detect_raw b
+select b.encounter_id, count(distinct(b.worker)) as is_shiny
+from rmdb.trs_stats_detect_mon_raw b
 where b.is_shiny = 1
-group by b.type_id
+group by b.encounter_id
 );
 
 update pogodb.pokemon_history_temp a, rmdb.tmp100 b
 set a.is_shiny = b.is_shiny
-where  a.encounter_id = b.type_id
+where  a.encounter_id = b.encounter_id
 ;
 
 drop table rmdb.tmp100;
@@ -17,8 +17,11 @@ drop table rmdb.tmp100;
 -- Cleanup of pokemon
 --pokemon--delete from rmdb.pokemon where CONVERT_TZ(last_modified, '+00:00', @@global.time_zone) < now() - interval 1 hour;
 
--- Cleanup of trs_stats_detect_raw
---detect_raw--delete from rmdb.trs_stats_detect_raw where from_unixtime(timestamp_scan) < now() - interval 1 hour;
+-- Cleanup of trs_stats_detect_mon_raw
+--detect_raw--delete from rmdb.trs_stats_detect_mon_raw where from_unixtime(timestamp_scan) < now() - interval 1 hour;
+
+-- Cleanup of trs_stats_detect_fort_raw
+--detect_raw--delete from rmdb.trs_stats_detect_fort_raw where from_unixtime(timestamp_scan) < now() - interval 1 hour;
 
 -- Cleanup of trs_stats_location_raw
 --location_raw--delete from rmdb.trs_stats_location_raw where from_unixtime(period) < now() - interval 1 hour;
