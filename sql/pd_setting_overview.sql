@@ -23,7 +23,7 @@ group by date, PD_boot_delay, PD_injection_delay, PD_switch_disable_last_sent, P
 
 select "PogoDroid settings" as '';
 select
-date as 'date      ', rpad(ifnull(PD_switch_send_raw_protos,'no_data '),11," ") as 'sendRawProto', rpad(ifnull(PD_switch_popup_last_sent,'no_data '),11," ") as 'popLastSend', rpad(ifnull(PD_full_daemon,'no_data '),10," ") as 'fullDaemon', rpad(ifnull(PD_switch_enable_mock_location_patch,'no_data '),6," ") as 'enMock', rpad(ifnull(PD_default_mappging_mode,'no_data '),10," ") as 'defMapMode', rpad(ifnull(PD_switch_setenforce,'no_data '),10," ") as 'setEnforce', rpad(ifnull(PD_disable_pogo_freeze_detection,'no_data '),10," ") as 'pogoFreeze', count(origin) as '#devices'
+date as 'date      ', rpad(ifnull(PD_switch_send_raw_protos,'no_data '),11," ") as 'sendRawProto', rpad(ifnull(PD_switch_popup_last_sent,'no_data '),11," ") as 'popLastSend', rpad(ifnull(PD_full_daemon,'no_data '),10," ") as 'fullDaemon', rpad(ifnull(PD_switch_enable_mock_location_patch,'no_data '),6," ") as 'enMock', rpad(ifnull(PD_default_mappging_mode,'no_data '),10," ") as 'defMapMode', rpad(ifnull(PD_switch_setenforce,'no_data '),10," ") as 'setEnforce', rpad(ifnull(PD_disable_pogo_freeze_detection,'no_data '),13," ") as 'disPogoFreeze', count(origin) as '#devices'
 from ATVdetails
 
 where
