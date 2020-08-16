@@ -1,5 +1,16 @@
 use pogodb
 
+select "ATV architecture" as '';
+select
+date as 'date      ', rpad(ifnull(arch,'no_data '),8," ") as 'rom     ', count(origin) as 'devices'
+from ATVdetails
+
+where
+date = curdate() - interval XXA day
+
+group by date, arch
+;
+
 select "ATV ROM" as '';
 select
 date as 'date      ', rpad(ifnull(rom,'no_data '),8," ") as 'rom     ', count(origin) as 'devices'
