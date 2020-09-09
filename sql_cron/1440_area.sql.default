@@ -10,6 +10,7 @@ select @LonMax := '4.973';
 
 -- Get Pokemon data
 Create TEMPORARY TABLE rmdb.tmp50
+(INDEX (spawnpoint_id))
 AS(
 select a.spawnpoint_id, a.first_scanned, disappear_time, a.individual_attack, a.individual_defense, a.individual_stamina
 from pogodb.pokemon_history_temp a
@@ -21,6 +22,7 @@ a.latitude < @LatMax and a.latitude > @LatMin and a.longitude > @LonMin and a.lo
 
 -- Get Spawnpoint data
 Create TEMPORARY TABLE rmdb.tmp51
+(INDEX (spawnpoint))
 AS(
 select a.spawnpoint, a.last_scanned, a.first_detection, a.last_non_scanned, a.spawndef
 from rmdb.trs_spawn a
