@@ -64,7 +64,6 @@ Edit crontab ``crontab -e`` and insert content of ``crontab.txt`` located in Sta
 - My datasource is ``pogodb`` should use another name make sure to replace it in the file in /Stats/grafana
 - import the dashboards from /Stats/grafana
 
-Edit crontab ``crontab -e`` and insert content of ``crontab.txt`` located in Stats home.
 
 ### Starting Stats menu
 
