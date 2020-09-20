@@ -458,7 +458,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(Datetime,$__interval),\n  sum(Res)/(count(Worker)*$RPL/60) AS \"Avgerage # Pogo restarts per hour\",\n  sum(Reb)/(count(Worker)*$RPL/60) AS \"Avgerage # device reboots per hour\"\nFROM stats_worker\nWHERE\n  RPL = '$RPL'\nGROUP BY 1\nORDER BY $__timeGroup(Datetime,$__interval)",
+          "rawSql": "SELECT\n  $__timeGroupAlias(Datetime,$__interval),\n  sum(Res)/(count(distinct(Worker))*$RPL/60) AS \"Avgerage # Pogo restarts per hour\",\n  sum(Reb)/(count(Worker)*$RPL/60) AS \"Avgerage # device reboots per hour\"\nFROM stats_worker\nWHERE\n  RPL = '$RPL'\nGROUP BY 1\nORDER BY $__timeGroup(Datetime,$__interval)",
           "refId": "A",
           "select": [
             [
