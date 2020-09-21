@@ -16,7 +16,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 2,
-  "iteration": 1600511198017,
+  "iteration": 1600724586165,
   "links": [],
   "panels": [
     {
@@ -1264,160 +1264,9 @@
         "label": null,
         "multi": false,
         "name": "Area",
-        "options": [
-          {
-            "selected": true,
-            "text": "All",
-            "value": "$__all"
-          },
-          {
-            "selected": false,
-            "text": "Alphen",
-            "value": "Alphen"
-          },
-          {
-            "selected": false,
-            "text": "Bavel",
-            "value": "Bavel"
-          },
-          {
-            "selected": false,
-            "text": "Berghem",
-            "value": "Berghem"
-          },
-          {
-            "selected": false,
-            "text": "Best",
-            "value": "Best"
-          },
-          {
-            "selected": false,
-            "text": "Breda",
-            "value": "Breda"
-          },
-          {
-            "selected": false,
-            "text": "DenBosch",
-            "value": "DenBosch"
-          },
-          {
-            "selected": false,
-            "text": "Denbosch",
-            "value": "Denbosch"
-          },
-          {
-            "selected": false,
-            "text": "Dongen",
-            "value": "Dongen"
-          },
-          {
-            "selected": false,
-            "text": "Drunen",
-            "value": "Drunen"
-          },
-          {
-            "selected": false,
-            "text": "Eindhoven",
-            "value": "Eindhoven"
-          },
-          {
-            "selected": false,
-            "text": "Gestel",
-            "value": "Gestel"
-          },
-          {
-            "selected": false,
-            "text": "Gilze",
-            "value": "Gilze"
-          },
-          {
-            "selected": false,
-            "text": "Goirle",
-            "value": "Goirle"
-          },
-          {
-            "selected": false,
-            "text": "Hardenberg",
-            "value": "Hardenberg"
-          },
-          {
-            "selected": false,
-            "text": "Heesch",
-            "value": "Heesch"
-          },
-          {
-            "selected": false,
-            "text": "Kempen",
-            "value": "Kempen"
-          },
-          {
-            "selected": false,
-            "text": "Ndal",
-            "value": "Ndal"
-          },
-          {
-            "selected": false,
-            "text": "Ohout",
-            "value": "Ohout"
-          },
-          {
-            "selected": false,
-            "text": "Oisterwijk",
-            "value": "Oisterwijk"
-          },
-          {
-            "selected": false,
-            "text": "Oss",
-            "value": "Oss"
-          },
-          {
-            "selected": false,
-            "text": "Rijen",
-            "value": "Rijen"
-          },
-          {
-            "selected": false,
-            "text": "Rosmalen",
-            "value": "Rosmalen"
-          },
-          {
-            "selected": false,
-            "text": "Steyl",
-            "value": "Steyl"
-          },
-          {
-            "selected": false,
-            "text": "Terheijden",
-            "value": "Terheijden"
-          },
-          {
-            "selected": false,
-            "text": "Tilburg",
-            "value": "Tilburg"
-          },
-          {
-            "selected": false,
-            "text": "Uden",
-            "value": "Uden"
-          },
-          {
-            "selected": false,
-            "text": "Venlo",
-            "value": "Venlo"
-          },
-          {
-            "selected": false,
-            "text": "Vught",
-            "value": "Vught"
-          },
-          {
-            "selected": false,
-            "text": "Zwolle",
-            "value": "Zwolle"
-          }
-        ],
+        "options": [],
         "query": "select Area from stats_area;",
-        "refresh": 0,
+        "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
         "sort": 0,
@@ -1450,5 +1299,5 @@
   "timezone": "",
   "title": "Stats network/area level",
   "uid": "KY-d_hOMz",
-  "version": 18
+  "version": 19
 }
