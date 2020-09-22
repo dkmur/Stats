@@ -10,6 +10,9 @@ PATH_TO_STATS=/home/dkmur/temp/Stats/
 DEFINED_SCAN_AREAS='Amsterdam, London, Paris'
 DEFAULT_AREA=London
 
+## Grafana ##
+DataSource=pogodb
+
 ## Stats Cleanup for different ReportPeriodLength in days ##
 RPL15=90
 RPL60=180
