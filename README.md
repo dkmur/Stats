@@ -61,7 +61,7 @@ Edit crontab ``crontab -e`` and insert content of ``crontab.txt`` located in Sta
 ### Grafana (optional)
 - Install Grafana, more details can be found at https://grafana.com/docs/grafana/latest/installation/debian/#install-from-apt-repository or if you prefer to use docker <https://hub.docker.com/r/grafana/grafana>
 - Create datasource on STATS_DB
-- My datasource is ``pogodb`` should use another name make sure to replace it in the file in /Stats/grafana
+- Datasource nameduse in dashboards is ``pogodb`` should you use another name make sure to replace it in the files stored in /Stats/grafana i.e. ``sed -i "s/pogodb/YOUR_DATASOURCE_NAME/g" *.json``
 - import the dashboards from /Stats/grafana
 
 
