@@ -1,4 +1,34 @@
 {
+  "__inputs": [
+    {
+      "name": "DS_POGODB",
+      "label": "pogodb",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "mysql",
+      "pluginName": "MySQL"
+    }
+  ],
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "7.1.5"
+    },
+    {
+      "type": "panel",
+      "id": "graph",
+      "name": "Graph",
+      "version": ""
+    },
+    {
+      "type": "datasource",
+      "id": "mysql",
+      "name": "MySQL",
+      "version": "1.0.0"
+    }
+  ],
   "annotations": {
     "list": [
       {
@@ -15,8 +45,8 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 2,
-  "iteration": 1600724586165,
+  "id": null,
+  "iteration": 1600974973309,
   "links": [],
   "panels": [
     {
@@ -26,7 +56,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "pogodb",
+      "datasource": "${DS_POGODB}",
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -205,7 +235,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "pogodb",
+      "datasource": "${DS_POGODB}",
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -323,7 +353,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "pogodb",
+      "datasource": "${DS_POGODB}",
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -446,7 +476,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "pogodb",
+      "datasource": "${DS_POGODB}",
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -560,7 +590,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "pogodb",
+      "datasource": "${DS_POGODB}",
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -681,7 +711,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "pogodb",
+      "datasource": "${DS_POGODB}",
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -851,7 +881,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "pogodb",
+      "datasource": "${DS_POGODB}",
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -994,7 +1024,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "pogodb",
+      "datasource": "${DS_POGODB}",
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -1108,7 +1138,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "pogodb",
+      "datasource": "${DS_POGODB}",
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -1226,12 +1256,8 @@
     "list": [
       {
         "allValue": null,
-        "current": {
-          "selected": false,
-          "text": "1440",
-          "value": "1440"
-        },
-        "datasource": "pogodb",
+        "current": {},
+        "datasource": "${DS_POGODB}",
         "definition": "select RPL from stats_area;",
         "hide": 0,
         "includeAll": false,
@@ -1252,12 +1278,8 @@
       },
       {
         "allValue": "",
-        "current": {
-          "selected": true,
-          "text": "All",
-          "value": "$__all"
-        },
-        "datasource": "pogodb",
+        "current": {},
+        "datasource": "${DS_POGODB}",
         "definition": "select Area from stats_area;",
         "hide": 0,
         "includeAll": true,
