@@ -1,4 +1,34 @@
 {
+  "__inputs": [
+    {
+      "name": "DS_POGODB",
+      "label": "pogodb",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "mysql",
+      "pluginName": "MySQL"
+    }
+  ],
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "7.1.5"
+    },
+    {
+      "type": "panel",
+      "id": "graph",
+      "name": "Graph",
+      "version": ""
+    },
+    {
+      "type": "datasource",
+      "id": "mysql",
+      "name": "MySQL",
+      "version": "1.0.0"
+    }
+  ],
   "annotations": {
     "list": [
       {
@@ -15,8 +45,8 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 5,
-  "iteration": 1600511254904,
+  "id": null,
+  "iteration": 1600975024823,
   "links": [],
   "panels": [
     {
@@ -24,7 +54,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "pogodb",
+      "datasource": "${DS_POGODB}",
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -143,7 +173,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "pogodb",
+      "datasource": "${DS_POGODB}",
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -277,7 +307,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "pogodb",
+      "datasource": "${DS_POGODB}",
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -411,7 +441,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "pogodb",
+      "datasource": "${DS_POGODB}",
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -545,7 +575,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "pogodb",
+      "datasource": "${DS_POGODB}",
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -682,42 +712,17 @@
     "list": [
       {
         "allValue": null,
-        "current": {
-          "selected": true,
-          "text": "60",
-          "value": "60"
-        },
-        "datasource": "pogodb",
+        "current": {},
+        "datasource": "${DS_POGODB}",
         "definition": "select distinct(RPL) from stats_worker;",
         "hide": 0,
         "includeAll": false,
         "label": null,
         "multi": false,
         "name": "RPL",
-        "options": [
-          {
-            "selected": true,
-            "text": "15",
-            "value": "15"
-          },
-          {
-            "selected": false,
-            "text": "60",
-            "value": "60"
-          },
-          {
-            "selected": false,
-            "text": "1440",
-            "value": "1440"
-          },
-          {
-            "selected": false,
-            "text": "10080",
-            "value": "10080"
-          }
-        ],
+        "options": [],
         "query": "select distinct(RPL) from stats_worker;",
-        "refresh": 0,
+        "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
         "sort": 3,
@@ -729,12 +734,8 @@
       },
       {
         "allValue": null,
-        "current": {
-          "selected": false,
-          "text": "Alphen01",
-          "value": "Alphen01"
-        },
-        "datasource": "pogodb",
+        "current": {},
+        "datasource": "${DS_POGODB}",
         "definition": "select distinct(Worker) from stats_worker;",
         "hide": 0,
         "includeAll": false,
