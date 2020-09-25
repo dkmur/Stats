@@ -58,6 +58,13 @@ insert into ##STATS_DB##.Area (Area,Origin) values
 Edit crontab ``crontab -e`` and insert content of ``crontab.txt`` located in Stats home.
 
 
+### Grafana (optional)
+- Install Grafana, more details can be found at https://grafana.com/docs/grafana/latest/installation/debian/#install-from-apt-repository or if you prefer to use docker <https://hub.docker.com/r/grafana/grafana>
+- Create datasource on STATS_DB
+- Add datasource name to config.ini
+- After executing settings.run, import the dashboards from /Stats/grafana
+
+
 ### Starting Stats menu
 
 Optionally, add stats to /usr/local/bin in order to start from any location:  
