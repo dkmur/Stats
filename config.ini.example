@@ -2,6 +2,7 @@
 SQL_user=dkmur
 SQL_password=dkmur123
 DB_IP=127.0.0.1
+DB_PORT=3306
 MAD_DB=rmdb
 STATS_DB=pogodb
 
