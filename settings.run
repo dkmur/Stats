@@ -71,6 +71,8 @@ cd $PATH_TO_STATS/sql_cron/ && sed -i "s/RPL10080/$RPL10080/g" *.sql
 cp $PATH_TO_STATS/grafana/stats_kpi.json.default $PATH_TO_STATS/grafana/stats_kpi.json
 cp $PATH_TO_STATS/grafana/stats_network_area.json.default $PATH_TO_STATS/grafana/stats_network_area.json
 cp $PATH_TO_STATS/grafana/stats_worker.json.default $PATH_TO_STATS/grafana/stats_worker.json
+cp $PATH_TO_STATS/grafana/ATVdetails.json.default $PATH_TO_STATS/grafana/ATVdetails.json.default
+cp $PATH_TO_STATS/grafana/stats_atvdetails_combined.json.default $PATH_TO_STATS/grafana/stats_atvdetails_combined.json
 cd $PATH_TO_STATS/grafana/ && sed -i "s/pogodb/$DataSource/g" *.json
 
 # set MAD clean tables
