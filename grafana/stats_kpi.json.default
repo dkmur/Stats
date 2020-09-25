@@ -46,7 +46,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1600974913687,
+  "iteration": 1601018010496,
   "links": [],
   "panels": [
     {
@@ -263,7 +263,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Uptime",
+      "title": "Uptime (raw data received)",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -849,5 +849,5 @@
   "timezone": "",
   "title": "Stats KPIs",
   "uid": "jM5txJOMz",
-  "version": 12
+  "version": 14
 }
