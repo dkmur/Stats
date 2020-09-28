@@ -14,6 +14,16 @@ DEFAULT_AREA=London
 ## Grafana ##
 DataSource=pogodb
 
+## Store todays  mons scanned to pokemon_history, not required for stats as all data is already processed ##
+mon_backup=false
+
+## Cleanup pokemon_history in case option above is set to true, or you have been running stats for months and there is loads of data stored you do not need :) ##
+mon_cleanup=true
+days_to_keep=14
+
+## Create a new table each month where all scanned mons will be added (actually rename last month and re-create pokemon_history) ##
+monthly_mon_table=false
+
 ## Stats Cleanup for different ReportPeriodLength in days ##
 RPL15=90
 RPL60=180
