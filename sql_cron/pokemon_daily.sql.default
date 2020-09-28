@@ -1,11 +1,11 @@
 -- add to pokemon_history
---mon_backup--insert ignore into pogodb.pokemon_history select * from pogodb.pokemon_history_temp where date(first_scanned) = curdate() - interval 1 day;
+--mon_backup-- insert ignore into pogodb.pokemon_history select * from pogodb.pokemon_history_temp where date(first_scanned) = curdate() - interval 1 day;
 
 -- delete from pokemon_history_temp
 delete from pogodb.pokemon_history_temp where date(first_scanned) = curdate() - interval 1 day;
 
 -- cleanup pokemon_history
---mon_cleanup--delete from pogodb.pokemon_history where first_scanned < curdate() - interval--days_to_keep-- day;
+--mon_cleanup-- delete from pogodb.pokemon_history where first_scanned < curdate() - interval --days_to_keep-- day;
 
 -- cleanup Stats tables
 delete from pogodb.stats_worker
@@ -25,10 +25,10 @@ where
 ;
 
 -- cleanup detect
---detect--delete from rmdb.trs_stats_detect where date(from_unixtime(timestamp_scan)) < curdate();
+--detect-- delete from rmdb.trs_stats_detect where date(from_unixtime(timestamp_scan)) < curdate();
 
 -- cleanup location
---location--delete from rmdb.trs_stats_location where date(from_unixtime(timestamp_scan)) < curdate();
+--location-- delete from rmdb.trs_stats_location where date(from_unixtime(timestamp_scan)) < curdate();
 
 -- cleanup status
---usage--delete from rmdb.trs_usage where from_unixtime(timestamp) < curdate() - interval 30 day;
+--usage-- delete from rmdb.trs_usage where from_unixtime(timestamp) < curdate() - interval 30 day;

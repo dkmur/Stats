@@ -67,7 +67,7 @@ cd $PATH_TO_STATS/sql_cron/ && sed -i "s/RPL15/$RPL15/g" *.sql
 cd $PATH_TO_STATS/sql_cron/ && sed -i "s/RPL60/$RPL60/g" *.sql
 cd $PATH_TO_STATS/sql_cron/ && sed -i "s/RPL1440/$RPL1440/g" *.sql
 cd $PATH_TO_STATS/sql_cron/ && sed -i "s/RPL10080/$RPL10080/g" *.sql
-cd $PATH_TO_STATS/sql_cron/ && sed -i "s/PATH_TO_STATS/$PATH_TO_STATS/g" *.sh
+cd $PATH_TO_STATS/sql_cron/ && sed -i "s/PATH_TO_STATS/$PATH_TO_STATS2/g" *.sh
 
 # Create grafana files
 cp $PATH_TO_STATS/grafana/stats_kpi.json.default $PATH_TO_STATS/grafana/stats_kpi.json
@@ -79,41 +79,41 @@ cd $PATH_TO_STATS/grafana/ && sed -i "s/pogodb/$DataSource/g" *.json
 
 # pokemon_history settings
 if "$mon_backup"
-then sed -i "s/--mon_backup--//g" $PATH_TO_STATS/sql_cron/pokemon_daily.sql
+then sed -i "s/--mon_backup-- //g" $PATH_TO_STATS/sql_cron/pokemon_daily.sql
 fi
 
 if "$mon_cleanup"
-then sed -i "s/--mon_cleanup--//g" $PATH_TO_STATS/sql_cron/pokemon_daily.sql 
+then sed -i "s/--mon_cleanup-- //g" $PATH_TO_STATS/sql_cron/pokemon_daily.sql 
      sed -i "s/--days_to_keep--/$days_to_keep/g" $PATH_TO_STATS/sql_cron/pokemon_daily.sql
 fi
 
 if "$monthly_mon_table"
-then sed -i "s/#month#//g" $PATH_TO_STATS/crontab.txt
+then sed -i "s/#monthly#//g" $PATH_TO_STATS/crontab.txt
 fi
 
 # set MAD clean tables
 if "$pokemon"
-then sed -i "s/--pokemon--//g" $PATH_TO_STATS/sql_cron/pokemon_hourly.sql
+then sed -i "s/--pokemon-- //g" $PATH_TO_STATS/sql_cron/pokemon_hourly.sql
 fi
 
 if "$trs_stats_detect_raw"
-then sed -i "s/--detect_raw--//g" $PATH_TO_STATS/sql_cron/pokemon_hourly.sql
+then sed -i "s/--detect_raw-- //g" $PATH_TO_STATS/sql_cron/pokemon_hourly.sql
 fi
 
 if "$trs_stats_location_raw"
-then sed -i "s/--location_raw--//g" $PATH_TO_STATS/sql_cron/pokemon_hourly.sql
+then sed -i "s/--location_raw-- //g" $PATH_TO_STATS/sql_cron/pokemon_hourly.sql
 fi
 
 if "$trs_stats_detect"
-then sed -i "s/--detect--//g" $PATH_TO_STATS/sql_cron/pokemon_daily.sql
+then sed -i "s/--detect-- //g" $PATH_TO_STATS/sql_cron/pokemon_daily.sql
 fi
 
 if "$trs_stats_location"
-then sed -i "s/--location--//g" $PATH_TO_STATS/sql_cron/pokemon_daily.sql
+then sed -i "s/--location-- //g" $PATH_TO_STATS/sql_cron/pokemon_daily.sql
 fi
 
 if "$trs_usage"
-then sed -i "s/--usage--//g" $PATH_TO_STATS/sql_cron/pokemon_daily.sql
+then sed -i "s/--usage-- //g" $PATH_TO_STATS/sql_cron/pokemon_daily.sql
 fi
 
 # Create tables
