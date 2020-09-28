@@ -58,6 +58,7 @@ cp $PATH_TO_STATS/sql_cron/10080_worker.sql.default $PATH_TO_STATS/sql_cron/1008
 cp $PATH_TO_STATS/sql_cron/pokemon_daily.sql.default $PATH_TO_STATS/sql_cron/pokemon_daily.sql
 cp $PATH_TO_STATS/sql_cron/pokemon_hourly.sql.default $PATH_TO_STATS/sql_cron/pokemon_hourly.sql
 cp $PATH_TO_STATS/sql_cron/quest_spawn_cleanup.sql.default $PATH_TO_STATS/sql_cron/quest_spawn_cleanup.sql
+cp $PATH_TO_STATS/sql_cron/month.sh.default $PATH_TO_STATS/sql_cron/month.sh
 cd $PATH_TO_STATS/sql_cron/ && sed -i "s/pogodb/$STATS_DB/g" *.sql
 cd $PATH_TO_STATS/sql_cron/ && sed -i "s/pogodb/$STATS_DB/g" *.template
 cd $PATH_TO_STATS/sql_cron/ && sed -i "s/pogodb/$STATS_DB/g" *.sh
