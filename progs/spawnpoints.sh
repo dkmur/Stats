@@ -52,7 +52,7 @@ fi
 echo ""
 sed -e s/rmdb/$MAD_DB/ -e s/pogodb/$STATS_DB/ -e s/XXA/$DB/ -e s/XXB/$res/ -e s/XXC/$area/ $PATH_TO_STATS/sql/spawnpoints.sql > $Home/temp.sql
 
-mysql -h$DB_IP -u$SQL_user -p$SQL_password < $Home/temp.sql > $Home/tempstats.txt
+mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password < $Home/temp.sql > $Home/tempstats.txt
 cat $Home/tempstats.txt
 
 

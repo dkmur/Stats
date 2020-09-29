@@ -12,9 +12,9 @@ cd $PATH_TO_STATS && sed -i "s/QHR/$QUEST_CLEAN_HR/g" *.txt
 
 if [ -z "$SQL_password" ]
 then
-  sed -i "s/userpass/-h$DB_IP -u$SQL_user/g" crontab.txt
+  sed -i "s/userpass/-h$DB_IP -P$DB_PORT -u$SQL_user/g" crontab.txt
 else
-  sed -i "s/userpass/-h$DB_IP -u$SQL_user -p$SQL_password/g" crontab.txt
+  sed -i "s/userpass/-h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password/g" crontab.txt
 fi
 
 # Create Area files
@@ -60,16 +60,22 @@ cp $PATH_TO_STATS/sql_cron/10080_worker.sql.default $PATH_TO_STATS/sql_cron/1008
 cp $PATH_TO_STATS/sql_cron/pokemon_daily.sql.default $PATH_TO_STATS/sql_cron/pokemon_daily.sql
 cp $PATH_TO_STATS/sql_cron/pokemon_hourly.sql.default $PATH_TO_STATS/sql_cron/pokemon_hourly.sql
 cp $PATH_TO_STATS/sql_cron/quest_spawn_cleanup.sql.default $PATH_TO_STATS/sql_cron/quest_spawn_cleanup.sql
-cd $PATH_TO_STATS && cd sql_cron/ && sed -i "s/pogodb/$STATS_DB/g" *.sql
-cd $PATH_TO_STATS && cd sql_cron/ && sed -i "s/pogodb/$STATS_DB/g" *.template
-cd $PATH_TO_STATS && cd sql_cron/ && sed -i "s/rmdb/$MAD_DB/g" *.sql
-cd $PATH_TO_STATS && cd sql_cron/ && sed -i "s/rmdb/$MAD_DB/g" *.template
-cd $PATH_TO_STATS && cd sql_cron/ && sed -i "s/RPL15/$RPL15/g" *.sql
-cd $PATH_TO_STATS && cd sql_cron/ && sed -i "s/RPL60/$RPL60/g" *.sql
-cd $PATH_TO_STATS && cd sql_cron/ && sed -i "s/RPL1440/$RPL1440/g" *.sql
-cd $PATH_TO_STATS && cd sql_cron/ && sed -i "s/RPL10080/$RPL10080/g" *.sql
-cd $PATH_TO_STATS && cd sql_cron/ && sed -i "s/queststart/$QUEST_START/g" *.sql
-cd $PATH_TO_STATS && cd sql_cron/ && sed -i "s/questend/$QUEST_END/g" *.sql
+cd $PATH_TO_STATS/sql_cron/ && sed -i "s/pogodb/$STATS_DB/g" *.sql
+cd $PATH_TO_STATS/sql_cron/ && sed -i "s/pogodb/$STATS_DB/g" *.template
+cd $PATH_TO_STATS/sql_cron/ && sed -i "s/rmdb/$MAD_DB/g" *.sql
+cd $PATH_TO_STATS/sql_cron/ && sed -i "s/rmdb/$MAD_DB/g" *.template
+cd $PATH_TO_STATS/sql_cron/ && sed -i "s/RPL15/$RPL15/g" *.sql
+cd $PATH_TO_STATS/sql_cron/ && sed -i "s/RPL60/$RPL60/g" *.sql
+cd $PATH_TO_STATS/sql_cron/ && sed -i "s/RPL1440/$RPL1440/g" *.sql
+cd $PATH_TO_STATS/sql_cron/ && sed -i "s/RPL10080/$RPL10080/g" *.sql
+
+# Create grafana files
+cp $PATH_TO_STATS/grafana/stats_kpi.json.default $PATH_TO_STATS/grafana/stats_kpi.json
+cp $PATH_TO_STATS/grafana/stats_network_area.json.default $PATH_TO_STATS/grafana/stats_network_area.json
+cp $PATH_TO_STATS/grafana/stats_worker.json.default $PATH_TO_STATS/grafana/stats_worker.json
+cp $PATH_TO_STATS/grafana/ATVdetails.json.default $PATH_TO_STATS/grafana/ATVdetails.json
+cp $PATH_TO_STATS/grafana/stats_atvdetails_combined.json.default $PATH_TO_STATS/grafana/stats_atvdetails_combined.json
+cd $PATH_TO_STATS/grafana/ && sed -i "s/pogodb/$DataSource/g" *.json
 
 # set MAD clean tables
 
@@ -100,22 +106,22 @@ fi
 # Create tables
 if [ -z "$SQL_password" ]
 then
-  mysql -h$DB_IP -u$SQL_user $STATS_DB < $PATH_TO_STATS/tables.sql
+  mysql -h$DB_IP -P$DB_PORT -u$SQL_user $STATS_DB < $PATH_TO_STATS/tables.sql
 else
-  mysql -h$DB_IP -u$SQL_user -p$SQL_password $STATS_DB < $PATH_TO_STATS/tables.sql
+  mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB < $PATH_TO_STATS/tables.sql
 fi
 
 # Create triggers
 if [ -z "$SQL_password" ]
 then
-  mysql -h$DB_IP -u$SQL_user $MAD_DB < $PATH_TO_STATS/triggers.sql
+  mysql -h$DB_IP -P$DB_PORT -u$SQL_user $MAD_DB < $PATH_TO_STATS/triggers.sql
 else
-  mysql -h$DB_IP -u$SQL_user -p$SQL_password $MAD_DB < $PATH_TO_STATS/triggers.sql
+  mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $MAD_DB < $PATH_TO_STATS/triggers.sql
 fi
 
 #Check MAD collation, else 15_worker will fail
-table_check=$(mysql $MAD_DB -h$DB_IP -u$SQL_user -p$SQL_password -se "SELECT TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME, TABLE_COLLATION FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'rmdb' and (((TABLE_NAME = 'trs_stats_detect' or TABLE_NAME = 'trs_stats_location' or TABLE_NAME = 'trs_stats_loction_raw') and TABLE_COLLATION <>'utf8mb4_general_ci' ) or ((TABLE_NAME = 'trs_status' or TABLE_NAME = 'trs_stats_detect_mon_raw') and TABLE_COLLATION <> 'utf8mb4_unicode_ci'));")
-column_check=$(mysql $MAD_DB -h$DB_IP -u$SQL_user -p$SQL_password -se "SELECT TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME, COLUMN_NAME, COLLATION_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = 'rmdb' and (((TABLE_NAME = 'trs_stats_detect' or TABLE_NAME = 'trs_stats_location' or TABLE_NAME = 'trs_stats_loction_raw') and COLLATION_NAME <>'utf8mb4_general_ci' ) or ((TABLE_NAME = 'trs_status' or TABLE_NAME = 'trs_stats_detect_mon_raw') and COLLATION_NAME <> 'utf8mb4_unicode_ci'));")
+table_check=$(mysql $MAD_DB -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password -se "SELECT TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME, TABLE_COLLATION FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'rmdb' and (((TABLE_NAME = 'trs_stats_detect' or TABLE_NAME = 'trs_stats_location' or TABLE_NAME = 'trs_stats_loction_raw') and TABLE_COLLATION <>'utf8mb4_general_ci' ) or ((TABLE_NAME = 'trs_status' or TABLE_NAME = 'trs_stats_detect_mon_raw') and TABLE_COLLATION <> 'utf8mb4_unicode_ci'));")
+column_check=$(mysql $MAD_DB -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password -se "SELECT TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME, COLUMN_NAME, COLLATION_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = 'rmdb' and (((TABLE_NAME = 'trs_stats_detect' or TABLE_NAME = 'trs_stats_location' or TABLE_NAME = 'trs_stats_loction_raw') and COLLATION_NAME <>'utf8mb4_general_ci' ) or ((TABLE_NAME = 'trs_status' or TABLE_NAME = 'trs_stats_detect_mon_raw') and COLLATION_NAME <> 'utf8mb4_unicode_ci'));")
 
 echo 'Checking MAD collation'
 echo ''
@@ -124,7 +130,7 @@ if [[ -z $table_check || -z $column_check ]]; then
   else
   echo '(some) MAD table/column collation set incorrect'
   echo 'Check https://github.com/Map-A-Droid/MAD/tree/master/scripts/SQL and adapt accordingly'
-  mysql $MAD_DB -h$DB_IP -u$SQL_user -p$SQL_password -se "SELECT TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME, TABLE_COLLATION FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'rmdb' and (((TABLE_NAME = 'trs_stats_detect' or TABLE_NAME = 'trs_stats_location' or TABLE_NAME = 'trs_stats_loction_raw') and TABLE_COLLATION <>'utf8mb4_general_ci' ) or ((TABLE_NAME = 'trs_status' or TABLE_NAME = 'trs_stats_detect_mon_raw') and TABLE_COLLATION <> 'utf8mb4_unicode_ci'));"
-  mysql $MAD_DB -h$DB_IP -u$SQL_user -p$SQL_password -se "SELECT TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME, COLUMN_NAME, COLLATION_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = 'rmdb' and (((TABLE_NAME = 'trs_stats_detect' or TABLE_NAME = 'trs_stats_location' or TABLE_NAME = 'trs_stats_loction_raw') and COLLATION_NAME <>'utf8mb4_general_ci' ) or ((TABLE_NAME = 'trs_status' or TABLE_NAME = 'trs_stats_detect_mon_raw') and COLLATION_NAME <> 'utf8mb4_unicode_ci'));"
+  mysql $MAD_DB -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password -se "SELECT TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME, TABLE_COLLATION FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'rmdb' and (((TABLE_NAME = 'trs_stats_detect' or TABLE_NAME = 'trs_stats_location' or TABLE_NAME = 'trs_stats_loction_raw') and TABLE_COLLATION <>'utf8mb4_general_ci' ) or ((TABLE_NAME = 'trs_status' or TABLE_NAME = 'trs_stats_detect_mon_raw') and TABLE_COLLATION <> 'utf8mb4_unicode_ci'));"
+  mysql $MAD_DB -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password -se "SELECT TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME, COLUMN_NAME, COLLATION_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = 'rmdb' and (((TABLE_NAME = 'trs_stats_detect' or TABLE_NAME = 'trs_stats_location' or TABLE_NAME = 'trs_stats_loction_raw') and COLLATION_NAME <>'utf8mb4_general_ci' ) or ((TABLE_NAME = 'trs_status' or TABLE_NAME = 'trs_stats_detect_mon_raw') and COLLATION_NAME <> 'utf8mb4_unicode_ci'));"
 fi
 echo ''

@@ -28,7 +28,8 @@ Use it at you own risk, because bare in mind this was all done by an idiot!
 
 ### Prerequisites
 - Activation of (raw)stats in MAD config.ini (statistic,game_stats,game_stats_raw).
-
+- Mariadb > 10.1
+- mysql strict mode disabled
 - Get Stats ``git clone https://github.com/dkmur/Stats.git && cd Stats/ && cp config.ini.example config.ini``
 
 ### Creating database, tables, triggers and file prep
@@ -56,6 +57,13 @@ insert into ##STATS_DB##.Area (Area,Origin) values
 ### Crontab
 
 Edit crontab ``crontab -e`` and insert content of ``crontab.txt`` located in Stats home.
+
+
+### Grafana (optional)
+- Install Grafana, more details can be found at https://grafana.com/docs/grafana/latest/installation/debian/#install-from-apt-repository or if you prefer to use docker <https://hub.docker.com/r/grafana/grafana>
+- Create datasource on STATS_DB
+- Add datasource name to config.ini
+- After executing settings.run, import the dashboards from /Stats/grafana
 
 
 ### Starting Stats menu
