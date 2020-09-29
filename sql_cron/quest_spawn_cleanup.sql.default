@@ -5,16 +5,16 @@ select spawnpoint,latitude,longitude,spawndef,earliest_unseen,last_scanned,first
 from rmdb.trs_spawn
 where
 date(first_detection) = curdate() and
-time(first_detection) >= '02:00:00' and
-time(first_detection) <= '06:00:00'
+time(first_detection) >= 'queststart' and
+time(first_detection) <= 'questend'
 ;
 -- remove from trs_spawn
 delete
 from rmdb.trs_spawn
 where
 date(first_detection) = curdate() and
-time(first_detection) >= '02:00:00' and
-time(first_detection) <= '06:00:00'
+time(first_detection) >= 'queststart' and
+time(first_detection) <= 'questend'
 ;
 
 -- daily cleanup spawns not seen for 5 days

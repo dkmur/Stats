@@ -7,6 +7,8 @@ cp crontab.txt.default crontab.txt
 PATH_TO_STATS2=$(sed 's@/@\\/@g' <<< $PATH_TO_STATS)
 cd $PATH_TO_STATS && sed -i "s/pathToStats/$PATH_TO_STATS2/g" *.txt
 cd $PATH_TO_STATS && sed -i "s/STATS_DB/$STATS_DB/g" *.txt
+cd $PATH_TO_STATS && sed -i "s/QMIN/$QUEST_CLEAN_MIN/g" *.txt
+cd $PATH_TO_STATS && sed -i "s/QHR/$QUEST_CLEAN_HR/g" *.txt
 
 if [ -z "$SQL_password" ]
 then
@@ -66,6 +68,8 @@ cd $PATH_TO_STATS && cd sql_cron/ && sed -i "s/RPL15/$RPL15/g" *.sql
 cd $PATH_TO_STATS && cd sql_cron/ && sed -i "s/RPL60/$RPL60/g" *.sql
 cd $PATH_TO_STATS && cd sql_cron/ && sed -i "s/RPL1440/$RPL1440/g" *.sql
 cd $PATH_TO_STATS && cd sql_cron/ && sed -i "s/RPL10080/$RPL10080/g" *.sql
+cd $PATH_TO_STATS && cd sql_cron/ && sed -i "s/queststart/$QUEST_START/g" *.sql
+cd $PATH_TO_STATS && cd sql_cron/ && sed -i "s/questend/$QUEST_END/g" *.sql
 
 # set MAD clean tables
 
