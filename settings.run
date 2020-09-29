@@ -71,6 +71,7 @@ sed -i "s/RPL60/$RPL60/g" $PATH_TO_STATS/sql_cron/*.sql
 sed -i "s/RPL1440/$RPL1440/g" $PATH_TO_STATS/sql_cron/*.sql
 sed -i "s/RPL10080/$RPL10080/g" $PATH_TO_STATS/sql_cron/*.sql
 sed -i "s/PATH_TO_STATS/$PATH_TO_STATS2/g" $PATH_TO_STATS/sql_cron/*.sh
+sed -i "s/monsdb/$monthly_mon_database/g" $PATH_TO_STATS/sql_cron/*.sh
 
 # Create grafana files
 cp $PATH_TO_STATS/grafana/stats_kpi.json.default $PATH_TO_STATS/grafana/stats_kpi.json
