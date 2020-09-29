@@ -1,7 +1,7 @@
 ## Cleanup and backup
 5 * * * * cd pathToStatssql_cron/ && mysql userpass < pokemon_hourly.sql
 7 1 * * * cd pathToStatssql_cron/ && mysql userpass < pokemon_daily.sql
-#monthly#5 5 1 * * cd pathToStatssql_cron/month.sh
+#monthly#5 5 1 * * pathToStatssql_cron/month.sh
 ## Area stats
 */15 * * * * cat pathToStatssql_cron/15_*_area.sql | mysql userpass STATS_DB
 0 * * * * cat pathToStatssql_cron/60_*_area.sql | mysql userpass STATS_DB
