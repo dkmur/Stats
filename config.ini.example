@@ -1,4 +1,4 @@
-## Database ##
+## Database settings ##
 SQL_user=dkmur
 SQL_password=dkmur123
 DB_IP=127.0.0.1
@@ -22,6 +22,8 @@ mon_cleanup=true
 days_to_keep=14
 
 ## Create a new table each month where all scanned mons will be added (actually rename last month and re-create pokemon_history) ##
+## If set to true, so not cleanup pokemon_history :P ##
+## In case you whish to use a different database make sure to create it yourset and grant privileges to SQL_user ##
 monthly_mon_table=false
 monthly_mon_database=pogodb
 
