@@ -1,31 +1,34 @@
 -- add to pokemon_history
-insert ignore into pogodb.pokemon_history select * from pogodb.pokemon_history_temp where date(first_scanned) = curdate() - interval 1 day;
+--mon_backup-- insert ignore into pogodb.pokemon_history select * from pogodb.pokemon_history_temp where first_scanned < curdate();
 
 -- delete from pokemon_history_temp
-delete from pogodb.pokemon_history_temp where date(first_scanned) = curdate() - interval 1 day;
+delete from pogodb.pokemon_history_temp where first_scanned < curdate();
+
+-- cleanup pokemon_history
+--mon_cleanup-- delete from pogodb.pokemon_history where first_scanned < curdate() - interval --days_to_keep-- day;
 
 -- cleanup Stats tables
 delete from pogodb.stats_worker
 where
-(RPL = 15 and date(Datetime) < curdate() - interval RPL15 day) or
-(RPL = 60 and date(Datetime) < curdate() - interval RPL60 day) or
-(RPL = 1440 and date(Datetime) < curdate() - interval RPL1440 day) or
-(RPL = 10080 and date(Datetime) < curdate() - interval RPL10080 day)
+(RPL = 15 and Datetime < curdate() - interval RPL15 day) or
+(RPL = 60 and Datetime < curdate() - interval RPL60 day) or
+(RPL = 1440 and Datetime < curdate() - interval RPL1440 day) or
+(RPL = 10080 and Datetime < curdate() - interval RPL10080 day)
 ;
 
 delete from pogodb.stats_area
 where
-(RPL = 15 and date(Datetime) < curdate() - interval RPL15 day) or
-(RPL = 60 and date(Datetime) < curdate() - interval RPL60 day) or
-(RPL = 1440 and date(Datetime) < curdate() - interval RPL1440 day) or
-(RPL = 10080 and date(Datetime) < curdate() - interval RPL10080 day)
+(RPL = 15 and Datetime < curdate() - interval RPL15 day) or
+(RPL = 60 and Datetime < curdate() - interval RPL60 day) or
+(RPL = 1440 and Datetime < curdate() - interval RPL1440 day) or
+(RPL = 10080 and Datetime < curdate() - interval RPL10080 day)
 ;
 
 -- cleanup detect
---detect--delete from rmdb.trs_stats_detect where date(from_unixtime(timestamp_scan)) < curdate();
+--detect-- delete from rmdb.trs_stats_detect where from_unixtime(timestamp_scan) < curdate();
 
 -- cleanup location
---location--delete from rmdb.trs_stats_location where date(from_unixtime(timestamp_scan)) < curdate();
+--location-- delete from rmdb.trs_stats_location where from_unixtime(timestamp_scan) < curdate();
 
 -- cleanup status
---usage--delete from rmdb.trs_usage where from_unixtime(timestamp) < curdate() - interval 30 day;
+--usage-- delete from rmdb.trs_usage where from_unixtime(timestamp) < curdate() - interval 30 day;
