@@ -8,6 +8,8 @@ cp $PATH_TO_STATS/sql_cron/month.sh.default $PATH_TO_STATS/sql_cron/month.sh
 PATH_TO_STATS2=$(sed 's@/@\\/@g' <<< $PATH_TO_STATS)
 cd $PATH_TO_STATS && sed -i "s/pathToStats/$PATH_TO_STATS2/g" *.txt
 cd $PATH_TO_STATS && sed -i "s/STATS_DB/$STATS_DB/g" *.txt
+cd $PATH_TO_STATS && sed -i "s/QMIN/$QUEST_CLEAN_MIN/g" *.txt
+cd $PATH_TO_STATS && sed -i "s/QHR/$QUEST_CLEAN_HR/g" *.txt
 
 if [ -z "$SQL_password" ]
 then

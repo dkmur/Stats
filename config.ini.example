@@ -11,6 +11,12 @@ PATH_TO_STATS=/home/dkmur/temp/Stats/
 DEFINED_SCAN_AREAS='Amsterdam, London, Paris'
 DEFAULT_AREA=London
 
+## Quest Settings ##
+QUEST_START='02:00:00'
+QUEST_END='06:00:00'
+QUEST_CLEAN_HR=6
+QUEST_CLEAN_MIN=13
+
 ## Grafana ##
 DataSource=pogodb
 

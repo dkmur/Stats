@@ -13,4 +13,4 @@
 7 0 * * * cd pathToStatssql_cron/ && mysql userpass < 1440_worker.sql
 9 0 * * 1 cd pathToStatssql_cron/ && mysql userpass < 10080_worker.sql
 ## Cleanup spawnpoints discovered during Quest hours
-# 13 6 * * 1 cd pathToStatssql_cron/ && mysql userpass < quest_spawn_cleanup.sql
+# QMIN QHR * * 1 cd pathToStatssql_cron/ && mysql userpass < quest_spawn_cleanup.sql
