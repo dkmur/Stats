@@ -22,7 +22,7 @@ if "$SPAWN_CLEANUP"
 then
   sed -i "s/#SPAWN_CLEANUP#//g" $PATH_TO_STATS/crontab.txt
   sed -i "s/SPAWN_CLEAN_MIN/$SPAWN_CLEAN_MIN/g" $PATH_TO_STATS/crontab.txt
-  sed -i "s/SPAWN_CLEAN_MR/$SPAWN_CLEAN_HR/g" $PATH_TO_STATS/crontab.txt
+  sed -i "s/SPAWN_CLEAN_HR/$SPAWN_CLEAN_HR/g" $PATH_TO_STATS/crontab.txt
 fi
 
 # Create Area files
