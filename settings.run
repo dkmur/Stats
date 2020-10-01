@@ -18,6 +18,13 @@ else
   sed -i "s/userpass/-h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password/g" $PATH_TO_STATS/sql_cron/month.sh
 fi
 
+if "$SPAWN_CLEANUP"
+then
+  sed -i "s/#SPAWN_CLEANUP#//g" $PATH_TO_STATS/crontab.txt
+  sed -i "s/SPAWN_CLEAN_MIN/$SPAWN_CLEAN_MIN/g" $PATH_TO_STATS/crontab.txt
+  sed -i "s/SPAWN_CLEAN_HR/$SPAWN_CLEAN_HR/g" $PATH_TO_STATS/crontab.txt
+fi
+
 # Create Area files
 cd $PATH_TO_STATS && cd sql_cron && rm *.sql
 for area in "$PATH_TO_STATS"areas/*.ini
@@ -60,7 +67,7 @@ cp $PATH_TO_STATS/sql_cron/1440_worker.sql.default $PATH_TO_STATS/sql_cron/1440_
 cp $PATH_TO_STATS/sql_cron/10080_worker.sql.default $PATH_TO_STATS/sql_cron/10080_worker.sql
 cp $PATH_TO_STATS/sql_cron/pokemon_daily.sql.default $PATH_TO_STATS/sql_cron/pokemon_daily.sql
 cp $PATH_TO_STATS/sql_cron/pokemon_hourly.sql.default $PATH_TO_STATS/sql_cron/pokemon_hourly.sql
-cp $PATH_TO_STATS/sql_cron/quest_spawn_cleanup.sql.default $PATH_TO_STATS/sql_cron/quest_spawn_cleanup.sql
+cp $PATH_TO_STATS/sql_cron/spawn_cleanup.sql.default $PATH_TO_STATS/sql_cron/spawn_cleanup.sql
 sed -i "s/pogodb/$STATS_DB/g" $PATH_TO_STATS/sql_cron/*.sql
 sed -i "s/pogodb/$STATS_DB/g" $PATH_TO_STATS/sql_cron/*.template
 sed -i "s/pogodb/$STATS_DB/g" $PATH_TO_STATS/sql_cron/*.sh
@@ -70,6 +77,10 @@ sed -i "s/RPL15/$RPL15/g" $PATH_TO_STATS/sql_cron/*.sql
 sed -i "s/RPL60/$RPL60/g" $PATH_TO_STATS/sql_cron/*.sql
 sed -i "s/RPL1440/$RPL1440/g" $PATH_TO_STATS/sql_cron/*.sql
 sed -i "s/RPL10080/$RPL10080/g" $PATH_TO_STATS/sql_cron/*.sql
+sed -i "s/QUEST_START/$QUEST_START/g" $PATH_TO_STATS/sql_cron/*.sql
+sed -i "s/QUEST_END/$QUEST_END/g" $PATH_TO_STATS/sql_cron/*.sql
+sed -i "s/SPAWN_UNSEEN_DAYS/$SPAWN_UNSEEN_DAYS/g" $PATH_TO_STATS/sql_cron/*.sql
+sed -i "s/SPAWN_NO_ENDTIME_DAYS/$SPAWN_NO_ENDTIME_DAYS/g" $PATH_TO_STATS/sql_cron/*.sql
 sed -i "s/PATH_TO_STATS/$PATH_TO_STATS2/g" $PATH_TO_STATS/sql_cron/*.sh
 sed -i "s/monsdb/$monthly_mon_database/g" $PATH_TO_STATS/sql_cron/*.sh
 
