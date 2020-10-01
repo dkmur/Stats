@@ -13,4 +13,4 @@
 7 0 * * * cd pathToStatssql_cron/ && mysql userpass < 1440_worker.sql
 9 0 * * 1 cd pathToStatssql_cron/ && mysql userpass < 10080_worker.sql
 ## Cleanup spawnpoints discovered during Quest hours
-#SPAWN_CLEANUP#SPAWN_CLEAN_MIN SPAWN_CLEAN_HR * * 1 cd pathToStatssql_cron/ && mysql userpass < quest_spawn_cleanup.sql
+#SPAWN_CLEANUP#SPAWN_CLEAN_MIN SPAWN_CLEAN_HR * * 1 cd pathToStatssql_cron/ && mysql userpass < spawn_cleanup.sql
