@@ -51,9 +51,10 @@ do
   sed -i "s/4.973/$MAX_LON/g" $PATH_TO_STATS/sql_cron/1440_"$AREA_NAME"_area.sql
 done
 
-# Create sql table and trigger files
+# Create sql table, trigger and procedure files
 cd $PATH_TO_STATS && cp tables.sql.default tables.sql
 cd $PATH_TO_STATS && cp triggers.sql.default triggers.sql
+cd $PATH_TO_STATS && cp procedures.sql.default procedures.sql
 cd $PATH_TO_STATS && sed -i "s/pogodb/$STATS_DB/g" *.sql
 
 # Create cron files
@@ -145,6 +146,14 @@ then
   mysql -h$DB_IP -P$DB_PORT -u$SQL_user $MAD_DB < $PATH_TO_STATS/triggers.sql
 else
   mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $MAD_DB < $PATH_TO_STATS/triggers.sql
+fi
+
+# Create procedure
+if [ -z "$SQL_password" ]
+then
+  mysql -h$DB_IP -P$DB_PORT -u$SQL_user $MAD_DB < $PATH_TO_STATS/procedures.sql
+else
+  mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $MAD_DB < $PATH_TO_STATS/procedures.sql
 fi
 
 #Check MAD collation, else 15_worker will fail

@@ -2,7 +2,8 @@
 --mon_backup-- insert ignore into pogodb.pokemon_history select * from pogodb.pokemon_history_temp where first_scanned < curdate();
 
 -- delete from pokemon_history_temp
-delete from pogodb.pokemon_history_temp where first_scanned < curdate();
+select sleep(30);
+call pogodb.mon_history_temp_cleanup();
 
 -- cleanup pokemon_history
 --mon_cleanup-- delete from pogodb.pokemon_history where first_scanned < curdate() - interval --days_to_keep-- day;
