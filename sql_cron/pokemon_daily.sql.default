@@ -1,3 +1,5 @@
+SET SESSION tx_isolation = 'READ-UNCOMMITTED';
+
 -- add to pokemon_history
 --mon_backup-- insert ignore into pogodb.pokemon_history select * from pogodb.pokemon_history_temp where first_scanned < curdate();
 
