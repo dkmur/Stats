@@ -154,8 +154,7 @@ CREATE TABLE IF NOT EXISTS `pokemon_history_temp` (
   KEY `pokemon_history_temp_spawnpoint_id` (`spawnpoint_id`),
   KEY `pokemon_history_temp_latitude` (`latitude`),
   KEY `pokemon_history_temp_longitude` (`longitude`),
-  KEY `pokemon_history_temp_last_modified` (`last_modified`),
-  KEY `pokemon_history_temp_first_scanned` (`first_scanned`)
+  KEY `pokemon_history_temp_last_modified` (`last_modified`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 ALTER TABLE stats_area
@@ -166,4 +165,7 @@ ADD COLUMN IF NOT EXISTS w20 int(6) NOT NULL DEFAULT 0 AFTER w15;
 
 ALTER TABLE `stats_worker`
 CHANGE COLUMN `TRPL` `TRPL` smallint(6) DEFAULT 0;
+
+ALTER TABLE `pokemon_history_temp`
+DROP KEY IF EXISTS `pokemon_history_temp_first_scanned`;
 
