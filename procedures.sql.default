@@ -1,0 +1,14 @@
+DROP PROCEDURE IF EXISTS pogodb.mon_history_temp_cleanup;
+DELIMITER //
+CREATE PROCEDURE pogodb.mon_history_temp_cleanup()
+ BEGIN
+  DECLARE RowCount INT;
+  SET RowCount = (SELECT count(first_scanned) FROM pogodb.pokemon_history_temp WHERE first_scanned < CURDATE());
+   WHILE RowCount > 0 DO
+   DELETE FROM pogodb.pokemon_history_temp WHERE first_scanned < CURDATE() LIMIT 25000;
+   SET RowCount = RowCount - 25000;
+   SELECT SLEEP(1);
+   END WHILE;
+ END;  
+//
+DELIMITER ;

@@ -28,7 +28,7 @@ Use it at you own risk, because bare in mind this was all done by an idiot!
 
 ### Prerequisites
 - Activation of (raw)stats in MAD config.ini (statistic,game_stats,game_stats_raw).
-- Mariadb > 10.1
+- Mariadb > 10.2
 - mysql strict mode disabled
 - Get Stats ``git clone https://github.com/dkmur/Stats.git && cd Stats/ && cp config.ini.example config.ini``
 
