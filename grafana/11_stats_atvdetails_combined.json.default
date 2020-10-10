@@ -46,7 +46,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1601016400418,
+  "iteration": 1602336549905,
   "links": [],
   "panels": [
     {
@@ -136,6 +136,14 @@
         {
           "alias": "armv8l #Events (restart or reboot) per device",
           "yaxis": 2
+        },
+        {
+          "alias": "aarch64 Avg #restart+reboot /device /h",
+          "yaxis": 2
+        },
+        {
+          "alias": "armv8l Avg #restart+reboot /device /h",
+          "yaxis": 2
         }
       ],
       "spaceLength": 10,
@@ -147,7 +155,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\nb.arch,\na.Datetime as 'time',\nsum(a.LocOk)/sum(a.Tloc)*100 'Location success rate',\n-- sum(a.reb)/count(a.reb) as '#Reboots per device',\n-- sum(a.res)/count(a.res) as '#Restarts per device'\n(sum(a.res)+sum(a.reb))/count(a.res) as '#Events (restart or reboot) per device'\n\nFROM stats_worker a, ATVdetails b\n\nWHERE\na.Worker COLLATE utf8mb4_unicode_ci = b.Origin and\ndate(a.Datetime) = b.Date and\na.RPL = '$RPL' and\nb.arch in ($architecture)\n-- a.Datetime >= curdate() -interval 7 day\nGROUP by b.arch, a.Datetime\n\n",
+          "rawSql": "SELECT\nb.arch,\n$__timeGroup(Datetime,$__interval) as 'time',\nsum(a.LocOk)/sum(a.Tloc)*100 'Location success rate',\n-- sum(a.reb)/count(a.reb) as '#Reboots per device',\n-- sum(a.res)/count(a.res) as '#Restarts per device'\n(sum(a.res)+sum(a.reb))/(count(a.Worker)*$RPL/60) as 'Avg #restart+reboot /device /h'\n\nFROM stats_worker a, ATVdetails b\n\nWHERE\na.Worker COLLATE utf8mb4_unicode_ci = b.Origin and\ndate(a.Datetime) = b.Date and\na.RPL = '$RPL' and\nb.arch in ($architecture)\n-- a.Datetime >= curdate() -interval 7 day\nGROUP by b.arch, a.Datetime\n\n",
           "refId": "A",
           "select": [
             [
@@ -264,7 +272,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\nb.arch,\na.Datetime as 'time',\ncount(a.res) as '#devices'\n\nFROM stats_worker a, ATVdetails b\n\nWHERE\na.Worker COLLATE utf8mb4_unicode_ci = b.Origin and\ndate(a.Datetime) = b.Date and\na.RPL = '$RPL' and\nb.arch in ($architecture)\n-- a.Datetime >= curdate() -interval 7 day\nGROUP by b.arch, a.Datetime",
+          "rawSql": "SELECT\nb.arch,\n$__timeGroup(Datetime,$__interval) as 'time',\ncount(a.res) as '#devices'\n\nFROM stats_worker a, ATVdetails b\n\nWHERE\na.Worker COLLATE utf8mb4_unicode_ci = b.Origin and\ndate(a.Datetime) = b.Date and\na.RPL = '$RPL' and\nb.arch in ($architecture)\n-- a.Datetime >= curdate() -interval 7 day\nGROUP by b.arch, a.Datetime",
           "refId": "A",
           "select": [
             [
@@ -382,6 +390,22 @@
         {
           "alias": "0.187.1 #Events (restart or reboot) per device",
           "yaxis": 2
+        },
+        {
+          "alias": "0.187.2 Avg #restart+reboot /device /h",
+          "yaxis": 2
+        },
+        {
+          "alias": "0.187.1 Avg #restart+reboot /device /h",
+          "yaxis": 2
+        },
+        {
+          "alias": "0.185.3 Avg #restart+reboot /device /h",
+          "yaxis": 2
+        },
+        {
+          "alias": "0.185.1 Avg #restart+reboot /device /h",
+          "yaxis": 2
         }
       ],
       "spaceLength": 10,
@@ -393,7 +417,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\nb.pogo,\na.Datetime as 'time',\nsum(a.LocOk)/sum(a.Tloc)*100 'Location success rate',\n-- sum(a.reb)/count(a.reb) as '#Reboots per device',\n-- sum(a.res)/count(a.res) as '#Restarts per device'\n(sum(a.res)+sum(a.reb))/count(a.res) as '#Events (restart or reboot) per device'\n\nFROM stats_worker a, ATVdetails b\n\nWHERE\na.Worker COLLATE utf8mb4_unicode_ci = b.Origin and\ndate(a.Datetime) = b.Date and\na.RPL = '$RPL' and\nb.pogo in ($pogo)\n-- a.Datetime >= curdate() -interval 7 day\nGROUP by b.pogo, a.Datetime",
+          "rawSql": "SELECT\nb.pogo,\n$__timeGroup(Datetime,$__interval) as 'time',\nsum(a.LocOk)/sum(a.Tloc)*100 'Location success rate',\n-- sum(a.reb)/count(a.reb) as '#Reboots per device',\n-- sum(a.res)/count(a.res) as '#Restarts per device'\n(sum(a.res)+sum(a.reb))/(count(a.Worker)*$RPL/60) as 'Avg #restart+reboot /device /h'\n\nFROM stats_worker a, ATVdetails b\n\nWHERE\na.Worker COLLATE utf8mb4_unicode_ci = b.Origin and\ndate(a.Datetime) = b.Date and\na.RPL = '$RPL' and\nb.pogo in ($pogo)\n-- a.Datetime >= curdate() -interval 7 day\nGROUP by b.pogo, a.Datetime",
           "refId": "A",
           "select": [
             [
@@ -505,7 +529,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\nb.pogo,\na.Datetime as 'time',\ncount(a.res) as '#devices'\n\nFROM stats_worker a, ATVdetails b\n\nWHERE\na.Worker COLLATE utf8mb4_unicode_ci = b.Origin and\ndate(a.Datetime) = b.Date and\na.RPL = '$RPL' and\nb.pogo in ($pogo)\n-- a.Datetime >= curdate() -interval 7 day\nGROUP by b.pogo, a.Datetime",
+          "rawSql": "SELECT\nb.pogo,\n$__timeGroup(Datetime,$__interval) as 'time',\ncount(a.res) as '#devices'\n\nFROM stats_worker a, ATVdetails b\n\nWHERE\na.Worker COLLATE utf8mb4_unicode_ci = b.Origin and\ndate(a.Datetime) = b.Date and\na.RPL = '$RPL' and\nb.pogo in ($pogo)\n-- a.Datetime >= curdate() -interval 7 day\nGROUP by b.pogo, a.Datetime",
           "refId": "A",
           "select": [
             [
@@ -569,6 +593,7 @@
       }
     }
   ],
+  "refresh": false,
   "schemaVersion": 26,
   "style": "dark",
   "tags": [],
@@ -643,7 +668,7 @@
     ]
   },
   "time": {
-    "from": "now-7d",
+    "from": "now-30d",
     "to": "now"
   },
   "timepicker": {
@@ -661,7 +686,7 @@
     ]
   },
   "timezone": "",
-  "title": "Stats combined with ATVdetails",
+  "title": "11. Stats combined with ATVdetails",
   "uid": "L-mKZqdGk",
-  "version": 6
+  "version": 18
 }
