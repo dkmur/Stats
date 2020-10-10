@@ -1,0 +1,1657 @@
+{
+  "__inputs": [
+    {
+      "name": "DS_RMDB",
+      "label": "rmdb",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "mysql",
+      "pluginName": "MySQL"
+    }
+  ],
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "7.1.5"
+    },
+    {
+      "type": "datasource",
+      "id": "mysql",
+      "name": "MySQL",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "panels": [
+    {
+      "datasource": "${DS_RMDB}",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": null
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "routecalc_id"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 96
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 250
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "#route positions"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 150
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "#devices"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 115
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "# positions / device"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 234
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 14,
+      "options": {
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "# positions / device"
+          }
+        ]
+      },
+      "pluginVersion": "7.1.5",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT  c.name, ROUND((LENGTH(a.routefile)-LENGTH(REPLACE(a.routefile, \",\", \"\"))) / (2 * LENGTH(\",\"))) AS '#route positions', count(f.device_id)/count(distinct(d.walkerarea_id))*count(distinct(e.walker_id)) AS '#devices', ROUND((LENGTH(a.routefile)-LENGTH(REPLACE(a.routefile, \",\", \"\"))) / (2 * LENGTH(\",\"))) / (count(f.device_id)/count(distinct(d.walkerarea_id))*count(distinct(e.walker_id))) AS '# positions / device'\nFROM \nsettings_routecalc a,\nsettings_area_mon_mitm b,\nsettings_area c,\nsettings_walkerarea d,\nsettings_walker_to_walkerarea e,\nsettings_device f\n\nwhere\na.routecalc_id = b.routecalc and\nb.area_id = c.area_id and\nb.area_id = d.area_id and\nd.walkerarea_id = e.walkerarea_id and\ne.walker_id = f.walker_id\n\nGROUP BY c.name\n\n",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Mon mitm routes",
+      "type": "table"
+    },
+    {
+      "datasource": "${DS_RMDB}",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": null
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "#devices"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 142
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 244
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "id": 16,
+      "options": {
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "# positions / device"
+          }
+        ]
+      },
+      "pluginVersion": "7.1.5",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT  c.name, ROUND((LENGTH(a.routefile)-LENGTH(REPLACE(a.routefile, \",\", \"\"))) / (2 * LENGTH(\",\"))) AS '#route positions', count(f.device_id)/count(distinct(d.walkerarea_id))*count(distinct(e.walker_id)) AS '#devices', ROUND((LENGTH(a.routefile)-LENGTH(REPLACE(a.routefile, \",\", \"\"))) / (2 * LENGTH(\",\"))) / (count(f.device_id)/count(distinct(d.walkerarea_id))*count(distinct(e.walker_id))) AS '# positions / device'\nFROM \nsettings_routecalc a,\nsettings_area_pokestops b,\nsettings_area c,\nsettings_walkerarea d,\nsettings_walker_to_walkerarea e,\nsettings_device f\n\nwhere\na.routecalc_id = b.routecalc and\nb.area_id = c.area_id and\nb.area_id = d.area_id and\nd.walkerarea_id = e.walkerarea_id and\ne.walker_id = f.walker_id\n\nGROUP BY c.name",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Pokestop routes",
+      "type": "table"
+    },
+    {
+      "datasource": "${DS_RMDB}",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": null
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "#"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 26
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "post_walk_delay"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 120
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "walk_after_teleport_distance"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 192
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "post_teleport_delay"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 136
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "mitm_wait_timeout"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 134
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "cool_down_sleep"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 122
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "post_turn_screen_on_delay"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 182
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "post_pogo_start_delay"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 159
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "restart_pogo"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 96
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "reboot"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 56
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "restart_thresh"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 104
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "reboot_thresh"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 103
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "#Pools"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 61
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 24,
+        "x": 0,
+        "y": 12
+      },
+      "id": 2,
+      "options": {
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "7.1.5",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  count(name) as '#Pools', post_walk_delay, post_teleport_delay, walk_after_teleport_distance, mitm_wait_timeout, cool_down_sleep, post_turn_screen_on_delay, post_pogo_start_delay, restart_pogo, reboot, restart_thresh, reboot_thresh \nFROM settings_devicepool\nGROUP BY post_walk_delay, post_teleport_delay, walk_after_teleport_distance, mitm_wait_timeout, cool_down_sleep, post_turn_screen_on_delay, post_pogo_start_delay, restart_pogo, reboot, restart_thresh, reboot_thresh\n\n",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Device shared settings (1)",
+      "type": "table"
+    },
+    {
+      "datasource": "${DS_RMDB}",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": null
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "#"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 41
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "screendetection"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 120
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "inventory_clear_rounds"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 169
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "inventory_clear_item_amount_tap_duration"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 287
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "enhanced_mode_quest"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 158
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "enhanced_mode_quest_safe_items"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 239
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "#Pools"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 65
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 24,
+        "x": 0,
+        "y": 17
+      },
+      "id": 4,
+      "options": {
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "7.1.5",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  count(name) as '#Pools', screendetection, inventory_clear_rounds, inventory_clear_item_amount_tap_duration, enhanced_mode_quest, enhanced_mode_quest_safe_items \nFROM settings_devicepool\nGROUP BY screendetection, inventory_clear_rounds, inventory_clear_item_amount_tap_duration, enhanced_mode_quest, enhanced_mode_quest_safe_items \n",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Device shared settings (2)",
+      "type": "table"
+    },
+    {
+      "datasource": "${DS_RMDB}",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": null
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "#"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 38
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "post_walk_delay"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 116
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "post_teleport_delay"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 136
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "walk_after_teleport_distance"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 194
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "mitm_wait_timeout"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 136
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "cool_down_sleep"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 121
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "post_turn_screen_on_delay"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 186
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "post_pogo_start_delay"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 159
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "restart_pogo"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 97
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "reboot"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 55
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "restart_thresh"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 103
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "reboot_thresh"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 107
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "#Devices"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 72
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 24,
+        "x": 0,
+        "y": 22
+      },
+      "id": 6,
+      "options": {
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "7.1.5",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  count(device_id) as '#Devices', post_walk_delay, post_teleport_delay, walk_after_teleport_distance, mitm_wait_timeout, cool_down_sleep, post_turn_screen_on_delay, post_pogo_start_delay, restart_pogo, reboot, restart_thresh, reboot_thresh \nFROM settings_device\nGROUP BY post_walk_delay, post_teleport_delay, walk_after_teleport_distance, mitm_wait_timeout, cool_down_sleep, post_turn_screen_on_delay, post_pogo_start_delay, restart_pogo, reboot, restart_thresh, reboot_thresh",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Device settings (1)",
+      "type": "table"
+    },
+    {
+      "datasource": "${DS_RMDB}",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": null
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "#"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 33
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "screendetection"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 116
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "inventory_clear_rounds"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 165
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "inventory_clear_item_amount_tap_duration"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 286
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "enhanced_mode_quest"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 162
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "enhanced_mode_quest_safe_items"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 238
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "#Devices"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 75
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 24,
+        "x": 0,
+        "y": 27
+      },
+      "id": 8,
+      "options": {
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "7.1.5",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  count(name) as '#Devices', screendetection, inventory_clear_rounds, inventory_clear_item_amount_tap_duration, enhanced_mode_quest, enhanced_mode_quest_safe_items \nFROM settings_device\nGROUP BY screendetection, inventory_clear_rounds, inventory_clear_item_amount_tap_duration, enhanced_mode_quest, enhanced_mode_quest_safe_items \n",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Device Settings (2)",
+      "type": "table"
+    },
+    {
+      "datasource": "${DS_RMDB}",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": null
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "#"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 11
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "logintype"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 80
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "ggl_login_mail"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 109
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "clear_game_data"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 125
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "account_rotation"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 120
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "rotation_waittime"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 132
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "rotate_on_lvl_30"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 117
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "#Devices"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 74
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 24,
+        "x": 0,
+        "y": 32
+      },
+      "id": 10,
+      "options": {
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "7.1.5",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  count(name) as '#Devices', logintype, ggl_login_mail, clear_game_data, account_rotation, rotation_waittime, rotate_on_lvl_30\nFROM settings_device\nGROUP BY logintype, ggl_login_mail, clear_game_data, account_rotation, rotation_waittime, rotate_on_lvl_30\n",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Device settings (3)",
+      "type": "table"
+    },
+    {
+      "datasource": "${DS_RMDB}",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": null
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "#"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 31
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "init"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 41
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "coords_spawns_known"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 160
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "speed"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 52
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "max_distance"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 103
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "starve_route"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 95
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "delay_after_prio_event"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 157
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "priority_queue_clustering_timedelta"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 242
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "remove_from_queue_backlog"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 192
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "min_time_left_seconds"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 159
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "init_mode_rounds"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 125
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "#Routes"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 66
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "max_clustering"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 108
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 24,
+        "x": 0,
+        "y": 37
+      },
+      "id": 12,
+      "options": {
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "7.1.5",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT count(area_id) as '#Routes', init, init_mode_rounds, coords_spawns_known, speed, max_distance, starve_route, delay_after_prio_event, priority_queue_clustering_timedelta, remove_from_queue_backlog, min_time_left_seconds, max_clustering\n\nFROM settings_area_mon_mitm\n\nGROUP BY init, init_mode_rounds, coords_spawns_known, speed, max_distance, starve_route, delay_after_prio_event, priority_queue_clustering_timedelta, remove_from_queue_backlog, min_time_left_seconds, max_clustering\n",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Mon mitm settings",
+      "type": "table"
+    },
+    {
+      "datasource": "${DS_RMDB}",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": null
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "count(area_id)"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 41
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "init"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 50
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "level"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 121
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "route_calc_algorithm"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 160
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "speed"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 64
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "max_distance"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 117
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "ignore_spinned_stops"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 152
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "cleanup_every_spin"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 140
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "#"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 42
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "#Routes"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 68
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 24,
+        "x": 0,
+        "y": 43
+      },
+      "id": 18,
+      "options": {
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "7.1.5",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT count(area_id) as '#Routes', init, level, route_calc_algorithm, speed, max_distance, ignore_spinned_stops, cleanup_every_spin \n\nFROM settings_area_pokestops\n\nGROUP BY init, level, route_calc_algorithm, speed, max_distance, ignore_spinned_stops, cleanup_every_spin",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Pokestop settings",
+      "type": "table"
+    }
+  ],
+  "schemaVersion": 26,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {
+    "hidden": true,
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ]
+  },
+  "timezone": "",
+  "title": "20. MAD stuff",
+  "uid": "xUbpoIcGz",
+  "version": 11
+}
