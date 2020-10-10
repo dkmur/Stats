@@ -46,7 +46,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1601016400418,
+  "iteration": 1602336696793,
   "links": [],
   "panels": [
     {
@@ -136,6 +136,14 @@
         {
           "alias": "armv8l #Events (restart or reboot) per device",
           "yaxis": 2
+        },
+        {
+          "alias": "aarch64 Avg #restart+reboot /device /h",
+          "yaxis": 2
+        },
+        {
+          "alias": "armv8l Avg #restart+reboot /device /h",
+          "yaxis": 2
         }
       ],
       "spaceLength": 10,
@@ -147,7 +155,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\nb.arch,\na.Datetime as 'time',\nsum(a.LocOk)/sum(a.Tloc)*100 'Location success rate',\n-- sum(a.reb)/count(a.reb) as '#Reboots per device',\n-- sum(a.res)/count(a.res) as '#Restarts per device'\n(sum(a.res)+sum(a.reb))/count(a.res) as '#Events (restart or reboot) per device'\n\nFROM stats_worker a, ATVdetails b\n\nWHERE\na.Worker COLLATE utf8mb4_unicode_ci = b.Origin and\ndate(a.Datetime) = b.Date and\na.RPL = '$RPL' and\nb.arch in ($architecture)\n-- a.Datetime >= curdate() -interval 7 day\nGROUP by b.arch, a.Datetime\n\n",
+          "rawSql": "SELECT\nb.arch,\n$__timeGroup(Datetime,$__interval) as 'time',\nsum(a.LocOk)/sum(a.Tloc)*100 'Location success rate',\n-- sum(a.reb)/count(a.reb) as '#Reboots per device',\n-- sum(a.res)/count(a.res) as '#Restarts per device'\n(sum(a.res)+sum(a.reb))/count(a.Worker) as 'Avg #restart+reboot /device /h'\n\nFROM stats_worker a, ATVdetails b\n\nWHERE\na.Worker COLLATE utf8mb4_unicode_ci = b.Origin and\ndate(a.Datetime) = b.Date and\na.RPL = 60 and\ntime(a.datetime) not in ($Hours_excluded) and\nb.arch in ($architecture)\n-- a.Datetime >= curdate() -interval 7 day\nGROUP by b.arch, date(a.Datetime)\n\n",
           "refId": "A",
           "select": [
             [
@@ -200,7 +208,7 @@
           "format": "short",
           "label": null,
           "logBase": 1,
-          "max": "1",
+          "max": "0.5",
           "min": "0",
           "show": true
         }
@@ -264,7 +272,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\nb.arch,\na.Datetime as 'time',\ncount(a.res) as '#devices'\n\nFROM stats_worker a, ATVdetails b\n\nWHERE\na.Worker COLLATE utf8mb4_unicode_ci = b.Origin and\ndate(a.Datetime) = b.Date and\na.RPL = '$RPL' and\nb.arch in ($architecture)\n-- a.Datetime >= curdate() -interval 7 day\nGROUP by b.arch, a.Datetime",
+          "rawSql": "SELECT\nb.arch,\n$__timeGroup(Datetime,$__interval) as 'time',\ncount(a.res) as '#devices'\n\nFROM stats_worker a, ATVdetails b\n\nWHERE\na.Worker COLLATE utf8mb4_unicode_ci = b.Origin and\ndate(a.Datetime) = b.Date and\na.RPL = 60 and\ntime(datetime) not in ($Hours_excluded) and\nb.arch in ($architecture)\n-- a.Datetime >= curdate() -interval 7 day\nGROUP by b.arch, a.Datetime",
           "refId": "A",
           "select": [
             [
@@ -382,6 +390,26 @@
         {
           "alias": "0.187.1 #Events (restart or reboot) per device",
           "yaxis": 2
+        },
+        {
+          "alias": "0.187.2 #Events (restart or reboot) per device",
+          "yaxis": 2
+        },
+        {
+          "alias": "0.187.2 Avg #restart+reboot /device /h",
+          "yaxis": 2
+        },
+        {
+          "alias": "0.187.1 Avg #restart+reboot /device /h",
+          "yaxis": 2
+        },
+        {
+          "alias": "0.185.3 Avg #restart+reboot /device /h",
+          "yaxis": 2
+        },
+        {
+          "alias": "0.185.1 Avg #restart+reboot /device /h",
+          "yaxis": 2
         }
       ],
       "spaceLength": 10,
@@ -393,7 +421,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\nb.pogo,\na.Datetime as 'time',\nsum(a.LocOk)/sum(a.Tloc)*100 'Location success rate',\n-- sum(a.reb)/count(a.reb) as '#Reboots per device',\n-- sum(a.res)/count(a.res) as '#Restarts per device'\n(sum(a.res)+sum(a.reb))/count(a.res) as '#Events (restart or reboot) per device'\n\nFROM stats_worker a, ATVdetails b\n\nWHERE\na.Worker COLLATE utf8mb4_unicode_ci = b.Origin and\ndate(a.Datetime) = b.Date and\na.RPL = '$RPL' and\nb.pogo in ($pogo)\n-- a.Datetime >= curdate() -interval 7 day\nGROUP by b.pogo, a.Datetime",
+          "rawSql": "SELECT\nb.pogo,\n$__timeGroup(Datetime,$__interval) as 'time',\nsum(a.LocOk)/sum(a.Tloc)*100 'Location success rate',\n-- sum(a.reb)/count(a.reb) as '#Reboots per device',\n-- sum(a.res)/count(a.res) as '#Restarts per device'\n(sum(a.res)+sum(a.reb))/count(a.Worker) as 'Avg #restart+reboot /device /h'\n\nFROM stats_worker a, ATVdetails b\n\nWHERE\na.Worker COLLATE utf8mb4_unicode_ci = b.Origin and\ndate(a.Datetime) = b.Date and\na.RPL = 60 and\ntime(datetime) not in ($Hours_excluded) and\nb.pogo in ($pogo)\n-- a.Datetime >= curdate() -interval 7 day\nGROUP by b.pogo, date(a.Datetime)",
           "refId": "A",
           "select": [
             [
@@ -446,7 +474,7 @@
           "format": "short",
           "label": null,
           "logBase": 1,
-          "max": "1",
+          "max": "0.5",
           "min": null,
           "show": true
         }
@@ -505,7 +533,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\nb.pogo,\na.Datetime as 'time',\ncount(a.res) as '#devices'\n\nFROM stats_worker a, ATVdetails b\n\nWHERE\na.Worker COLLATE utf8mb4_unicode_ci = b.Origin and\ndate(a.Datetime) = b.Date and\na.RPL = '$RPL' and\nb.pogo in ($pogo)\n-- a.Datetime >= curdate() -interval 7 day\nGROUP by b.pogo, a.Datetime",
+          "rawSql": "SELECT\nb.pogo,\n$__timeGroup(Datetime,$__interval) as 'time',\ncount(a.res) as '#devices'\n\nFROM stats_worker a, ATVdetails b\n\nWHERE\na.Worker COLLATE utf8mb4_unicode_ci = b.Origin and\ndate(a.Datetime) = b.Date and\na.RPL = 60 and\ntime(datetime) not in ($Hours_excluded) and\nb.pogo in ($pogo)\n-- a.Datetime >= curdate() -interval 7 day\nGROUP by b.pogo, a.Datetime",
           "refId": "A",
           "select": [
             [
@@ -578,28 +606,6 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_POGODB}",
-        "definition": "select RPL from stats_area;",
-        "hide": 0,
-        "includeAll": false,
-        "label": null,
-        "multi": false,
-        "name": "RPL",
-        "options": [],
-        "query": "select RPL from stats_area;",
-        "refresh": 1,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tags": [],
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
-      },
-      {
-        "allValue": null,
-        "current": {},
-        "datasource": "${DS_POGODB}",
         "definition": "select arch from ATVdetails;",
         "hide": 0,
         "includeAll": true,
@@ -639,11 +645,33 @@
         "tagsQuery": "",
         "type": "query",
         "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_POGODB}",
+        "definition": "select concat(hour(Datetime),':00:00') as 'Time' from stats_area where date(Datetime) = curdate() - interval 1 day;",
+        "hide": 0,
+        "includeAll": false,
+        "label": null,
+        "multi": true,
+        "name": "Hours_excluded",
+        "options": [],
+        "query": "select concat(hour(Datetime),':00:00') as 'Time' from stats_area where date(Datetime) = curdate() - interval 1 day;",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
       }
     ]
   },
   "time": {
-    "from": "now-7d",
+    "from": "now-30d",
     "to": "now"
   },
   "timepicker": {
@@ -661,7 +689,7 @@
     ]
   },
   "timezone": "",
-  "title": "Stats combined with ATVdetails",
-  "uid": "L-mKZqdGk",
-  "version": 6
+  "title": "12. Stats combined with ATVdetails exclude hours",
+  "uid": "L-mKZqdGb",
+  "version": 12
 }

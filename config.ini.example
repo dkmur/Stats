@@ -12,7 +12,8 @@ DEFINED_SCAN_AREAS='Amsterdam, London, Paris'
 DEFAULT_AREA=London
 
 ## Grafana ##
-DataSource=pogodb
+DataSource_stats=pogodb
+DataSource_MAD=rmdb
 
 ## Backup spawns to table spawn_unused and remove after quests have finished ##
 # if you don't want spawn discovered during questing hour to be backed up and deleted set both start/end to '02:00:00' #

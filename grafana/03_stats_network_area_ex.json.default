@@ -46,7 +46,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1600974973309,
+  "iteration": 1602336182491,
   "links": [],
   "panels": [
     {
@@ -105,7 +105,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  Datetime AS \"time\",\n  sum(Mons_all) AS \"Mons_all\",\n  sum(MonsIV) AS \"MonsIV\"\nFROM stats_area\nWHERE\n  RPL = '$RPL' and\n  Area in ($Area)\nGROUP BY Datetime\nORDER BY $__timeGroup(Datetime,$__interval)",
+          "rawSql": "SELECT\n  $__timeGroup(Datetime,$__interval) AS \"time\",\n  sum(Mons_all) AS \"Mons_all\",\n  sum(MonsIV) AS \"MonsIV\"\nFROM stats_area\nWHERE\n  RPL = 60 and\n  time(Datetime) not in ($Hours_excluded) and\n  Area in ($Area)\nGROUP BY date(Datetime)\nORDER BY $__timeGroup(Datetime,$__interval)",
           "refId": "A",
           "select": [
             [
@@ -165,7 +165,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(Datetime,$__interval),\n  100*sum(MonsIV)/sum(Mons_all) AS '% IV'\nFROM stats_area\nWHERE\n  RPL = '$RPL' and\n  Area in ($Area)\nGROUP BY 1\nORDER BY $__timeGroup(Datetime,$__interval)",
+          "rawSql": "SELECT\n  $__timeGroupAlias(Datetime,$__interval),\n  100*sum(MonsIV)/sum(Mons_all) AS '% IV'\nFROM stats_area\nWHERE\n  RPL = 60 and\n  time(Datetime) not in ($Hours_excluded) and\n  Area in ($Area)\nGROUP BY date(Datetime)\nORDER BY $__timeGroup(Datetime,$__interval)",
           "refId": "B",
           "select": [
             [
@@ -251,6 +251,120 @@
         "y": 0
       },
       "hiddenSeries": false,
+      "id": 22,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "percentage": false,
+      "pluginVersion": "7.1.5",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  $__timeGroupAlias(a.Datetime,$__interval),\n  100*sum(a.TRPL)/sum(a.RPL) AS \"% Uptime\"\nFROM stats_worker a, Area b\nWHERE\n  RPL = 60 and\n  a.worker = b.Origin  and\n  time(Datetime) not in ($Hours_excluded) and\n  Area in ($Area)\nGROUP BY date(Datetime)\nORDER BY $__timeGroup(a.Datetime,$__interval)",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "encounter_id"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "pokemon_history",
+          "timeColumn": "disappear_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Uptime (raw data received)",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": "100",
+          "min": "50",
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_POGODB}",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 9
+      },
+      "hiddenSeries": false,
       "id": 4,
       "legend": {
         "avg": false,
@@ -279,7 +393,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(a.Datetime,$__interval),\n  sum(a.Reb) AS \"Reboots\",\n  sum(a.Res) AS \"Restarts\"\nFROM stats_worker a, Area b\nWHERE\n  a.RPL = '$RPL' and\n  a.Worker = b.Origin and\n  b.Area in ($Area)\nGROUP BY 1\nORDER BY $__timeGroup(a.Datetime,$__interval)",
+          "rawSql": "SELECT\n  $__timeGroupAlias(a.Datetime,$__interval),\n  sum(a.Reb) AS \"Reboots\",\n  sum(a.Res) AS \"Restarts\"\nFROM stats_worker a, Area b\nWHERE\n  RPL = 60 and\n  a.worker = b.Origin  and\n  time(Datetime) not in ($Hours_excluded) and\n  Area in ($Area)\nGROUP BY date(Datetime)\nORDER BY $__timeGroup(a.Datetime,$__interval)",
           "refId": "A",
           "select": [
             [
@@ -326,7 +440,7 @@
           "format": "short",
           "label": null,
           "logBase": 1,
-          "max": null,
+          "max": "200",
           "min": "0",
           "show": true
         },
@@ -336,6 +450,120 @@
           "logBase": 1,
           "max": null,
           "min": "0",
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_POGODB}",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 9
+      },
+      "hiddenSeries": false,
+      "id": 18,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "percentage": false,
+      "pluginVersion": "7.1.5",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  $__timeGroupAlias(a.Datetime,$__interval),\n  sum(a.Quest) AS \"Quest\"\nFROM stats_worker a, Area b\nWHERE\n  RPL = 60 and\n  a.worker = b.Origin  and\n  time(Datetime) not in ($Hours_excluded) and\n  Area in ($Area)\nGROUP BY date(Datetime)\nORDER BY $__timeGroup(a.Datetime,$__interval)",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "id"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "stats_worker",
+          "timeColumn": "Datetime",
+          "timeColumnType": "datetime",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Quest scanned",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
           "show": true
         }
       ],
@@ -366,7 +594,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 9
+        "y": 17
       },
       "hiddenSeries": false,
       "id": 6,
@@ -406,7 +634,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(Datetime,$__interval),\n  sum(DBspawns) AS \"DBspawns\",\n  sum(Last_scanned_today_acc) AS \"Scanned today\",\n  sum(Spawn_add) AS \"Spawns added\",\n  sum(Spawn_NULL) AS \"Spawns unknown\"\nFROM stats_area\nWHERE\n  RPL = '$RPL' and\n  Area in ($Area)\nGROUP BY 1\nORDER BY $__timeGroup(Datetime,$__interval)",
+          "rawSql": "SELECT\n  $__timeGroupAlias(Datetime,$__interval),\n  sum(DBspawns) AS \"DBspawns\",\n  sum(Last_scanned_today_acc) AS \"Scanned today\",\n  sum(Spawn_add) AS \"Spawns added\",\n  sum(Spawn_NULL) AS \"Spawns unknown\"\nFROM stats_area\nWHERE\n  RPL = 60 and\n  time(Datetime) not in ($Hours_excluded) and\n  Area in ($Area)\nGROUP BY date(Datetime)\nORDER BY $__timeGroup(Datetime,$__interval)",
           "refId": "A",
           "select": [
             [
@@ -489,7 +717,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 9
+        "y": 17
       },
       "hiddenSeries": false,
       "id": 8,
@@ -520,7 +748,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(Datetime,$__interval),\n  sum(Last_scanned_1d) AS \"Last scanned yesterday\",\n  sum(Last_scanned_2d) AS \"Last scanned 2d ago\",\n  sum(Last_scanned_3d) AS \"Last scanned 3d ago\",\n  sum(Last_scanned_7dp) AS \"Last scanned >7d ago\"\nFROM stats_area\nWHERE\n  RPL = '$RPL' and\n  Area in ($Area)\nGROUP BY 1\nORDER BY $__timeGroup(Datetime,$__interval)",
+          "rawSql": "SELECT\n  $__timeGroupAlias(Datetime,$__interval),\n  sum(Last_scanned_1d) AS \"Last scanned yesterday\",\n  sum(Last_scanned_2d) AS \"Last scanned 2d ago\",\n  sum(Last_scanned_3d) AS \"Last scanned 3d ago\",\n  sum(Last_scanned_7dp) AS \"Last scanned >7d ago\"\nFROM stats_area\nWHERE\n  RPL = 60 and\n  time(Datetime) not in ($Hours_excluded) and\n  Area in ($Area)\nGROUP BY date(Datetime)\nORDER BY $__timeGroup(Datetime,$__interval)",
           "refId": "A",
           "select": [
             [
@@ -603,7 +831,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 17
+        "y": 25
       },
       "hiddenSeries": false,
       "id": 10,
@@ -639,7 +867,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(Datetime,$__interval),\n  sum(Spawndef15) AS \"60m spawn\",\n  sum(SpawndefNot15) AS \"30m spawn\"\nFROM stats_area\nWHERE\n  RPL = '$RPL' and\n  Area in ($Area)\nGROUP BY 1\nORDER BY $__timeGroup(Datetime,$__interval)",
+          "rawSql": "SELECT\n  $__timeGroupAlias(Datetime,$__interval),\n  sum(Spawndef15) AS \"60m spawn\",\n  sum(SpawndefNot15) AS \"30m spawn\"\nFROM stats_area\nWHERE\n  RPL = 60 and\n  time(Datetime) not in ($Hours_excluded) and\n  Area in ($Area)\nGROUP BY date(Datetime)\nORDER BY $__timeGroup(Datetime,$__interval)",
           "refId": "A",
           "select": [
             [
@@ -724,7 +952,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 17
+        "y": 25
       },
       "hiddenSeries": false,
       "id": 12,
@@ -760,7 +988,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(Datetime,$__interval),\n  100*sum(w5)/sum(Mons_all) AS '% scanned within 5m',\n  100*sum(w10)/sum(Mons_all) AS '% scanned within 10m',\n  100*sum(w15)/sum(Mons_all) AS '% scanned within 15m',\n  100*sum(w20)/sum(Mons_all) AS '% scanned within 20m'\nFROM stats_area\nWHERE\n  RPL = '$RPL' and\n  Area in ($Area)\nGROUP BY 1\nORDER BY $__timeGroup(Datetime,$__interval)",
+          "rawSql": "SELECT\n  $__timeGroupAlias(Datetime,$__interval),\n  100*sum(w5)/sum(Mons_all) AS '% scanned within 5m',\n  100*sum(w10)/sum(Mons_all) AS '% scanned within 10m',\n  100*sum(w15)/sum(Mons_all) AS '% scanned within 15m',\n  100*sum(w20)/sum(Mons_all) AS '% scanned within 20m'\nFROM stats_area\nWHERE\n  RPL = 60 and\n  time(Datetime) not in ($Hours_excluded) and\n  Area in ($Area)\nGROUP BY date(Datetime)\nORDER BY $__timeGroup(Datetime,$__interval)",
           "refId": "A",
           "select": [
             [
@@ -796,7 +1024,7 @@
           ],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(Datetime,$__interval),\n  100*sum(MinutesLeft)/((sum(Spawndef15) * 60)+(sum(SpawndefNot15) * 30)) AS \"%time left\"\nFROM pogodb.stats_area\nWHERE\n  RPL = '$RPL' and\n  Area in ($Area)\nGROUP BY 1\nORDER BY $__timeGroup(Datetime,$__interval)",
+          "rawSql": "SELECT\n  $__timeGroupAlias(Datetime,$__interval),\n  100*sum(MinutesLeft)/((sum(Spawndef15) * 60)+(sum(SpawndefNot15) * 30)) AS \"%time left\"\nFROM pogodb.stats_area\nWHERE\n  RPL = 60 and\n  time(Datetime) not in ($Hours_excluded) and\n  Area in ($Area)\nGROUP BY date(Datetime)\nORDER BY $__timeGroup(Datetime,$__interval)",
           "refId": "B",
           "select": [
             [
@@ -858,7 +1086,7 @@
           "format": "short",
           "label": null,
           "logBase": 1,
-          "max": null,
+          "max": "100",
           "min": null,
           "show": true
         },
@@ -866,8 +1094,8 @@
           "format": "short",
           "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
+          "max": "100",
+          "min": "50",
           "show": true
         }
       ],
@@ -894,7 +1122,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 25
+        "y": 33
       },
       "hiddenSeries": false,
       "id": 14,
@@ -954,7 +1182,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(a.Datetime,$__interval),\n  sum(a.Tloc) AS \"#Locations handled\",\n  sum(a.Tp) AS \"#Teleports\",\n  sum(a.Wk) AS \"#Walk\"\nFROM stats_worker a, Area b\nWHERE\n  a.RPL = '$RPL' and\n  a.Worker = b.Origin and\n  b.Area in ($Area)\nGROUP BY 1\nORDER BY $__timeGroup(a.Datetime,$__interval)",
+          "rawSql": "SELECT\n  $__timeGroupAlias(a.Datetime,$__interval),\n  sum(a.Tloc) AS \"#Locations handled\",\n  sum(a.Tp) AS \"#Teleports\",\n  sum(a.Wk) AS \"#Walk\"\nFROM stats_worker a, Area b\nWHERE\n  RPL = 60 and\n  a.worker = b.Origin  and\n  time(Datetime) not in ($Hours_excluded) and\n  Area in ($Area)\nGROUP BY date(Datetime)\nORDER BY $__timeGroup(a.Datetime,$__interval)",
           "refId": "A",
           "select": [
             [
@@ -1037,7 +1265,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 25
+        "y": 33
       },
       "hiddenSeries": false,
       "id": 20,
@@ -1068,7 +1296,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(a.Datetime,$__interval),\n  100*sum(a.LocOk)/sum(a.Tloc) AS \"Location Success Rate\",\n  100*sum(a.TpOk)/sum(a.Tp) AS \"Teleport Success Rate\",\n  100*sum(a.WkOk)/sum(a.Wk) AS \"Walk Success Rate\"\nFROM stats_worker a, Area b\nWHERE\n  a.RPL = '$RPL' and\n  a.Worker = b.Origin and\n  b.Area in ($Area)\nGROUP BY 1\nORDER BY $__timeGroup(a.Datetime,$__interval)",
+          "rawSql": "SELECT\n  $__timeGroupAlias(a.Datetime,$__interval),\n  100*sum(a.LocOk)/sum(a.Tloc) AS \"Location Success Rate\",\n  100*sum(a.TpOk)/sum(a.Tp) AS \"Teleport Success Rate\",\n  100*sum(a.WkOk)/sum(a.Wk) AS \"Walk Success Rate\"\nFROM stats_worker a, Area b\nWHERE\n  RPL = 60 and\n  a.worker = b.Origin  and\n  time(Datetime) not in ($Hours_excluded) and\n  Area in ($Area)\nGROUP BY date(Datetime)\nORDER BY $__timeGroup(a.Datetime,$__interval)",
           "refId": "A",
           "select": [
             [
@@ -1116,121 +1344,7 @@
           "label": null,
           "logBase": 1,
           "max": "100",
-          "min": "95",
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "${DS_POGODB}",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
-        "overrides": []
-      },
-      "fill": 1,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 33
-      },
-      "hiddenSeries": false,
-      "id": 18,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 1,
-      "nullPointMode": "null",
-      "percentage": false,
-      "pluginVersion": "7.1.5",
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "format": "time_series",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(a.Datetime,$__interval),\n  sum(a.Quest) AS \"Quest\"\nFROM stats_worker a, Area b\nWHERE\n  a.RPL = '$RPL' and\n  a.Worker = b.Origin and\n  b.Area in ($Area)\nGROUP BY 1\nORDER BY $__timeGroup(a.Datetime,$__interval)",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "id"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "table": "stats_worker",
-          "timeColumn": "Datetime",
-          "timeColumnType": "datetime",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Quest scanned",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
+          "min": "98",
           "show": true
         },
         {
@@ -1255,28 +1369,6 @@
   "templating": {
     "list": [
       {
-        "allValue": null,
-        "current": {},
-        "datasource": "${DS_POGODB}",
-        "definition": "select RPL from stats_area;",
-        "hide": 0,
-        "includeAll": false,
-        "label": null,
-        "multi": false,
-        "name": "RPL",
-        "options": [],
-        "query": "select RPL from stats_area;",
-        "refresh": 1,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 3,
-        "tagValuesQuery": "",
-        "tags": [],
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
-      },
-      {
         "allValue": "",
         "current": {},
         "datasource": "${DS_POGODB}",
@@ -1292,6 +1384,28 @@
         "regex": "",
         "skipUrlSync": false,
         "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_POGODB}",
+        "definition": "select concat(hour(datetime),':00:00') from stats_area where date(datetime) = curdate() - interval 1 day;",
+        "hide": 0,
+        "includeAll": false,
+        "label": null,
+        "multi": true,
+        "name": "Hours_excluded",
+        "options": [],
+        "query": "select concat(hour(datetime),':00:00') from stats_area where date(datetime) = curdate() - interval 1 day;",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 3,
         "tagValuesQuery": "",
         "tags": [],
         "tagsQuery": "",
@@ -1319,7 +1433,7 @@
     ]
   },
   "timezone": "",
-  "title": "Stats network/area level",
-  "uid": "KY-d_hOMz",
-  "version": 19
+  "title": "03. Stats network/area level exclude hours",
+  "uid": "KY-d_hOMb",
+  "version": 17
 }

@@ -46,7 +46,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1601018010496,
+  "iteration": 1602336250738,
   "links": [],
   "panels": [
     {
@@ -70,7 +70,7 @@
         "y": 0
       },
       "hiddenSeries": false,
-      "id": 8,
+      "id": 2,
       "legend": {
         "avg": false,
         "current": false,
@@ -90,7 +90,7 @@
       "renderer": "flot",
       "seriesOverrides": [
         {
-          "alias": "%IV scanned",
+          "alias": "%IV",
           "yaxis": 2
         }
       ],
@@ -103,19 +103,21 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(a.Datetime,$__interval),\n  sum(Mons_all) AS \"Mons scanned\",\n  100*sum(a.MonsIV)/sum(a.Mons_all) AS \"%IV scanned\"\nFROM stats_area a\nWHERE\n  a.RPL = '$RPL'\nGROUP BY 1\nORDER BY $__timeGroup(a.Datetime,$__interval)",
+          "rawSql": "SELECT\n  $__timeGroup(Datetime,$__interval) AS \"time\",\n  sum(Tmon) AS 'Mons scanned',\n  sum(IVmon) AS 'IV scanned',\n  100*sum(IVmon)/sum(Tmon) AS '%IV'\nFROM stats_worker\nWHERE\n  $__timeFilter(Datetime) and\n  RPL='$RPL' and\n  Worker in ($Worker)\nGROUP BY 1  \nORDER BY $__timeGroup(Datetime,$__interval)",
           "refId": "A",
           "select": [
             [
               {
                 "params": [
-                  "value"
+                  "id"
                 ],
                 "type": "column"
               }
             ]
           ],
-          "timeColumn": "time",
+          "table": "stats_worker",
+          "timeColumn": "Datetime",
+          "timeColumnType": "datetime",
           "where": [
             {
               "name": "$__timeFilter",
@@ -146,7 +148,7 @@
       "yaxes": [
         {
           "format": "short",
-          "label": "#Mons",
+          "label": null,
           "logBase": 1,
           "max": null,
           "min": null,
@@ -154,10 +156,10 @@
         },
         {
           "format": "short",
-          "label": "%IV",
+          "label": null,
           "logBase": 1,
-          "max": "100",
-          "min": "80",
+          "max": null,
+          "min": null,
           "show": true
         }
       ],
@@ -187,7 +189,7 @@
         "y": 0
       },
       "hiddenSeries": false,
-      "id": 12,
+      "id": 8,
       "legend": {
         "avg": false,
         "current": false,
@@ -223,7 +225,7 @@
           ],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(Datetime,$__interval),\n  100*sum(TRPL)/sum(RPL) AS \"% Uptime\"\nFROM stats_worker\nWHERE\n  $__timeFilter(Datetime) and\n  RPL = '$RPL'\nGROUP BY 1\nORDER BY $__timeGroup(Datetime,$__interval)",
+          "rawSql": "SELECT\n  $__timeGroupAlias(Datetime,$__interval),\n  sum(res) AS \"# pogo restarts\",\n  sum(reb) AS \"#device reboots\"\nFROM stats_worker\nWHERE\n  $__timeFilter(Datetime) and\n  RPL = '$RPL' and\n  Worker in ($Worker)\nGROUP BY Datetime\nORDER BY $__timeGroup(Datetime,$__interval)",
           "refId": "A",
           "select": [
             [
@@ -263,7 +265,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Uptime (raw data received)",
+      "title": "Restart / Reboot",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -282,8 +284,8 @@
           "format": "short",
           "label": null,
           "logBase": 1,
-          "max": "100",
-          "min": null,
+          "max": null,
+          "min": "0",
           "show": true
         },
         {
@@ -321,7 +323,7 @@
         "y": 8
       },
       "hiddenSeries": false,
-      "id": 10,
+      "id": 4,
       "legend": {
         "avg": false,
         "current": false,
@@ -357,7 +359,7 @@
           ],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(Datetime,$__interval),\n  count(distinct(Worker)) AS \"#devices\"\nFROM stats_worker\nWHERE\n  $__timeFilter(Datetime) and\n  RPL = '$RPL'\nGROUP BY 1\nORDER BY $__timeGroup(Datetime,$__interval)",
+          "rawSql": "SELECT\n  $__timeGroupAlias(Datetime,$__interval),\n  sum(Tloc) AS \"Locations handled\",\n  sum(Wk) AS \"#walking\",\n  sum(Tp) AS \"#teleports\"\nFROM stats_worker\nWHERE\n  $__timeFilter(Datetime) and\n  RPL = '$RPL' and\n  Worker in ($Worker)\nGROUP BY Datetime\nORDER BY $__timeGroup(Datetime,$__interval)",
           "refId": "A",
           "select": [
             [
@@ -397,7 +399,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "#Devices",
+      "title": "Location handling (1)",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -473,22 +475,25 @@
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
-      "seriesOverrides": [
-        {
-          "alias": "Avgerage # device reboots per hour",
-          "yaxis": 2
-        }
-      ],
+      "seriesOverrides": [],
       "spaceLength": 10,
       "stack": false,
       "steppedLine": false,
       "targets": [
         {
           "format": "time_series",
-          "group": [],
+          "group": [
+            {
+              "params": [
+                "$__interval",
+                "none"
+              ],
+              "type": "time"
+            }
+          ],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(Datetime,$__interval),\n  sum(Res)/(count(Worker)*$RPL/60) AS \"Avgerage # Pogo restarts per hour\",\n  sum(Reb)/(count(Worker)*$RPL/60) AS \"Avgerage # device reboots per hour\"\nFROM stats_worker\nWHERE\n  RPL = '$RPL'\nGROUP BY 1\nORDER BY $__timeGroup(Datetime,$__interval)",
+          "rawSql": "SELECT\n  $__timeGroupAlias(Datetime,$__interval),\n  100*sum(LocOk)/sum(Tloc) AS \"Location success rate\",\n  100*sum(WkOk)/sum(Wk) AS \"Walk success rate\",\n  100*sum(TpOk)/sum(Tp) AS \"Teleport Success Rate\"\nFROM stats_worker\nWHERE\n  $__timeFilter(Datetime) and\n  RPL = '$RPL' and\n  Worker in ($Worker)\nGROUP BY Datetime\nORDER BY $__timeGroup(Datetime,$__interval)",
           "refId": "A",
           "select": [
             [
@@ -497,6 +502,18 @@
                   "id"
                 ],
                 "type": "column"
+              },
+              {
+                "params": [
+                  "avg"
+                ],
+                "type": "aggregate"
+              },
+              {
+                "params": [
+                  "id"
+                ],
+                "type": "alias"
               }
             ]
           ],
@@ -516,7 +533,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Restart / Reboot",
+      "title": "Location handling (2)",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -533,124 +550,10 @@
       "yaxes": [
         {
           "format": "short",
-          "label": "# restarts /h",
-          "logBase": 1,
-          "max": "2",
-          "min": "0",
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": "#reboots /h",
-          "logBase": 1,
-          "max": "0.5",
-          "min": "0",
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "${DS_POGODB}",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
-        "overrides": []
-      },
-      "fill": 1,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 16
-      },
-      "hiddenSeries": false,
-      "id": 2,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 1,
-      "nullPointMode": "null",
-      "percentage": false,
-      "pluginVersion": "7.1.5",
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "format": "time_series",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(a.Datetime,$__interval),\n  100*sum(a.MinutesLeft)/((sum(a.Spawndef15) * 60)+(sum(a.SpawndefNot15) * 30)) AS \"%despawntime left\"\nFROM stats_area a\nWHERE\n  a.RPL = '$RPL'\nGROUP BY 1\nORDER BY $__timeGroup(a.Datetime,$__interval)",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "AvgMinutesLeft"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "table": "stats_area",
-          "timeColumn": "Datetime",
-          "timeColumnType": "datetime",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Despawn time left",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "short",
-          "label": "% despawn time left",
+          "label": null,
           "logBase": 1,
           "max": "100",
-          "min": "40",
+          "min": "90",
           "show": true
         },
         {
@@ -684,11 +587,11 @@
       "gridPos": {
         "h": 8,
         "w": 12,
-        "x": 12,
+        "x": 0,
         "y": 16
       },
       "hiddenSeries": false,
-      "id": 4,
+      "id": 10,
       "legend": {
         "avg": false,
         "current": false,
@@ -706,34 +609,25 @@
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
-      "seriesOverrides": [
-        {
-          "alias": "Avgerage # Pogo restarts",
-          "yaxis": 2
-        },
-        {
-          "alias": "Avgerage # device reboots",
-          "yaxis": 2
-        },
-        {
-          "alias": "Avgerage # Pogo restarts per hour",
-          "yaxis": 2
-        },
-        {
-          "alias": "Avgerage # device reboots per hour",
-          "yaxis": 2
-        }
-      ],
+      "seriesOverrides": [],
       "spaceLength": 10,
       "stack": false,
       "steppedLine": false,
       "targets": [
         {
           "format": "time_series",
-          "group": [],
+          "group": [
+            {
+              "params": [
+                "$__interval",
+                "none"
+              ],
+              "type": "time"
+            }
+          ],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(Datetime,$__interval),\n  100*sum(LocOk)/sum(Tloc) AS \"Location Success Rate\",\n  100*sum(TpOk)/sum(Tp) AS \"Teleport Success Rate\",\n  100*sum(WkOk)/sum(Wk) AS \"Walk Success Rate\"\nFROM stats_worker\nWHERE\n  RPL = '$RPL'\nGROUP BY 1\nORDER BY $__timeGroup(Datetime,$__interval)",
+          "rawSql": "SELECT\n  $__timeGroupAlias(Datetime,$__interval),\n  sum(Quest) as \"#Quests scanned\"\nFROM stats_worker\nWHERE\n  $__timeFilter(Datetime) and\n  RPL = '$RPL' and\n  Worker in ($Worker)\nGROUP BY Datetime\nORDER BY $__timeGroup(Datetime,$__interval)",
           "refId": "A",
           "select": [
             [
@@ -742,6 +636,18 @@
                   "id"
                 ],
                 "type": "column"
+              },
+              {
+                "params": [
+                  "avg"
+                ],
+                "type": "aggregate"
+              },
+              {
+                "params": [
+                  "id"
+                ],
+                "type": "alias"
               }
             ]
           ],
@@ -761,7 +667,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Location handling",
+      "title": "Quest scanned",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -780,16 +686,16 @@
           "format": "short",
           "label": null,
           "logBase": 1,
-          "max": "100",
-          "min": "95",
+          "max": null,
+          "min": null,
           "show": true
         },
         {
           "format": "short",
           "label": null,
           "logBase": 1,
-          "max": "0.2",
-          "min": "0",
+          "max": null,
+          "min": null,
           "show": true
         }
       ],
@@ -808,18 +714,40 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_POGODB}",
-        "definition": "select RPL from stats_area;",
+        "definition": "select distinct(RPL) from stats_worker;",
         "hide": 0,
         "includeAll": false,
         "label": null,
         "multi": false,
         "name": "RPL",
         "options": [],
-        "query": "select RPL from stats_area;",
+        "query": "select distinct(RPL) from stats_worker;",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
         "sort": 3,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_POGODB}",
+        "definition": "select distinct(Worker) from stats_worker;",
+        "hide": 0,
+        "includeAll": false,
+        "label": null,
+        "multi": true,
+        "name": "Worker",
+        "options": [],
+        "query": "select distinct(Worker) from stats_worker;",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
         "tagValuesQuery": "",
         "tags": [],
         "tagsQuery": "",
@@ -847,7 +775,7 @@
     ]
   },
   "timezone": "",
-  "title": "Stats KPIs",
-  "uid": "jM5txJOMz",
-  "version": 14
+  "title": "04. Stats worker level",
+  "uid": "ZKINe-OMz",
+  "version": 8
 }

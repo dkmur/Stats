@@ -1,8 +1,8 @@
 {
   "__inputs": [
     {
-      "name": "DS_POGODB",
-      "label": "pogodb",
+      "name": "DS_RMDB",
+      "label": "rmdb",
       "description": "",
       "type": "datasource",
       "pluginId": "mysql",
@@ -46,11 +46,10 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1600973260534,
   "links": [],
   "panels": [
     {
-      "datasource": "${DS_POGODB}",
+      "datasource": "${DS_RMDB}",
       "fieldConfig": {
         "defaults": {
           "custom": {
@@ -75,88 +74,80 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "rom"
+              "options": "routecalc_id"
             },
             "properties": [
               {
                 "id": "custom.width",
-                "value": 83
+                "value": 96
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "architecture"
+              "options": "name"
             },
             "properties": [
               {
                 "id": "custom.width",
-                "value": 147
+                "value": 250
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "time"
+              "options": "#route positions"
             },
             "properties": [
               {
                 "id": "custom.width",
-                "value": 167
+                "value": 150
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "date"
+              "options": "#devices"
             },
             "properties": [
               {
                 "id": "custom.width",
-                "value": 167
+                "value": 115
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "Architecture"
+              "options": "# positions / device"
             },
             "properties": [
               {
                 "id": "custom.width",
-                "value": 102
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Rom"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 67
+                "value": 234
               }
             ]
           }
         ]
       },
       "gridPos": {
-        "h": 6,
+        "h": 12,
         "w": 12,
         "x": 0,
         "y": 0
       },
-      "id": 2,
+      "id": 14,
       "options": {
-        "frameIndex": 0,
         "showHeader": true,
-        "sortBy": []
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "# positions / device"
+          }
+        ]
       },
       "pluginVersion": "7.1.5",
       "targets": [
@@ -165,7 +156,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\ndate as 'date', \nifnull(arch,'no_data') as 'Architecture',\nifnull(rom,'no_data') as 'Rom',\ncount(origin) as '#devices'\nfrom ATVdetails\n\nWHERE\ndate = '$date'\n\nGROUP BY date, arch, rom\n",
+          "rawSql": "SELECT  c.name, ROUND((LENGTH(a.routefile)-LENGTH(REPLACE(a.routefile, \",\", \"\"))) / (2 * LENGTH(\",\"))) AS '#route positions', count(f.device_id)/count(distinct(d.walkerarea_id))*count(distinct(e.walker_id)) AS '#devices', ROUND((LENGTH(a.routefile)-LENGTH(REPLACE(a.routefile, \",\", \"\"))) / (2 * LENGTH(\",\"))) / (count(f.device_id)/count(distinct(d.walkerarea_id))*count(distinct(e.walker_id))) AS '# positions / device'\nFROM \nsettings_routecalc a,\nsettings_area_mon_mitm b,\nsettings_area c,\nsettings_walkerarea d,\nsettings_walker_to_walkerarea e,\nsettings_device f\n\nwhere\na.routecalc_id = b.routecalc and\nb.area_id = c.area_id and\nb.area_id = d.area_id and\nd.walkerarea_id = e.walkerarea_id and\ne.walker_id = f.walker_id\n\nGROUP BY c.name\n\n",
           "refId": "A",
           "select": [
             [
@@ -189,11 +180,11 @@
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Architecture / Rom",
+      "title": "Mon mitm routes",
       "type": "table"
     },
     {
-      "datasource": "${DS_POGODB}",
+      "datasource": "${DS_RMDB}",
       "fieldConfig": {
         "defaults": {
           "custom": {
@@ -218,46 +209,419 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "pogo_update"
+              "options": "#devices"
             },
             "properties": [
               {
                 "id": "custom.width",
-                "value": 105
+                "value": 142
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "pd_update"
+              "options": "name"
             },
             "properties": [
               {
                 "id": "custom.width",
-                "value": 83
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "rgc_update"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 85
+                "value": 244
               }
             ]
           }
         ]
       },
       "gridPos": {
-        "h": 6,
+        "h": 12,
         "w": 12,
         "x": 12,
         "y": 0
+      },
+      "id": 16,
+      "options": {
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "# positions / device"
+          }
+        ]
+      },
+      "pluginVersion": "7.1.5",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT  c.name, ROUND((LENGTH(a.routefile)-LENGTH(REPLACE(a.routefile, \",\", \"\"))) / (2 * LENGTH(\",\"))) AS '#route positions', count(f.device_id)/count(distinct(d.walkerarea_id))*count(distinct(e.walker_id)) AS '#devices', ROUND((LENGTH(a.routefile)-LENGTH(REPLACE(a.routefile, \",\", \"\"))) / (2 * LENGTH(\",\"))) / (count(f.device_id)/count(distinct(d.walkerarea_id))*count(distinct(e.walker_id))) AS '# positions / device'\nFROM \nsettings_routecalc a,\nsettings_area_pokestops b,\nsettings_area c,\nsettings_walkerarea d,\nsettings_walker_to_walkerarea e,\nsettings_device f\n\nwhere\na.routecalc_id = b.routecalc and\nb.area_id = c.area_id and\nb.area_id = d.area_id and\nd.walkerarea_id = e.walkerarea_id and\ne.walker_id = f.walker_id\n\nGROUP BY c.name",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Pokestop routes",
+      "type": "table"
+    },
+    {
+      "datasource": "${DS_RMDB}",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": null
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "#"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 26
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "post_walk_delay"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 120
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "walk_after_teleport_distance"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 192
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "post_teleport_delay"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 136
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "mitm_wait_timeout"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 134
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "cool_down_sleep"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 122
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "post_turn_screen_on_delay"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 182
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "post_pogo_start_delay"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 159
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "restart_pogo"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 96
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "reboot"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 56
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "restart_thresh"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 104
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "reboot_thresh"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 103
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "#Pools"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 61
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 24,
+        "x": 0,
+        "y": 12
+      },
+      "id": 2,
+      "options": {
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "7.1.5",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  count(name) as '#Pools', post_walk_delay, post_teleport_delay, walk_after_teleport_distance, mitm_wait_timeout, cool_down_sleep, post_turn_screen_on_delay, post_pogo_start_delay, restart_pogo, reboot, restart_thresh, reboot_thresh \nFROM settings_devicepool\nGROUP BY post_walk_delay, post_teleport_delay, walk_after_teleport_distance, mitm_wait_timeout, cool_down_sleep, post_turn_screen_on_delay, post_pogo_start_delay, restart_pogo, reboot, restart_thresh, reboot_thresh\n\n",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Device shared settings (1)",
+      "type": "table"
+    },
+    {
+      "datasource": "${DS_RMDB}",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": null
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "#"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 41
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "screendetection"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 120
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "inventory_clear_rounds"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 169
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "inventory_clear_item_amount_tap_duration"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 287
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "enhanced_mode_quest"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 158
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "enhanced_mode_quest_safe_items"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 239
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "#Pools"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 65
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 24,
+        "x": 0,
+        "y": 17
       },
       "id": 4,
       "options": {
@@ -271,7 +635,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\ndate as 'date',\nifnull(pogo_update,'no_data ') as 'pogo_update',\nifnull(pd_update,'no_data ') as pd_update,\nifnull(rgc_update,'no_data ') as 'rgc_update',\nifnull(pingreboot,'no_data ') as pingreboot, \ncount(origin) as 'devices'\nfrom ATVdetails\n\nWHERE\ndate = '$date'\n\nGROUP BY date, pogo_update, pd_update, rgc_update, pingreboot",
+          "rawSql": "SELECT\n  count(name) as '#Pools', screendetection, inventory_clear_rounds, inventory_clear_item_amount_tap_duration, enhanced_mode_quest, enhanced_mode_quest_safe_items \nFROM settings_devicepool\nGROUP BY screendetection, inventory_clear_rounds, inventory_clear_item_amount_tap_duration, enhanced_mode_quest, enhanced_mode_quest_safe_items \n",
           "refId": "A",
           "select": [
             [
@@ -295,11 +659,11 @@
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Rom options",
+      "title": "Device shared settings (2)",
       "type": "table"
     },
     {
-      "datasource": "${DS_POGODB}",
+      "datasource": "${DS_RMDB}",
       "fieldConfig": {
         "defaults": {
           "custom": {
@@ -324,24 +688,156 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "date"
+              "options": "#"
             },
             "properties": [
               {
                 "id": "custom.width",
-                "value": 169
+                "value": 38
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "PoGo"
+              "options": "post_walk_delay"
             },
             "properties": [
               {
                 "id": "custom.width",
-                "value": 76
+                "value": 116
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "post_teleport_delay"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 136
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "walk_after_teleport_distance"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 194
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "mitm_wait_timeout"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 136
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "cool_down_sleep"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 121
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "post_turn_screen_on_delay"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 186
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "post_pogo_start_delay"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 159
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "restart_pogo"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 97
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "reboot"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 55
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "restart_thresh"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 103
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "reboot_thresh"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 107
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "#Devices"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 72
               }
             ]
           }
@@ -349,9 +845,9 @@
       },
       "gridPos": {
         "h": 5,
-        "w": 12,
+        "w": 24,
         "x": 0,
-        "y": 6
+        "y": 22
       },
       "id": 6,
       "options": {
@@ -365,7 +861,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\ndate as 'date', \nifnull(pogo,'no_data') as 'PoGo',\ncount(origin) as '#devices'\nfrom ATVdetails\n\nWHERE\ndate = '$date'\n\nGROUP BY date, pogo\n",
+          "rawSql": "SELECT\n  count(device_id) as '#Devices', post_walk_delay, post_teleport_delay, walk_after_teleport_distance, mitm_wait_timeout, cool_down_sleep, post_turn_screen_on_delay, post_pogo_start_delay, restart_pogo, reboot, restart_thresh, reboot_thresh \nFROM settings_device\nGROUP BY post_walk_delay, post_teleport_delay, walk_after_teleport_distance, mitm_wait_timeout, cool_down_sleep, post_turn_screen_on_delay, post_pogo_start_delay, restart_pogo, reboot, restart_thresh, reboot_thresh",
           "refId": "A",
           "select": [
             [
@@ -389,11 +885,11 @@
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "PoGo release",
+      "title": "Device settings (1)",
       "type": "table"
     },
     {
-      "datasource": "${DS_POGODB}",
+      "datasource": "${DS_RMDB}",
       "fieldConfig": {
         "defaults": {
           "custom": {
@@ -418,24 +914,84 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Magisk"
+              "options": "#"
             },
             "properties": [
               {
                 "id": "custom.width",
-                "value": 66
+                "value": 33
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "date"
+              "options": "screendetection"
             },
             "properties": [
               {
                 "id": "custom.width",
-                "value": 163
+                "value": 116
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "inventory_clear_rounds"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 165
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "inventory_clear_item_amount_tap_duration"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 286
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "enhanced_mode_quest"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 162
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "enhanced_mode_quest_safe_items"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 238
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "#Devices"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 75
               }
             ]
           }
@@ -443,9 +999,9 @@
       },
       "gridPos": {
         "h": 5,
-        "w": 12,
-        "x": 12,
-        "y": 6
+        "w": 24,
+        "x": 0,
+        "y": 27
       },
       "id": 8,
       "options": {
@@ -459,7 +1015,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\ndate as 'date', \nifnull(magisk,'no_data') as 'Magisk',\nifnull(magisk_modules,'no_data') as 'Modules loaded',\ncount(origin) as '#devices'\nfrom ATVdetails\n\nWHERE\ndate = '$date'\n\nGROUP BY date, magisk, magisk_modules\n",
+          "rawSql": "SELECT\n  count(name) as '#Devices', screendetection, inventory_clear_rounds, inventory_clear_item_amount_tap_duration, enhanced_mode_quest, enhanced_mode_quest_safe_items \nFROM settings_device\nGROUP BY screendetection, inventory_clear_rounds, inventory_clear_item_amount_tap_duration, enhanced_mode_quest, enhanced_mode_quest_safe_items \n",
           "refId": "A",
           "select": [
             [
@@ -483,11 +1039,11 @@
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Magisk / modules",
+      "title": "Device Settings (2)",
       "type": "table"
     },
     {
-      "datasource": "${DS_POGODB}",
+      "datasource": "${DS_RMDB}",
       "fieldConfig": {
         "defaults": {
           "custom": {
@@ -512,72 +1068,96 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "username"
+              "options": "#"
             },
             "properties": [
               {
                 "id": "custom.width",
-                "value": 85
+                "value": 11
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "password"
+              "options": "logintype"
             },
             "properties": [
               {
                 "id": "custom.width",
-                "value": 82
+                "value": 80
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "auth_token"
+              "options": "ggl_login_mail"
             },
             "properties": [
               {
                 "id": "custom.width",
-                "value": 135
+                "value": 109
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "login"
+              "options": "clear_game_data"
             },
             "properties": [
               {
                 "id": "custom.width",
-                "value": 182
+                "value": 125
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "post_destination"
+              "options": "account_rotation"
             },
             "properties": [
               {
                 "id": "custom.width",
-                "value": 255
+                "value": 120
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "date      "
+              "options": "rotation_waittime"
             },
             "properties": [
               {
                 "id": "custom.width",
-                "value": 160
+                "value": 132
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "rotate_on_lvl_30"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 117
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "#Devices"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 74
               }
             ]
           }
@@ -587,9 +1167,9 @@
         "h": 5,
         "w": 24,
         "x": 0,
-        "y": 11
+        "y": 32
       },
-      "id": 11,
+      "id": 10,
       "options": {
         "showHeader": true,
         "sortBy": []
@@ -601,7 +1181,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\ndate as 'date      ',\nifnull(PD_auth_username,'no_data ') as 'username',\nifnull(PD_auth_password,'no_data ') as 'password',\nifnull(PD_user_login,'no_data') as 'login',\nifnull(PD_auth_token,'no_data') as 'auth_token',\nifnull(PD_post_destination,'no_data') as 'post_destination',\ncount(origin) as '#devices'\nfrom ATVdetails\n\nWHERE\ndate = '$date'\n\nGROUP BY date, PD_auth_username, PD_auth_password, PD_user_login, PD_auth_token, PD_post_destination\n",
+          "rawSql": "SELECT\n  count(name) as '#Devices', logintype, ggl_login_mail, clear_game_data, account_rotation, rotation_waittime, rotate_on_lvl_30\nFROM settings_device\nGROUP BY logintype, ggl_login_mail, clear_game_data, account_rotation, rotation_waittime, rotate_on_lvl_30\n",
           "refId": "A",
           "select": [
             [
@@ -625,11 +1205,11 @@
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "PogoDroid (1)",
+      "title": "Device settings (3)",
       "type": "table"
     },
     {
-      "datasource": "${DS_POGODB}",
+      "datasource": "${DS_RMDB}",
       "fieldConfig": {
         "defaults": {
           "custom": {
@@ -654,190 +1234,166 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "boot_delay"
+              "options": "#"
             },
             "properties": [
               {
                 "id": "custom.width",
-                "value": 90
+                "value": 31
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "injection_delay"
+              "options": "init"
             },
             "properties": [
               {
                 "id": "custom.width",
-                "value": 113
+                "value": 41
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "lastSend"
+              "options": "coords_spawns_known"
             },
             "properties": [
               {
                 "id": "custom.width",
-                "value": 72
+                "value": 160
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "intentStop"
+              "options": "speed"
             },
             "properties": [
               {
                 "id": "custom.width",
-                "value": 77
+                "value": 52
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "sendProto"
+              "options": "max_distance"
             },
             "properties": [
               {
                 "id": "custom.width",
-                "value": 79
+                "value": 103
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "disExtComms"
+              "options": "starve_route"
             },
             "properties": [
               {
                 "id": "custom.width",
-                "value": 100
+                "value": 95
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "enOomadj"
+              "options": "delay_after_prio_event"
             },
             "properties": [
               {
                 "id": "custom.width",
-                "value": 80
+                "value": 157
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "enAuthHead"
+              "options": "priority_queue_clustering_timedelta"
             },
             "properties": [
               {
                 "id": "custom.width",
-                "value": 96
+                "value": 242
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "date"
+              "options": "remove_from_queue_backlog"
             },
             "properties": [
               {
                 "id": "custom.width",
-                "value": 165
+                "value": 192
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "bootDelay"
+              "options": "min_time_left_seconds"
             },
             "properties": [
               {
                 "id": "custom.width",
-                "value": 77
+                "value": 159
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "injectionDelay"
+              "options": "init_mode_rounds"
             },
             "properties": [
               {
                 "id": "custom.width",
-                "value": 105
+                "value": 125
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "dis_lastSend"
+              "options": "#Routes"
             },
             "properties": [
               {
                 "id": "custom.width",
-                "value": 98
+                "value": 66
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "dis_ExtComms"
+              "options": "max_clustering"
             },
             "properties": [
               {
                 "id": "custom.width",
-                "value": 110
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "en_oomadj"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 86
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "en_authHeader"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 111
+                "value": 108
               }
             ]
           }
         ]
       },
       "gridPos": {
-        "h": 5,
+        "h": 6,
         "w": 24,
         "x": 0,
-        "y": 16
+        "y": 37
       },
       "id": 12,
       "options": {
@@ -851,7 +1407,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\ndate as 'date',\nifnull(PD_boot_delay,'no_data') as 'bootDelay',\nifnull(PD_injection_delay,'no_data') as 'injectionDelay',\nifnull(PD_switch_disable_last_sent,'no_data') as 'dis_lastSend',\nifnull(PD_intentional_stop,'no_data') as 'intentStop',\nifnull(PD_switch_send_protos,'no_data') as 'sendProto' ,\nifnull(PD_switch_disable_external_communication,'no_data') as 'dis_ExtComms',\nifnull(PD_switch_enable_oomadj,'no_data') as 'en_oomadj',\nifnull(PD_switch_enable_auth_header,'no_data') as 'en_authHeader',\ncount(origin) as '#devices'\nfrom ATVdetails\n\nWHERE\ndate = '$date'\n\nGROUP BY date, PD_boot_delay, PD_injection_delay, PD_switch_disable_last_sent, PD_intentional_stop, PD_switch_send_protos, PD_switch_disable_external_communication, PD_switch_enable_oomadj, PD_switch_enable_auth_header",
+          "rawSql": "SELECT count(area_id) as '#Routes', init, init_mode_rounds, coords_spawns_known, speed, max_distance, starve_route, delay_after_prio_event, priority_queue_clustering_timedelta, remove_from_queue_backlog, min_time_left_seconds, max_clustering\n\nFROM settings_area_mon_mitm\n\nGROUP BY init, init_mode_rounds, coords_spawns_known, speed, max_distance, starve_route, delay_after_prio_event, priority_queue_clustering_timedelta, remove_from_queue_backlog, min_time_left_seconds, max_clustering\n",
           "refId": "A",
           "select": [
             [
@@ -875,11 +1431,11 @@
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "PogoDroid (2)",
+      "title": "Mon mitm settings",
       "type": "table"
     },
     {
-      "datasource": "${DS_POGODB}",
+      "datasource": "${DS_RMDB}",
       "fieldConfig": {
         "defaults": {
           "custom": {
@@ -904,103 +1460,31 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "sendRawProto"
+              "options": "count(area_id)"
             },
             "properties": [
               {
                 "id": "custom.width",
-                "value": 107
+                "value": 41
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "date      "
+              "options": "init"
             },
             "properties": [
               {
                 "id": "custom.width",
-                "value": 163
+                "value": 50
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "popLastSend"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 99
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "fullDaemon"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 90
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "enMock"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 70
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "defMapMode"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 99
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "setEnforce"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 86
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "en_MockLoc"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 98
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "dis_PogoFreeze"
+              "options": "level"
             },
             "properties": [
               {
@@ -1008,122 +1492,88 @@
                 "value": 121
               }
             ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 5,
-        "w": 24,
-        "x": 0,
-        "y": 21
-      },
-      "id": 14,
-      "options": {
-        "showHeader": true,
-        "sortBy": []
-      },
-      "pluginVersion": "7.1.5",
-      "targets": [
-        {
-          "format": "table",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "SELECT\ndate as 'date      ',\nifnull(PD_switch_send_raw_protos,'no_data') as 'sendRawProto',\nifnull(PD_switch_popup_last_sent,'no_data') as 'popLastSend',\nifnull(PD_full_daemon,'no_data') as 'fullDaemon',\nifnull(PD_switch_enable_mock_location_patch,'no_data') as 'en_MockLoc',\nifnull(PD_default_mappging_mode,'no_data') as 'defMapMode',\nifnull(PD_switch_setenforce,'no_data') as 'setEnforce',\nifnull(PD_disable_pogo_freeze_detection,'no_data') as 'dis_PogoFreeze',\ncount(origin) as '#devices'\nfrom ATVdetails\n\nWHERE\ndate = '$date'\n\nGROUP BY PD_switch_send_raw_protos, PD_switch_popup_last_sent, PD_full_daemon, PD_switch_enable_mock_location_patch, PD_default_mappging_mode, PD_switch_setenforce, PD_disable_pogo_freeze_detection",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "timeColumn": "time",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "PogoDroid (3)",
-      "type": "table"
-    },
-    {
-      "datasource": "${DS_POGODB}",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "align": null
           },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": [
           {
             "matcher": {
               "id": "byName",
-              "options": "date"
+              "options": "route_calc_algorithm"
             },
             "properties": [
               {
                 "id": "custom.width",
-                "value": 161
+                "value": 160
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "username"
+              "options": "speed"
             },
             "properties": [
               {
                 "id": "custom.width",
-                "value": 83
+                "value": 64
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "password"
+              "options": "max_distance"
             },
             "properties": [
               {
                 "id": "custom.width",
-                "value": 83
+                "value": 117
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "websocket_url"
+              "options": "ignore_spinned_stops"
             },
             "properties": [
               {
                 "id": "custom.width",
-                "value": 235
+                "value": 152
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "cleanup_every_spin"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 140
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "#"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 42
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "#Routes"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 68
               }
             ]
           }
@@ -1133,7 +1583,7 @@
         "h": 5,
         "w": 24,
         "x": 0,
-        "y": 26
+        "y": 43
       },
       "id": 18,
       "options": {
@@ -1147,7 +1597,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\ndate as 'date',\nifnull(RGC_auth_username,'no_data') as 'username',\nifnull(RGC_auth_password,'no_data') as 'password',\nifnull(RGC_websocket_uri,'no_data') as 'websocket_url',\ncount(origin) as '#devices'\nfrom ATVdetails\n\nWHERE\ndate = '$date'\n\nGROUP BY date, RGC_auth_username, RGC_auth_password, RGC_websocket_uri",
+          "rawSql": "SELECT count(area_id) as '#Routes', init, level, route_calc_algorithm, speed, max_distance, ignore_spinned_stops, cleanup_every_spin \n\nFROM settings_area_pokestops\n\nGROUP BY init, level, route_calc_algorithm, speed, max_distance, ignore_spinned_stops, cleanup_every_spin",
           "refId": "A",
           "select": [
             [
@@ -1171,461 +1621,22 @@
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "RemoteGpsController (1)",
-      "type": "table"
-    },
-    {
-      "datasource": "${DS_POGODB}",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "align": null
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "boot_delay"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 86
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "mediaProj"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 82
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "suspMock"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 83
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "resAgps1"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 79
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "overwFused"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 94
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "enAuthHead"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 95
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "resetAgpsC"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 90
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "date      "
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 163
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "boot_Delay"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 93
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "bootDelay"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 85
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "date"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 171
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "en_AuthHead"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 106
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 24,
-        "x": 0,
-        "y": 31
-      },
-      "id": 19,
-      "options": {
-        "showHeader": true,
-        "sortBy": []
-      },
-      "pluginVersion": "7.1.5",
-      "targets": [
-        {
-          "format": "table",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "SELECT\ndate as 'date',\nifnull(RGC_boot_delay,'no_data ') as 'bootDelay',\nifnull(RGC_mediaprojection_previously_started,'no_data') as 'mediaProj',\nifnull(RGC_suspended_mocking,'no_data ') as 'suspMock',\nifnull(RGC_overwrite_fused,'no_data ') as 'overwFused',\nifnull(RGC_switch_enable_auth_header,'no_data') as 'en_AuthHead',\nifnull(RGC_reset_agps_once,'no_data ') as 'resAgps1',\nifnull(RGC_reset_agps_continuously,'no_data') as 'resetAgpsC',\ncount(origin) as '#devices'\nfrom ATVdetails\n\nWHERE\ndate = '$date'\n\nGROUP BY date, RGC_boot_delay, RGC_mediaprojection_previously_started, RGC_suspended_mocking, RGC_reset_agps_once, RGC_overwrite_fused, RGC_switch_enable_auth_header, RGC_reset_agps_continuously",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "timeColumn": "time",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "RemoteGpsController (2)",
-      "type": "table"
-    },
-    {
-      "datasource": "${DS_POGODB}",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "align": null
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "resetGplay"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 83
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "bootStart"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 81
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "useMock"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 74
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "overOomadj"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 90
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "locRepRun"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 90
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "stopLocProv"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 97
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "autoService"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 92
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "date"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 165
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "autostartService"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 125
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "useMockLoc"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 97
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "#devices"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 735
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 24,
-        "x": 0,
-        "y": 37
-      },
-      "id": 20,
-      "options": {
-        "showHeader": true,
-        "sortBy": []
-      },
-      "pluginVersion": "7.1.5",
-      "targets": [
-        {
-          "format": "table",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "SELECT\ndate as 'date',\nifnull(RGC_reset_google_play_services,'no_data') as 'resetGplay',\nifnull(RGC_boot_startup,'no_data') as 'bootStart',\nifnull(RGC_use_mock_location,'no_data') as 'useMockLoc',\nifnull(RGC_oom_adj_override,'no_data') as 'overOomadj',\nifnull(RGC_location_reporter_service_running,'no_data') as 'locRepRun',\nifnull(RGC_stop_location_provider_service,'no_data') as 'stopLocProv',\nifnull(RGC_autostart_services,'no_data') as 'autostartService',\ncount(origin) as '#devices'\nfrom ATVdetails\n\nWHERE\ndate = '$date'\n\nGROUP BY date, RGC_reset_google_play_services, RGC_boot_startup, RGC_use_mock_location, RGC_oom_adj_override, RGC_location_reporter_service_running, RGC_stop_location_provider_service, RGC_autostart_services",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "timeColumn": "time",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "RemoteGpsController (3)",
+      "title": "Pokestop settings",
       "type": "table"
     }
   ],
-  "refresh": false,
   "schemaVersion": 26,
   "style": "dark",
   "tags": [],
   "templating": {
-    "list": [
-      {
-        "allValue": null,
-        "current": {},
-        "datasource": "${DS_POGODB}",
-        "definition": "select date from ATVdetails;",
-        "hide": 0,
-        "includeAll": false,
-        "label": null,
-        "multi": false,
-        "name": "date",
-        "options": [],
-        "query": "select date from ATVdetails;",
-        "refresh": 1,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 4,
-        "tagValuesQuery": "",
-        "tags": [],
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
-      }
-    ]
+    "list": []
   },
   "time": {
     "from": "now-6h",
     "to": "now"
   },
   "timepicker": {
+    "hidden": true,
     "refresh_intervals": [
       "5s",
       "10s",
@@ -1640,7 +1651,7 @@
     ]
   },
   "timezone": "",
-  "title": "ATVdetails",
-  "uid": "YBmfNzFGz",
-  "version": 9
+  "title": "20. MAD stuff",
+  "uid": "xUbpoIcGz",
+  "version": 11
 }

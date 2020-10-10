@@ -46,7 +46,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1600975024823,
+  "iteration": 1602336549905,
   "links": [],
   "panels": [
     {
@@ -90,7 +90,59 @@
       "renderer": "flot",
       "seriesOverrides": [
         {
-          "alias": "%IV",
+          "alias": "aarch64 Restarts",
+          "yaxis": 2
+        },
+        {
+          "alias": "aarch64 Reboots",
+          "yaxis": 2
+        },
+        {
+          "alias": "aarch64 #Reboots per device",
+          "yaxis": 2
+        },
+        {
+          "alias": "aarch64 #Restarts per device",
+          "yaxis": 2
+        },
+        {
+          "alias": "armv8l #Restarts per device",
+          "yaxis": 2
+        },
+        {
+          "alias": "armv8l #Reboots per device",
+          "yaxis": 2
+        },
+        {
+          "alias": "armv8l\narmv8l #Reboots per device",
+          "yaxis": 2
+        },
+        {
+          "alias": "armv8l\narmv8l #Restarts per device",
+          "yaxis": 2
+        },
+        {
+          "alias": "aarch64 #Events per device",
+          "yaxis": 2
+        },
+        {
+          "alias": "armv8l #Events per device",
+          "yaxis": 2
+        },
+        {
+          "alias": "aarch64 #Events (restart or reboot) per device",
+          "yaxis": 2
+        },
+        {
+          "alias": "armv8l #Events (restart or reboot) per device",
+          "yaxis": 2
+        },
+        {
+          "alias": "aarch64 Avg #restart+reboot /device /h",
+          "yaxis": 2
+        },
+        {
+          "alias": "armv8l Avg #restart+reboot /device /h",
           "yaxis": 2
         }
       ],
@@ -103,21 +155,19 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  Datetime AS \"time\",\n  sum(Tmon) AS 'Mons scanned',\n  sum(IVmon) AS 'IV scanned',\n  100*sum(IVmon)/sum(Tmon) AS '%IV'\nFROM stats_worker\nWHERE\n  $__timeFilter(Datetime) and\n  RPL='$RPL' and\n  Worker in ($Worker)\nGROUP BY Datetime  \nORDER BY Datetime",
+          "rawSql": "SELECT\nb.arch,\n$__timeGroup(Datetime,$__interval) as 'time',\nsum(a.LocOk)/sum(a.Tloc)*100 'Location success rate',\n-- sum(a.reb)/count(a.reb) as '#Reboots per device',\n-- sum(a.res)/count(a.res) as '#Restarts per device'\n(sum(a.res)+sum(a.reb))/(count(a.Worker)*$RPL/60) as 'Avg #restart+reboot /device /h'\n\nFROM stats_worker a, ATVdetails b\n\nWHERE\na.Worker COLLATE utf8mb4_unicode_ci = b.Origin and\ndate(a.Datetime) = b.Date and\na.RPL = '$RPL' and\nb.arch in ($architecture)\n-- a.Datetime >= curdate() -interval 7 day\nGROUP by b.arch, a.Datetime\n\n",
           "refId": "A",
           "select": [
             [
               {
                 "params": [
-                  "id"
+                  "value"
                 ],
                 "type": "column"
               }
             ]
           ],
-          "table": "stats_worker",
-          "timeColumn": "Datetime",
-          "timeColumnType": "datetime",
+          "timeColumn": "time",
           "where": [
             {
               "name": "$__timeFilter",
@@ -131,7 +181,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Mons scanned",
+      "title": "Performance by architecture",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -150,16 +200,16 @@
           "format": "short",
           "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
+          "max": "100",
+          "min": "95",
           "show": true
         },
         {
           "format": "short",
           "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
+          "max": "1",
+          "min": "0",
           "show": true
         }
       ],
@@ -189,7 +239,7 @@
         "y": 0
       },
       "hiddenSeries": false,
-      "id": 8,
+      "id": 4,
       "legend": {
         "avg": false,
         "current": false,
@@ -207,51 +257,34 @@
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
-      "seriesOverrides": [],
+      "seriesOverrides": [
+        {
+          "alias": "aarch64",
+          "yaxis": 2
+        }
+      ],
       "spaceLength": 10,
       "stack": false,
       "steppedLine": false,
       "targets": [
         {
           "format": "time_series",
-          "group": [
-            {
-              "params": [
-                "$__interval",
-                "none"
-              ],
-              "type": "time"
-            }
-          ],
+          "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(Datetime,$__interval),\n  sum(res) AS \"# pogo restarts\",\n  sum(reb) AS \"#device reboots\"\nFROM stats_worker\nWHERE\n  $__timeFilter(Datetime) and\n  RPL = '$RPL' and\n  Worker in ($Worker)\nGROUP BY Datetime\nORDER BY $__timeGroup(Datetime,$__interval)",
+          "rawSql": "SELECT\nb.arch,\n$__timeGroup(Datetime,$__interval) as 'time',\ncount(a.res) as '#devices'\n\nFROM stats_worker a, ATVdetails b\n\nWHERE\na.Worker COLLATE utf8mb4_unicode_ci = b.Origin and\ndate(a.Datetime) = b.Date and\na.RPL = '$RPL' and\nb.arch in ($architecture)\n-- a.Datetime >= curdate() -interval 7 day\nGROUP by b.arch, a.Datetime",
           "refId": "A",
           "select": [
             [
               {
                 "params": [
-                  "id"
+                  "value"
                 ],
                 "type": "column"
-              },
-              {
-                "params": [
-                  "avg"
-                ],
-                "type": "aggregate"
-              },
-              {
-                "params": [
-                  "id"
-                ],
-                "type": "alias"
               }
             ]
           ],
-          "table": "stats_worker",
-          "timeColumn": "Datetime",
-          "timeColumnType": "datetime",
+          "timeColumn": "time",
           "where": [
             {
               "name": "$__timeFilter",
@@ -265,7 +298,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Restart / Reboot",
+      "title": "#device per arch",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -285,7 +318,7 @@
           "label": null,
           "logBase": 1,
           "max": null,
-          "min": "0",
+          "min": null,
           "show": true
         },
         {
@@ -323,7 +356,7 @@
         "y": 8
       },
       "hiddenSeries": false,
-      "id": 4,
+      "id": 6,
       "legend": {
         "avg": false,
         "current": false,
@@ -341,51 +374,62 @@
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
-      "seriesOverrides": [],
+      "seriesOverrides": [
+        {
+          "alias": "0.185.0 #Events (restart or reboot) per device",
+          "yaxis": 2
+        },
+        {
+          "alias": "0.185.1 #Events (restart or reboot) per device",
+          "yaxis": 2
+        },
+        {
+          "alias": "0.185.3 #Events (restart or reboot) per device",
+          "yaxis": 2
+        },
+        {
+          "alias": "0.187.1 #Events (restart or reboot) per device",
+          "yaxis": 2
+        },
+        {
+          "alias": "0.187.2 Avg #restart+reboot /device /h",
+          "yaxis": 2
+        },
+        {
+          "alias": "0.187.1 Avg #restart+reboot /device /h",
+          "yaxis": 2
+        },
+        {
+          "alias": "0.185.3 Avg #restart+reboot /device /h",
+          "yaxis": 2
+        },
+        {
+          "alias": "0.185.1 Avg #restart+reboot /device /h",
+          "yaxis": 2
+        }
+      ],
       "spaceLength": 10,
       "stack": false,
       "steppedLine": false,
       "targets": [
         {
           "format": "time_series",
-          "group": [
-            {
-              "params": [
-                "$__interval",
-                "none"
-              ],
-              "type": "time"
-            }
-          ],
+          "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(Datetime,$__interval),\n  sum(Tloc) AS \"Locations handled\",\n  sum(Wk) AS \"#walking\",\n  sum(Tp) AS \"#teleports\"\nFROM stats_worker\nWHERE\n  $__timeFilter(Datetime) and\n  RPL = '$RPL' and\n  Worker in ($Worker)\nGROUP BY Datetime\nORDER BY $__timeGroup(Datetime,$__interval)",
+          "rawSql": "SELECT\nb.pogo,\n$__timeGroup(Datetime,$__interval) as 'time',\nsum(a.LocOk)/sum(a.Tloc)*100 'Location success rate',\n-- sum(a.reb)/count(a.reb) as '#Reboots per device',\n-- sum(a.res)/count(a.res) as '#Restarts per device'\n(sum(a.res)+sum(a.reb))/(count(a.Worker)*$RPL/60) as 'Avg #restart+reboot /device /h'\n\nFROM stats_worker a, ATVdetails b\n\nWHERE\na.Worker COLLATE utf8mb4_unicode_ci = b.Origin and\ndate(a.Datetime) = b.Date and\na.RPL = '$RPL' and\nb.pogo in ($pogo)\n-- a.Datetime >= curdate() -interval 7 day\nGROUP by b.pogo, a.Datetime",
           "refId": "A",
           "select": [
             [
               {
                 "params": [
-                  "id"
+                  "value"
                 ],
                 "type": "column"
-              },
-              {
-                "params": [
-                  "avg"
-                ],
-                "type": "aggregate"
-              },
-              {
-                "params": [
-                  "id"
-                ],
-                "type": "alias"
               }
             ]
           ],
-          "table": "stats_worker",
-          "timeColumn": "Datetime",
-          "timeColumnType": "datetime",
+          "timeColumn": "time",
           "where": [
             {
               "name": "$__timeFilter",
@@ -399,7 +443,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Location handling (1)",
+      "title": "Performance by pogo realease",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -418,15 +462,15 @@
           "format": "short",
           "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
+          "max": "100",
+          "min": "95",
           "show": true
         },
         {
           "format": "short",
           "label": null,
           "logBase": 1,
-          "max": null,
+          "max": "1",
           "min": null,
           "show": true
         }
@@ -457,7 +501,7 @@
         "y": 8
       },
       "hiddenSeries": false,
-      "id": 6,
+      "id": 8,
       "legend": {
         "avg": false,
         "current": false,
@@ -482,44 +526,22 @@
       "targets": [
         {
           "format": "time_series",
-          "group": [
-            {
-              "params": [
-                "$__interval",
-                "none"
-              ],
-              "type": "time"
-            }
-          ],
+          "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(Datetime,$__interval),\n  100*sum(LocOk)/sum(Tloc) AS \"Location success rate\",\n  100*sum(WkOk)/sum(Wk) AS \"Walk success rate\",\n  100*sum(TpOk)/sum(Tp) AS \"Teleport Success Rate\"\nFROM stats_worker\nWHERE\n  $__timeFilter(Datetime) and\n  RPL = '$RPL' and\n  Worker in ($Worker)\nGROUP BY Datetime\nORDER BY $__timeGroup(Datetime,$__interval)",
+          "rawSql": "SELECT\nb.pogo,\n$__timeGroup(Datetime,$__interval) as 'time',\ncount(a.res) as '#devices'\n\nFROM stats_worker a, ATVdetails b\n\nWHERE\na.Worker COLLATE utf8mb4_unicode_ci = b.Origin and\ndate(a.Datetime) = b.Date and\na.RPL = '$RPL' and\nb.pogo in ($pogo)\n-- a.Datetime >= curdate() -interval 7 day\nGROUP by b.pogo, a.Datetime",
           "refId": "A",
           "select": [
             [
               {
                 "params": [
-                  "id"
+                  "value"
                 ],
                 "type": "column"
-              },
-              {
-                "params": [
-                  "avg"
-                ],
-                "type": "aggregate"
-              },
-              {
-                "params": [
-                  "id"
-                ],
-                "type": "alias"
               }
             ]
           ],
-          "table": "stats_worker",
-          "timeColumn": "Datetime",
-          "timeColumnType": "datetime",
+          "timeColumn": "time",
           "where": [
             {
               "name": "$__timeFilter",
@@ -533,141 +555,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Location handling (2)",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": "100",
-          "min": "90",
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "${DS_POGODB}",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
-        "overrides": []
-      },
-      "fill": 1,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 16
-      },
-      "hiddenSeries": false,
-      "id": 10,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 1,
-      "nullPointMode": "null",
-      "percentage": false,
-      "pluginVersion": "7.1.5",
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "format": "time_series",
-          "group": [
-            {
-              "params": [
-                "$__interval",
-                "none"
-              ],
-              "type": "time"
-            }
-          ],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(Datetime,$__interval),\n  sum(Quest) as \"#Quests scanned\"\nFROM stats_worker\nWHERE\n  $__timeFilter(Datetime) and\n  RPL = '$RPL' and\n  Worker in ($Worker)\nGROUP BY Datetime\nORDER BY $__timeGroup(Datetime,$__interval)",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "id"
-                ],
-                "type": "column"
-              },
-              {
-                "params": [
-                  "avg"
-                ],
-                "type": "aggregate"
-              },
-              {
-                "params": [
-                  "id"
-                ],
-                "type": "alias"
-              }
-            ]
-          ],
-          "table": "stats_worker",
-          "timeColumn": "Datetime",
-          "timeColumnType": "datetime",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Quest scanned",
+      "title": "#device per release",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -705,6 +593,7 @@
       }
     }
   ],
+  "refresh": false,
   "schemaVersion": 26,
   "style": "dark",
   "tags": [],
@@ -714,18 +603,18 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_POGODB}",
-        "definition": "select distinct(RPL) from stats_worker;",
+        "definition": "select RPL from stats_area;",
         "hide": 0,
         "includeAll": false,
         "label": null,
         "multi": false,
         "name": "RPL",
         "options": [],
-        "query": "select distinct(RPL) from stats_worker;",
+        "query": "select RPL from stats_area;",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
-        "sort": 3,
+        "sort": 0,
         "tagValuesQuery": "",
         "tags": [],
         "tagsQuery": "",
@@ -736,18 +625,40 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_POGODB}",
-        "definition": "select distinct(Worker) from stats_worker;",
+        "definition": "select arch from ATVdetails;",
+        "hide": 0,
+        "includeAll": true,
+        "label": null,
+        "multi": true,
+        "name": "architecture",
+        "options": [],
+        "query": "select arch from ATVdetails;",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_POGODB}",
+        "definition": "select pogo from ATVdetails;",
         "hide": 0,
         "includeAll": false,
         "label": null,
         "multi": true,
-        "name": "Worker",
+        "name": "pogo",
         "options": [],
-        "query": "select distinct(Worker) from stats_worker;",
+        "query": "select pogo from ATVdetails;",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
-        "sort": 1,
+        "sort": 0,
         "tagValuesQuery": "",
         "tags": [],
         "tagsQuery": "",
@@ -757,7 +668,7 @@
     ]
   },
   "time": {
-    "from": "now-24h",
+    "from": "now-30d",
     "to": "now"
   },
   "timepicker": {
@@ -775,7 +686,7 @@
     ]
   },
   "timezone": "",
-  "title": "Stats worker level",
-  "uid": "ZKINe-OMz",
-  "version": 5
+  "title": "11. Stats combined with ATVdetails",
+  "uid": "L-mKZqdGk",
+  "version": 18
 }
