@@ -46,7 +46,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1600975024823,
+  "iteration": 1602336250738,
   "links": [],
   "panels": [
     {
@@ -103,7 +103,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  Datetime AS \"time\",\n  sum(Tmon) AS 'Mons scanned',\n  sum(IVmon) AS 'IV scanned',\n  100*sum(IVmon)/sum(Tmon) AS '%IV'\nFROM stats_worker\nWHERE\n  $__timeFilter(Datetime) and\n  RPL='$RPL' and\n  Worker in ($Worker)\nGROUP BY Datetime  \nORDER BY Datetime",
+          "rawSql": "SELECT\n  $__timeGroup(Datetime,$__interval) AS \"time\",\n  sum(Tmon) AS 'Mons scanned',\n  sum(IVmon) AS 'IV scanned',\n  100*sum(IVmon)/sum(Tmon) AS '%IV'\nFROM stats_worker\nWHERE\n  $__timeFilter(Datetime) and\n  RPL='$RPL' and\n  Worker in ($Worker)\nGROUP BY 1  \nORDER BY $__timeGroup(Datetime,$__interval)",
           "refId": "A",
           "select": [
             [
@@ -757,7 +757,7 @@
     ]
   },
   "time": {
-    "from": "now-24h",
+    "from": "now-30d",
     "to": "now"
   },
   "timepicker": {
@@ -775,7 +775,7 @@
     ]
   },
   "timezone": "",
-  "title": "Stats worker level",
+  "title": "04. Stats worker level",
   "uid": "ZKINe-OMz",
-  "version": 5
+  "version": 8
 }
