@@ -46,7 +46,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1601018010496,
+  "iteration": 1602335941161,
   "links": [],
   "panels": [
     {
@@ -488,7 +488,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(Datetime,$__interval),\n  sum(Res)/(count(Worker)*$RPL/60) AS \"Avgerage # Pogo restarts per hour\",\n  sum(Reb)/(count(Worker)*$RPL/60) AS \"Avgerage # device reboots per hour\"\nFROM stats_worker\nWHERE\n  RPL = '$RPL'\nGROUP BY 1\nORDER BY $__timeGroup(Datetime,$__interval)",
+          "rawSql": "SELECT\n  $__timeGroupAlias(Datetime,$__interval),\n  sum(Res)/(count(Worker)*$RPL/60) AS \"Avg #Pogo restarts /device /hour\",\n  sum(Reb)/(count(Worker)*$RPL/60) AS \"Avg #device reboots /device /hour\"\nFROM stats_worker\nWHERE\n  RPL = '$RPL'\nGROUP BY 1\nORDER BY $__timeGroup(Datetime,$__interval)",
           "refId": "A",
           "select": [
             [
@@ -535,7 +535,7 @@
           "format": "short",
           "label": "# restarts /h",
           "logBase": 1,
-          "max": "2",
+          "max": "0.3",
           "min": "0",
           "show": true
         },
@@ -543,7 +543,7 @@
           "format": "short",
           "label": "#reboots /h",
           "logBase": 1,
-          "max": "0.5",
+          "max": "0.2",
           "min": "0",
           "show": true
         }
@@ -847,7 +847,7 @@
     ]
   },
   "timezone": "",
-  "title": "Stats KPIs",
+  "title": "01. Stats KPIs",
   "uid": "jM5txJOMz",
-  "version": 14
+  "version": 20
 }
