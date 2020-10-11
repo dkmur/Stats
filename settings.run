@@ -86,7 +86,7 @@ sed -i "s/PATH_TO_STATS/$PATH_TO_STATS2/g" $PATH_TO_STATS/sql_cron/*.sh
 sed -i "s/monsdb/$monthly_mon_database/g" $PATH_TO_STATS/sql_cron/*.sh
 
 # Create grafana files
-rm *.json $PATH_TO_STATS/grafana/
+cd $PATH_TO_STATS/grafana/ && rm *.json
 cp $PATH_TO_STATS/grafana/01_stats_kpi.json.default $PATH_TO_STATS/01_stats_kpi.json
 cp $PATH_TO_STATS/grafana/02_stats_network_area.json.default $PATH_TO_STATS/grafana/02_stats_network_area.json
 cp $PATH_TO_STATS/grafana/03_stats_network_area_ex.json.default $PATH_TO_STATS/grafana/03_stats_network_area_ex.json
