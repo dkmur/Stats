@@ -17,7 +17,7 @@ DataSource_MAD=rmdb
 
 ## Backup spawns to table spawn_unused and remove after quests have finished ##
 # if you don't want spawn discovered during questing hour to be backed up and deleted set both start/end to '02:00:00' #
-# if you don't want either spawns unseen or spawn dicovered but still no end time to remain in table set to 99999 respectively#
+# if you don't want either spawns unseen or spawn dicovered but still no end time to remain in trs_spawn table set to 99999 respectively#
 SPAWN_CLEANUP=false
 SPAWN_CLEAN_HR=6
 SPAWN_CLEAN_MIN=13 
