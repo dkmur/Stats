@@ -4,6 +4,7 @@ source config.ini
 
 # Create crontab and monthly file
 cp $PATH_TO_STATS/default_files/crontab.txt.default $PATH_TO_STATS/crontab.txt
+mkdir -p $PATH_TO_STATS/sql_cron
 cp $PATH_TO_STATS/default_files/sql_cron/month.sh.default $PATH_TO_STATS/sql_cron/month.sh
 PATH_TO_STATS2=$(sed 's@/@\\/@g' <<< $PATH_TO_STATS)
 cd $PATH_TO_STATS && sed -i "s/pathToStats/$PATH_TO_STATS2/g" *.txt
@@ -86,6 +87,7 @@ sed -i "s/PATH_TO_STATS/$PATH_TO_STATS2/g" $PATH_TO_STATS/sql_cron/*.sh
 sed -i "s/monsdb/$monthly_mon_database/g" $PATH_TO_STATS/sql_cron/*.sh
 
 # Create grafana files
+mkdir -p $PATH_TO_STATS/grafana
 cd $PATH_TO_STATS/grafana/ && rm *.json && rm *.default
 cp $PATH_TO_STATS/default_files/01_stats_kpi.json.default $PATH_TO_STATS/grafana/01_stats_kpi.json
 cp $PATH_TO_STATS/default_files/02_stats_network_area.json.default $PATH_TO_STATS/grafana/02_stats_network_area.json
