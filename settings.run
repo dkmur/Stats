@@ -7,7 +7,7 @@ cd $PATH_TO_STATS && rm -f *.default
 cp $PATH_TO_STATS/default_files/crontab.txt.default $PATH_TO_STATS/crontab.txt
 mkdir -p $PATH_TO_STATS/sql_cron
 cd $PATH_TO_STATS/sql_cron && rm -f *.default
-cp $PATH_TO_STATS/default_files/sql_cron/month.sh.default $PATH_TO_STATS/sql_cron/month.sh
+cp $PATH_TO_STATS/default_files/month.sh.default $PATH_TO_STATS/sql_cron/month.sh
 PATH_TO_STATS2=$(sed 's@/@\\/@g' <<< $PATH_TO_STATS)
 cd $PATH_TO_STATS && sed -i "s/pathToStats/$PATH_TO_STATS2/g" *.txt
 cd $PATH_TO_STATS && sed -i "s/STATS_DB/$STATS_DB/g" *.txt
@@ -99,8 +99,8 @@ cp $PATH_TO_STATS/default_files/10_ATVdetails.json.default $PATH_TO_STATS/grafan
 cp $PATH_TO_STATS/default_files/11_stats_atvdetails_combined.json.default $PATH_TO_STATS/grafana/11_stats_atvdetails_combined.json
 cp $PATH_TO_STATS/default_files/12_stats_atvdetails_combined_ex.json.default $PATH_TO_STATS/grafana/12_stats_atvdetails_combined_ex.json
 cp $PATH_TO_STATS/default_files/20_mad_stuff.json.default $PATH_TO_STATS/grafana/20_mad_stuff.json
-cd $PATH_TO_STATS/default_files/ && sed -i "s/pogodb/$DataSource_stats/g" *.json
-cd $PATH_TO_STATS/default_files/ && sed -i "s/rmdb/$DataSource_MAD/g" *.json
+cd $PATH_TO_STATS/grafana/ && sed -i "s/pogodb/$DataSource_stats/g" *.json
+cd $PATH_TO_STATS/grafana/ && sed -i "s/rmdb/$DataSource_MAD/g" *.json
 
 # pokemon_history settings
 if "$mon_backup"
