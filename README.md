@@ -30,7 +30,7 @@ Use it at you own risk, because bare in mind this was all done by an idiot!
 - Activation of (raw)stats in MAD config.ini (statistic,game_stats,game_stats_raw).
 - Mariadb > 10.2
 - mysql strict mode disabled
-- Get Stats ``git clone https://github.com/dkmur/Stats.git && cd Stats/ && cp config.ini.example config.ini``
+- Get Stats: <br>``git clone https://github.com/dkmur/Stats.git && cd Stats/ && cp /default_files/config.ini.example config.ini``
 
 ### Creating database, tables, triggers and file prep
 
@@ -76,10 +76,6 @@ Run stats or ./stats.sh, but give it some time to fill the tables.
 
 Hopefully that's it.....else......blame someone else :)  
 
-
-### Some other stuff, not MAD stats related
-
-I run quests between 2am and 6am, so all spawpoints discovered between those hours are dumped into seperate table and removed from trs_spawn as well as everything not seen for the last 5 days, see Crontab example  
 
 ### Note
 
