@@ -26,26 +26,38 @@ Use it at you own risk, because bare in mind this was all done by an idiot!
 
 ## Setting up
 
-### Prerequisites
+### 1 Prerequisites
 - Activation of (raw)stats in MAD config.ini (statistic,game_stats,game_stats_raw).
 - Mariadb > 10.2
 - mysql strict mode disabled
-- Get Stats: <br>``git clone https://github.com/dkmur/Stats.git && cd Stats/ && cp /default_files/config.ini.example config.ini``
 
-### Creating database, tables, triggers and file prep
+### 2 Initial setup
 
-- In mysql create stats database and grant privileges. i.e.:  
+- Clone Stats: <br>``git clone https://github.com/dkmur/Stats.git && cd Stats/ && cp default_files/config.ini.example config.ini``
+- Create stats database and grant privileges. i.e.:  
 ```
 create database ##STATS_DB##;
 grant all privileges on ##STATS_DB##.* to ##MYSELF##@localhost;
+flush privileges;
 ```  
-- Edit settings in file ``config.ini``. Make sure SQL_user has privileges to both STATS_DB and MAD_DB  
-- for each Area or Town you whish to define: in /areas i.e. ``cp area.ini.example paris.ini`` and edit the settings  
-- Execute ``./settings.run``, this will create required stats tables, triggers, sql queries and crontab file    
+- Edit settings in file ``config.ini``.  
+- Make sure SQL_user has privileges on both STATS_DB and MAD_DB.  
 
-### Assign devices to area
+### 3 Define areas and add devices
+Within Stats it is possible to assign devices to areas (towns) in order to analyze statistics per area providing the possibility to i.e. compare areas or perform or test functionality like PrioQ in a specific area. <br>
+In case you only have one area/town or are simply to lazy to define areas and assign devices :P follow steps in 3.1, where area ``world`` will be created.<br>
+Else proceed to 3.2 where you will define your own areas and assign devices.
 
-Time to link workers/origin as defined in MAD to the created area's/towns on previous step, in mysql:
+#### 3.1 Quick setup
+- Execute ``./settings.run``, this will create required stats tables, triggers, sql queries, procedures and crontab file. <br>
+- Edit crontab ``crontab -e`` and insert content of ``crontab.txt`` located in Stats home. <br>
+Note: when adding devices, remove ``world.ini`` in /areas and execute ``settings.run`` or add device origin to table ``Area`` manually
+ 
+
+#### 3.2 Area setup
+- for each Area or Town you whish to define: in /areas create an area file, i.e. ``cp area.ini.example paris.ini`` and edit the settings <br>
+- Execute ``./settings.run``, this will create required stats tables, triggers, sql queries , procedures and crontab file <br>
+- Assign devices (MAD origins) to the created area's/towns on previous steps, in mysql:<br>
 ```
 insert into ##STATS_DB##.Area (Area,Origin) values
 ('Town1','Device01'),
@@ -53,31 +65,28 @@ insert into ##STATS_DB##.Area (Area,Origin) values
 ('Town2','Device01')
 ;
 ```
+Note 1: make sure to add new devices when expanding setup. I never remove origins as I want to keep the data collected.<br>
+Note 2: in case you stop scanning an area, remove the area.ini file in /areas and execute ``settings.run``<br>
 
-### Crontab
-
-Edit crontab ``crontab -e`` and insert content of ``crontab.txt`` located in Stats home.
-
-
-### Grafana (optional)
+### 4 Grafana (optional)
 - Install Grafana, more details can be found at https://grafana.com/docs/grafana/latest/installation/debian/#install-from-apt-repository or if you prefer to use docker <https://hub.docker.com/r/grafana/grafana>
 - Create datasource on STATS_DB and MAD_DB
 - Add datasource names to config.ini
 - After executing settings.run, import the dashboards from /Stats/grafana
 
 
-### Starting Stats menu
+### 5 Starting Stats menu
 
 Optionally, add stats to /usr/local/bin in order to start from any location:  
 ``sudo nano /usr/local/bin/stats`` add ``cd /PATHtoStats/ && ./stats.sh`` and save file  
 ``sudo chmod +x /usr/local/bin/stats``  
-
-Run stats or ./stats.sh, but give it some time to fill the tables.
-
+<br>
+Run ``stats`` or ``./stats.sh``, but give it some time to fill the tables.<br>
+<br>
 Hopefully that's it.....else......blame someone else :)  
 
 
-### Note
+### 6 Note
 
 - Not all information stored in tables stats_worker and stats_area is included in Stats menu options, adapt as you see fit. <br>
 - Menu option 30 contains several queries regarding device setting/information but requires https://github.com/dkmur/ATVdetails <br>

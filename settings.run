@@ -2,7 +2,42 @@
 
 source config.ini
 
-# Create crontab and monthly file
+echo "Create sql table, trigger and procedure files"
+echo ""
+cp $PATH_TO_STATS/default_files/tables.sql.default $PATH_TO_STATS/tables.sql
+cp $PATH_TO_STATS/default_files/triggers.sql.default $PATH_TO_STATS/triggers.sql
+cp $PATH_TO_STATS/default_files/procedures.sql.default $PATH_TO_STATS/procedures.sql
+cd $PATH_TO_STATS && sed -i "s/pogodb/$STATS_DB/g" *.sql
+
+echo "Create tables"
+echo ""
+if [ -z "$SQL_password" ]
+then
+  mysql -h$DB_IP -P$DB_PORT -u$SQL_user $STATS_DB < $PATH_TO_STATS/tables.sql
+else
+  mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB < $PATH_TO_STATS/tables.sql
+fi
+
+echo "Create triggers"
+echo ""
+if [ -z "$SQL_password" ]
+then
+  mysql -h$DB_IP -P$DB_PORT -u$SQL_user $MAD_DB < $PATH_TO_STATS/triggers.sql
+else
+  mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $MAD_DB < $PATH_TO_STATS/triggers.sql
+fi
+
+echo "Create procedure"
+echo ""
+if [ -z "$SQL_password" ]
+then
+  mysql -h$DB_IP -P$DB_PORT -u$SQL_user $MAD_DB < $PATH_TO_STATS/procedures.sql
+else
+  mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $MAD_DB < $PATH_TO_STATS/procedures.sql
+fi
+
+echo "Create crontab and monthly file"
+echo ""
 cd $PATH_TO_STATS && rm -f *.default
 cp $PATH_TO_STATS/default_files/crontab.txt.default $PATH_TO_STATS/crontab.txt
 mkdir -p $PATH_TO_STATS/sql_cron
@@ -28,7 +63,27 @@ then
   sed -i "s/SPAWN_CLEAN_HR/$SPAWN_CLEAN_HR/g" $PATH_TO_STATS/crontab.txt
 fi
 
-# Create Area files
+echo "Easy setup check/implement"
+if ls $PATH_TO_STATS/areas/*.ini &> /dev/null
+then
+    echo "Skipping: Area(s) defined, no need to create area world and import origins from MADdb"
+else
+    cp $PATH_TO_STATS/areas/area.ini.example $PATH_TO_STATS/areas/world.ini
+    sed -i "s/Paris/World/g" $PATH_TO_STATS/areas/world.ini
+    sed -i "s/50.9876/90/g" $PATH_TO_STATS/areas/world.ini
+    sed -i "s/50.1234/-90/g" $PATH_TO_STATS/areas/world.ini
+    sed -i "s/4.1234/-180/g" $PATH_TO_STATS/areas/world.ini
+    sed -i "s/4.9876/180/g" $PATH_TO_STATS/areas/world.ini
+    if [ -z "$SQL_password" ]
+    then
+    mysql -h$DB_IP -P$DB_PORT -u$SQL_user $STATS_DB -e "insert ignore into $STATS_DB.Area (Origin) select name from $MAD_DB.settings_device;"
+    else
+    mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB -e "insert ignore into $STATS_DB.Area (Origin) select name from $MAD_DB.settings_device;"
+    fi
+fi
+echo ""
+
+echo "Create Area files"
 cd $PATH_TO_STATS/sql_cron && rm -f *.sql && rm -f *.default
 for area in "$PATH_TO_STATS"areas/*.ini
 do
@@ -53,14 +108,10 @@ do
   sed -i "s/4.946/$MIN_LON/g" $PATH_TO_STATS/sql_cron/1440_"$AREA_NAME"_area.sql
   sed -i "s/4.973/$MAX_LON/g" $PATH_TO_STATS/sql_cron/1440_"$AREA_NAME"_area.sql
 done
+echo ""
 
-# Create sql table, trigger and procedure files
-cp $PATH_TO_STATS/default_files/tables.sql.default $PATH_TO_STATS/tables.sql
-cp $PATH_TO_STATS/default_files/triggers.sql.default $PATH_TO_STATS/triggers.sql
-cp $PATH_TO_STATS/default_files/procedures.sql.default $PATH_TO_STATS/procedures.sql
-cd $PATH_TO_STATS && sed -i "s/pogodb/$STATS_DB/g" *.sql
-
-# Create cron files
+echo "Create cron files"
+echo ""
 cp $PATH_TO_STATS/default_files/15_area.sql.default $PATH_TO_STATS/sql_cron/15_area.sql.template
 cp $PATH_TO_STATS/default_files/60_area.sql.default $PATH_TO_STATS/sql_cron/60_area.sql.template
 cp $PATH_TO_STATS/default_files/1440_area.sql.default $PATH_TO_STATS/sql_cron/1440_area.sql.template
@@ -88,7 +139,8 @@ sed -i "s/SPAWN_NO_ENDTIME_DAYS/$SPAWN_NO_ENDTIME_DAYS/g" $PATH_TO_STATS/sql_cro
 sed -i "s/PATH_TO_STATS/$PATH_TO_STATS2/g" $PATH_TO_STATS/sql_cron/*.sh
 sed -i "s/monsdb/$monthly_mon_database/g" $PATH_TO_STATS/sql_cron/*.sh
 
-# Create grafana files
+echo "Create grafana files"
+echo ""
 mkdir -p $PATH_TO_STATS/grafana
 cd $PATH_TO_STATS/grafana/ && rm -f *.json && rm -f *.default
 cp $PATH_TO_STATS/default_files/01_stats_kpi.json.default $PATH_TO_STATS/grafana/01_stats_kpi.json
@@ -102,7 +154,8 @@ cp $PATH_TO_STATS/default_files/20_mad_stuff.json.default $PATH_TO_STATS/grafana
 cd $PATH_TO_STATS/grafana/ && sed -i "s/pogodb/$DataSource_stats/g" *.json
 cd $PATH_TO_STATS/grafana/ && sed -i "s/rmdb/$DataSource_MAD/g" *.json
 
-# pokemon_history settings
+echo "Pokemon_history settings"
+echo ""
 if "$mon_backup"
 then sed -i "s/--mon_backup-- //g" $PATH_TO_STATS/sql_cron/pokemon_daily.sql
 fi
@@ -116,7 +169,8 @@ if "$monthly_mon_table"
 then sed -i "s/#monthly#//g" $PATH_TO_STATS/crontab.txt
 fi
 
-# set MAD clean tables
+echo "MAD clean table settings"
+echo ""
 if "$pokemon"
 then sed -i "s/--pokemon-- //g" $PATH_TO_STATS/sql_cron/pokemon_hourly.sql
 fi
@@ -141,42 +195,18 @@ if "$trs_usage"
 then sed -i "s/--usage-- //g" $PATH_TO_STATS/sql_cron/pokemon_daily.sql
 fi
 
-# Create tables
-if [ -z "$SQL_password" ]
-then
-  mysql -h$DB_IP -P$DB_PORT -u$SQL_user $STATS_DB < $PATH_TO_STATS/tables.sql
-else
-  mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB < $PATH_TO_STATS/tables.sql
-fi
-
-# Create triggers
-if [ -z "$SQL_password" ]
-then
-  mysql -h$DB_IP -P$DB_PORT -u$SQL_user $MAD_DB < $PATH_TO_STATS/triggers.sql
-else
-  mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $MAD_DB < $PATH_TO_STATS/triggers.sql
-fi
-
-# Create procedure
-if [ -z "$SQL_password" ]
-then
-  mysql -h$DB_IP -P$DB_PORT -u$SQL_user $MAD_DB < $PATH_TO_STATS/procedures.sql
-else
-  mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $MAD_DB < $PATH_TO_STATS/procedures.sql
-fi
-
 #Check MAD collation, else 15_worker will fail
 table_check=$(mysql $MAD_DB -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password -se "SELECT TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME, TABLE_COLLATION FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'rmdb' and (((TABLE_NAME = 'trs_stats_detect' or TABLE_NAME = 'trs_stats_location' or TABLE_NAME = 'trs_stats_loction_raw') and TABLE_COLLATION <>'utf8mb4_general_ci' ) or ((TABLE_NAME = 'trs_status' or TABLE_NAME = 'trs_stats_detect_mon_raw') and TABLE_COLLATION <> 'utf8mb4_unicode_ci'));")
 column_check=$(mysql $MAD_DB -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password -se "SELECT TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME, COLUMN_NAME, COLLATION_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = 'rmdb' and (((TABLE_NAME = 'trs_stats_detect' or TABLE_NAME = 'trs_stats_location' or TABLE_NAME = 'trs_stats_loction_raw') and COLLATION_NAME <>'utf8mb4_general_ci' ) or ((TABLE_NAME = 'trs_status' or TABLE_NAME = 'trs_stats_detect_mon_raw') and COLLATION_NAME <> 'utf8mb4_unicode_ci'));")
 
 echo 'Checking MAD collation'
-echo ''
 if [[ -z $table_check || -z $column_check ]]; then
-  echo 'MAD table/column collation set correctly'
+  echo 'MAD table/column collation set correct'
   else
-  echo '(some) MAD table/column collation set incorrect'
+  echo '(some) MAD table/column collation set incorrect !!!'
   echo 'Check https://github.com/Map-A-Droid/MAD/tree/master/scripts/SQL and adapt accordingly'
   mysql $MAD_DB -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password -se "SELECT TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME, TABLE_COLLATION FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'rmdb' and (((TABLE_NAME = 'trs_stats_detect' or TABLE_NAME = 'trs_stats_location' or TABLE_NAME = 'trs_stats_loction_raw') and TABLE_COLLATION <>'utf8mb4_general_ci' ) or ((TABLE_NAME = 'trs_status' or TABLE_NAME = 'trs_stats_detect_mon_raw') and TABLE_COLLATION <> 'utf8mb4_unicode_ci'));"
   mysql $MAD_DB -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password -se "SELECT TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME, COLUMN_NAME, COLLATION_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = 'rmdb' and (((TABLE_NAME = 'trs_stats_detect' or TABLE_NAME = 'trs_stats_location' or TABLE_NAME = 'trs_stats_loction_raw') and COLLATION_NAME <>'utf8mb4_general_ci' ) or ((TABLE_NAME = 'trs_status' or TABLE_NAME = 'trs_stats_detect_mon_raw') and COLLATION_NAME <> 'utf8mb4_unicode_ci'));"
 fi
 echo ''
+echo "All done"
