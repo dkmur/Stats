@@ -69,11 +69,11 @@ then
     echo "Skipping: Area(s) defined, no need to create area world and import origins from MADdb"
 else
     cp $PATH_TO_STATS/areas/area.ini.example $PATH_TO_STATS/areas/world.ini
-    sed -i "s/Alphen/World/g" $PATH_TO_STATS/areas/world.ini
-    sed -i "s/51.491/90/g" $PATH_TO_STATS/areas/world.ini
-    sed -i "s/51.471/-90/g" $PATH_TO_STATS/areas/world.ini
-    sed -i "s/4.946/-180/g" $PATH_TO_STATS/areas/world.ini
-    sed -i "s/4.973/180/g" $PATH_TO_STATS/areas/world.ini
+    sed -i "s/Paris/World/g" $PATH_TO_STATS/areas/world.ini
+    sed -i "s/50.9876/90/g" $PATH_TO_STATS/areas/world.ini
+    sed -i "s/50.1234/-90/g" $PATH_TO_STATS/areas/world.ini
+    sed -i "s/4.1234/-180/g" $PATH_TO_STATS/areas/world.ini
+    sed -i "s/4.9876/180/g" $PATH_TO_STATS/areas/world.ini
     if [ -z "$SQL_password" ]
     then
     mysql -h$DB_IP -P$DB_PORT -u$SQL_user $STATS_DB -e "insert ignore into $STATS_DB.Area (Origin) select name from $MAD_DB.settings_device;"
