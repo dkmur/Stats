@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS `Area` (
-  `Area` varchar(50) NOT NULL DEFAULT World,
+  `Area` varchar(50) NOT NULL DEFAULT 'World',
   `Origin` varchar(50) NOT NULL,
   PRIMARY KEY (`Origin`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
