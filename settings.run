@@ -3,12 +3,14 @@
 source config.ini
 
 echo "Create sql table, trigger and procedure files"
+echo ""
 cp $PATH_TO_STATS/default_files/tables.sql.default $PATH_TO_STATS/tables.sql
 cp $PATH_TO_STATS/default_files/triggers.sql.default $PATH_TO_STATS/triggers.sql
 cp $PATH_TO_STATS/default_files/procedures.sql.default $PATH_TO_STATS/procedures.sql
 cd $PATH_TO_STATS && sed -i "s/pogodb/$STATS_DB/g" *.sql
 
 echo "Create tables"
+echo ""
 if [ -z "$SQL_password" ]
 then
   mysql -h$DB_IP -P$DB_PORT -u$SQL_user $STATS_DB < $PATH_TO_STATS/tables.sql
@@ -17,6 +19,7 @@ else
 fi
 
 echo "Create triggers"
+echo ""
 if [ -z "$SQL_password" ]
 then
   mysql -h$DB_IP -P$DB_PORT -u$SQL_user $MAD_DB < $PATH_TO_STATS/triggers.sql
@@ -25,6 +28,7 @@ else
 fi
 
 echo "Create procedure"
+echo ""
 if [ -z "$SQL_password" ]
 then
   mysql -h$DB_IP -P$DB_PORT -u$SQL_user $MAD_DB < $PATH_TO_STATS/procedures.sql
@@ -33,6 +37,7 @@ else
 fi
 
 echo "Create crontab and monthly file"
+echo ""
 cd $PATH_TO_STATS && rm -f *.default
 cp $PATH_TO_STATS/default_files/crontab.txt.default $PATH_TO_STATS/crontab.txt
 mkdir -p $PATH_TO_STATS/sql_cron
@@ -61,7 +66,7 @@ fi
 echo "Easy setup check/implement"
 if ls $PATH_TO_STATS/areas/*.ini &> /dev/null
 then
-    echo "Area(s) defined, skipping creation area world and importing origins from MADdb"
+    echo "Skipping: Area(s) defined, no need to create area world and import origins from MADdb"
 else
     cp $PATH_TO_STATS/areas/area.ini.example $PATH_TO_STATS/areas/world.ini
     sed -i "s/Alphen/World/g" $PATH_TO_STATS/areas/world.ini
@@ -76,6 +81,7 @@ else
     mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB -e "insert ignore into $STATS_DB.Area (Origin) select name from $MAD_DB.settings_device;"
     fi
 fi
+echo ""
 
 echo "Create Area files"
 cd $PATH_TO_STATS/sql_cron && rm -f *.sql && rm -f *.default
@@ -102,8 +108,10 @@ do
   sed -i "s/4.946/$MIN_LON/g" $PATH_TO_STATS/sql_cron/1440_"$AREA_NAME"_area.sql
   sed -i "s/4.973/$MAX_LON/g" $PATH_TO_STATS/sql_cron/1440_"$AREA_NAME"_area.sql
 done
+echo ""
 
 echo "Create cron files"
+echo ""
 cp $PATH_TO_STATS/default_files/15_area.sql.default $PATH_TO_STATS/sql_cron/15_area.sql.template
 cp $PATH_TO_STATS/default_files/60_area.sql.default $PATH_TO_STATS/sql_cron/60_area.sql.template
 cp $PATH_TO_STATS/default_files/1440_area.sql.default $PATH_TO_STATS/sql_cron/1440_area.sql.template
@@ -132,6 +140,7 @@ sed -i "s/PATH_TO_STATS/$PATH_TO_STATS2/g" $PATH_TO_STATS/sql_cron/*.sh
 sed -i "s/monsdb/$monthly_mon_database/g" $PATH_TO_STATS/sql_cron/*.sh
 
 echo "Create grafana files"
+echo ""
 mkdir -p $PATH_TO_STATS/grafana
 cd $PATH_TO_STATS/grafana/ && rm -f *.json && rm -f *.default
 cp $PATH_TO_STATS/default_files/01_stats_kpi.json.default $PATH_TO_STATS/grafana/01_stats_kpi.json
@@ -146,6 +155,7 @@ cd $PATH_TO_STATS/grafana/ && sed -i "s/pogodb/$DataSource_stats/g" *.json
 cd $PATH_TO_STATS/grafana/ && sed -i "s/rmdb/$DataSource_MAD/g" *.json
 
 echo "Pokemon_history settings"
+echo ""
 if "$mon_backup"
 then sed -i "s/--mon_backup-- //g" $PATH_TO_STATS/sql_cron/pokemon_daily.sql
 fi
@@ -160,6 +170,7 @@ then sed -i "s/#monthly#//g" $PATH_TO_STATS/crontab.txt
 fi
 
 echo "MAD clean table settings"
+echo ""
 if "$pokemon"
 then sed -i "s/--pokemon-- //g" $PATH_TO_STATS/sql_cron/pokemon_hourly.sql
 fi
@@ -199,3 +210,4 @@ if [[ -z $table_check || -z $column_check ]]; then
   mysql $MAD_DB -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password -se "SELECT TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME, COLUMN_NAME, COLLATION_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = 'rmdb' and (((TABLE_NAME = 'trs_stats_detect' or TABLE_NAME = 'trs_stats_location' or TABLE_NAME = 'trs_stats_loction_raw') and COLLATION_NAME <>'utf8mb4_general_ci' ) or ((TABLE_NAME = 'trs_status' or TABLE_NAME = 'trs_stats_detect_mon_raw') and COLLATION_NAME <> 'utf8mb4_unicode_ci'));"
 fi
 echo ''
+echo "All done"
