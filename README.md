@@ -51,7 +51,6 @@ Else proceed to 3.2 where you will define your own areas and assign devices.
 #### 3.1 Quick setup
 - Execute ``./settings.run``, this will create required stats tables, triggers, sql queries, procedures and crontab file. <br>
 - Edit crontab ``crontab -e`` and insert content of ``crontab.txt`` located in Stats home. <br>
-<br>
 Note: when adding devices, remove ``world.ini`` in /areas and execute ``settings.run`` or add device origin to table ``Area`` manually
  
 
