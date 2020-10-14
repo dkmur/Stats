@@ -1,9 +1,8 @@
 CREATE TABLE IF NOT EXISTS `Area` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `Area` varchar(50) NOT NULL,
+  `Area` varchar(50) NOT NULL DEFAULT World,
   `Origin` varchar(50) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`Origin`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `spawn_unused` (
   `spawnpoint` varchar(16) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -169,3 +168,7 @@ CHANGE COLUMN `TRPL` `TRPL` smallint(6) DEFAULT 0;
 ALTER TABLE `pokemon_history_temp`
 DROP KEY IF EXISTS `pokemon_history_temp_first_scanned`;
 
+ALTER TABLE `Area`
+DROP PRIMARY KEY, 
+ADD PRIMARY KEY `Origin`,
+CHANGE COLUMN `Area` `Area` varchar(50) DEFAULT World;

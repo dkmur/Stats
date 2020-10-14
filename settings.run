@@ -2,6 +2,36 @@
 
 source config.ini
 
+# Create sql table, trigger and procedure files
+cp $PATH_TO_STATS/default_files/tables.sql.default $PATH_TO_STATS/tables.sql
+cp $PATH_TO_STATS/default_files/triggers.sql.default $PATH_TO_STATS/triggers.sql
+cp $PATH_TO_STATS/default_files/procedures.sql.default $PATH_TO_STATS/procedures.sql
+cd $PATH_TO_STATS && sed -i "s/pogodb/$STATS_DB/g" *.sql
+
+# Create tables
+if [ -z "$SQL_password" ]
+then
+  mysql -h$DB_IP -P$DB_PORT -u$SQL_user $STATS_DB < $PATH_TO_STATS/tables.sql
+else
+  mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB < $PATH_TO_STATS/tables.sql
+fi
+
+# Create triggers
+if [ -z "$SQL_password" ]
+then
+  mysql -h$DB_IP -P$DB_PORT -u$SQL_user $MAD_DB < $PATH_TO_STATS/triggers.sql
+else
+  mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $MAD_DB < $PATH_TO_STATS/triggers.sql
+fi
+
+# Create procedure
+if [ -z "$SQL_password" ]
+then
+  mysql -h$DB_IP -P$DB_PORT -u$SQL_user $MAD_DB < $PATH_TO_STATS/procedures.sql
+else
+  mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $MAD_DB < $PATH_TO_STATS/procedures.sql
+fi
+
 # Create crontab and monthly file
 cd $PATH_TO_STATS && rm -f *.default
 cp $PATH_TO_STATS/default_files/crontab.txt.default $PATH_TO_STATS/crontab.txt
@@ -26,6 +56,25 @@ then
   sed -i "s/#SPAWN_CLEANUP#//g" $PATH_TO_STATS/crontab.txt
   sed -i "s/SPAWN_CLEAN_MIN/$SPAWN_CLEAN_MIN/g" $PATH_TO_STATS/crontab.txt
   sed -i "s/SPAWN_CLEAN_HR/$SPAWN_CLEAN_HR/g" $PATH_TO_STATS/crontab.txt
+fi
+
+# Easy setup check/implement
+if ls $PATH_TO_STATS/areas/*.ini &> /dev/null
+then
+    echo "Area(s) defined, skipping creation area world and importing origins from MADdb"
+else
+    cp $PATH_TO_STATS/areas/area.ini.example $PATH_TO_STATS/areas/world.ini
+    sed -i "s/Alphen/World/g" $PATH_TO_STATS/areas/world.ini
+    sed -i "s/51.491/90/g" $PATH_TO_STATS/areas/world.ini
+    sed -i "s/51.471/-90/g" $PATH_TO_STATS/areas/world.ini
+    sed -i "s/4.946/-180/g" $PATH_TO_STATS/areas/world.ini
+    sed -i "s/4.973/180/g" $PATH_TO_STATS/areas/world.ini
+    if [ -z "$SQL_password" ]
+    then
+    mysql -h$DB_IP -P$DB_PORT -u$SQL_user $STATS_DB -e "insert ignore into '$STATS_DB'.Area (Origin) select name from '$MAD_DB'.settings_device;"
+    else
+    mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB -e "insert ignore into '$STATS_DB'.Area (Origin) select name from '$MAD_DB'.settings_device;"
+    fi
 fi
 
 # Create Area files
@@ -53,12 +102,6 @@ do
   sed -i "s/4.946/$MIN_LON/g" $PATH_TO_STATS/sql_cron/1440_"$AREA_NAME"_area.sql
   sed -i "s/4.973/$MAX_LON/g" $PATH_TO_STATS/sql_cron/1440_"$AREA_NAME"_area.sql
 done
-
-# Create sql table, trigger and procedure files
-cp $PATH_TO_STATS/default_files/tables.sql.default $PATH_TO_STATS/tables.sql
-cp $PATH_TO_STATS/default_files/triggers.sql.default $PATH_TO_STATS/triggers.sql
-cp $PATH_TO_STATS/default_files/procedures.sql.default $PATH_TO_STATS/procedures.sql
-cd $PATH_TO_STATS && sed -i "s/pogodb/$STATS_DB/g" *.sql
 
 # Create cron files
 cp $PATH_TO_STATS/default_files/15_area.sql.default $PATH_TO_STATS/sql_cron/15_area.sql.template
@@ -139,30 +182,6 @@ fi
 
 if "$trs_usage"
 then sed -i "s/--usage-- //g" $PATH_TO_STATS/sql_cron/pokemon_daily.sql
-fi
-
-# Create tables
-if [ -z "$SQL_password" ]
-then
-  mysql -h$DB_IP -P$DB_PORT -u$SQL_user $STATS_DB < $PATH_TO_STATS/tables.sql
-else
-  mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB < $PATH_TO_STATS/tables.sql
-fi
-
-# Create triggers
-if [ -z "$SQL_password" ]
-then
-  mysql -h$DB_IP -P$DB_PORT -u$SQL_user $MAD_DB < $PATH_TO_STATS/triggers.sql
-else
-  mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $MAD_DB < $PATH_TO_STATS/triggers.sql
-fi
-
-# Create procedure
-if [ -z "$SQL_password" ]
-then
-  mysql -h$DB_IP -P$DB_PORT -u$SQL_user $MAD_DB < $PATH_TO_STATS/procedures.sql
-else
-  mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $MAD_DB < $PATH_TO_STATS/procedures.sql
 fi
 
 #Check MAD collation, else 15_worker will fail
