@@ -33,7 +33,7 @@ Use it at you own risk, because bare in mind this was all done by an idiot!
 
 ### 2 Initial setup
 
-- Clone Stats: <br>``git clone https://github.com/dkmur/Stats.git && cd Stats/ && cp /default_files/config.ini.example config.ini``
+- Clone Stats: <br>``git clone https://github.com/dkmur/Stats.git && cd Stats/ && cp default_files/config.ini.example config.ini``
 - Create stats database and grant privileges. i.e.:  
 ```
 create database ##STATS_DB##;
