@@ -38,6 +38,7 @@ Use it at you own risk, because bare in mind this was all done by an idiot!
 ```
 create database ##STATS_DB##;
 grant all privileges on ##STATS_DB##.* to ##MYSELF##@localhost;
+flush privileges;
 ```  
 - Edit settings in file ``config.ini``.  
 - Make sure SQL_user has privileges on both STATS_DB and MAD_DB.  
