@@ -171,4 +171,4 @@ DROP KEY IF EXISTS `pokemon_history_temp_first_scanned`;
 ALTER TABLE `Area`
 DROP PRIMARY KEY, 
 ADD PRIMARY KEY `Origin`,
-CHANGE COLUMN `Area` `Area` varchar(50) DEFAULT World;
+CHANGE COLUMN `Area` `Area` varchar(50) DEFAULT `World`;
