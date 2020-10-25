@@ -27,7 +27,7 @@ Use it at you own risk, because bare in mind this was all done by an idiot!
 ## Setting up
 
 ### 1 Prerequisites
-- Activation of (raw)stats in MAD config.ini (statistic,game_stats,game_stats_raw).
+- Activation of (raw)stats in MAD config.ini (statistic,game_stats,game_stats_raw) and ``game_stats_save_time`` at default 300s
 - Mariadb > 10.2
 - mysql strict mode disabled
 
