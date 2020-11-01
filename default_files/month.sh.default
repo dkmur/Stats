@@ -5,3 +5,4 @@ mysqldump --no-data userpass pogodb pokemon_history > PATH_TO_STATSpokemon_histo
 mysql userpass pogodb -e "alter table pogodb.pokemon_history RENAME monsdb.pokemon_history_$yearmonth"
 mysql userpass pogodb < PATH_TO_STATSpokemon_history_structure.sql
 rm PATH_TO_STATSpokemon_history_structure.sql
+mysqloptimize userpass monsdb pokemon_history_$yearmonth
