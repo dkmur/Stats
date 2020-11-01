@@ -14,7 +14,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "7.1.5"
+      "version": "7.2.2"
     },
     {
       "type": "panel",
@@ -46,7 +46,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1602335941161,
+  "iteration": 1604258662801,
   "links": [],
   "panels": [
     {
@@ -83,8 +83,11 @@
       "lines": true,
       "linewidth": 1,
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "percentage": false,
-      "pluginVersion": "7.1.5",
+      "pluginVersion": "7.2.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -103,7 +106,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(a.Datetime,$__interval),\n  sum(Mons_all) AS \"Mons scanned\",\n  100*sum(a.MonsIV)/sum(a.Mons_all) AS \"%IV scanned\"\nFROM stats_area a\nWHERE\n  a.RPL = '$RPL'\nGROUP BY 1\nORDER BY $__timeGroup(a.Datetime,$__interval)",
+          "rawSql": "SELECT\n  $__timeGroupAlias(a.Datetime,$__interval),\n  sum(Mons_all) AS \"Mons scanned\",\n  100*sum(a.MonsIV)/sum(a.Mons_all) AS \"%IV scanned\"\nFROM stats_area a\nWHERE\n  $__timeFilter(a.datetime) and\n  a.RPL = '$RPL'\nGROUP BY 1\nORDER BY $__timeGroup(a.Datetime,$__interval)",
           "refId": "A",
           "select": [
             [
@@ -156,8 +159,8 @@
           "format": "short",
           "label": "%IV",
           "logBase": 1,
-          "max": "100",
-          "min": "80",
+          "max": null,
+          "min": null,
           "show": true
         }
       ],
@@ -200,8 +203,11 @@
       "lines": true,
       "linewidth": 1,
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "percentage": false,
-      "pluginVersion": "7.1.5",
+      "pluginVersion": "7.2.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -282,7 +288,7 @@
           "format": "short",
           "label": null,
           "logBase": 1,
-          "max": "100",
+          "max": null,
           "min": null,
           "show": true
         },
@@ -334,8 +340,11 @@
       "lines": true,
       "linewidth": 1,
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "percentage": false,
-      "pluginVersion": "7.1.5",
+      "pluginVersion": "7.2.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -468,8 +477,11 @@
       "lines": true,
       "linewidth": 1,
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "percentage": false,
-      "pluginVersion": "7.1.5",
+      "pluginVersion": "7.2.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -488,7 +500,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(Datetime,$__interval),\n  sum(Res)/(count(Worker)*$RPL/60) AS \"Avg #Pogo restarts /device /hour\",\n  sum(Reb)/(count(Worker)*$RPL/60) AS \"Avg #device reboots /device /hour\"\nFROM stats_worker\nWHERE\n  RPL = '$RPL'\nGROUP BY 1\nORDER BY $__timeGroup(Datetime,$__interval)",
+          "rawSql": "SELECT\n  $__timeGroupAlias(Datetime,$__interval),\n  sum(Res)/(count(Worker)*$RPL/60) AS \"Avg #Pogo restarts /device /hour\",\n  sum(Reb)/(count(Worker)*$RPL/60) AS \"Avg #device reboots /device /hour\"\nFROM stats_worker\nWHERE\n  $__timeFilter(Datetime) and\n  RPL = '$RPL'\nGROUP BY 1\nORDER BY $__timeGroup(Datetime,$__interval)",
           "refId": "A",
           "select": [
             [
@@ -535,16 +547,16 @@
           "format": "short",
           "label": "# restarts /h",
           "logBase": 1,
-          "max": "0.3",
-          "min": "0",
+          "max": null,
+          "min": null,
           "show": true
         },
         {
           "format": "short",
           "label": "#reboots /h",
           "logBase": 1,
-          "max": "0.2",
-          "min": "0",
+          "max": null,
+          "min": null,
           "show": true
         }
       ],
@@ -587,8 +599,11 @@
       "lines": true,
       "linewidth": 1,
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "percentage": false,
-      "pluginVersion": "7.1.5",
+      "pluginVersion": "7.2.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -602,7 +617,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(a.Datetime,$__interval),\n  100*sum(a.MinutesLeft)/((sum(a.Spawndef15) * 60)+(sum(a.SpawndefNot15) * 30)) AS \"%despawntime left\"\nFROM stats_area a\nWHERE\n  a.RPL = '$RPL'\nGROUP BY 1\nORDER BY $__timeGroup(a.Datetime,$__interval)",
+          "rawSql": "SELECT\n  $__timeGroupAlias(a.Datetime,$__interval),\n  100*sum(a.MinutesLeft)/((sum(a.Spawndef15) * 60)+(sum(a.SpawndefNot15) * 30)) AS \"%despawntime left\"\nFROM stats_area a\nWHERE\n  $__timeFilter(a.datetime) and\n  a.RPL = '$RPL'\nGROUP BY 1\nORDER BY $__timeGroup(a.Datetime,$__interval)",
           "refId": "A",
           "select": [
             [
@@ -649,8 +664,8 @@
           "format": "short",
           "label": "% despawn time left",
           "logBase": 1,
-          "max": "100",
-          "min": "40",
+          "max": null,
+          "min": null,
           "show": true
         },
         {
@@ -701,8 +716,11 @@
       "lines": true,
       "linewidth": 1,
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "percentage": false,
-      "pluginVersion": "7.1.5",
+      "pluginVersion": "7.2.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -733,7 +751,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(Datetime,$__interval),\n  100*sum(LocOk)/sum(Tloc) AS \"Location Success Rate\",\n  100*sum(TpOk)/sum(Tp) AS \"Teleport Success Rate\",\n  100*sum(WkOk)/sum(Wk) AS \"Walk Success Rate\"\nFROM stats_worker\nWHERE\n  RPL = '$RPL'\nGROUP BY 1\nORDER BY $__timeGroup(Datetime,$__interval)",
+          "rawSql": "SELECT\n  $__timeGroupAlias(Datetime,$__interval),\n  100*sum(LocOk)/sum(Tloc) AS \"Location Success Rate\",\n  100*sum(TpOk)/sum(Tp) AS \"Teleport Success Rate\",\n  100*sum(WkOk)/sum(Wk) AS \"Walk Success Rate\"\nFROM stats_worker\nWHERE\n  $__timeFilter(datetime) and\n  RPL = '$RPL'\nGROUP BY 1\nORDER BY $__timeGroup(Datetime,$__interval)",
           "refId": "A",
           "select": [
             [
@@ -780,16 +798,16 @@
           "format": "short",
           "label": null,
           "logBase": 1,
-          "max": "100",
-          "min": "95",
+          "max": null,
+          "min": null,
           "show": true
         },
         {
           "format": "short",
           "label": null,
           "logBase": 1,
-          "max": "0.2",
-          "min": "0",
+          "max": null,
+          "min": null,
           "show": true
         }
       ],
@@ -849,5 +867,5 @@
   "timezone": "",
   "title": "01. Stats KPIs",
   "uid": "jM5txJOMz",
-  "version": 20
+  "version": 21
 }

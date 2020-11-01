@@ -46,7 +46,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1604258878238,
+  "iteration": 1604258975474,
   "links": [],
   "panels": [
     {
@@ -68,298 +68,6 @@
         "w": 12,
         "x": 0,
         "y": 0
-      },
-      "hiddenSeries": false,
-      "id": 2,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 1,
-      "nullPointMode": "null",
-      "options": {
-        "alertThreshold": true
-      },
-      "percentage": false,
-      "pluginVersion": "7.2.2",
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [
-        {
-          "alias": "aarch64 Restarts",
-          "yaxis": 2
-        },
-        {
-          "alias": "aarch64 Reboots",
-          "yaxis": 2
-        },
-        {
-          "alias": "aarch64 #Reboots per device",
-          "yaxis": 2
-        },
-        {
-          "alias": "aarch64 #Restarts per device",
-          "yaxis": 2
-        },
-        {
-          "alias": "armv8l #Restarts per device",
-          "yaxis": 2
-        },
-        {
-          "alias": "armv8l #Reboots per device",
-          "yaxis": 2
-        },
-        {
-          "alias": "armv8l\narmv8l #Reboots per device",
-          "yaxis": 2
-        },
-        {
-          "alias": "armv8l\narmv8l #Restarts per device",
-          "yaxis": 2
-        },
-        {
-          "alias": "aarch64 #Events per device",
-          "yaxis": 2
-        },
-        {
-          "alias": "armv8l #Events per device",
-          "yaxis": 2
-        },
-        {
-          "alias": "aarch64 #Events (restart or reboot) per device",
-          "yaxis": 2
-        },
-        {
-          "alias": "armv8l #Events (restart or reboot) per device",
-          "yaxis": 2
-        },
-        {
-          "alias": "aarch64 Avg #restart+reboot /device /h",
-          "yaxis": 2
-        },
-        {
-          "alias": "armv8l Avg #restart+reboot /device /h",
-          "yaxis": 2
-        }
-      ],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "format": "time_series",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "SELECT\nb.arch,\n$__timeGroup(Datetime,$__interval) as 'time',\nsum(a.LocOk)/sum(a.Tloc)*100 'Location success rate',\n-- sum(a.reb)/count(a.reb) as '#Reboots per device',\n-- sum(a.res)/count(a.res) as '#Restarts per device'\n(sum(a.res)+sum(a.reb))/(count(a.Worker)*$RPL/60) as 'Avg #restart+reboot /device /h'\n\nFROM stats_worker a, ATVdetails b\n\nWHERE\n$__timeFilter(a.datetime) and\na.Worker COLLATE utf8mb4_unicode_ci = b.Origin and\ndate(a.Datetime) = b.Date and\na.RPL = '$RPL' and\nb.arch in ($architecture)\n-- a.Datetime >= curdate() -interval 7 day\nGROUP by b.arch, a.Datetime\n\n",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "timeColumn": "time",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Performance by architecture",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "${DS_POGODB}",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
-        "overrides": []
-      },
-      "fill": 1,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 0
-      },
-      "hiddenSeries": false,
-      "id": 4,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 1,
-      "nullPointMode": "null",
-      "options": {
-        "alertThreshold": true
-      },
-      "percentage": false,
-      "pluginVersion": "7.2.2",
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [
-        {
-          "alias": "aarch64",
-          "yaxis": 2
-        }
-      ],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "format": "time_series",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "SELECT\nb.arch,\n$__timeGroup(Datetime,$__interval) as 'time',\ncount(a.res) as '#devices'\n\nFROM stats_worker a, ATVdetails b\n\nWHERE\n$__timeFilter(a.datetime) and\na.Worker COLLATE utf8mb4_unicode_ci = b.Origin and\ndate(a.Datetime) = b.Date and\na.RPL = '$RPL' and\nb.arch in ($architecture)\n-- a.Datetime >= curdate() -interval 7 day\nGROUP by b.arch, a.Datetime",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "timeColumn": "time",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "#device per arch",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "${DS_POGODB}",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
-        "overrides": []
-      },
-      "fill": 1,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 8
       },
       "hiddenSeries": false,
       "id": 6,
@@ -385,39 +93,7 @@
       "renderer": "flot",
       "seriesOverrides": [
         {
-          "alias": "0.185.0 #Events (restart or reboot) per device",
-          "yaxis": 2
-        },
-        {
-          "alias": "0.185.1 #Events (restart or reboot) per device",
-          "yaxis": 2
-        },
-        {
-          "alias": "0.185.3 #Events (restart or reboot) per device",
-          "yaxis": 2
-        },
-        {
-          "alias": "0.187.1 #Events (restart or reboot) per device",
-          "yaxis": 2
-        },
-        {
-          "alias": "0.187.2 Avg #restart+reboot /device /h",
-          "yaxis": 2
-        },
-        {
-          "alias": "0.187.1 Avg #restart+reboot /device /h",
-          "yaxis": 2
-        },
-        {
-          "alias": "0.185.3 Avg #restart+reboot /device /h",
-          "yaxis": 2
-        },
-        {
-          "alias": "0.185.1 Avg #restart+reboot /device /h",
-          "yaxis": 2
-        },
-        {
-          "alias": "0.189.0 Avg #restart+reboot /device /h",
+          "alias": "%IV100",
           "yaxis": 2
         }
       ],
@@ -430,7 +106,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\nb.pogo,\n$__timeGroup(Datetime,$__interval) as 'time',\nsum(a.LocOk)/sum(a.Tloc)*100 'Location success rate',\n-- sum(a.reb)/count(a.reb) as '#Reboots per device',\n-- sum(a.res)/count(a.res) as '#Restarts per device'\n(sum(a.res)+sum(a.reb))/(count(a.Worker)*$RPL/60) as 'Avg #restart+reboot /device /h'\n\nFROM stats_worker a, ATVdetails b\n\nWHERE\n$__timeFilter(a.datetime) and\na.Worker COLLATE utf8mb4_unicode_ci = b.Origin and\ndate(a.Datetime) = b.Date and\na.RPL = '$RPL' and\nb.pogo in ($pogo)\n-- a.Datetime >= curdate() -interval 7 day\nGROUP by b.pogo, a.Datetime",
+          "rawSql": "SELECT a.datetime as 'time', sum(a.iv100) as '#iv100', 100*sum(iv100)/sum(Mons_all) as '%IV100'\nFROM stats_area a\nWHERE   $__timeFilter(a.datetime) and a.RPL = $RPL and a.Area in ($Area)\nGROUP BY a.datetime\n",
           "refId": "A",
           "select": [
             [
@@ -456,7 +132,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Performance by pogo realease",
+      "title": "iv100",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -473,7 +149,7 @@
       "yaxes": [
         {
           "format": "short",
-          "label": null,
+          "label": "# iv100",
           "logBase": 1,
           "max": null,
           "min": null,
@@ -481,7 +157,255 @@
         },
         {
           "format": "short",
-          "label": null,
+          "label": "% iv100",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_POGODB}",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "hiddenSeries": false,
+      "id": 8,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.2.2",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "alias": "%IV100",
+          "yaxis": 2
+        },
+        {
+          "alias": "%IV0",
+          "yaxis": 2
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT a.datetime as 'time', sum(a.iv0) as '#iv0', 100*sum(iv0)/sum(Mons_all) as '%IV0'\nFROM stats_area a\nWHERE   $__timeFilter(a.datetime) and a.RPL = $RPL and a.Area in ($Area)\nGROUP BY a.datetime\n",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "iv0",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": "# iv0",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": "% iv0",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_POGODB}",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 8
+      },
+      "hiddenSeries": false,
+      "id": 10,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.2.2",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "alias": "100*sum(b.shiny)/sum(a.Mons_all)",
+          "yaxis": 2
+        },
+        {
+          "alias": "%shiny",
+          "yaxis": 2
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT a.datetime as 'time', sum(b.shiny) as '#shiny', 100*sum(b.shiny)/sum(a.Mons_all) as '%shiny'\nFROM stats_area a, stats_worker b\nWHERE   $__timeFilter(a.datetime) and a.RPL = $RPL and a.Area in ($Area) and a.datetime = b.datetime and a.RPL = b.RPL\nGROUP BY a.datetime\n",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Shiny",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": "#shiny",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": "%shiny",
           "logBase": 1,
           "max": null,
           "min": null,
@@ -514,7 +438,7 @@
         "y": 8
       },
       "hiddenSeries": false,
-      "id": 8,
+      "id": 12,
       "legend": {
         "avg": false,
         "current": false,
@@ -535,7 +459,12 @@
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
-      "seriesOverrides": [],
+      "seriesOverrides": [
+        {
+          "alias": "#devices",
+          "yaxis": 2
+        }
+      ],
       "spaceLength": 10,
       "stack": false,
       "steppedLine": false,
@@ -545,7 +474,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\nb.pogo,\n$__timeGroup(Datetime,$__interval) as 'time',\ncount(a.res) as '#devices'\n\nFROM stats_worker a, ATVdetails b\n\nWHERE\na.Worker COLLATE utf8mb4_unicode_ci = b.Origin and\ndate(a.Datetime) = b.Date and\na.RPL = '$RPL' and\nb.pogo in ($pogo)\n-- a.Datetime >= curdate() -interval 7 day\nGROUP by b.pogo, a.Datetime",
+          "rawSql": "SELECT a.datetime as 'time', sum(a.Mons_all)/count(b.Worker) as '#Mons/device'\nFROM stats_area a, stats_worker b, Area c\nWHERE $__timeFilter(a.datetime) and a.datetime = b.datetime and a.RPL = $RPL and a.RPL = b.RPL and a.Area in ($Area) and a.Area = c.Area and b.Worker = c.Origin\nGROUP BY a.datetime\n",
           "refId": "A",
           "select": [
             [
@@ -571,7 +500,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "#device per release",
+      "title": "Mons scanned per device",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -641,36 +570,14 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_POGODB}",
-        "definition": "select arch from ATVdetails;",
+        "definition": "select Area from stats_area;",
         "hide": 0,
         "includeAll": true,
         "label": null,
-        "multi": true,
-        "name": "architecture",
+        "multi": false,
+        "name": "Area",
         "options": [],
-        "query": "select arch from ATVdetails;",
-        "refresh": 1,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tags": [],
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
-      },
-      {
-        "allValue": null,
-        "current": {},
-        "datasource": "${DS_POGODB}",
-        "definition": "select pogo from ATVdetails;",
-        "hide": 0,
-        "includeAll": false,
-        "label": null,
-        "multi": true,
-        "name": "pogo",
-        "options": [],
-        "query": "select pogo from ATVdetails;",
+        "query": "select Area from stats_area;",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -687,22 +594,9 @@
     "from": "now-30d",
     "to": "now"
   },
-  "timepicker": {
-    "refresh_intervals": [
-      "5s",
-      "10s",
-      "30s",
-      "1m",
-      "5m",
-      "15m",
-      "30m",
-      "1h",
-      "2h",
-      "1d"
-    ]
-  },
+  "timepicker": {},
   "timezone": "",
-  "title": "11. Stats combined with ATVdetails",
-  "uid": "L-mKZqdGk",
-  "version": 19
+  "title": "30. Mon stuff",
+  "uid": "MXNPeYtMz",
+  "version": 10
 }
