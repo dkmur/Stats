@@ -44,7 +44,7 @@ flush privileges;
 - Make sure SQL_user has privileges on both STATS_DB and MAD_DB.  
 
 ### 3 Define areas and add devices
-Within Stats it is possible to assign devices to areas (towns) in order to analyze statistics per area providing the possibility to i.e. compare areas or perform or test functionality like PrioQ in a specific area. <br>
+Within Stats it is possible to assign devices to areas (towns) in order to analyze statistics per area providing the possibility to i.e. compare areas or test functionality like PrioQ in a specific area and analyze it's statistics. <br>
 In case you only have one area/town or are simply to lazy to define areas and assign devices :P follow steps in 3.1, where area ``world`` will be created.<br>
 Else proceed to 3.2 where you will define your own areas and assign devices.
 
