@@ -30,7 +30,7 @@ SPAWNDEF15_CLEANUP=false				# daily reset incorrect hourly spawndefs. An hourly 
 SPAWNDEF15_HOURS=15					# number of hours spawnpoint has not been seen in first and second 30min period before resetting spawnpoint
 
 ## Pokemons scanned cleanup/backup ##
-mon_backup=false					# Store todays mons scanned to pokemon_history, not required for stats as all data is already processed
+mon_backup=false					# Store todays mons scanned to pokemon_history, required for SPAWNDEF15_CLEAUP!! Data is not needed for Stats anymore since it is already processed
 mon_cleanup=true					# Cleanup pokemon_history (mon_backup=true)
 days_to_keep=14						# Number of days Pokemon date is tored into pokemon_history
 monthly_mon_table=false					# Create a new table each month where all scanned mons will be added. If set to true make sure mon_cleanup=false !!
