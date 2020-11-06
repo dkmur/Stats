@@ -26,7 +26,7 @@ QUEST_END='06:00:00'					# if you don't want spawnpoints discovered during quest
 SPAWN_UNSEEN_DAYS=5					# number of days a spawnpoint is not scanned before inserting into table spawn_unused and deleting it from trs_spawn, 9999 to disable
 SPAWN_NO_ENDTIME_DAYS=5					# number of days a spawnpoint is discovered yet now endtime found => insert into table spawn_unused and deleting from trs_spawn, 9999 to disable
 
-SPAWNDEF15_CLEANUP=false				# daily reset incorrect hourly spawndefs. An hourly spawn must have been seen in first and second 30min period, based on yesterdays data (after QUEST_END)
+SPAWNDEF15_CLEANUP=false				# daily reset incorrect hourly spawndefs. An hourly spawn must have been seen in first and second 30min period, based on yesterdays hourly data (after QUEST_END)
 SPAWNDEF15_HOURS=15					# number of hours spawnpoint has not been seen in first and second 30min period before resetting spawnpoint
 
 ## Pokemons scanned cleanup/backup ##
