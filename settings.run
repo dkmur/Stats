@@ -120,8 +120,8 @@ cp $PATH_TO_STATS/default_files/15_worker.sql.default $PATH_TO_STATS/sql_cron/15
 cp $PATH_TO_STATS/default_files/60_worker.sql.default $PATH_TO_STATS/sql_cron/60_worker.sql
 cp $PATH_TO_STATS/default_files/1440_worker.sql.default $PATH_TO_STATS/sql_cron/1440_worker.sql
 cp $PATH_TO_STATS/default_files/10080_worker.sql.default $PATH_TO_STATS/sql_cron/10080_worker.sql
-cp $PATH_TO_STATS/default_files/pokemon_daily.sql.default $PATH_TO_STATS/sql_cron/pokemon_daily.sql
-cp $PATH_TO_STATS/default_files/pokemon_hourly.sql.default $PATH_TO_STATS/sql_cron/pokemon_hourly.sql
+cp $PATH_TO_STATS/default_files/daily.sql.default $PATH_TO_STATS/sql_cron/daily.sql
+cp $PATH_TO_STATS/default_files/hourly.sql.default $PATH_TO_STATS/sql_cron/hourly.sql
 cp $PATH_TO_STATS/default_files/spawn_cleanup.sql.default $PATH_TO_STATS/sql_cron/spawn_cleanup.sql
 sed -i "s/pogodb/$STATS_DB/g" $PATH_TO_STATS/sql_cron/*.sql
 sed -i "s/pogodb/$STATS_DB/g" $PATH_TO_STATS/sql_cron/*.template
@@ -136,6 +136,7 @@ sed -i "s/QUEST_START/$QUEST_START/g" $PATH_TO_STATS/sql_cron/*.sql
 sed -i "s/QUEST_END/$QUEST_END/g" $PATH_TO_STATS/sql_cron/*.sql
 sed -i "s/SPAWN_UNSEEN_DAYS/$SPAWN_UNSEEN_DAYS/g" $PATH_TO_STATS/sql_cron/*.sql
 sed -i "s/SPAWN_NO_ENDTIME_DAYS/$SPAWN_NO_ENDTIME_DAYS/g" $PATH_TO_STATS/sql_cron/*.sql
+sed -i "s/SPAWNDEF15_HOURS/$SPAWNDEF15_HOURS/g" $PATH_TO_STATS/sql_cron/*.sql
 sed -i "s/PATH_TO_STATS/$PATH_TO_STATS2/g" $PATH_TO_STATS/sql_cron/*.sh
 sed -i "s/monsdb/$monthly_mon_database/g" $PATH_TO_STATS/sql_cron/*.sh
 
@@ -155,45 +156,79 @@ cp $PATH_TO_STATS/default_files/30_mon_stuff.json.default $PATH_TO_STATS/grafana
 cd $PATH_TO_STATS/grafana/ && sed -i "s/pogodb/$DataSource_stats/g" *.json
 cd $PATH_TO_STATS/grafana/ && sed -i "s/rmdb/$DataSource_MAD/g" *.json
 
-echo "Pokemon_history settings"
-echo ""
+# Spawndef 15 cleanup set
+if "$SPAWNDEF15_CLEANUP"
+then
+  echo "Set spawndef 15 cleanup"
+  echo ""
+  sed -i "s/--SPAWNDEF15_CLEANUP-- //g" $PATH_TO_STATS/sql_cron/daily.sql
+fi
+
+
+# Pokemon_history settings
 if "$mon_backup"
-then sed -i "s/--mon_backup-- //g" $PATH_TO_STATS/sql_cron/pokemon_daily.sql
+then
+  echo "Set pokemon backup"
+  echo ""
+  sed -i "s/--mon_backup-- //g" $PATH_TO_STATS/sql_cron/daily.sql
 fi
 
 if "$mon_cleanup"
-then sed -i "s/--mon_cleanup-- //g" $PATH_TO_STATS/sql_cron/pokemon_daily.sql 
-     sed -i "s/--days_to_keep--/$days_to_keep/g" $PATH_TO_STATS/sql_cron/pokemon_daily.sql
+then
+  echo "Set pokemon cleanup"
+  echo ""
+  sed -i "s/--mon_cleanup-- //g" $PATH_TO_STATS/sql_cron/daily.sql 
+  sed -i "s/--days_to_keep--/$days_to_keep/g" $PATH_TO_STATS/sql_cron/daily.sql
 fi
 
 if "$monthly_mon_table"
-then sed -i "s/#monthly#//g" $PATH_TO_STATS/crontab.txt
+then
+  echo "Set montly backup table"
+  echo ""
+  sed -i "s/#monthly#//g" $PATH_TO_STATS/crontab.txt
 fi
 
-echo "MAD clean table settings"
-echo ""
+# MAD table cleanup settings
 if "$pokemon"
-then sed -i "s/--pokemon-- //g" $PATH_TO_STATS/sql_cron/pokemon_hourly.sql
+then
+  echo "Set MAD table pokemon cleanup"
+  echo ""
+  sed -i "s/--pokemon-- //g" $PATH_TO_STATS/sql_cron/hourly.sql
 fi
 
 if "$trs_stats_detect_raw"
-then sed -i "s/--detect_raw-- //g" $PATH_TO_STATS/sql_cron/pokemon_hourly.sql
+then
+  echo "Set MAD table trs_stats_detect_raw cleanup"
+  echo ""
+  sed -i "s/--detect_raw-- //g" $PATH_TO_STATS/sql_cron/hourly.sql
 fi
 
 if "$trs_stats_location_raw"
-then sed -i "s/--location_raw-- //g" $PATH_TO_STATS/sql_cron/pokemon_hourly.sql
+then
+  echo "Set MAD table trs_stats_location_raw cleanup"
+  echo ""
+  sed -i "s/--location_raw-- //g" $PATH_TO_STATS/sql_cron/hourly.sql
 fi
 
 if "$trs_stats_detect"
-then sed -i "s/--detect-- //g" $PATH_TO_STATS/sql_cron/pokemon_daily.sql
+then
+  echo "Set MAD table trs_stats_detect cleanup"
+  echo ""
+  sed -i "s/--detect-- //g" $PATH_TO_STATS/sql_cron/daily.sql
 fi
 
 if "$trs_stats_location"
-then sed -i "s/--location-- //g" $PATH_TO_STATS/sql_cron/pokemon_daily.sql
+then
+  echo "Set MAD table trs_stats_location cleanup"
+  echo ""
+  sed -i "s/--location-- //g" $PATH_TO_STATS/sql_cron/daily.sql
 fi
 
 if "$trs_usage"
-then sed -i "s/--usage-- //g" $PATH_TO_STATS/sql_cron/pokemon_daily.sql
+then
+  echo "Set MAD table trs_usage cleanup"
+  echo ""
+  sed -i "s/--usage-- //g" $PATH_TO_STATS/sql_cron/daily.sql
 fi
 
 #Check MAD collation, else 15_worker will fail
