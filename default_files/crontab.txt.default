@@ -1,4 +1,3 @@
-#### Stats #####
 ## Cleanup and backup
 5 * * * * cd pathToStatssql_cron/ && mysql userpass < pokemon_hourly.sql
 7 1 * * * cd pathToStatssql_cron/ && mysql userpass < pokemon_daily.sql
