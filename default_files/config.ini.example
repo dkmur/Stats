@@ -32,7 +32,7 @@ SPAWNDEF15_HOURS=15					# number of hours spawnpoint has not been seen in first 
 ## Pokemons scanned cleanup/backup ##
 mon_backup=false					# Store todays mons scanned to pokemon_history, required for SPAWNDEF15_CLEAUP!! Data is not needed for Stats anymore since it is already processed
 mon_cleanup=true					# Cleanup pokemon_history (mon_backup=true)
-days_to_keep=14						# Number of days Pokemon date is stored into pokemon_history
+days_to_keep=14						# Number of days Pokemon data is stored into pokemon_history
 monthly_mon_table=false					# Create a new table each month where all scanned mons will be added. If set to true make sure mon_cleanup=false !!
 monthly_mon_database=pogodb				# Database to be used for monthly pokemon backup table, make sure to grant privileges to SQL_user
 
