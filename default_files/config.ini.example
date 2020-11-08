@@ -20,8 +20,8 @@ SPAWN_CLEANUP=false
 SPAWN_CLEAN_HR=6					# hour to be use in crontab for cleanup
 SPAWN_CLEAN_MIN=13					# minutes to be used in crontab for cleanup
 
-QUEST_START='02:00:00'					# if you don't want spawnpoints discovered during questing hour to be backed up and deleted set both start/end to '02:00:00'
-QUEST_END='06:00:00'					# if you don't want spawnpoints discovered during questing hour to be backed up and deleted set both start/end to '02:00:00'
+QUEST_START='02:00:00'					# if you don't want spawnpoints discovered during questing hour to be backed up and deleted set both start/end equal i.e. '06:00:00'
+QUEST_END='06:00:00'					# if you don't want spawnpoints discovered during questing hour to be backed up and deleted set both start/end equal i.e. '06:00:00'
 
 SPAWN_UNSEEN_DAYS=5					# number of days a spawnpoint is not scanned before inserting into table spawn_unused and deleting it from trs_spawn, 9999 to disable
 SPAWN_NO_ENDTIME_DAYS=5					# number of days a spawnpoint is discovered yet no endtime found => insert into table spawn_unused and deleting from trs_spawn, 9999 to disable
