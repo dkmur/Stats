@@ -1,3 +1,4 @@
+#### Stats #####
 ## Cleanup and backup
 5 * * * * cd pathToStatssql_cron/ && mysql userpass < hourly.sql
 7 1 * * * cd pathToStatssql_cron/ && mysql userpass < daily.sql
