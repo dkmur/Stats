@@ -6,48 +6,66 @@ DB_PORT=3306
 MAD_DB=rmdb
 STATS_DB=pogodb
 
+## MADmin settings, for quest recalc ##
+# MAD instance 1
+MAD_instance_name_1=MAD
+MAD_url_1=http://localhost:5000
+MADmin_username_1=someuser
+MADmin_password_1=somepass
+
+# MAD instance 2, must be connected to same DB as instance 1
+MAD_instance_name_2=
+MAD_url_2=
+MADmin_username_2=
+MADmin_password_2=
+
 ## Stats ##
 PATH_TO_STATS=/home/dkmur/temp/Stats/
-DEFINED_SCAN_AREAS='Amsterdam, London, Paris'
-DEFAULT_AREA=London
+DEFINED_SCAN_AREAS='Amsterdam, London, Paris'		# only used for visualisation in Stats menu
+DEFAULT_AREA=London					# Default area to be used for Stats
 
 ## Grafana ##
 DataSource_stats=pogodb
 DataSource_MAD=rmdb
 
-## Backup spawns to table spawn_unused and remove after quests have finished ##
-# if you don't want spawn discovered during questing hour to be backed up and deleted set both start/end to '02:00:00' #
-# if you don't want either spawns unseen or spawn dicovered but still no end time to remain in trs_spawn table set to 99999 respectively#
+## Spawnpoint cleanup/backup ##
 SPAWN_CLEANUP=false
-SPAWN_CLEAN_HR=6
-SPAWN_CLEAN_MIN=13 
-QUEST_START='02:00:00'
-QUEST_END='06:00:00'
-SPAWN_UNSEEN_DAYS=5
-SPAWN_NO_ENDTIME_DAYS=5
+SPAWN_CLEAN_HR=6					# hour to be use in crontab for cleanup
+SPAWN_CLEAN_MIN=13					# minutes to be used in crontab for cleanup
 
-## How to handle mons scanned ##
-# Store todays  mons scanned to pokemon_history, not required for stats as all data is already processed #
-mon_backup=false
-# Cleanup pokemon_history in case option above is set to true, or you have been running stats for months and there is loads of data stored you do not need :) #
-mon_cleanup=true
-days_to_keep=14
-# Create a new table each month where all scanned mons will be added (actually rename last month and re-create pokemon_history) #
-# If set to true, do not cleanup pokemon_history :P #
-# In case you whish to use a different database make sure to create it yourself and grant privileges to SQL_user #
-monthly_mon_table=false
-monthly_mon_database=pogodb
+QUEST_START='02:00:00'					# if you don't want spawnpoints discovered during questing hour to be backed up and deleted set both start/end equal i.e. '06:00:00'
+QUEST_END='06:00:00'					# if you don't want spawnpoints discovered during questing hour to be backed up and deleted set both start/end equal i.e. '06:00:00'
 
-## Stats Cleanup for different ReportPeriodLength in days ##
+SPAWN_UNSEEN_DAYS=5					# number of days a spawnpoint is not scanned before inserting into table spawn_unused and deleting it from trs_spawn, 9999 to disable
+SPAWN_NO_ENDTIME_DAYS=5					# number of days a spawnpoint is discovered yet no endtime found => insert into table spawn_unused and deleting from trs_spawn, 9999 to disable
+
+SPAWNDEF15_CLEANUP=false				# daily reset incorrect hourly spawndefs. An hourly spawn must have been seen in first and second 30min period, based on yesterdays hourly data (after QUEST_END)
+SPAWNDEF15_HOURS=15					# number of hours spawnpoint has not been seen in first and second 30min period before resetting spawnpoint
+
+## Pokemons scanned cleanup/backup ##
+mon_backup=false					# Store todays mons scanned to pokemon_history, required for SPAWNDEF15_CLEAUP!! Data is not needed for Stats anymore since it is already processed
+mon_cleanup=true					# Cleanup pokemon_history (mon_backup=true)
+days_to_keep=14						# Number of days Pokemon data is stored into pokemon_history
+monthly_mon_table=false					# Create a new table each month where all scanned mons will be added. If set to true make sure mon_cleanup=false !!
+monthly_mon_database=pogodb				# Database to be used for monthly pokemon backup table, make sure to grant privileges to SQL_user
+
+## Pokestop / Quest cleanup ##
+stop_to_gym_remove=false				# Remove pokestops that became gym
+stop_no_quest_remove=false				# Remove pokestops that have no quest scanned for no_quest_days
+no_quest_days=5						# Number of days of no quest scanned before deletion of pokestop
+recalc_quest_routes=false				# Weekly recalculation of quest routes
+quest_recalc_wait=60s					# Time in seconds to wait between quest route recalculations
+
+## Stats cleanup for different ReportPeriodLength in days ##
 RPL15=90
 RPL60=180
 RPL1440=9999
 RPL10080=9999
 
-## Cleanup of MAD tables true/false ##
-pokemon=false                     # delete data older then 1 hour
-trs_stats_detect=false            # delete yesterdays data
-trs_stats_detect_raw=false        # delete data older then 1 hour
-trs_stats_location=false          # delete yesterdays data
-trs_stats_location_raw=false      # delete data older then 1 hour
-trs_usage=false                   # delete data older then 30 days
+## MAD tables  cleanup (true or false) ##
+pokemon=false						# delete data table pokemon older then 1 hour
+trs_stats_detect_raw=false                              # delete data table trs_stats_detect_raw older then 1 hour
+trs_stats_location_raw=false                            # delete data table trs_stats_location_raw  older then 1 hour
+trs_stats_detect=false					# delete yesterdays data from table trs_stats_detect
+trs_stats_location=false				# delete yesterdays data from table trs_stats_location
+trs_usage=false						# delete data older then 30 days

@@ -1,6 +1,7 @@
+#### Stats #####
 ## Cleanup and backup
-5 * * * * cd pathToStatssql_cron/ && mysql userpass < pokemon_hourly.sql
-7 1 * * * cd pathToStatssql_cron/ && mysql userpass < pokemon_daily.sql
+5 * * * * cd pathToStatssql_cron/ && mysql userpass < hourly.sql
+7 1 * * * cd pathToStatssql_cron/ && mysql userpass < daily.sql
 #monthly#5 5 1 * * pathToStatssql_cron/month.sh
 ## Area stats
 */15 * * * * cat pathToStatssql_cron/15_*_area.sql | mysql userpass STATS_DB
@@ -14,3 +15,5 @@
 9 0 * * 1 cd pathToStatssql_cron/ && mysql userpass < 10080_worker.sql
 ## Cleanup spawnpoints discovered during Quest hours
 #SPAWN_CLEANUP#SPAWN_CLEAN_MIN SPAWN_CLEAN_HR * * 1 cd pathToStatssql_cron/ && mysql userpass < spawn_cleanup.sql
+## Recalculate quest routes
+#quest_recalc.sh.default#20 0 * * 1 pathToStatsquest_recalc.sh

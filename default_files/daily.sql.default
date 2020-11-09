@@ -10,6 +10,17 @@ call pogodb.mon_history_temp_cleanup();
 -- cleanup pokemon_history
 --mon_cleanup-- delete from pogodb.pokemon_history where first_scanned < curdate() - interval --days_to_keep-- day;
 
+-- reset spawndef 15
+--SPAWNDEF15_CLEANUP-- CREATE TEMPORARY TABLE pogodb.tmp60 (INDEX (spawnpoint)) AS( select b.spawnpoint_id as 'spawnpoint', count(b.spawnpoint_id) as 'times' from rmdb.trs_spawn a, pogodb.pokemon_history b where a.spawnpoint = b.spawnpoint_id and a.spawndef = 15 and b.first_scanned like concat(curdate() - interval 1 day,"%") and b.first_scanned >= concat(curdate() -interval 1 day," QUEST_END") and (b.first_scanned > b.disappear_time - interval 30 minute or b.last_modified < b.disappear_time - interval 30 minute) group by spawnpoint_id);
+--SPAWNDEF15_CLEANUP-- UPDATE rmdb.trs_spawn SET spawndef = 240  WHERE spawnpoint in (select spawnpoint from pogodb.tmp60 where times >= SPAWNDEF15_HOURS);
+--SPAWNDEF15_CLEANUP-- DROP TABLE pogodb.tmp60;
+
+-- Pokestop / Quest cleanup
+--stop_to_gym_remove-- delete from rmdb.pokestop where pokestop_id in (select gym_id from rmdb.gym);
+--stop_no_quest_remove-- delete from rmdb.pokestop where pokestop_id in (select GUID from rmdb.trs_quest where date(from_unixtime(quest_timestamp)) < curdate() -interval --no_quest_days-- day);
+--stop_no_quest_remove-- delete from rmdb.trs_quest where GUID not in (select pokestop_id from rmdb.pokestop);
+
+
 -- cleanup Stats tables
 delete from pogodb.stats_worker
 where
