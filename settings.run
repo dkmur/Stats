@@ -177,7 +177,7 @@ then
   echo "Set removal pokestop that had no quest scanned for $no_quest_days days"
   echo ""
   sed -i "s/--stop_no_quest_remove-- //g" $PATH_TO_STATS/sql_cron/daily.sql
-  sed -i "s/--no_quest_days-- /$no_quest_days/g" $PATH_TO_STATS/sql_cron/daily.sql
+  sed -i "s/--no_quest_days--/$no_quest_days/g" $PATH_TO_STATS/sql_cron/daily.sql
 fi
 
 if "$recalc_quest_routes"
