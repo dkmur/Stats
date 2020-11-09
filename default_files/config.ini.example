@@ -6,10 +6,23 @@ DB_PORT=3306
 MAD_DB=rmdb
 STATS_DB=pogodb
 
+## MADmin settings, for quest recalc ##
+# MAD instance 1
+MAD_instance_name_1=MAD
+MAD_url_1=http://localhost:5000
+MADmin_username_1=someuser
+MADmin_password_1=somepass
+
+# MAD instance 2, must be connected to same DB as instance 1
+MAD_instance_name_2=
+MAD_url_2=
+MADmin_username_2=
+MADmin_password_2=
+
 ## Stats ##
 PATH_TO_STATS=/home/dkmur/temp/Stats/
 DEFINED_SCAN_AREAS='Amsterdam, London, Paris'		# only used for visualisation in Stats menu
-DEFAULT_AREA=London
+DEFAULT_AREA=London					# Default area to be used for Stats
 
 ## Grafana ##
 DataSource_stats=pogodb
@@ -35,6 +48,13 @@ mon_cleanup=true					# Cleanup pokemon_history (mon_backup=true)
 days_to_keep=14						# Number of days Pokemon data is stored into pokemon_history
 monthly_mon_table=false					# Create a new table each month where all scanned mons will be added. If set to true make sure mon_cleanup=false !!
 monthly_mon_database=pogodb				# Database to be used for monthly pokemon backup table, make sure to grant privileges to SQL_user
+
+## Pokestop / Quest cleanup ##
+stop_to_gym_remove=false				# Remove pokestops that became gym
+stop_no_quest_remove=false				# Remove pokestops that have no quest scanned for no_quest_days
+no_quest_days=5						# Number of days of no quest scanned before deletion of pokestop
+recalc_quest_routes=false				# Weekly recalculation of quest routes
+quest_recalc_wait=60s					# Time in seconds to wait between quest route recalculations
 
 ## Stats cleanup for different ReportPeriodLength in days ##
 RPL15=90

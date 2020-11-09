@@ -164,6 +164,29 @@ then
   sed -i "s/--SPAWNDEF15_CLEANUP-- //g" $PATH_TO_STATS/sql_cron/daily.sql
 fi
 
+# Pokestop / quest cleanup
+if "$stop_to_gym_remove"
+then
+  echo "Set removal of stops that became gym"
+  echo ""
+  sed -i "s/--stop_to_gym_remove-- //g" $PATH_TO_STATS/sql_cron/daily.sql
+fi
+
+if "$stop_no_quest_remove"
+then
+  echo "Set removal pokestop that had no quest scanned for $no_quest_days days"
+  echo ""
+  sed -i "s/--stop_no_quest_remove-- //g" $PATH_TO_STATS/sql_cron/daily.sql
+  sed -i "s/--no_quest_days-- /$no_quest_days/g" $PATH_TO_STATS/sql_cron/daily.sql
+fi
+
+if "$recalc_quest_routes"
+then
+  echo "Set recalculation of quest routes"
+  echo ""
+  cp $PATH_TO_STATS/default_files/quest_recalc.sh.default $PATH_TO_STATS/quest_recalc.sh
+  sed -i "s/#quest_recalc.sh.default#//g" $PATH_TO_STATS/crontab.txt
+fi
 
 # Pokemon_history settings
 if "$mon_backup"
