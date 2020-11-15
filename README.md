@@ -61,6 +61,7 @@ Note: when adding devices, remove ``world.ini`` in /areas and execute ``settings
 - in ``config.ini`` set ``FENCE=MAD``
 - Execute ``./settings.run``, this will create required stats tables, triggers, sql queries , procedures and crontab file <br>
 - Assign devices (MAD origins) to the created area's (select Area from STATS_DB.Area;), in mysql:<br>
+- Edit crontab ``crontab -e`` and insert content of ``crontab.txt`` located in Stats home. <br>
 ```
 insert into ##STATS_DB##.Area (Area,Origin) values
 ('Town1','Device01'),
@@ -77,6 +78,7 @@ Note 3: make sure to add new devices to ``table Area`` when expanding setup. I n
 - for each Area or Town you whish to define: in /areas create an area file, i.e. ``cp area.ini.example paris.ini`` and edit the settings <br>
 - Execute ``./settings.run``, this will create required stats tables, triggers, sql queries , procedures and crontab file <br>
 - Assign devices (MAD origins) to the created area's/towns on previous steps, in mysql:<br>
+- Edit crontab ``crontab -e`` and insert content of ``crontab.txt`` located in Stats home. <br>
 ```
 insert into ##STATS_DB##.Area (Area,Origin) values
 ('Town1','Device01'),
