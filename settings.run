@@ -205,7 +205,6 @@ cp $PATH_TO_STATS/default_files/spawn_cleanup.sql.default $PATH_TO_STATS/sql_cro
 sed -i "s/pogodb/$STATS_DB/g" $PATH_TO_STATS/sql_cron/*.sql
 sed -i "s/pogodb/$STATS_DB/g" $PATH_TO_STATS/sql_cron/*.sh
 sed -i "s/rmdb/$MAD_DB/g" $PATH_TO_STATS/sql_cron/*.sql
-sed -i "s/rmdb/$MAD_DB/g" $PATH_TO_STATS/sql_cron/*.template
 sed -i "s/RPL15/$RPL15/g" $PATH_TO_STATS/sql_cron/*.sql
 sed -i "s/RPL60/$RPL60/g" $PATH_TO_STATS/sql_cron/*.sql
 sed -i "s/RPL1440/$RPL1440/g" $PATH_TO_STATS/sql_cron/*.sql
