@@ -118,58 +118,61 @@ fi
 if [[ "$FENCE" == "MAD" ]]
 then
   echo "Creating MAD fence config and area files"
-  cd $PATH_TO_STATS/areas && rm -f *.mad
+  rm -f $PATH_TO_STATS/areas/*.mad
+
 # get MAD fence data
   if [ -z "$SQL_password" ]
   then
-    query(){
-    mysql -NB -h$DB_IP -P$DB_PORT -u$SQL_user $MAD_DB -e "$1;"
-    }
+        query(){
+        mysql -NB -h$DB_IP -P$DB_PORT -u$SQL_user $MAD_DB -e "$1;"
+        }
   else
-    query(){
-    mysql -NB -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $MAD_DB -e "$1;"
-    }
+        query(){
+        mysql -NB -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $MAD_DB -e "$1;"
+        }
   fi
-    while read -r geofence_id name;
-    do
+        while read -r geofence_id name;
+        do
 
-    query "SELECT LEFT(fence_data,length(fence_data)-1) from settings_geofence where geofence_id = $geofence_id;" | sed 's/\[\"\[/[/g' | sed 's/",/\n/g' | sed 's/"//g' | sed 's/^ //g' | sed 's/\[/§\[/g' > $PATH_TO_STATS/areas/input
+        query "SELECT LEFT(fence_data,length(fence_data)-1) from settings_geofence where geofence_id = $geofence_id;" | sed 's/\[\"\[/[/g' | sed 's/",/\n/g' | sed 's/"//g' | sed 's/^ //g' | sed 's/\[/§\[/g' > $PATH_TO_STATS/areas/input
 
 
-      IFS=§;
-      for i in `cat $PATH_TO_STATS/areas/input`;
-      do
-        shopt -s lastpipe
-        echo $i | while read -r line;
-          do
-            if [[ $line == *"["* ]] || [[ $line == *"]"* ]]; then
-               coord=1
-               fence=$(echo -n ${line} | sed 's/ /_/g' | tr -d "]" | tr -d "[")
-               exec > $fence.mad
-               echo AREA_NAME=\"$name\"
-               echo -n FENCE_NAME=\"
-               echo -n "$line" | tr -d "]" | tr -d "["
-               echo \"
-            elif [ ! -z "$line" ]; then
-               if [[ $coord == 1 ]]; then
-                  echo -n POLYGON=\"
-               fi
-               echo -n $line | sed s/"]"/\n/ | sed s/,/' '/g
-               echo -n ", "
-               let "coord+=1"
-            fi
-          done
-      echo -n $i | tail +2 | head -1 | sed s/,/' '/g | sed s/$/\"/g
-      done | sed s/"(,"/"("/g | sed s/", ,"/,/g
-      unset IFS
+                IFS=§;
+                for i in `cat $PATH_TO_STATS/areas/input`;
+                do
+                        shopt -s lastpipe
+                        echo $i | while read -r line;
+                                do
+                                        if [[ $line == *"["* ]] || [[ $line == *"]"* ]]; then
+                                                coord=1
+                                                fence=$(echo -n ${line} | sed 's/ /_/g' | tr -d "]" | tr -d "[")
+                                                exec > $PATH_TO_STATS/areas/$fence.mad
+                                                echo AREA_NAME=\"$name\"
+                                                echo -n FENCE_NAME=\"
+                                                echo -n "$line" | tr -d "]" | tr -d "["
+                                                echo \"
+                                        elif [ ! -z "$line" ]; then
+                                                if [[ $coord == 1 ]]; then
+                                                echo -n POLYGON=\"
+                                                fi
+                                        echo -n $line | sed s/"]"/\n/ | sed s/,/' '/g
+                                        echo -n ", "
+                                        let "coord+=1"
+                                        fi
+                                done
+                        echo -n $i | tail +2 | head -1 | sed s/,/' '/g | sed s/$/\"/g
+                done | sed s/"(,"/"("/g | sed s/", ,"/,/g
+                unset IFS
 
-    done < <(query "$(cat << EOF
-    select geofence_id, name from settings_geofence where geofence_id in (select geofence_included from settings_area_mon_mitm);
-    EOF
-    )")
+        done < <(query "$(cat << EOF
+        select geofence_id, name from settings_geofence where geofence_id in (select geofence_included from settings_area_mon_mitm);
+EOF
+        )")
+  rm -f $PATH_TO_STATS/areas/input
 
 # create area files
-  cd $PATH_TO_STATS/sql_cron && rm -f *.sql && rm -f *.default
+  rm -f $PATH_TO_STATS/sql_cron/*.sql
+  rm -f $PATH_TO_STATS/sql_cron/*.default
   for area in "$PATH_TO_STATS"areas/*.mad
   do
     echo "$area"
@@ -189,12 +192,8 @@ then
   done
 fi
 
-
 echo "Creating cron files"
 echo ""
-cp $PATH_TO_STATS/default_files/15_area.sql.default $PATH_TO_STATS/sql_cron/15_area.sql.template
-cp $PATH_TO_STATS/default_files/60_area.sql.default $PATH_TO_STATS/sql_cron/60_area.sql.template
-cp $PATH_TO_STATS/default_files/1440_area.sql.default $PATH_TO_STATS/sql_cron/1440_area.sql.template
 cp $PATH_TO_STATS/default_files/10080_area.sql.default $PATH_TO_STATS/sql_cron/10080_area.sql
 cp $PATH_TO_STATS/default_files/15_worker.sql.default $PATH_TO_STATS/sql_cron/15_worker.sql
 cp $PATH_TO_STATS/default_files/60_worker.sql.default $PATH_TO_STATS/sql_cron/60_worker.sql
@@ -204,7 +203,6 @@ cp $PATH_TO_STATS/default_files/daily.sql.default $PATH_TO_STATS/sql_cron/daily.
 cp $PATH_TO_STATS/default_files/hourly.sql.default $PATH_TO_STATS/sql_cron/hourly.sql
 cp $PATH_TO_STATS/default_files/spawn_cleanup.sql.default $PATH_TO_STATS/sql_cron/spawn_cleanup.sql
 sed -i "s/pogodb/$STATS_DB/g" $PATH_TO_STATS/sql_cron/*.sql
-sed -i "s/pogodb/$STATS_DB/g" $PATH_TO_STATS/sql_cron/*.template
 sed -i "s/pogodb/$STATS_DB/g" $PATH_TO_STATS/sql_cron/*.sh
 sed -i "s/rmdb/$MAD_DB/g" $PATH_TO_STATS/sql_cron/*.sql
 sed -i "s/rmdb/$MAD_DB/g" $PATH_TO_STATS/sql_cron/*.template

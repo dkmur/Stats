@@ -5,7 +5,7 @@ select @Stop := concat(date(now() - interval 0 minute),' ', SEC_TO_TIME((TIME_TO
 select @RPL := '1440';
 select @Area := 'Alphen';
 select @Fence_name := 'Alphen_fence';
-select @Fence := 'FENCE_COORDS';
+select @Fence := st_geomfromtext('POLYGON((FENCE_COORDS))');
 
 -- Get Pokemon data
 Create TEMPORARY TABLE rmdb.tmp50
@@ -16,7 +16,7 @@ from pogodb.pokemon_history_temp a
 where
 a.first_scanned >= @Start and
 a.first_scanned < @Stop and
-ST_CONTAINS(st_geomfromtext('POLYGON(( @Fence ))') , point(a.latitude,a.longitude))
+ST_CONTAINS(@Fence, point(a.latitude,a.longitude))
 );
 
 -- Get Spawnpoint data
@@ -26,7 +26,7 @@ AS(
 select a.spawnpoint, a.last_scanned, a.first_detection, a.last_non_scanned, a.spawndef
 from rmdb.trs_spawn a
 where
-ST_CONTAINS(st_geomfromtext('POLYGON(( @Fence ))') , point(a.latitude,a.longitude))
+ST_CONTAINS(@Fence, point(a.latitude,a.longitude))
 );
 
 -- Initial insert
