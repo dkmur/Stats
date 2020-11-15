@@ -45,16 +45,35 @@ flush privileges;
 
 ### 3 Define areas and add devices
 Within Stats it is possible to assign devices to areas (towns) in order to analyze statistics per area providing the possibility to i.e. compare areas or test functionality like PrioQ in a specific area and analyze it's statistics. <br>
-In case you only have one area/town or are simply to lazy to define areas and assign devices :P follow steps in 3.1, where area ``world`` will be created.<br>
+3 options are availabe: <br>
+1 In case you only have one area/town or are simply to lazy to assign devices to an area :P follow steps in 3.1, where area ``world`` will be created.<br>
+2 Use MAD (sub)fences. Area's will be created based on MAD fences or subfences and assign devices to each area manually. See 3.2<br>
+3 The "old" way, create an area file where you set your area coordinates and assign devices to each area manually. See 3.3<br>
 Else proceed to 3.2 where you will define your own areas and assign devices.
 
 #### 3.1 Quick setup
+- in ``config.ini`` set ``FENCE=world``
 - Execute ``./settings.run``, this will create required stats tables, triggers, sql queries, procedures and crontab file. <br>
 - Edit crontab ``crontab -e`` and insert content of ``crontab.txt`` located in Stats home. <br>
 Note: when adding devices, remove ``world.ini`` in /areas and execute ``settings.run`` or add device origin to table ``Area`` manually
- 
 
-#### 3.2 Area setup
+#### 3.2 Use MAD fences
+- in ``config.ini`` set ``FENCE=MAD``
+- Execute ``./settings.run``, this will create required stats tables, triggers, sql queries , procedures and crontab file <br>
+- Assign devices (MAD origins) to the created area's (select Area from STATS_DB.Area;), in mysql:<br>
+```
+insert into ##STATS_DB##.Area (Area,Origin) values
+('Town1','Device01'),
+('Town1','Device02'),
+('Town2','Device01')
+;
+```
+Note 1: The geofence name used in MADmin is the Area name within Stats. <br>
+Note 2: in case a geofence consists of sub-fences these names will be stored in column ``Fence`` in stats_area.<br>
+Note 3: make sure to add new devices to ``table Area`` when expanding setup. I never remove origins as I want to keep the data collected.<br>
+
+#### 3.3 Manual Area definition
+- in ``config.ini`` set ``FENCE=box``
 - for each Area or Town you whish to define: in /areas create an area file, i.e. ``cp area.ini.example paris.ini`` and edit the settings <br>
 - Execute ``./settings.run``, this will create required stats tables, triggers, sql queries , procedures and crontab file <br>
 - Assign devices (MAD origins) to the created area's/towns on previous steps, in mysql:<br>
@@ -65,7 +84,7 @@ insert into ##STATS_DB##.Area (Area,Origin) values
 ('Town2','Device01')
 ;
 ```
-Note 1: make sure to add new devices when expanding setup. I never remove origins as I want to keep the data collected.<br>
+Note 1: make sure to add new devices to ``table Area`` when expanding setup. I never remove origins as I want to keep the data collected.<br>
 Note 2: in case you stop scanning an area, remove the area.ini file in /areas and execute ``settings.run``<br>
 
 ### 4 Grafana (optional)
