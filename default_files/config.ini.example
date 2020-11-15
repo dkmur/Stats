@@ -21,8 +21,11 @@ MADmin_password_2=
 
 ## Stats ##
 PATH_TO_STATS=/home/dkmur/temp/Stats/
-DEFINED_SCAN_AREAS='Amsterdam, London, Paris'		# only used for visualisation in Stats menu
-DEFAULT_AREA=London					# Default area to be used for Stats
+DEFINED_SCAN_AREAS='Amsterdam, London, Paris'		# only used for visualisation in Stats menu, not used for Grafana
+DEFAULT_AREA=London					# Default area to be used for Stats sql queries, not used for Grafana
+
+## Stats fence creation ##
+FENCE=MAD						# options:MAD/box/world. MAD=use MAD (sub)fences, box=define lat/lon max/min per area yourself, world=like box but Stats will create one big fence covering everything
 
 ## Grafana ##
 DataSource_stats=pogodb

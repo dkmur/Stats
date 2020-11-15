@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS `stats_area` (
   `RPL` smallint(6) NOT NULL,
   `TRPL` smallint(6) NOT NULL,
   `Area` varchar(40) NOT NULL,
+  `Fence` varchar(40) NOT NULL DEFAULT (Area),
   `Spawnpoints` smallint(6) DEFAULT NULL,
   `Mons_all` int(10) DEFAULT NULL,
   `Mons_nonIV` int(10) DEFAULT NULL,
@@ -46,7 +47,8 @@ CREATE TABLE IF NOT EXISTS `stats_area` (
   PRIMARY KEY (`id`),
   KEY `stats_area_Datetime` (`Datetime`),
   KEY `stats_area_RPL` (`RPL`),
-  KEY `stats_area_Area` (`Area`)
+  KEY `stats_area_Area` (`Area`),
+  KEY `stats_area_Fence` (`Fence`)
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `stats_worker` (
@@ -160,7 +162,9 @@ ALTER TABLE stats_area
 ADD COLUMN IF NOT EXISTS w5 int(6) NOT NULL DEFAULT 0 AFTER AvgMinutesLeft,
 ADD COLUMN IF NOT EXISTS w10 int(6) NOT NULL DEFAULT 0 AFTER w5,
 ADD COLUMN IF NOT EXISTS w15 int(6) NOT NULL DEFAULT 0 AFTER w10,
-ADD COLUMN IF NOT EXISTS w20 int(6) NOT NULL DEFAULT 0 AFTER w15;
+ADD COLUMN IF NOT EXISTS w20 int(6) NOT NULL DEFAULT 0 AFTER w15,
+ADD COLUMN IF NOT EXISTS Fence varchar(40) NOT NULL DEFAULT (Area) AFTER Area,
+ADD KEY IF NOT EXISTS stats_area_Fence (Fence);
 
 ALTER TABLE `stats_worker`
 CHANGE COLUMN `TRPL` `TRPL` smallint(6) DEFAULT 0;
