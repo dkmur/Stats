@@ -13,7 +13,7 @@ Available data:
 - spawnpoint statistics (added, known, last scanned etc)  
 
 Additionally, not related to Stats, but you can optionally set:
-- cleapup op spawnpoint definitions in case they are f..... up by CommDay or Spotlight
+- cleanup op spawnpoint definitions in case they are f..... up by CommDay or Spotlight
 - move spawns discovered during quest scan outside mon area to seperate table and remove from trs_spawn
 - cleanup of trs_spawn for spawnpoint not seen for X days or after X days endtimes are still unknown
 - remove pokestops that became a gym
