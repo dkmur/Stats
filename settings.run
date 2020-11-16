@@ -192,6 +192,18 @@ EOF
   done
 fi
 
+# Fill table Area
+if [[ "$FENCE" == "MAD" ]] && [[ "$MAD_DEVICE_INSERT" == "true" ]]
+then
+  echo "Adding devices and areas to table Area"
+  if [ -z "$SQL_password" ]
+  then
+  mysql -h$DB_IP -P$DB_PORT -u$SQL_user $STATS_DB -e "INSERT IGNORE INTO $STATS_DB.Area (Area,Origin) SELECT a.name, f.name FROM $MAD_DB.settings_geofence a, $MAD_DB.settings_area_mon_mitm b, $MAD_DB.settings_area c, $MAD_DB.settings_walkerarea d, $MAD_DB.settings_walker_to_walkerarea e, $MAD_DB.settings_device f WHERE a.geofence_id = b.geofence_included and b.area_id = c.area_id and b.area_id = d.area_id and d.walkerarea_id = e.walkerarea_id and e.walker_id = f.walker_id GROUP BY f.name, b.geofence_included;"
+  else
+  mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB -e "INSERT IGNORE INTO $STATS_DB.Area (Area,Origin) SELECT a.name, f.name FROM $MAD_DB.settings_geofence a, $MAD_DB.settings_area_mon_mitm b, $MAD_DB.settings_area c, $MAD_DB.settings_walkerarea d, $MAD_DB.settings_walker_to_walkerarea e, $MAD_DB.settings_device f WHERE a.geofence_id = b.geofence_included and b.area_id = c.area_id and b.area_id = d.area_id and d.walkerarea_id = e.walkerarea_id and e.walker_id = f.walker_id GROUP BY f.name, b.geofence_included;"
+  fi
+fi
+
 echo "Creating cron files"
 echo ""
 cp $PATH_TO_STATS/default_files/10080_area.sql.default $PATH_TO_STATS/sql_cron/10080_area.sql
@@ -232,6 +244,19 @@ cp $PATH_TO_STATS/default_files/20_mad_stuff.json.default $PATH_TO_STATS/grafana
 cp $PATH_TO_STATS/default_files/30_mon_stuff.json.default $PATH_TO_STATS/grafana/30_mon_stuff.json
 cd $PATH_TO_STATS/grafana/ && sed -i "s/pogodb/$DataSource_stats/g" *.json
 cd $PATH_TO_STATS/grafana/ && sed -i "s/rmdb/$DataSource_MAD/g" *.json
+
+# MAD fence update
+if [[ "$FENCE" == "MAD" ]]
+echo "Enabling MAD fence updates to Stats"
+then
+cp $PATH_TO_STATS/default_files/MAD_fence_update.sh.default $PATH_TO_STATS/MAD_fence_update.sh
+  if [[ "$MAD_FENCE_UPDATE_INTERVAL" == "day" ]]
+  then
+  sed -i "s/#MAD_FENCE_UPDATE#//g" $PATH_TO_STATS/crontab.txt
+  else
+  sed -i "s/#MAD_FENCE_UPDATE#12 0/12 */g" $PATH_TO_STATS/crontab.txt
+  fi
+fi
 
 # Spawndef 15 cleanup set
 if "$SPAWNDEF15_CLEANUP"

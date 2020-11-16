@@ -56,7 +56,7 @@ flush privileges;
 Within Stats it is possible to assign devices to areas (towns) in order to analyze statistics per area providing the possibility to i.e. compare areas or test functionality like PrioQ in a specific area and analyze it's statistics. <br>
 3 options are availabe: <br>
 1. In case you only have one area/town or are simply to lazy to assign devices to an area :P follow steps in 3.1, where area ``world`` will be created.<br>
-2. Use MAD (sub)fences. Area's will be created based on MAD fences or subfences and assign devices to each area manually. See 3.2<br>
+2. Use MAD (sub)fences. Area's will be created based on MAD fences or subfences. In case each walker contains max 1 mon_mitm area, device to area assignmented is automated.<br>
 3. The "old" way, create an area file where you set your area coordinates and assign devices to each area manually. See 3.3<br>
 Else proceed to 3.2 where you will define your own areas and assign devices.
 
@@ -69,8 +69,8 @@ Note: when adding devices, remove ``world.ini`` in /areas and execute ``settings
 #### 3.2 Use MAD fences
 - in ``config.ini`` set ``FENCE=MAD``
 - Execute ``./settings.run``, this will create required stats tables, triggers, sql queries , procedures and crontab file <br>
-- Assign devices (MAD origins) to the created area's (select Area from STATS_DB.Area;), in mysql:<br>
 - Edit crontab ``crontab -e`` and insert content of ``crontab.txt`` located in Stats home. <br>
+- If each walker only contains 1 mon_mitm area, set MAD_DEVICE_INSERT=true in config.ini for automatic assignment. Else assign devices (MAD origins) to the created area's (select Area from STATS_DB.Area;) manually, in mysql:<br>
 ```
 insert into ##STATS_DB##.Area (Area,Origin) values
 ('Town1','Device01'),

@@ -17,3 +17,5 @@
 #SPAWN_CLEANUP#SPAWN_CLEAN_MIN SPAWN_CLEAN_HR * * 1 cd pathToStatssql_cron/ && mysql userpass < spawn_cleanup.sql
 ## Recalculate quest routes
 #quest_recalc.sh.default#20 0 * * 1 pathToStatsquest_recalc.sh
+## Update MAD fences and devices
+#MAD_FENCE_UPDATE#12 0 * * * pathToStatsMAD_fence_update.sh

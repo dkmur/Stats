@@ -26,6 +26,8 @@ DEFAULT_AREA=London					# Default area to be used for Stats sql queries, not use
 
 ## Stats fence creation ##
 FENCE=MAD						# options:MAD/box/world. MAD=use MAD (sub)fences, box=define lat/lon max/min per area yourself, world=like box but Stats will create one big fence covering everything
+MAD_DEVICE_INSERT=false					# auto fill table Area, linking devices to Areas(geofence name of mon_mitm), requires FENCE=MAD. Note: only works if each walker contain max 1 mon_mitm area.  
+MAD_FENCE_UPDATE_INTERVAL=hour				# hour or day, interval for updating Stats on MAD geofences, requires FENCE=MAD. New devices will be added at same interval in case MAD_DEVICE_INSERT=true.
 
 ## Grafana ##
 DataSource_stats=pogodb
