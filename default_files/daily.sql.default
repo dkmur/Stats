@@ -15,6 +15,18 @@ call pogodb.mon_history_temp_cleanup();
 --SPAWNDEF15_CLEANUP-- UPDATE rmdb.trs_spawn SET spawndef = 240  WHERE spawnpoint in (select spawnpoint from pogodb.tmp60 where times >= SPAWNDEF15_HOURS);
 --SPAWNDEF15_CLEANUP-- DROP TABLE pogodb.tmp60;
 
+-- backup and delete spawns not seen for x days
+insert ignore into pogodb.spawn_unused (spawnpoint,latitude,longitude,spawndef,earliest_unseen,last_scanned,first_detection,last_non_scanned,calc_endminsec)
+select spawnpoint,latitude,longitude,spawndef,earliest_unseen,last_scanned,first_detection,last_non_scanned,calc_endminsec
+from rmdb.trs_spawn where date(last_non_scanned) < curdate() - interval SPAWN_UNSEEN_DAYS day;
+delete from rmdb.trs_spawn where date(last_non_scanned) < curdate() - interval SPAWN_UNSEEN_DAYS day;
+
+-- backup and delete spawns first_detection x days ago and last_scanned is NULL
+insert ignore into pogodb.spawn_unused (spawnpoint,latitude,longitude,spawndef,earliest_unseen,last_scanned,first_detection,last_non_scanned,calc_endminsec)
+select spawnpoint,latitude,longitude,spawndef,earliest_unseen,last_scanned,first_detection,last_non_scanned,calc_endminsec
+from rmdb.trs_spawn where date(first_detection) < curdate() - interval SPAWN_NO_ENDTIME_DAYS day and last_scanned is NULL;
+delete from rmdb.trs_spawn where date(first_detection) < curdate() - interval SPAWN_NO_ENDTIME_DAYS day and last_scanned is NULL;
+
 -- Pokestop / Quest cleanup
 --stop_to_gym_remove-- delete from rmdb.pokestop where pokestop_id in (select gym_id from rmdb.gym);
 --stop_no_quest_remove-- delete from rmdb.pokestop where pokestop_id in (select GUID from rmdb.trs_quest where date(from_unixtime(quest_timestamp)) < curdate() -interval --no_quest_days-- day);
