@@ -136,22 +136,44 @@ from_unixtime(timestamp_scan) >= @Datetime_p1 and from_unixtime(timestamp_scan) 
 group by worker
 );
 
-
--- insert data
-
-INSERT INTO pogodb.stats_worker (Datetime,RPL, TRPL, Worker, Tmon, IVmon, Mon, Quest, Raid, Tloc,LocOk,LocNok,LocFR,Tp,TpOk,TpNok,TpFR,TpSt,Wk,WkOk,WkNok,WkFR,WkSt,Shiny,Res,Reb,ResTot,RebTot)
-select
-@Datetime, @RPL, b.TRPL, a.worker,b.Tmon,b.IVmon,b.Mon,b.Quest,b.Raid,c.Tloc,c.LocOk,c.LocNok,c.LocFR,d.Tp,d.TpOk,d.TpNok,d.TpFR,f.TpSt,e.Wk,e.WkOk,e.WkNok,e.WkFR,g.WkSt,h.Shiny,a.Res,a.Reb,a.ResTot,a.RebTot
-from rmdb.tmp44 a
-left join rmdb.tmp41 b on a.worker = b.worker COLLATE utf8mb4_unicode_ci
-left join rmdb.tmp42 c on a.worker = c.worker COLLATE utf8mb4_unicode_ci
-left join rmdb.tmp45 d on a.worker = d.worker COLLATE utf8mb4_unicode_ci
-left join rmdb.tmp46 e on a.worker = e.worker COLLATE utf8mb4_unicode_ci
-left join rmdb.tmp47 f on a.worker = f.worker COLLATE utf8mb4_unicode_ci
-left join rmdb.tmp48 g on a.worker = g.worker COLLATE utf8mb4_unicode_ci
-left join rmdb.tmp49 h on a.worker = h.worker
+-- Fill data of current interval
+UPDATE pogodb.stats_worker z
+left join rmdb.tmp44 a on z.worker = a.worker
+left join rmdb.tmp41 b on z.worker = b.worker COLLATE utf8mb4_unicode_ci
+left join rmdb.tmp42 c on z.worker = c.worker COLLATE utf8mb4_unicode_ci
+left join rmdb.tmp45 d on z.worker = d.worker COLLATE utf8mb4_unicode_ci
+left join rmdb.tmp46 e on z.worker = e.worker COLLATE utf8mb4_unicode_ci
+left join rmdb.tmp47 f on z.worker = f.worker COLLATE utf8mb4_unicode_ci
+left join rmdb.tmp48 g on z.worker = g.worker COLLATE utf8mb4_unicode_ci
+left join rmdb.tmp49 h on z.worker = h.worker
+SET TRPL=b.TRPL, Tmon=b.Tmon, IVmon=b.IVmon, Mon=b.Mon, Quest=b.Quest, Raid=b.Raid, Tloc=c.Tloc, LocOk=c.LocOk, LocNok=c.LocNok, LocFR=c.LocFR, Tp=d.Tp, TpOk=d.TpOk, TpNok=d.TbNok, TpFR=d.TpFR, TpSt=d.TpSt, Wk=e.Wk, WkOk=e.WkOk, WkNok=e.WkNok, WkFR=e.WkFR, WkSt=e.WkSt, Shiny=h.Shiny, Res=a.Res, Reb=a.Reb, ResTot=a.ResTot, RebTot=a.RebTot)
+WHERE
+z.Datetime = @Datetime
 ;
 
+-- Insert next interval
+
+INSERT INTO pogodb.stats_worker (Datetime,RPL, Worker, Area)
+select
+@Datetime_p16, @RPL, d.name, b.name
+from
+rmdb.trs_status a, rmdb.settings_geofence b,
+(
+   SELECT area_id, geofence_included FROM rmdb.settings_area_mon_mitm
+   UNION
+   SELECT area_id, geofence_included FROM rmdb.settings_area_pokestops
+   UNION
+   SELECT area_id, geofence_included FROM rmdb.settings_area_raids_mitm
+   UNION
+   SELECT area_id, geofence_included FROM rmdb.settings_area_raids_mitm
+   UNION
+   SELECT area_id, geofence_included FROM rmdb.settings_area_idle
+) c, rmdb.settings_device d
+WHERE
+a.area_id = c.area_id AND
+c.geofence_included = b.geofence_id AND
+d.device_id = a.device_id
+;
 
 -- drop temp tables
 drop table rmdb.tmp41;

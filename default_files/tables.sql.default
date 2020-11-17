@@ -57,6 +57,7 @@ CREATE TABLE IF NOT EXISTS `stats_worker` (
   `RPL` smallint(6) NOT NULL,
   `TRPL` smallint(6) DEFAULT 0,
   `Worker` varchar(100) NOT NULL,
+  `Area` varchar(100) DEFAULT NULL,
   `Tmon` int(255) DEFAULT NULL,
   `IVmon` int(255) DEFAULT NULL,
   `Mon` int(255) DEFAULT NULL,
@@ -167,7 +168,8 @@ ADD COLUMN IF NOT EXISTS Fence varchar(40) NOT NULL DEFAULT (Area) AFTER Area,
 ADD KEY IF NOT EXISTS stats_area_Fence (Fence);
 
 ALTER TABLE `stats_worker`
-CHANGE COLUMN `TRPL` `TRPL` smallint(6) DEFAULT 0;
+CHANGE COLUMN `TRPL` `TRPL` smallint(6) DEFAULT 0,
+ADD COLUMN IF NOT EXISTS Area varchar(100) AFTER Worker;
 
 ALTER TABLE `pokemon_history_temp`
 DROP KEY IF EXISTS `pokemon_history_temp_first_scanned`;
