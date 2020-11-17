@@ -145,8 +145,8 @@ left join rmdb.tmp45 d on z.worker = d.worker COLLATE utf8mb4_unicode_ci
 left join rmdb.tmp46 e on z.worker = e.worker COLLATE utf8mb4_unicode_ci
 left join rmdb.tmp47 f on z.worker = f.worker COLLATE utf8mb4_unicode_ci
 left join rmdb.tmp48 g on z.worker = g.worker COLLATE utf8mb4_unicode_ci
-left join rmdb.tmp49 h on z.worker = h.worker
-SET TRPL=b.TRPL, Tmon=b.Tmon, IVmon=b.IVmon, Mon=b.Mon, Quest=b.Quest, Raid=b.Raid, Tloc=c.Tloc, LocOk=c.LocOk, LocNok=c.LocNok, LocFR=c.LocFR, Tp=d.Tp, TpOk=d.TpOk, TpNok=d.TbNok, TpFR=d.TpFR, TpSt=d.TpSt, Wk=e.Wk, WkOk=e.WkOk, WkNok=e.WkNok, WkFR=e.WkFR, WkSt=e.WkSt, Shiny=h.Shiny, Res=a.Res, Reb=a.Reb, ResTot=a.ResTot, RebTot=a.RebTot)
+left join rmdb.tmp49 h on z.worker = h.worker COLLATE utf8mb4_unicode_ci
+SET z.TRPL=b.TRPL, z.Tmon=b.Tmon, z.IVmon=b.IVmon, z.Mon=b.Mon, z.Quest=b.Quest, z.Raid=b.Raid, z.Tloc=c.Tloc, z.LocOk=c.LocOk, z.LocNok=c.LocNok, z.LocFR=c.LocFR, z.Tp=d.Tp, z.TpOk=d.TpOk, z.TpNok=d.TpNok, z.TpFR=d.TpFR, z.TpSt=f.TpSt, z.Wk=e.Wk, z.WkOk=e.WkOk, z.WkNok=e.WkNok, z.WkFR=e.WkFR, z.WkSt=g.WkSt, z.Shiny=h.Shiny, z.Res=a.Res, z.Reb=a.Reb, z.ResTot=a.ResTot, z.RebTot=a.RebTot
 WHERE
 z.Datetime = @Datetime
 ;
