@@ -17,32 +17,14 @@ time(first_detection) >= 'QUEST_START' and
 time(first_detection) <= 'QUEST_END'
 ;
 
--- daily cleanup spawns not seen for 5 days
--- add to backup db
+-- backup and delete spawns not seen for x days
 insert ignore into pogodb.spawn_unused (spawnpoint,latitude,longitude,spawndef,earliest_unseen,last_scanned,first_detection,last_non_scanned,calc_endminsec)
 select spawnpoint,latitude,longitude,spawndef,earliest_unseen,last_scanned,first_detection,last_non_scanned,calc_endminsec
-from rmdb.trs_spawn
-where
-date(last_non_scanned) < curdate() - interval SPAWN_UNSEEN_DAYS day
-;
--- remove backed up
-delete
-from rmdb.trs_spawn
-where
-date(last_non_scanned) < curdate() - interval SPAWN_UNSEEN_DAYS day
-;
+from rmdb.trs_spawn where date(last_non_scanned) < curdate() - interval SPAWN_UNSEEN_DAYS day;
+delete from rmdb.trs_spawn where date(last_non_scanned) < curdate() - interval SPAWN_UNSEEN_DAYS day;
 
--- daily cleanup first_detection 5 days ago and last_scanned is NULL
--- add to backup db
+-- backup and delete spawns first_detection x days ago and last_scanned is NULL
 insert ignore into pogodb.spawn_unused (spawnpoint,latitude,longitude,spawndef,earliest_unseen,last_scanned,first_detection,last_non_scanned,calc_endminsec)
 select spawnpoint,latitude,longitude,spawndef,earliest_unseen,last_scanned,first_detection,last_non_scanned,calc_endminsec
-from rmdb.trs_spawn
-where
-date(first_detection) < curdate() - interval SPAWN_NO_ENDTIME_DAYS day and last_scanned is NULL;
-;
--- remove backed up
-delete
-from rmdb.trs_spawn
-where
-date(first_detection) < curdate() - interval SPAWN_NO_ENDTIME_DAYS day and last_scanned is NULL;
-;
+from rmdb.trs_spawn where date(first_detection) < curdate() - interval SPAWN_NO_ENDTIME_DAYS day and last_scanned is NULL;
+delete from rmdb.trs_spawn where date(first_detection) < curdate() - interval SPAWN_NO_ENDTIME_DAYS day and last_scanned is NULL;
