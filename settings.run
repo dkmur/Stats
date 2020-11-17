@@ -100,15 +100,15 @@ then
     source $area
     cp $PATH_TO_STATS/default_files/15_area.sql.default $PATH_TO_STATS/sql_cron/15_"$AREA_NAME"_area.sql
     sed -i "s/Alphen/$AREA_NAME/g" $PATH_TO_STATS/sql_cron/15_"$AREA_NAME"_area.sql
-    sed -i "s/Alphen_fence/$AREA_NAME/g" $PATH_TO_STATS/sql_cron/15_"$AREA_NAME"_area.sql
+    sed -i "s/AlphenFence/$AREA_NAME/g" $PATH_TO_STATS/sql_cron/15_"$AREA_NAME"_area.sql
     sed -i "s/FENCE_COORDS/$MIN_LAT $MAX_LON, $MAX_LAT $MAX_LON, $MAX_LAT $MIN_LON, $MIN_LAT $MIN_LON, $MIN_LAT $MAX_LON/g" $PATH_TO_STATS/sql_cron/15_"$AREA_NAME"_area.sql
     cp $PATH_TO_STATS/default_files/60_area.sql.default $PATH_TO_STATS/sql_cron/60_"$AREA_NAME"_area.sql
     sed -i "s/Alphen/$AREA_NAME/g" $PATH_TO_STATS/sql_cron/60_"$AREA_NAME"_area.sql
-    sed -i "s/Alphen_fence/$AREA_NAME/g" $PATH_TO_STATS/sql_cron/60_"$AREA_NAME"_area.sql
+    sed -i "s/AlphenFence/$AREA_NAME/g" $PATH_TO_STATS/sql_cron/60_"$AREA_NAME"_area.sql
     sed -i "s/FENCE_COORDS/$MIN_LAT $MAX_LON, $MAX_LAT $MAX_LON, $MAX_LAT $MIN_LON, $MIN_LAT $MIN_LON, $MIN_LAT $MAX_LON/g" $PATH_TO_STATS/sql_cron/60_"$AREA_NAME"_area.sql
     cp $PATH_TO_STATS/default_files/1440_area.sql.default $PATH_TO_STATS/sql_cron/1440_"$AREA_NAME"_area.sql
     sed -i "s/Alphen/$AREA_NAME/g" $PATH_TO_STATS/sql_cron/1440_"$AREA_NAME"_area.sql
-    sed -i "s/Alphen_fence/$AREA_NAME/g" $PATH_TO_STATS/sql_cron/1440_"$AREA_NAME"_area.sql
+    sed -i "s/AlphenFence/$AREA_NAME/g" $PATH_TO_STATS/sql_cron/1440_"$AREA_NAME"_area.sql
     sed -i "s/FENCE_COORDS/$MIN_LAT $MAX_LON, $MAX_LAT $MAX_LON, $MAX_LAT $MIN_LON, $MIN_LAT $MIN_LON, $MIN_LAT $MAX_LON/g" $PATH_TO_STATS/sql_cron/1440_"$AREA_NAME"_area.sql
   done
   echo ""
@@ -180,15 +180,15 @@ EOF
     source $area
     cp $PATH_TO_STATS/default_files/15_area.sql.default $PATH_TO_STATS/sql_cron/15_"$AREA_NAME"_area.sql
     sed -i "s/Alphen/$AREA_NAME/g" $PATH_TO_STATS/sql_cron/15_"$AREA_NAME"_area.sql
-    sed -i "s/Alphen_fence/$FENCE_NAME/g" $PATH_TO_STATS/sql_cron/15_"$AREA_NAME"_area.sql
+    sed -i "s/AlphenFence/$FENCE_NAME/g" $PATH_TO_STATS/sql_cron/15_"$AREA_NAME"_area.sql
     sed -i "s/FENCE_COORDS/$POLYGON/g" $PATH_TO_STATS/sql_cron/15_"$AREA_NAME"_area.sql
     cp $PATH_TO_STATS/default_files/60_area.sql.default $PATH_TO_STATS/sql_cron/60_"$AREA_NAME"_area.sql
     sed -i "s/Alphen/$AREA_NAME/g" $PATH_TO_STATS/sql_cron/60_"$AREA_NAME"_area.sql
-    sed -i "s/Alphen_fence/$FENCE_NAME/g" $PATH_TO_STATS/sql_cron/60_"$AREA_NAME"_area.sql
+    sed -i "s/AlphenFence/$FENCE_NAME/g" $PATH_TO_STATS/sql_cron/60_"$AREA_NAME"_area.sql
     sed -i "s/FENCE_COORDS/$POLYGON/g" $PATH_TO_STATS/sql_cron/60_"$AREA_NAME"_area.sql
     cp $PATH_TO_STATS/default_files/1440_area.sql.default $PATH_TO_STATS/sql_cron/1440_"$AREA_NAME"_area.sql
     sed -i "s/Alphen/$AREA_NAME/g" $PATH_TO_STATS/sql_cron/1440_"$AREA_NAME"_area.sql
-    sed -i "s/Alphen_fence/$FENCE_NAME/g" $PATH_TO_STATS/sql_cron/1440_"$AREA_NAME"_area.sql
+    sed -i "s/AlphenFence/$FENCE_NAME/g" $PATH_TO_STATS/sql_cron/1440_"$AREA_NAME"_area.sql
     sed -i "s/FENCE_COORDS/$POLYGON/g" $PATH_TO_STATS/sql_cron/1440_"$AREA_NAME"_area.sql
   done
 fi
