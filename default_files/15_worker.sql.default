@@ -138,7 +138,7 @@ group by worker
 
 -- Fill data of current interval
 UPDATE pogodb.stats_worker z
-left join rmdb.tmp44 a on z.worker = a.worker
+left join rmdb.tmp44 a on z.worker = a.worker COLLATE utf8mb4_unicode_ci
 left join rmdb.tmp41 b on z.worker = b.worker COLLATE utf8mb4_unicode_ci
 left join rmdb.tmp42 c on z.worker = c.worker COLLATE utf8mb4_unicode_ci
 left join rmdb.tmp45 d on z.worker = d.worker COLLATE utf8mb4_unicode_ci
