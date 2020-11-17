@@ -4,7 +4,7 @@ select @Start := concat(date(now() - interval 1440 minute),' ', SEC_TO_TIME((TIM
 select @Stop := concat(date(now() - interval 0 minute),' ', SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 0 minute)) DIV 86400) * 86400));
 select @RPL := '1440';
 select @Area := 'Alphen';
-select @Fence_name := 'AlphenFence';
+select @Fence_name := 'Fency';
 select @Fence := st_geomfromtext('POLYGON((FENCE_COORDS))');
 
 -- Get Pokemon data
