@@ -24,19 +24,19 @@ group by b.Datetime
 select 
 date(a.Datetime) as 'Date      ',
 time(a.Datetime) as 'Time    ',
-a.RPL as 'RPL',
-a.TRPL 'Trpl',
+avg(a.RPL) as 'RPL',
+avg(a.TRPL) 'Trpl',
 b.Worker 'Workers',
-b.DevRPL 'DevRPL',
+avg(b.DevRPL) 'DevRPL',
 rpad(a.Area,12,' ') 'Area    ',
-rpad(ifnull(AvgMinutesLeft,0),10,' ') as 'avgMinLeft',
-ifnull(a.Spawndef15,0) as 'Spawn60',
-ifnull(a.SpawndefNot15,0) as 'Spawn30',
-round(100*w5/Mons_all,1) as '%5min',
-round(100*w10/Mons_all,1) as '%10min',
-round(100*w15/Mons_all,1) as '%15min',
-round(100*w20/Mons_all,1) as '%20min',
-ifnull(round(100*a.MinutesLeft/((a.Spawndef15 * 60)+(a.SpawndefNot15 * 30)),1),0) as '%timeLeft'
+rpad(ifnull(avg(AvgMinutesLeft),0),10,' ') as 'avgMinLeft',
+ifnull(sum(a.Spawndef15),0) as 'Spawn60',
+ifnull(sum(a.SpawndefNot15),0) as 'Spawn30',
+round(100*sum(w5)/sum(Mons_all),1) as '%5min',
+round(100*sum(w10)/sum(Mons_all),1) as '%10min',
+round(100*sum(w15)/sum(Mons_all),1) as '%15min',
+round(100*sum(w20)/sum(Mons_all),1) as '%20min',
+ifnull(round(100*sum(a.MinutesLeft)/((sum(a.Spawndef15) * 60)+(sum(a.SpawndefNot15) * 30)),1),0) as '%timeLeft'
 from stats_area a, pogodb.tmp400 b
 
 where
@@ -44,6 +44,7 @@ a.RPL = XXB and
 date(a.Datetime) >= curdate() - interval XXA day and
 a.Area = 'XXC' and
 a.Datetime = b.Datetime
+group by a.Datetime, a.Area
 ;
 
 drop table pogodb.tmp400;
