@@ -87,8 +87,10 @@ then
   echo "Append new devices and areas to table Area"
   if [ -z "$SQL_password" ]
   then
+  mysql -h$DB_IP -P$DB_PORT -u$SQL_user $STATS_DB -e "DELETE FROM $STATS_DB.Area;"
   mysql -h$DB_IP -P$DB_PORT -u$SQL_user $STATS_DB -e "INSERT IGNORE INTO $STATS_DB.Area (Area,Origin) SELECT a.name, f.name FROM $MAD_DB.settings_geofence a, $MAD_DB.settings_area_mon_mitm b, $MAD_DB.settings_area c, $MAD_DB.settings_walkerarea d, $MAD_DB.settings_walker_to_walkerarea e, $MAD_DB.settings_device f WHERE a.geofence_id = b.geofence_included and b.area_id = c.area_id and b.area_id = d.area_id and d.walkerarea_id = e.walkerarea_id and e.walker_id = f.walker_id GROUP BY f.name, b.geofence_included;"
   else
+  mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB -e "DELETE FROM $STATS_DB.Area;"
   mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB -e "INSERT IGNORE INTO $STATS_DB.Area (Area,Origin) SELECT a.name, f.name FROM $MAD_DB.settings_geofence a, $MAD_DB.settings_area_mon_mitm b, $MAD_DB.settings_area c, $MAD_DB.settings_walkerarea d, $MAD_DB.settings_walker_to_walkerarea e, $MAD_DB.settings_device f WHERE a.geofence_id = b.geofence_included and b.area_id = c.area_id and b.area_id = d.area_id and d.walkerarea_id = e.walkerarea_id and e.walker_id = f.walker_id GROUP BY f.name, b.geofence_included;"
   fi
 fi
