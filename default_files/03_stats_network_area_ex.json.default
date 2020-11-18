@@ -46,7 +46,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1605732308395,
+  "iteration": 1605738307817,
   "links": [],
   "panels": [
     {
@@ -1490,5 +1490,5 @@
   "timezone": "",
   "title": "03. Stats network/area level exclude hours",
   "uid": "KY-d_hOMb",
-  "version": 21
+  "version": 23
 }
