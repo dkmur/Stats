@@ -3,8 +3,8 @@ use pogodb
 select 
 date(datetime) as 'Date      ',
 time(datetime) as 'Time    ',
-sum(RPL)/count(RPL) as 'RPL',
-sum(TRPL)/count(TRPL) as 'Trpl',
+round(avg(RPL))  as 'RPL',
+round(avg(TRPL)) as 'Trpl',
 rpad(Area,12,' ') as 'Area    ',
 sum(DBspawns) as 'DB',
 sum(Spawn_add) as 'Added',

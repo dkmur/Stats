@@ -24,8 +24,8 @@ group by b.Datetime
 select 
 date(a.Datetime) as 'Date      ',
 time(a.Datetime) as 'Time    ',
-avg(a.RPL) as 'RPL',
-avg(a.TRPL) 'Trpl',
+round(avg(a.RPL)) as 'RPL',
+round(avg(a.TRPL)) 'Trpl',
 b.Worker 'Workers',
 avg(b.DevRPL) 'DevRPL',
 rpad(a.Area,12,' ') 'Area    ',
@@ -37,7 +37,7 @@ round(100*sum(a.MonsIV)/sum(a.Mons_all),2) as '%IV',
 rpad(ifnull(sum(AvgMinutesLeft),0),10,' ') as 'avgMinLeft',
 -- ifnull(a.Spawndef15,0) as 'Spawn60',
 -- ifnull(a.SpawndefNot15,0) as 'Spawn30',
-ifnull(round(100*sum(a.MinutesLeft)/((sum(a.Spawndef15) * 60)+(a.sum(SpawndefNot15) * 30)),1),0) as '%timeLeft'
+ifnull(round(100*sum(a.MinutesLeft)/((sum(a.Spawndef15) * 60)+(sum(a.SpawndefNot15) * 30)),1),0) as '%timeLeft'
 
 from stats_area a, pogodb.tmp400 b
 

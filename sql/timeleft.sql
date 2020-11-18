@@ -24,8 +24,8 @@ group by b.Datetime
 select 
 date(a.Datetime) as 'Date      ',
 time(a.Datetime) as 'Time    ',
-avg(a.RPL) as 'RPL',
-avg(a.TRPL) 'Trpl',
+round(avg(a.RPL)) as 'RPL',
+round(avg(a.TRPL)) 'Trpl',
 b.Worker 'Workers',
 avg(b.DevRPL) 'DevRPL',
 rpad(a.Area,12,' ') 'Area    ',
