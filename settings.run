@@ -39,7 +39,7 @@ fi
 echo "Create crontab"
 echo ""
 cd $PATH_TO_STATS && rm -f *.default
-cd $PATH_TO_STATS && rm -f -R /sql_cron/
+cd $PATH_TO_STATS && rm -f -R sql_cron/
 cp $PATH_TO_STATS/default_files/crontab.txt.default $PATH_TO_STATS/crontab.txt
 cd $PATH_TO_STATS/cron_files && rm -f *.default
 # MAD fence update
@@ -190,26 +190,26 @@ EOF
   rm -f $PATH_TO_STATS/areas/input
 
 # create area files
-  rm -f $PATH_TO_STATS/sql_cron/*.sql
-  rm -f $PATH_TO_STATS/sql_cron/*.default
+  rm -f $PATH_TO_STATS/cron_files/*.sql
+  rm -f $PATH_TO_STATS/cron_files/*.default
   for area in "$PATH_TO_STATS"areas/*.mad
   do
     echo "$area"
     source $area
     FENCENAME=$(echo $FENCE_NAME | sed s/' '/_/g)
     AREANAME=$(echo $AREA_NAME | sed s/' '/_/g)
-    cp $PATH_TO_STATS/default_files/15_area.sql.default $PATH_TO_STATS/sql_cron/15_"$AREANAME"_"$FENCENAME"_area.sql
-    sed -i "s/Alphen/$AREA_NAME/g" $PATH_TO_STATS/sql_cron/15_"$AREANAME"_"$FENCENAME"_area.sql
-    sed -i "s/Fency/$FENCE_NAME/g" $PATH_TO_STATS/sql_cron/15_"$AREANAME"_"$FENCENAME"_area.sql
-    sed -i "s/FENCE_COORDS/$POLYGON/g" $PATH_TO_STATS/sql_cron/15_"$AREANAME"_"$FENCENAME"_area.sql
-    cp $PATH_TO_STATS/default_files/60_area.sql.default $PATH_TO_STATS/sql_cron/60_"$AREANAME"_"$FENCENAME"_area.sql
-    sed -i "s/Alphen/$AREA_NAME/g" $PATH_TO_STATS/sql_cron/60_"$AREANAME"_"$FENCENAME"_area.sql
-    sed -i "s/Fency/$FENCE_NAME/g" $PATH_TO_STATS/sql_cron/60_"$AREANAME"_"$FENCENAME"_area.sql
-    sed -i "s/FENCE_COORDS/$POLYGON/g" $PATH_TO_STATS/sql_cron/60_"$AREANAME"_"$FENCENAME"_area.sql
-    cp $PATH_TO_STATS/default_files/1440_area.sql.default $PATH_TO_STATS/sql_cron/1440_"$AREANAME"_"$FENCENAME"_area.sql
-    sed -i "s/Alphen/$AREA_NAME/g" $PATH_TO_STATS/sql_cron/1440_"$AREANAME"_"$FENCENAME"_area.sql
-    sed -i "s/Fency/$FENCE_NAME/g" $PATH_TO_STATS/sql_cron/1440_"$AREANAME"_"$FENCENAME"_area.sql
-    sed -i "s/FENCE_COORDS/$POLYGON/g" $PATH_TO_STATS/sql_cron/1440_"$AREANAME"_"$FENCENAME"_area.sql
+    cp $PATH_TO_STATS/default_files/15_area.sql.default $PATH_TO_STATS/cron_files/15_"$AREANAME"_"$FENCENAME"_area.sql
+    sed -i "s/Alphen/$AREA_NAME/g" $PATH_TO_STATS/cron_files/15_"$AREANAME"_"$FENCENAME"_area.sql
+    sed -i "s/Fency/$FENCE_NAME/g" $PATH_TO_STATS/cron_files/15_"$AREANAME"_"$FENCENAME"_area.sql
+    sed -i "s/FENCE_COORDS/$POLYGON/g" $PATH_TO_STATS/cron_files/15_"$AREANAME"_"$FENCENAME"_area.sql
+    cp $PATH_TO_STATS/default_files/60_area.sql.default $PATH_TO_STATS/cron_files/60_"$AREANAME"_"$FENCENAME"_area.sql
+    sed -i "s/Alphen/$AREA_NAME/g" $PATH_TO_STATS/cron_files/60_"$AREANAME"_"$FENCENAME"_area.sql
+    sed -i "s/Fency/$FENCE_NAME/g" $PATH_TO_STATS/cron_files/60_"$AREANAME"_"$FENCENAME"_area.sql
+    sed -i "s/FENCE_COORDS/$POLYGON/g" $PATH_TO_STATS/cron_files/60_"$AREANAME"_"$FENCENAME"_area.sql
+    cp $PATH_TO_STATS/default_files/1440_area.sql.default $PATH_TO_STATS/cron_files/1440_"$AREANAME"_"$FENCENAME"_area.sql
+    sed -i "s/Alphen/$AREA_NAME/g" $PATH_TO_STATS/cron_files/1440_"$AREANAME"_"$FENCENAME"_area.sql
+    sed -i "s/Fency/$FENCE_NAME/g" $PATH_TO_STATS/cron_files/1440_"$AREANAME"_"$FENCENAME"_area.sql
+    sed -i "s/FENCE_COORDS/$POLYGON/g" $PATH_TO_STATS/cron_files/1440_"$AREANAME"_"$FENCENAME"_area.sql
   done
 fi
 
