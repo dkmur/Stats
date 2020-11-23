@@ -40,7 +40,7 @@ echo "Create crontab"
 echo ""
 cd $PATH_TO_STATS && rm -f *.default
 cd $PATH_TO_STATS && rm -f -R sql_cron/
-cp $PATH_TO_STATS/default_files/crontab.txt.default $PATH_TO_STATS/crontab.txt
+cp $PATH_TO_STATS/default_files/t.default $PATH_TO_STATS/crontab.txt
 cd $PATH_TO_STATS/cron_files && rm -f *.default
 # MAD fence update
 if [[ "$FENCE" == "MAD" ]]
@@ -68,7 +68,7 @@ if "$SPAWN_CLEANUP"
 then
   echo "Enabling spawnpoint cleanup in cron"
   sed -i "$ a \#\# Cleaup spawnpoints" $PATH_TO_STATS/crontab.txt
-  sed -i "$ a $SPAWN_CLEAN_MIN $SPAWN_CLEAN_HR * * * cd pathToStatscron_files/ && mysql userpass < spawn_cleanup.sql" $PATH_TO_STATS/crontab.tx
+  sed -i "$ a $SPAWN_CLEAN_MIN $SPAWN_CLEAN_HR * * * cd pathToStatscron_files/ && mysql userpass < spawn_cleanup.sql" $PATH_TO_STATS/crontab.txt
 fi
 PATH_TO_STATS2=$(sed 's@/@\\/@g' <<< $PATH_TO_STATS)
 cd $PATH_TO_STATS && sed -i "s/pathToStats/$PATH_TO_STATS2/g" *.txt
