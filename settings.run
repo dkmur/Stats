@@ -40,7 +40,7 @@ echo "Create crontab"
 echo ""
 cd $PATH_TO_STATS && rm -f *.default
 cd $PATH_TO_STATS && rm -f -R sql_cron/
-cp $PATH_TO_STATS/default_files/t.default $PATH_TO_STATS/crontab.txt
+cp $PATH_TO_STATS/default_files/crontab.txt.default $PATH_TO_STATS/crontab.txt
 cd $PATH_TO_STATS/cron_files && rm -f *.default
 # MAD fence update
 if [[ "$FENCE" == "MAD" ]]
