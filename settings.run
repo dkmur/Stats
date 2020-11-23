@@ -67,6 +67,7 @@ fi
 if "$SPAWN_CLEANUP"
 then
   echo "Enabling spawnpoint cleanup in cron"
+  echo ""
   sed -i "$ a \#\# Cleaup spawnpoints" $PATH_TO_STATS/crontab.txt
   sed -i "$ a $SPAWN_CLEAN_MIN $SPAWN_CLEAN_HR * * * cd pathToStatscron_files/ && mysql userpass < spawn_cleanup.sql" $PATH_TO_STATS/crontab.txt
 fi
