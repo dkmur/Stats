@@ -46,8 +46,8 @@ cd $PATH_TO_STATS/cron_files && rm -f *.default
 if [[ "$FENCE" == "MAD" ]]
 echo "Enabling MAD fence updates to Stats"
 echo ""
-rm -f $PATH_TO_STATS/MAD_fence_update.sh
 then
+  rm -f $PATH_TO_STATS/MAD_fence_update.sh
   if [[ "$MAD_FENCE_UPDATE_INTERVAL" == "day" ]]
   then
   sed -i "$ a \#\# Update MAD fences and devices" $PATH_TO_STATS/crontab.txt
@@ -60,6 +60,7 @@ fi
 # Recalc quest routes
 if "$recalc_quest_routes"
 then
+  rm -f $PATH_TO_STATS/quest_recalc.sh
   echo "Set recalculation of quest routes"
   echo ""
   sed -i "$ a \#\# Recalculate quest routes" $PATH_TO_STATS/crontab.txt
