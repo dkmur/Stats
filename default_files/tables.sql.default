@@ -37,6 +37,7 @@ CREATE TABLE IF NOT EXISTS `stats_area` (
   `SpawndefNot15` int(6) DEFAULT NULL,
   `Raid_Egg` int(6) DEFAULT NULL,
   `DBspawns` int(6) DEFAULT NULL,
+  `DBspawns_event` int(6) DEFAULT NULL,
   `Spawn_add` int(6) DEFAULT NULL,
   `Spawn_NULL` int(6) DEFAULT NULL,
   `Last_scanned_today_acc` int(6) DEFAULT NULL,
@@ -160,6 +161,7 @@ CREATE TABLE IF NOT EXISTS `pokemon_history_temp` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 ALTER TABLE stats_area
+ADD COLUMN IF NOT EXISTS DBspawns_event int(6) DEFAULT NULL AFTER DBspawns,
 ADD COLUMN IF NOT EXISTS w5 int(6) NOT NULL DEFAULT 0 AFTER AvgMinutesLeft,
 ADD COLUMN IF NOT EXISTS w10 int(6) NOT NULL DEFAULT 0 AFTER w5,
 ADD COLUMN IF NOT EXISTS w15 int(6) NOT NULL DEFAULT 0 AFTER w10,

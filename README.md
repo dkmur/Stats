@@ -130,6 +130,10 @@ Hopefully that's it.....else......blame someone else :)
 **TRPL** True RPL : doubt if that is still in use today but was once used to identify missing periods due too i.e. downtime  
 **DevRPL** Device RPL : each device will store stats every 5 minutes, depending on missing periods this value might me lower then RPL  
 
+**Spawnpoints** : from table Pokemon, number of spawnpoints first_scanned during RPL  
+**DBspawns** : from trs_spawn, number of spawnpoints within area  
+**DBspawns_event** : from trs_spawn and trs_event, number of spawnpoints within area that at start of period should be active according to trs_event  
+
 **Spawn60** spawndef=15 so 60 minute spawn (events do mess this number up, cleanup after event is needed)  
 **Spawn30** spawndef<>15 so most likely 30 minute spawn  
 **%timeleft** average % of despawn time left  
