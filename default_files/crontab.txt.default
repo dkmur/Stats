@@ -1,21 +1,15 @@
 #### Stats #####
 ## Cleanup and backup
-5 * * * * cd pathToStatssql_cron/ && mysql userpass < hourly.sql
-7 1 * * * cd pathToStatssql_cron/ && mysql userpass < daily.sql
-#monthly#5 5 1 * * pathToStatssql_cron/month.sh
+5 * * * * pathToStatshourly.sh
+7 1 * * * pathToStatsdaily.sh
+5 5 1 * * pathToStatsmonth.sh
 ## Area stats
-*/15 * * * * cat pathToStatssql_cron/15_*_area.sql | mysql userpass STATS_DB
-0 * * * * cat pathToStatssql_cron/60_*_area.sql | mysql userpass STATS_DB
-6 0 * * * cat pathToStatssql_cron/1440_*_area.sql | mysql userpass STATS_DB
-21 0 * * 1 cat pathToStatssql_cron/10080_area.sql | mysql userpass STATS_DB
+*/15 * * * * cat pathToStatscron_files/15_*_area.sql | mysql userpass STATS_DB
+0 * * * * cat pathToStatscron_files/60_*_area.sql | mysql userpass STATS_DB
+6 0 * * * cat pathToStatscron_files/1440_*_area.sql | mysql userpass STATS_DB
+21 0 * * 1 cat pathToStatscron_files/10080_area.sql | mysql userpass STATS_DB
 ## Worker stats
-2-59/15 * * * * cd pathToStatssql_cron/ && mysql userpass < 15_worker.sql
-4 * * * * cd pathToStatssql_cron/ && mysql userpass < 60_worker.sql
-7 0 * * * cd pathToStatssql_cron/ && mysql userpass < 1440_worker.sql
-9 0 * * 1 cd pathToStatssql_cron/ && mysql userpass < 10080_worker.sql
-## Cleanup spawnpoints discovered during Quest hours
-#SPAWN_CLEANUP#SPAWN_CLEAN_MIN SPAWN_CLEAN_HR * * 1 cd pathToStatssql_cron/ && mysql userpass < spawn_cleanup.sql
-## Recalculate quest routes
-#quest_recalc.sh.default#20 0 * * 1 pathToStatsquest_recalc.sh
-## Update MAD fences and devices
-#MAD_FENCE_UPDATE#12 0 * * * pathToStatsMAD_fence_update.sh
+2-59/15 * * * * cd pathToStatscron_files/ && mysql userpass < 15_worker.sql
+4 * * * * cd pathToStatscron_files/ && mysql userpass < 60_worker.sql
+7 0 * * * cd pathToStatscron_files/ && mysql userpass < 1440_worker.sql
+9 0 * * 1 cd pathToStatscron_files/ && mysql userpass < 10080_worker.sql

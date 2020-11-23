@@ -36,13 +36,40 @@ else
   mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $MAD_DB < $PATH_TO_STATS/procedures.sql
 fi
 
-echo "Create crontab and monthly file"
+echo "Create crontab"
 echo ""
 cd $PATH_TO_STATS && rm -f *.default
+cd $PATH_TO_STATS && rm -f -R /sql_cron/
 cp $PATH_TO_STATS/default_files/crontab.txt.default $PATH_TO_STATS/crontab.txt
-mkdir -p $PATH_TO_STATS/sql_cron
-cd $PATH_TO_STATS/sql_cron && rm -f *.default
-cp $PATH_TO_STATS/default_files/month.sh.default $PATH_TO_STATS/sql_cron/month.sh
+cd $PATH_TO_STATS/cron_files && rm -f *.default
+# MAD fence update
+if [[ "$FENCE" == "MAD" ]]
+echo "Enabling MAD fence updates to Stats"
+echo ""
+then
+  if [[ "$MAD_FENCE_UPDATE_INTERVAL" == "day" ]]
+  then
+  sed -i "$ a \#\# Update MAD fences and devices" $PATH_TO_STATS/crontab.txt
+  sed -i "$ a 12 0 * * * pathToStatscron_files/MAD_fence_update.sh" $PATH_TO_STATS/crontab.txt
+  else
+  sed -i "$ a \#\# Update MAD fences and devices" $PATH_TO_STATS/crontab.txt
+  sed -i "$ a 12 * * * * pathToStatscron_files/MAD_fence_update.sh" $PATH_TO_STATS/crontab.txt
+  fi
+fi
+# Recalc quest routes
+if "$recalc_quest_routes"
+then
+  echo "Set recalculation of quest routes"
+  echo ""
+  sed -i "$ a \#\# Recalculate quest routes" $PATH_TO_STATS/crontab.txt
+  sed -i "$ a 20 0 * * 1 pathToStatscron_files/quest_recalc.sh" $PATH_TO_STATS/crontab.txt
+fi
+if "$SPAWN_CLEANUP"
+then
+  echo "Enabling spawnpoint cleanup in cron"
+  sed -i "$ a \#\# Cleaup spawnpoints" $PATH_TO_STATS/crontab.txt
+  sed -i "$ a $SPAWN_CLEAN_MIN $SPAWN_CLEAN_HR * * * cd pathToStatscron_files/ && mysql userpass < spawn_cleanup.sql" $PATH_TO_STATS/crontab.tx
+fi
 PATH_TO_STATS2=$(sed 's@/@\\/@g' <<< $PATH_TO_STATS)
 cd $PATH_TO_STATS && sed -i "s/pathToStats/$PATH_TO_STATS2/g" *.txt
 cd $PATH_TO_STATS && sed -i "s/STATS_DB/$STATS_DB/g" *.txt
@@ -50,17 +77,8 @@ cd $PATH_TO_STATS && sed -i "s/STATS_DB/$STATS_DB/g" *.txt
 if [ -z "$SQL_password" ]
 then
   sed -i "s/userpass/-h$DB_IP -P$DB_PORT -u$SQL_user/g" $PATH_TO_STATS/crontab.txt
-  sed -i "s/userpass/-h$DB_IP -P$DB_PORT -u$SQL_user/g" $PATH_TO_STATS/sql_cron/month.sh
 else
   sed -i "s/userpass/-h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password/g" $PATH_TO_STATS/crontab.txt
-  sed -i "s/userpass/-h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password/g" $PATH_TO_STATS/sql_cron/month.sh
-fi
-
-if "$SPAWN_CLEANUP"
-then
-  sed -i "s/#SPAWN_CLEANUP#//g" $PATH_TO_STATS/crontab.txt
-  sed -i "s/SPAWN_CLEAN_MIN/$SPAWN_CLEAN_MIN/g" $PATH_TO_STATS/crontab.txt
-  sed -i "s/SPAWN_CLEAN_HR/$SPAWN_CLEAN_HR/g" $PATH_TO_STATS/crontab.txt
 fi
 
 # Create area world
@@ -93,23 +111,23 @@ if [[ "$FENCE" == "world" ]] || [[ "$FENCE" == "box" ]]
 then
   echo "Creating area files based on created .ini files"
   echo "!! If you set FENCE=box make sure to assign devices to areas !!"
-  cd $PATH_TO_STATS/sql_cron && rm -f *.sql && rm -f *.default
+  cd $PATH_TO_STATS/cron_files && rm -f *.sql && rm -f *.default
   for area in "$PATH_TO_STATS"areas/*.ini
   do
     echo "$area"
     source $area
-    cp $PATH_TO_STATS/default_files/15_area.sql.default $PATH_TO_STATS/sql_cron/15_"$AREA_NAME"_area.sql
-    sed -i "s/Alphen/$AREA_NAME/g" $PATH_TO_STATS/sql_cron/15_"$AREA_NAME"_area.sql
-    sed -i "s/Fency/$AREA_NAME/g" $PATH_TO_STATS/sql_cron/15_"$AREA_NAME"_area.sql
-    sed -i "s/FENCE_COORDS/$MIN_LAT $MAX_LON, $MAX_LAT $MAX_LON, $MAX_LAT $MIN_LON, $MIN_LAT $MIN_LON, $MIN_LAT $MAX_LON/g" $PATH_TO_STATS/sql_cron/15_"$AREA_NAME"_area.sql
-    cp $PATH_TO_STATS/default_files/60_area.sql.default $PATH_TO_STATS/sql_cron/60_"$AREA_NAME"_area.sql
-    sed -i "s/Alphen/$AREA_NAME/g" $PATH_TO_STATS/sql_cron/60_"$AREA_NAME"_area.sql
-    sed -i "s/Fency/$AREA_NAME/g" $PATH_TO_STATS/sql_cron/60_"$AREA_NAME"_area.sql
-    sed -i "s/FENCE_COORDS/$MIN_LAT $MAX_LON, $MAX_LAT $MAX_LON, $MAX_LAT $MIN_LON, $MIN_LAT $MIN_LON, $MIN_LAT $MAX_LON/g" $PATH_TO_STATS/sql_cron/60_"$AREA_NAME"_area.sql
-    cp $PATH_TO_STATS/default_files/1440_area.sql.default $PATH_TO_STATS/sql_cron/1440_"$AREA_NAME"_area.sql
-    sed -i "s/Alphen/$AREA_NAME/g" $PATH_TO_STATS/sql_cron/1440_"$AREA_NAME"_area.sql
-    sed -i "s/Fency/$AREA_NAME/g" $PATH_TO_STATS/sql_cron/1440_"$AREA_NAME"_area.sql
-    sed -i "s/FENCE_COORDS/$MIN_LAT $MAX_LON, $MAX_LAT $MAX_LON, $MAX_LAT $MIN_LON, $MIN_LAT $MIN_LON, $MIN_LAT $MAX_LON/g" $PATH_TO_STATS/sql_cron/1440_"$AREA_NAME"_area.sql
+    cp $PATH_TO_STATS/default_files/15_area.sql.default $PATH_TO_STATS/cron_files/15_"$AREA_NAME"_area.sql
+    sed -i "s/Alphen/$AREA_NAME/g" $PATH_TO_STATS/cron_files/15_"$AREA_NAME"_area.sql
+    sed -i "s/Fency/$AREA_NAME/g" $PATH_TO_STATS/cron_files/15_"$AREA_NAME"_area.sql
+    sed -i "s/FENCE_COORDS/$MIN_LAT $MAX_LON, $MAX_LAT $MAX_LON, $MAX_LAT $MIN_LON, $MIN_LAT $MIN_LON, $MIN_LAT $MAX_LON/g" $PATH_TO_STATS/cron_files/15_"$AREA_NAME"_area.sql
+    cp $PATH_TO_STATS/default_files/60_area.sql.default $PATH_TO_STATS/cron_files/60_"$AREA_NAME"_area.sql
+    sed -i "s/Alphen/$AREA_NAME/g" $PATH_TO_STATS/cron_files/60_"$AREA_NAME"_area.sql
+    sed -i "s/Fency/$AREA_NAME/g" $PATH_TO_STATS/cron_files/60_"$AREA_NAME"_area.sql
+    sed -i "s/FENCE_COORDS/$MIN_LAT $MAX_LON, $MAX_LAT $MAX_LON, $MAX_LAT $MIN_LON, $MIN_LAT $MIN_LON, $MIN_LAT $MAX_LON/g" $PATH_TO_STATS/cron_files/60_"$AREA_NAME"_area.sql
+    cp $PATH_TO_STATS/default_files/1440_area.sql.default $PATH_TO_STATS/cron_files/1440_"$AREA_NAME"_area.sql
+    sed -i "s/Alphen/$AREA_NAME/g" $PATH_TO_STATS/cron_files/1440_"$AREA_NAME"_area.sql
+    sed -i "s/Fency/$AREA_NAME/g" $PATH_TO_STATS/cron_files/1440_"$AREA_NAME"_area.sql
+    sed -i "s/FENCE_COORDS/$MIN_LAT $MAX_LON, $MAX_LAT $MAX_LON, $MAX_LAT $MIN_LON, $MIN_LAT $MIN_LON, $MIN_LAT $MAX_LON/g" $PATH_TO_STATS/cron_files/1440_"$AREA_NAME"_area.sql
   done
   echo ""
 fi
@@ -178,18 +196,20 @@ EOF
   do
     echo "$area"
     source $area
-    cp $PATH_TO_STATS/default_files/15_area.sql.default $PATH_TO_STATS/sql_cron/15_"$AREA_NAME"_"$FENCE_NAME"_area.sql
-    sed -i "s/Alphen/$AREA_NAME/g" $PATH_TO_STATS/sql_cron/15_"$AREA_NAME"_"$FENCE_NAME"_area.sql
-    sed -i "s/Fency/$FENCE_NAME/g" $PATH_TO_STATS/sql_cron/15_"$AREA_NAME"_"$FENCE_NAME"_area.sql
-    sed -i "s/FENCE_COORDS/$POLYGON/g" $PATH_TO_STATS/sql_cron/15_"$AREA_NAME"_"$FENCE_NAME"_area.sql
-    cp $PATH_TO_STATS/default_files/60_area.sql.default $PATH_TO_STATS/sql_cron/60_"$AREA_NAME"_"$FENCE_NAME"_area.sql
-    sed -i "s/Alphen/$AREA_NAME/g" $PATH_TO_STATS/sql_cron/60_"$AREA_NAME"_"$FENCE_NAME"_area.sql
-    sed -i "s/Fency/$FENCE_NAME/g" $PATH_TO_STATS/sql_cron/60_"$AREA_NAME"_"$FENCE_NAME"_area.sql
-    sed -i "s/FENCE_COORDS/$POLYGON/g" $PATH_TO_STATS/sql_cron/60_"$AREA_NAME"_"$FENCE_NAME"_area.sql
-    cp $PATH_TO_STATS/default_files/1440_area.sql.default $PATH_TO_STATS/sql_cron/1440_"$AREA_NAME"_"$FENCE_NAME"_area.sql
-    sed -i "s/Alphen/$AREA_NAME/g" $PATH_TO_STATS/sql_cron/1440_"$AREA_NAME"_"$FENCE_NAME"_area.sql
-    sed -i "s/Fency/$FENCE_NAME/g" $PATH_TO_STATS/sql_cron/1440_"$AREA_NAME"_"$FENCE_NAME"_area.sql
-    sed -i "s/FENCE_COORDS/$POLYGON/g" $PATH_TO_STATS/sql_cron/1440_"$AREA_NAME"_"$FENCE_NAME"_area.sql
+    FENCENAME=$(echo $FENCE_NAME | sed s/' '/_/g)
+    AREANAME=$(echo $AREA_NAME | sed s/' '/_/g)
+    cp $PATH_TO_STATS/default_files/15_area.sql.default $PATH_TO_STATS/sql_cron/15_"$AREANAME"_"$FENCENAME"_area.sql
+    sed -i "s/Alphen/$AREA_NAME/g" $PATH_TO_STATS/sql_cron/15_"$AREANAME"_"$FENCENAME"_area.sql
+    sed -i "s/Fency/$FENCE_NAME/g" $PATH_TO_STATS/sql_cron/15_"$AREANAME"_"$FENCENAME"_area.sql
+    sed -i "s/FENCE_COORDS/$POLYGON/g" $PATH_TO_STATS/sql_cron/15_"$AREANAME"_"$FENCENAME"_area.sql
+    cp $PATH_TO_STATS/default_files/60_area.sql.default $PATH_TO_STATS/sql_cron/60_"$AREANAME"_"$FENCENAME"_area.sql
+    sed -i "s/Alphen/$AREA_NAME/g" $PATH_TO_STATS/sql_cron/60_"$AREANAME"_"$FENCENAME"_area.sql
+    sed -i "s/Fency/$FENCE_NAME/g" $PATH_TO_STATS/sql_cron/60_"$AREANAME"_"$FENCENAME"_area.sql
+    sed -i "s/FENCE_COORDS/$POLYGON/g" $PATH_TO_STATS/sql_cron/60_"$AREANAME"_"$FENCENAME"_area.sql
+    cp $PATH_TO_STATS/default_files/1440_area.sql.default $PATH_TO_STATS/sql_cron/1440_"$AREANAME"_"$FENCENAME"_area.sql
+    sed -i "s/Alphen/$AREA_NAME/g" $PATH_TO_STATS/sql_cron/1440_"$AREANAME"_"$FENCENAME"_area.sql
+    sed -i "s/Fency/$FENCE_NAME/g" $PATH_TO_STATS/sql_cron/1440_"$AREANAME"_"$FENCENAME"_area.sql
+    sed -i "s/FENCE_COORDS/$POLYGON/g" $PATH_TO_STATS/sql_cron/1440_"$AREANAME"_"$FENCENAME"_area.sql
   done
 fi
 
@@ -210,28 +230,23 @@ fi
 
 echo "Creating cron files"
 echo ""
-cp $PATH_TO_STATS/default_files/10080_area.sql.default $PATH_TO_STATS/sql_cron/10080_area.sql
-cp $PATH_TO_STATS/default_files/15_worker.sql.default $PATH_TO_STATS/sql_cron/15_worker.sql
-cp $PATH_TO_STATS/default_files/60_worker.sql.default $PATH_TO_STATS/sql_cron/60_worker.sql
-cp $PATH_TO_STATS/default_files/1440_worker.sql.default $PATH_TO_STATS/sql_cron/1440_worker.sql
-cp $PATH_TO_STATS/default_files/10080_worker.sql.default $PATH_TO_STATS/sql_cron/10080_worker.sql
-cp $PATH_TO_STATS/default_files/daily.sql.default $PATH_TO_STATS/sql_cron/daily.sql
-cp $PATH_TO_STATS/default_files/hourly.sql.default $PATH_TO_STATS/sql_cron/hourly.sql
-cp $PATH_TO_STATS/default_files/spawn_cleanup.sql.default $PATH_TO_STATS/sql_cron/spawn_cleanup.sql
-sed -i "s/pogodb/$STATS_DB/g" $PATH_TO_STATS/sql_cron/*.sql
-sed -i "s/pogodb/$STATS_DB/g" $PATH_TO_STATS/sql_cron/*.sh
-sed -i "s/rmdb/$MAD_DB/g" $PATH_TO_STATS/sql_cron/*.sql
-sed -i "s/RPL15/$RPL15/g" $PATH_TO_STATS/sql_cron/*.sql
-sed -i "s/RPL60/$RPL60/g" $PATH_TO_STATS/sql_cron/*.sql
-sed -i "s/RPL1440/$RPL1440/g" $PATH_TO_STATS/sql_cron/*.sql
-sed -i "s/RPL10080/$RPL10080/g" $PATH_TO_STATS/sql_cron/*.sql
-sed -i "s/QUEST_START/$QUEST_START/g" $PATH_TO_STATS/sql_cron/*.sql
-sed -i "s/QUEST_END/$QUEST_END/g" $PATH_TO_STATS/sql_cron/*.sql
-sed -i "s/SPAWN_UNSEEN_DAYS/$SPAWN_UNSEEN_DAYS/g" $PATH_TO_STATS/sql_cron/*.sql
-sed -i "s/SPAWN_NO_ENDTIME_DAYS/$SPAWN_NO_ENDTIME_DAYS/g" $PATH_TO_STATS/sql_cron/*.sql
-sed -i "s/SPAWNDEF15_HOURS/$SPAWNDEF15_HOURS/g" $PATH_TO_STATS/sql_cron/*.sql
-sed -i "s/PATH_TO_STATS/$PATH_TO_STATS2/g" $PATH_TO_STATS/sql_cron/*.sh
-sed -i "s/monsdb/$monthly_mon_database/g" $PATH_TO_STATS/sql_cron/*.sh
+cp $PATH_TO_STATS/default_files/10080_area.sql.default $PATH_TO_STATS/cron_files/10080_area.sql
+cp $PATH_TO_STATS/default_files/15_worker.sql.default $PATH_TO_STATS/cron_files/15_worker.sql
+cp $PATH_TO_STATS/default_files/60_worker.sql.default $PATH_TO_STATS/cron_files/60_worker.sql
+cp $PATH_TO_STATS/default_files/1440_worker.sql.default $PATH_TO_STATS/cron_files/1440_worker.sql
+cp $PATH_TO_STATS/default_files/10080_worker.sql.default $PATH_TO_STATS/cron_files/10080_worker.sql
+cp $PATH_TO_STATS/default_files/spawn_cleanup.sql.default $PATH_TO_STATS/cron_files/spawn_cleanup.sql
+sed -i "s/pogodb/$STATS_DB/g" $PATH_TO_STATS/cron_files/*.sql
+sed -i "s/rmdb/$MAD_DB/g" $PATH_TO_STATS/cron_files/*.sql
+sed -i "s/RPL15/$RPL15/g" $PATH_TO_STATS/cron_files/*.sql
+sed -i "s/RPL60/$RPL60/g" $PATH_TO_STATS/cron_files/*.sql
+sed -i "s/RPL1440/$RPL1440/g" $PATH_TO_STATS/cron_files/*.sql
+sed -i "s/RPL10080/$RPL10080/g" $PATH_TO_STATS/cron_files/*.sql
+sed -i "s/QUEST_START/$QUEST_START/g" $PATH_TO_STATS/cron_files/*.sql
+sed -i "s/QUEST_END/$QUEST_END/g" $PATH_TO_STATS/cron_files/*.sql
+sed -i "s/SPAWN_UNSEEN_DAYS/$SPAWN_UNSEEN_DAYS/g" $PATH_TO_STATS/cron_files/*.sql
+sed -i "s/SPAWN_NO_ENDTIME_DAYS/$SPAWN_NO_ENDTIME_DAYS/g" $PATH_TO_STATS/cron_files/*.sql
+sed -i "s/SPAWNDEF15_HOURS/$SPAWNDEF15_HOURS/g" $PATH_TO_STATS/cron_files/*.sql
 
 echo "Creating grafana files"
 echo ""
@@ -248,118 +263,6 @@ cp $PATH_TO_STATS/default_files/20_mad_stuff.json.default $PATH_TO_STATS/grafana
 cp $PATH_TO_STATS/default_files/30_mon_stuff.json.default $PATH_TO_STATS/grafana/30_mon_stuff.json
 cd $PATH_TO_STATS/grafana/ && sed -i "s/pogodb/$DataSource_stats/g" *.json
 cd $PATH_TO_STATS/grafana/ && sed -i "s/rmdb/$DataSource_MAD/g" *.json
-
-# MAD fence update
-if [[ "$FENCE" == "MAD" ]]
-echo "Enabling MAD fence updates to Stats"
-echo ""
-then
-cp $PATH_TO_STATS/default_files/MAD_fence_update.sh.default $PATH_TO_STATS/MAD_fence_update.sh
-  if [[ "$MAD_FENCE_UPDATE_INTERVAL" == "day" ]]
-  then
-  sed -i "s/#MAD_FENCE_UPDATE#//g" $PATH_TO_STATS/crontab.txt
-  else
-  sed -i "s/#MAD_FENCE_UPDATE#12 0/12 */g" $PATH_TO_STATS/crontab.txt
-  fi
-fi
-
-# Spawndef 15 cleanup set
-if "$SPAWNDEF15_CLEANUP"
-then
-  echo "Set spawndef 15 cleanup"
-  echo ""
-  sed -i "s/--SPAWNDEF15_CLEANUP-- //g" $PATH_TO_STATS/sql_cron/daily.sql
-fi
-
-# Pokestop / quest cleanup
-if "$stop_to_gym_remove"
-then
-  echo "Set removal of stops that became gym"
-  echo ""
-  sed -i "s/--stop_to_gym_remove-- //g" $PATH_TO_STATS/sql_cron/daily.sql
-fi
-
-if "$stop_no_quest_remove"
-then
-  echo "Set removal pokestop that had no quest scanned for $no_quest_days days"
-  echo ""
-  sed -i "s/--stop_no_quest_remove-- //g" $PATH_TO_STATS/sql_cron/daily.sql
-  sed -i "s/--no_quest_days--/$no_quest_days/g" $PATH_TO_STATS/sql_cron/daily.sql
-fi
-
-if "$recalc_quest_routes"
-then
-  echo "Set recalculation of quest routes"
-  echo ""
-  cp $PATH_TO_STATS/default_files/quest_recalc.sh.default $PATH_TO_STATS/quest_recalc.sh
-  sed -i "s/#quest_recalc.sh.default#//g" $PATH_TO_STATS/crontab.txt
-fi
-
-# Pokemon_history settings
-if "$mon_backup"
-then
-  echo "Set pokemon backup"
-  echo ""
-  sed -i "s/--mon_backup-- //g" $PATH_TO_STATS/sql_cron/daily.sql
-fi
-
-if "$mon_cleanup"
-then
-  echo "Set pokemon cleanup"
-  echo ""
-  sed -i "s/--mon_cleanup-- //g" $PATH_TO_STATS/sql_cron/daily.sql 
-  sed -i "s/--days_to_keep--/$days_to_keep/g" $PATH_TO_STATS/sql_cron/daily.sql
-fi
-
-if "$monthly_mon_table"
-then
-  echo "Set montly backup table"
-  echo ""
-  sed -i "s/#monthly#//g" $PATH_TO_STATS/crontab.txt
-fi
-
-# MAD table cleanup settings
-if "$pokemon"
-then
-  echo "Set MAD table pokemon cleanup"
-  echo ""
-  sed -i "s/--pokemon-- //g" $PATH_TO_STATS/sql_cron/hourly.sql
-fi
-
-if "$trs_stats_detect_raw"
-then
-  echo "Set MAD table trs_stats_detect_raw cleanup"
-  echo ""
-  sed -i "s/--detect_raw-- //g" $PATH_TO_STATS/sql_cron/hourly.sql
-fi
-
-if "$trs_stats_location_raw"
-then
-  echo "Set MAD table trs_stats_location_raw cleanup"
-  echo ""
-  sed -i "s/--location_raw-- //g" $PATH_TO_STATS/sql_cron/hourly.sql
-fi
-
-if "$trs_stats_detect"
-then
-  echo "Set MAD table trs_stats_detect cleanup"
-  echo ""
-  sed -i "s/--detect-- //g" $PATH_TO_STATS/sql_cron/daily.sql
-fi
-
-if "$trs_stats_location"
-then
-  echo "Set MAD table trs_stats_location cleanup"
-  echo ""
-  sed -i "s/--location-- //g" $PATH_TO_STATS/sql_cron/daily.sql
-fi
-
-if "$trs_usage"
-then
-  echo "Set MAD table trs_usage cleanup"
-  echo ""
-  sed -i "s/--usage-- //g" $PATH_TO_STATS/sql_cron/daily.sql
-fi
 
 ## Checks
 #Check MAD collation, else 15_worker will fail
