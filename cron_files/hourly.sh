@@ -14,11 +14,14 @@ fi
 # cleanup table pokemon
 if "$pokemon"
 then
-  if [ -z "$SQL_password" ]
+  if [[ $pokemon_more = "false" ]]
   then
-  mysql -h$DB_IP -P$DB_PORT -u$SQL_user $MAD_DB -e "delete from pokemon where CONVERT_TZ(last_modified, '+00:00', @@global.time_zone) < now() - interval 1 hour;"
-  else
-  mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $MAD_DB -e "delete from pokemon where CONVERT_TZ(last_modified, '+00:00', @@global.time_zone) < now() - interval 1 hour;"
+    if [ -z "$SQL_password" ]
+    then
+    mysql -h$DB_IP -P$DB_PORT -u$SQL_user $MAD_DB -e "delete from pokemon where CONVERT_TZ(last_modified, '+00:00', @@global.time_zone) < now() - interval 1 hour;"
+    else
+    mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $MAD_DB -e "delete from pokemon where CONVERT_TZ(last_modified, '+00:00', @@global.time_zone) < now() - interval 1 hour;"
+    fi
   fi
 fi
 
