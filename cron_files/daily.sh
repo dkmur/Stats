@@ -124,6 +124,7 @@ then
   mkdir -p $PATH_TO_STATS/MAD_backup
   mysqldump -h$DB_IP -P$DB_PORT -u$SQL_user $MAD_DB --ignore-table=filestore_chunks --ignore-table=filestore_meta --ignore-table=pokemon --ignore-table=raid --ignore-table=weather --ignore-table=trs_status --ignore-table=trs_visited --ignore-table=trs_stats_detect --ignore-table=trs_stats_detect_mon_raw --ignore-table=trs_stats_detect_fort_raw --ignore-table=trs_stats_location --ignore-table=trs_stats_location_raw --ignore-table=trs_quest --ignore-table=trs_usage --ignore-table=trs_s2cells > $PATH_TO_STATS/MAD_backup/madbackup_$(date +%Y-%m-%d).sql
   else
+  mkdir -p $PATH_TO_STATS/MAD_backup
   mysqldump -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $MAD_DB --ignore-table=filestore_chunks --ignore-table=filestore_meta --ignore-table=pokemon --ignore-table=raid --ignore-table=weather --ignore-table=trs_status --ignore-table=trs_visited --ignore-table=trs_stats_detect --ignore-table=trs_stats_detect_mon_raw --ignore-table=trs_stats_detect_fort_raw --ignore-table=trs_stats_location --ignore-table=trs_stats_location_raw --ignore-table=trs_quest --ignore-table=trs_usage --ignore-table=trs_s2cells > $PATH_TO_STATS/MAD_backup/madbackup_$(date +%Y-%m-%d).sql
   fi
 fi
