@@ -51,10 +51,10 @@ then
   if [[ "$MAD_FENCE_UPDATE_INTERVAL" == "day" ]]
   then
   sed -i "$ a \#\# Update MAD fences and devices" $PATH_TO_STATS/crontab.txt
-  sed -i "$ a 12 0 * * * pathToStatscron_files/MAD_fence_update.sh" $PATH_TO_STATS/crontab.txt
+  sed -i "$ a 12 0 * * * cd pathToStatscron_files && ./MAD_fence_update.sh" $PATH_TO_STATS/crontab.txt
   else
   sed -i "$ a \#\# Update MAD fences and devices" $PATH_TO_STATS/crontab.txt
-  sed -i "$ a 12 * * * * pathToStatscron_files/MAD_fence_update.sh" $PATH_TO_STATS/crontab.txt
+  sed -i "$ a 12 * * * * cd pathToStatscron_files && ./MAD_fence_update.sh" $PATH_TO_STATS/crontab.txt
   fi
 fi
 # Recalc quest routes
@@ -64,7 +64,7 @@ then
   echo "Set recalculation of quest routes"
   echo ""
   sed -i "$ a \#\# Recalculate quest routes" $PATH_TO_STATS/crontab.txt
-  sed -i "$ a 20 0 * * 1 pathToStatscron_files/quest_recalc.sh" $PATH_TO_STATS/crontab.txt
+  sed -i "$ a 20 0 * * 1 cd pathToStatscron_files && ./quest_recalc.sh" $PATH_TO_STATS/crontab.txt
 fi
 if "$SPAWN_CLEANUP"
 then
