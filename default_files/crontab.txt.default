@@ -1,8 +1,8 @@
 #### Stats #####
 ## Cleanup and backup
-5 * * * * pathToStatshourly.sh
-7 1 * * * pathToStatsdaily.sh
-5 5 1 * * pathToStatsmonth.sh
+5 * * * * pathToStatscron_files/hourly.sh
+7 1 * * * pathToStatscron_files/daily.sh
+5 5 1 * * pathToStatscron_files/month.sh
 ## Area stats
 */15 * * * * cat pathToStatscron_files/15_*_area.sql | mysql userpass STATS_DB
 0 * * * * cat pathToStatscron_files/60_*_area.sql | mysql userpass STATS_DB
