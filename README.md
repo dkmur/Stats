@@ -20,7 +20,8 @@ Additionally, not related to Stats, but you can optionally set:
 - remove pokestops that have no quest scanned for X days
 - weekly re-caculation of quest routes
 - cleanup of MAD tables pokemon/detection/location
-
+- backup relevant tables from MAD database
+- delete gyms nthat have not been scanned for X days
 
 With limited knowlegde, help from my best friend Google, the attitude "steal with pride" and some perseverance this is what I cooked up.
 
