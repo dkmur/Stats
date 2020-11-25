@@ -78,7 +78,7 @@ then
   echo "Enabling delete of table Pokemon every 5 minutes"
   echo ""
   sed -i "$ a \#\# Table Pokemon delete" $PATH_TO_STATS/crontab.txt
-  sed -i '$ a */5 * * * * mysql userpass MAD_DB -e "DELETE FROM pokemon WHERE CONVERT_TZ(disappear_time, '+00:00', @@global.time_zone) < NOW() - interval 5 minute;"' $PATH_TO_STATS/crontab.txt
+  sed -i '$ a */5 * * * * mysql userpass MAD_DB -e "DELETE FROM pokemon WHERE CONVERT_TZ(disappear_time, \'+00:00\', @@global.time_zone) < NOW() - interval 5 minute;"' $PATH_TO_STATS/crontab.txt
 fi
 PATH_TO_STATS2=$(sed 's@/@\\/@g' <<< $PATH_TO_STATS)
 cd $PATH_TO_STATS && sed -i "s/pathToStats/$PATH_TO_STATS2/g" *.txt
