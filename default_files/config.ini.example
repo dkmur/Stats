@@ -78,7 +78,6 @@ RPL10080=9999
 
 ## MAD tables  cleanup (true or false) ##
 pokemon=false						# delete data from table pokemon older then 1 hour
-pokemon_more=false					# delete data from table pokemon every 5 minutes where disappear_time < NOW()
 trs_stats_detect_raw=false                              # delete data from table trs_stats_detect_raw older then 1 hour
 trs_stats_location_raw=false                            # delete data from table trs_stats_location_raw  older then 1 hour
 trs_stats_detect=false					# delete yesterdays data from table trs_stats_detect
