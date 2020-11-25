@@ -14,7 +14,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "7.2.2"
+      "version": "7.3.1"
     },
     {
       "type": "panel",
@@ -46,7 +46,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1604258786928,
+  "iteration": 1605738307817,
   "links": [],
   "panels": [
     {
@@ -89,7 +89,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.2.2",
+      "pluginVersion": "7.3.1",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -108,7 +108,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroup(Datetime,$__interval) AS \"time\",\n  sum(Mons_all) AS \"Mons_all\",\n  sum(MonsIV) AS \"MonsIV\"\nFROM stats_area\nWHERE\n  $__timeFilter(datetime) and\n  RPL = 60 and\n  time(Datetime) not in ($Hours_excluded) and\n  Area in ($Area)\nGROUP BY date(Datetime)\nORDER BY $__timeGroup(Datetime,$__interval)",
+          "rawSql": "SELECT\n  $__timeGroup(Datetime,$__interval) AS \"time\",\n  sum(Mons_all) AS \"Mons_all\",\n  sum(MonsIV) AS \"MonsIV\"\nFROM stats_area\nWHERE\n  $__timeFilter(datetime) and\n  RPL = 60 and\n  time(Datetime) not in ($Hours_excluded) and\n  Area in ($Area) and\n  Fence in ($Fence)\nGROUP BY date(Datetime)\nORDER BY $__timeGroup(Datetime,$__interval)",
           "refId": "A",
           "select": [
             [
@@ -168,7 +168,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(Datetime,$__interval),\n  100*sum(MonsIV)/sum(Mons_all) AS '% IV'\nFROM stats_area\nWHERE\n  $__timeFilter(datetime) and\n  RPL = 60 and\n  time(Datetime) not in ($Hours_excluded) and\n  Area in ($Area)\nGROUP BY date(Datetime)\nORDER BY $__timeGroup(Datetime,$__interval)",
+          "rawSql": "SELECT\n  $__timeGroupAlias(Datetime,$__interval),\n  100*sum(MonsIV)/sum(Mons_all) AS '% IV'\nFROM stats_area\nWHERE\n  $__timeFilter(datetime) and\n  RPL = 60 and\n  time(Datetime) not in ($Hours_excluded) and\n  Area in ($Area) and\n  Fence in ($Fence)\nGROUP BY date(Datetime)\nORDER BY $__timeGroup(Datetime,$__interval)",
           "refId": "B",
           "select": [
             [
@@ -271,7 +271,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.2.2",
+      "pluginVersion": "7.3.1",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -285,7 +285,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(a.Datetime,$__interval),\n  100*sum(a.TRPL)/sum(a.RPL) AS \"% Uptime\"\nFROM stats_worker a, Area b\nWHERE\n  $__timeFilter(a.datetime) and\n  RPL = 60 and\n  a.worker = b.Origin  and\n  time(Datetime) not in ($Hours_excluded) and\n  Area in ($Area)\nGROUP BY date(Datetime)\nORDER BY $__timeGroup(a.Datetime,$__interval)",
+          "rawSql": "SELECT\n  $__timeGroupAlias(a.Datetime,$__interval),\n  100*sum(a.TRPL)/sum(a.RPL) AS \"% Uptime\"\nFROM stats_worker a, Area b\nWHERE\n  $__timeFilter(a.datetime) and\n  RPL = 60 and\n  a.worker = b.Origin  and\n  time(Datetime) not in ($Hours_excluded) and\n  b.Area in ($Area)\nGROUP BY date(Datetime)\nORDER BY $__timeGroup(a.Datetime,$__interval)",
           "refId": "A",
           "select": [
             [
@@ -388,7 +388,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.2.2",
+      "pluginVersion": "7.3.1",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -402,7 +402,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(a.Datetime,$__interval),\n  sum(a.Reb) AS \"Reboots\",\n  sum(a.Res) AS \"Restarts\"\nFROM stats_worker a, Area b\nWHERE\n  $__timeFilter(a.datetime) and\n  RPL = 60 and\n  a.worker = b.Origin  and\n  time(Datetime) not in ($Hours_excluded) and\n  Area in ($Area)\nGROUP BY date(Datetime)\nORDER BY $__timeGroup(a.Datetime,$__interval)",
+          "rawSql": "SELECT\n  $__timeGroupAlias(a.Datetime,$__interval),\n  sum(a.Reb) AS \"Reboots\",\n  sum(a.Res) AS \"Restarts\"\nFROM stats_worker a, Area b\nWHERE\n  $__timeFilter(a.datetime) and\n  RPL = 60 and\n  a.worker = b.Origin  and\n  time(Datetime) not in ($Hours_excluded) and\n  b.Area in ($Area)\nGROUP BY date(Datetime)\nORDER BY $__timeGroup(a.Datetime,$__interval)",
           "refId": "A",
           "select": [
             [
@@ -505,7 +505,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.2.2",
+      "pluginVersion": "7.3.1",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -519,7 +519,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(a.Datetime,$__interval),\n  sum(a.Quest) AS \"Quest\"\nFROM stats_worker a, Area b\nWHERE\n  $__timeFilter(a.datetime) and\n  RPL = 60 and\n  a.worker = b.Origin  and\n  time(Datetime) not in ($Hours_excluded) and\n  Area in ($Area)\nGROUP BY date(Datetime)\nORDER BY $__timeGroup(a.Datetime,$__interval)",
+          "rawSql": "SELECT\n  $__timeGroupAlias(a.Datetime,$__interval),\n  sum(a.Quest) AS \"Quest\"\nFROM stats_worker a, Area b\nWHERE\n  $__timeFilter(a.datetime) and\n  RPL = 60 and\n  a.worker = b.Origin  and\n  time(Datetime) not in ($Hours_excluded) and\n  b.Area in ($Area)\nGROUP BY date(Datetime)\nORDER BY $__timeGroup(a.Datetime,$__interval)",
           "refId": "A",
           "select": [
             [
@@ -626,7 +626,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.2.2",
+      "pluginVersion": "7.3.1",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -649,7 +649,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(Datetime,$__interval),\n  sum(DBspawns) AS \"DBspawns\",\n  sum(Last_scanned_today_acc) AS \"Scanned today\",\n  sum(Spawn_add) AS \"Spawns added\",\n  sum(Spawn_NULL) AS \"Spawns unknown\"\nFROM stats_area\nWHERE\n  $__timeFilter(datetime) and\n  RPL = 60 and\n  time(Datetime) not in ($Hours_excluded) and\n  Area in ($Area)\nGROUP BY date(Datetime)\nORDER BY $__timeGroup(Datetime,$__interval)",
+          "rawSql": "SELECT\n  $__timeGroupAlias(Datetime,$__interval),\n  sum(DBspawns) AS \"DBspawns\",\n  sum(Last_scanned_today_acc) AS \"Scanned today\",\n  sum(Spawn_add) AS \"Spawns added\",\n  sum(Spawn_NULL) AS \"Spawns unknown\"\nFROM stats_area\nWHERE\n  $__timeFilter(datetime) and\n  RPL = 60 and\n  time(Datetime) not in ($Hours_excluded) and\n  Area in ($Area) and\n  Fence in ($Fence)\nGROUP BY date(Datetime)\nORDER BY $__timeGroup(Datetime,$__interval)",
           "refId": "A",
           "select": [
             [
@@ -752,7 +752,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.2.2",
+      "pluginVersion": "7.3.1",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -766,7 +766,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(Datetime,$__interval),\n  sum(Last_scanned_1d) AS \"Last scanned yesterday\",\n  sum(Last_scanned_2d) AS \"Last scanned 2d ago\",\n  sum(Last_scanned_3d) AS \"Last scanned 3d ago\",\n  sum(Last_scanned_7dp) AS \"Last scanned >7d ago\"\nFROM stats_area\nWHERE\n  $__timeFilter(datetime) and\n  RPL = 60 and\n  time(Datetime) not in ($Hours_excluded) and\n  Area in ($Area)\nGROUP BY date(Datetime)\nORDER BY $__timeGroup(Datetime,$__interval)",
+          "rawSql": "SELECT\n  $__timeGroupAlias(Datetime,$__interval),\n  sum(Last_scanned_1d) AS \"Last scanned yesterday\",\n  sum(Last_scanned_2d) AS \"Last scanned 2d ago\",\n  sum(Last_scanned_3d) AS \"Last scanned 3d ago\",\n  sum(Last_scanned_7dp) AS \"Last scanned >7d ago\"\nFROM stats_area\nWHERE\n  $__timeFilter(datetime) and\n  RPL = 60 and\n  time(Datetime) not in ($Hours_excluded) and\n  Area in ($Area) and\n  Fence in ($Fence)\nGROUP BY date(Datetime)\nORDER BY $__timeGroup(Datetime,$__interval)",
           "refId": "A",
           "select": [
             [
@@ -869,7 +869,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.2.2",
+      "pluginVersion": "7.3.1",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -888,7 +888,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(Datetime,$__interval),\n  sum(Spawndef15) AS \"60m spawn\",\n  sum(SpawndefNot15) AS \"30m spawn\"\nFROM stats_area\nWHERE\n  $__timeFilter(datetime) and\n  RPL = 60 and\n  time(Datetime) not in ($Hours_excluded) and\n  Area in ($Area)\nGROUP BY date(Datetime)\nORDER BY $__timeGroup(Datetime,$__interval)",
+          "rawSql": "SELECT\n  $__timeGroupAlias(Datetime,$__interval),\n  sum(Spawndef15) AS \"60m spawn\",\n  sum(SpawndefNot15) AS \"30m spawn\"\nFROM stats_area\nWHERE\n  $__timeFilter(datetime) and\n  RPL = 60 and\n  time(Datetime) not in ($Hours_excluded) and\n  Area in ($Area) and\n  Fence in ($Fence)\nGROUP BY date(Datetime)\nORDER BY $__timeGroup(Datetime,$__interval)",
           "refId": "A",
           "select": [
             [
@@ -993,7 +993,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.2.2",
+      "pluginVersion": "7.3.1",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1012,7 +1012,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(Datetime,$__interval),\n  100*sum(w5)/sum(Mons_all) AS '% scanned within 5m',\n  100*sum(w10)/sum(Mons_all) AS '% scanned within 10m',\n  100*sum(w15)/sum(Mons_all) AS '% scanned within 15m',\n  100*sum(w20)/sum(Mons_all) AS '% scanned within 20m'\nFROM stats_area\nWHERE\n  $__timeFilter(datetime) and\n  RPL = 60 and\n  time(Datetime) not in ($Hours_excluded) and\n  Area in ($Area)\nGROUP BY date(Datetime)\nORDER BY $__timeGroup(Datetime,$__interval)",
+          "rawSql": "SELECT\n  $__timeGroupAlias(Datetime,$__interval),\n  100*sum(w5)/sum(Mons_all) AS '% scanned within 5m',\n  100*sum(w10)/sum(Mons_all) AS '% scanned within 10m',\n  100*sum(w15)/sum(Mons_all) AS '% scanned within 15m',\n  100*sum(w20)/sum(Mons_all) AS '% scanned within 20m'\nFROM stats_area\nWHERE\n  $__timeFilter(datetime) and\n  RPL = 60 and\n  time(Datetime) not in ($Hours_excluded) and\n  Area in ($Area) and\n  Fence in ($Fence)\nGROUP BY date(Datetime)\nORDER BY $__timeGroup(Datetime,$__interval)",
           "refId": "A",
           "select": [
             [
@@ -1166,7 +1166,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.2.2",
+      "pluginVersion": "7.3.1",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1209,7 +1209,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(a.Datetime,$__interval),\n  sum(a.Tloc) AS \"#Locations handled\",\n  sum(a.Tp) AS \"#Teleports\",\n  sum(a.Wk) AS \"#Walk\"\nFROM stats_worker a, Area b\nWHERE\n  $__timeFilter(datetime) and\n  RPL = 60 and\n  a.worker = b.Origin  and\n  time(Datetime) not in ($Hours_excluded) and\n  Area in ($Area)\nGROUP BY date(Datetime)\nORDER BY $__timeGroup(a.Datetime,$__interval)",
+          "rawSql": "SELECT\n  $__timeGroupAlias(a.Datetime,$__interval),\n  sum(a.Tloc) AS \"#Locations handled\",\n  sum(a.Tp) AS \"#Teleports\",\n  sum(a.Wk) AS \"#Walk\"\nFROM stats_worker a, Area b\nWHERE\n  $__timeFilter(datetime) and\n  RPL = 60 and\n  a.worker = b.Origin  and\n  time(Datetime) not in ($Hours_excluded) and\n  b.Area in ($Area)\nGROUP BY date(Datetime)\nORDER BY $__timeGroup(a.Datetime,$__interval)",
           "refId": "A",
           "select": [
             [
@@ -1312,7 +1312,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.2.2",
+      "pluginVersion": "7.3.1",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1326,7 +1326,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(a.Datetime,$__interval),\n  100*sum(a.LocOk)/sum(a.Tloc) AS \"Location Success Rate\",\n  100*sum(a.TpOk)/sum(a.Tp) AS \"Teleport Success Rate\",\n  100*sum(a.WkOk)/sum(a.Wk) AS \"Walk Success Rate\"\nFROM stats_worker a, Area b\nWHERE\n  $__timeFilter(datetime) and\n  RPL = 60 and\n  a.worker = b.Origin  and\n  time(Datetime) not in ($Hours_excluded) and\n  Area in ($Area)\nGROUP BY date(Datetime)\nORDER BY $__timeGroup(a.Datetime,$__interval)",
+          "rawSql": "SELECT\n  $__timeGroupAlias(a.Datetime,$__interval),\n  100*sum(a.LocOk)/sum(a.Tloc) AS \"Location Success Rate\",\n  100*sum(a.TpOk)/sum(a.Tp) AS \"Teleport Success Rate\",\n  100*sum(a.WkOk)/sum(a.Wk) AS \"Walk Success Rate\"\nFROM stats_worker a, Area b\nWHERE\n  $__timeFilter(datetime) and\n  RPL = 60 and\n  a.worker = b.Origin  and\n  time(Datetime) not in ($Hours_excluded) and\n  b.Area in ($Area)\nGROUP BY date(Datetime)\nORDER BY $__timeGroup(a.Datetime,$__interval)",
           "refId": "A",
           "select": [
             [
@@ -1403,6 +1403,7 @@
         "current": {},
         "datasource": "${DS_POGODB}",
         "definition": "select Area from stats_area;",
+        "error": null,
         "hide": 0,
         "includeAll": true,
         "label": null,
@@ -1424,7 +1425,31 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_POGODB}",
+        "definition": "select Fence from stats_area;",
+        "error": null,
+        "hide": 0,
+        "includeAll": true,
+        "label": null,
+        "multi": true,
+        "name": "Fence",
+        "options": [],
+        "query": "select Fence from stats_area;",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_POGODB}",
         "definition": "select concat(hour(datetime),':00:00') from stats_area where date(datetime) = curdate() - interval 1 day;",
+        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": null,
@@ -1465,5 +1490,5 @@
   "timezone": "",
   "title": "03. Stats network/area level exclude hours",
   "uid": "KY-d_hOMb",
-  "version": 19
+  "version": 23
 }

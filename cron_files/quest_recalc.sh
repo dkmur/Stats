@@ -1,6 +1,7 @@
 #!/bin/bash
 
-source config.ini
+folder="$(cd ../ && pwd)"
+source $folder/config.ini
 
 ## recalculate Quest routes for instance 1
 if [ -z "$MAD_instance_name_1" ]; then

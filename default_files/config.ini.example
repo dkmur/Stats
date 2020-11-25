@@ -21,8 +21,13 @@ MADmin_password_2=
 
 ## Stats ##
 PATH_TO_STATS=/home/dkmur/temp/Stats/
-DEFINED_SCAN_AREAS='Amsterdam, London, Paris'		# only used for visualisation in Stats menu
-DEFAULT_AREA=London					# Default area to be used for Stats
+DEFINED_SCAN_AREAS='Amsterdam, London, Paris'		# only used for visualisation in Stats menu, not used for Grafana
+DEFAULT_AREA=London					# Default area to be used for Stats sql queries, not used for Grafana
+
+## Stats fence creation ##
+FENCE=box						# options:MAD/box/world. MAD=use MAD (sub)fences, box=define lat/lon max/min per area yourself, world=like box but Stats will create one big fence covering everything
+MAD_DEVICE_INSERT=false					# auto fill table Area, linking devices to Areas(geofence name of mon_mitm), requires FENCE=MAD. Note: only works if each walker contain max 1 mon_mitm area.  
+MAD_FENCE_UPDATE_INTERVAL=hour				# hour or day, interval for updating Stats on MAD geofences, requires FENCE=MAD. New devices will be added at same interval in case MAD_DEVICE_INSERT=true.
 
 ## Grafana ##
 DataSource_stats=pogodb
@@ -30,6 +35,7 @@ DataSource_MAD=rmdb
 
 ## Spawnpoint cleanup/backup ##
 SPAWN_CLEANUP=false
+
 SPAWN_CLEAN_HR=6					# hour to be use in crontab for cleanup
 SPAWN_CLEAN_MIN=13					# minutes to be used in crontab for cleanup
 
@@ -39,6 +45,7 @@ QUEST_END='06:00:00'					# if you don't want spawnpoints discovered during quest
 SPAWN_UNSEEN_DAYS=5					# number of days a spawnpoint is not scanned before inserting into table spawn_unused and deleting it from trs_spawn, 9999 to disable
 SPAWN_NO_ENDTIME_DAYS=5					# number of days a spawnpoint is discovered yet no endtime found => insert into table spawn_unused and deleting from trs_spawn, 9999 to disable
 
+## Cleaup spawndef 15
 SPAWNDEF15_CLEANUP=false				# daily reset incorrect hourly spawndefs. An hourly spawn must have been seen in first and second 30min period, based on yesterdays hourly data (after QUEST_END)
 SPAWNDEF15_HOURS=15					# number of hours spawnpoint has not been seen in first and second 30min period before resetting spawnpoint
 
@@ -56,6 +63,13 @@ no_quest_days=5						# Number of days of no quest scanned before deletion of pok
 recalc_quest_routes=false				# Weekly recalculation of quest routes
 quest_recalc_wait=60s					# Time in seconds to wait between quest route recalculations
 
+## Gym cleanup ##
+gym_not_scanned_days=9999				# delete gym if not scanned for X days 
+
+## Bakcup MAD databse ##
+mad_backup=true						# Daily backup MAD database to /MADbackup. Following tables are excluded: filestore_chunks/filestore_meta/pokemon/raid/weather/trs_status/trs_visited/trs_stats_detect/trs_stats_detect_mon_raw/trs_stats_detect_fort_raw/trs_stats_location/trs_stats_location_raw/trs_quest/trs_usage/trs_s2cells
+backup_delete_days=7					# number of days to keep a backup after which it is deleted 
+
 ## Stats cleanup for different ReportPeriodLength in days ##
 RPL15=90
 RPL60=180
@@ -63,9 +77,9 @@ RPL1440=9999
 RPL10080=9999
 
 ## MAD tables  cleanup (true or false) ##
-pokemon=false						# delete data table pokemon older then 1 hour
-trs_stats_detect_raw=false                              # delete data table trs_stats_detect_raw older then 1 hour
-trs_stats_location_raw=false                            # delete data table trs_stats_location_raw  older then 1 hour
+pokemon=false						# delete data from table pokemon older then 1 hour
+trs_stats_detect_raw=false                              # delete data from table trs_stats_detect_raw older then 1 hour
+trs_stats_location_raw=false                            # delete data from table trs_stats_location_raw  older then 1 hour
 trs_stats_detect=false					# delete yesterdays data from table trs_stats_detect
 trs_stats_location=false				# delete yesterdays data from table trs_stats_location
 trs_usage=false						# delete data older then 30 days

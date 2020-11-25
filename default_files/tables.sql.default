@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS `stats_area` (
   `RPL` smallint(6) NOT NULL,
   `TRPL` smallint(6) NOT NULL,
   `Area` varchar(40) NOT NULL,
+  `Fence` varchar(40) NOT NULL DEFAULT (Area),
   `Spawnpoints` smallint(6) DEFAULT NULL,
   `Mons_all` int(10) DEFAULT NULL,
   `Mons_nonIV` int(10) DEFAULT NULL,
@@ -35,18 +36,20 @@ CREATE TABLE IF NOT EXISTS `stats_area` (
   `Spawndef15` int(6) DEFAULT NULL,
   `SpawndefNot15` int(6) DEFAULT NULL,
   `Raid_Egg` int(6) DEFAULT NULL,
-  `DBspawns` smallint(6) DEFAULT NULL,
-  `Spawn_add` smallint(6) DEFAULT NULL,
-  `Spawn_NULL` smallint(6) DEFAULT NULL,
-  `Last_scanned_today_acc` smallint(6) DEFAULT NULL,
-  `Last_scanned_1d` smallint(6) DEFAULT NULL,
-  `Last_scanned_2d` smallint(6) DEFAULT NULL,
-  `Last_scanned_3d` smallint(6) DEFAULT NULL,
-  `Last_scanned_7dp` smallint(6) DEFAULT NULL,
+  `DBspawns` int(6) DEFAULT NULL,
+  `DBspawns_event` int(6) DEFAULT NULL,
+  `Spawn_add` int(6) DEFAULT NULL,
+  `Spawn_NULL` int(6) DEFAULT NULL,
+  `Last_scanned_today_acc` int(6) DEFAULT NULL,
+  `Last_scanned_1d` int(6) DEFAULT NULL,
+  `Last_scanned_2d` int(6) DEFAULT NULL,
+  `Last_scanned_3d` int(6) DEFAULT NULL,
+  `Last_scanned_7dp` int(6) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `stats_area_Datetime` (`Datetime`),
   KEY `stats_area_RPL` (`RPL`),
-  KEY `stats_area_Area` (`Area`)
+  KEY `stats_area_Area` (`Area`),
+  KEY `stats_area_Fence` (`Fence`)
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `stats_worker` (
@@ -55,6 +58,7 @@ CREATE TABLE IF NOT EXISTS `stats_worker` (
   `RPL` smallint(6) NOT NULL,
   `TRPL` smallint(6) DEFAULT 0,
   `Worker` varchar(100) NOT NULL,
+  `Area` varchar(100) DEFAULT NULL,
   `Tmon` int(255) DEFAULT NULL,
   `IVmon` int(255) DEFAULT NULL,
   `Mon` int(255) DEFAULT NULL,
@@ -157,13 +161,25 @@ CREATE TABLE IF NOT EXISTS `pokemon_history_temp` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 ALTER TABLE stats_area
+ADD COLUMN IF NOT EXISTS DBspawns_event int(6) DEFAULT NULL AFTER DBspawns,
 ADD COLUMN IF NOT EXISTS w5 int(6) NOT NULL DEFAULT 0 AFTER AvgMinutesLeft,
 ADD COLUMN IF NOT EXISTS w10 int(6) NOT NULL DEFAULT 0 AFTER w5,
 ADD COLUMN IF NOT EXISTS w15 int(6) NOT NULL DEFAULT 0 AFTER w10,
-ADD COLUMN IF NOT EXISTS w20 int(6) NOT NULL DEFAULT 0 AFTER w15;
+ADD COLUMN IF NOT EXISTS w20 int(6) NOT NULL DEFAULT 0 AFTER w15,
+ADD COLUMN IF NOT EXISTS Fence varchar(40) NOT NULL DEFAULT (Area) AFTER Area,
+ADD KEY IF NOT EXISTS stats_area_Fence (Fence),
+MODIFY DBspawns int(6),
+MODIFY Spawn_add int(6),
+MODIFY Spawn_NULL int(6),
+MODIFY Last_scanned_today_acc int(6),
+MODIFY Last_scanned_1d int(6),
+MODIFY Last_scanned_2d int(6),
+MODIFY Last_scanned_3d int(6),
+MODIFY Last_scanned_7dp int(6);
 
 ALTER TABLE `stats_worker`
-CHANGE COLUMN `TRPL` `TRPL` smallint(6) DEFAULT 0;
+CHANGE COLUMN `TRPL` `TRPL` smallint(6) DEFAULT 0,
+ADD COLUMN IF NOT EXISTS Area varchar(100) AFTER Worker;
 
 ALTER TABLE `pokemon_history_temp`
 DROP KEY IF EXISTS `pokemon_history_temp_first_scanned`;
