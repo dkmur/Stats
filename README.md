@@ -57,9 +57,9 @@ flush privileges;
 Within Stats it is possible to assign devices to areas (towns) in order to analyze statistics per area providing the possibility to i.e. compare areas or test functionality like PrioQ in a specific area and analyze it's statistics. <br>
 3 options are availabe: <br>
 1. In case you only have one area/town or are simply to lazy to assign devices to an area :P follow steps in 3.1, where area ``world`` will be created.<br>
-2. Use MAD (sub)fences. Area's will be created based on MAD fences or subfences. In case each walker contains max 1 mon_mitm area, device to area assignmented is automated.<br>
+2. Use MAD (sub)fences. Area's will be created based on MAD fences or subfences, 3.2. In case each walker contains max 1 mon_mitm area, device to area assignmented is automated.<br>
 3. The "old" way, create an area file where you set your area coordinates and assign devices to each area manually. See 3.3<br>
-Else proceed to 3.2 where you will define your own areas and assign devices.
+
 
 #### 3.1 Quick setup
 - in ``config.ini`` set ``FENCE=world``
