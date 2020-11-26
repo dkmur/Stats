@@ -117,7 +117,17 @@ Run ``stats`` or ``./stats.sh``, but give it some time to fill the tables.<br>
 Hopefully that's it.....else......blame someone else :)  
 
 
-### 6 Note
+### 6 Updating stats
+
+
+Steps to be taken to update Stats depend on changes made, to make sure that you covered them all:<br>
+- git pull
+- check for changes in config.ini.default located in folder /default_files and adapt config.ini accordingly
+- execute ``./settings.run`` located in Stats root
+- replace crontab with content of crontab.txt located in Stats root 
+
+
+### 7 Note
 
 - Not all information stored in tables stats_worker and stats_area is included in Stats menu options, adapt as you see fit. <br>
 - Menu option 30 contains several queries regarding device setting/information but requires https://github.com/dkmur/ATVdetails <br>
