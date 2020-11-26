@@ -40,6 +40,6 @@ max(ResTot),
 max(RebTot)
 
 from pogodb.stats_worker
-where Datetime like concat(lpad(@Datetime,13),'%') and RPL = 15
+where Datetime like concat(left(@Datetime,13),'%') and RPL = 15
 group by Worker
 ;
