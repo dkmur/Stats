@@ -14,7 +14,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "7.1.5"
+      "version": "7.3.1"
     },
     {
       "type": "datasource",
@@ -46,7 +46,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1602336441738,
+  "iteration": 1606730594479,
   "links": [],
   "panels": [
     {
@@ -54,7 +54,8 @@
       "fieldConfig": {
         "defaults": {
           "custom": {
-            "align": null
+            "align": null,
+            "filterable": false
           },
           "mappings": [],
           "thresholds": {
@@ -158,7 +159,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "7.1.5",
+      "pluginVersion": "7.3.1",
       "targets": [
         {
           "format": "table",
@@ -197,7 +198,8 @@
       "fieldConfig": {
         "defaults": {
           "custom": {
-            "align": null
+            "align": null,
+            "filterable": false
           },
           "mappings": [],
           "thresholds": {
@@ -276,7 +278,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "7.1.5",
+      "pluginVersion": "7.3.1",
       "targets": [
         {
           "format": "table",
@@ -315,7 +317,8 @@
       "fieldConfig": {
         "defaults": {
           "custom": {
-            "align": null
+            "align": null,
+            "filterable": false
           },
           "mappings": [],
           "thresholds": {
@@ -370,7 +373,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "7.1.5",
+      "pluginVersion": "7.3.1",
       "targets": [
         {
           "format": "table",
@@ -409,7 +412,8 @@
       "fieldConfig": {
         "defaults": {
           "custom": {
-            "align": null
+            "align": null,
+            "filterable": false
           },
           "mappings": [],
           "thresholds": {
@@ -464,7 +468,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "7.1.5",
+      "pluginVersion": "7.3.1",
       "targets": [
         {
           "format": "table",
@@ -503,7 +507,8 @@
       "fieldConfig": {
         "defaults": {
           "custom": {
-            "align": null
+            "align": null,
+            "filterable": false
           },
           "mappings": [],
           "thresholds": {
@@ -592,6 +597,18 @@
                 "value": 94
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "version"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 71
+              }
+            ]
           }
         ]
       },
@@ -606,14 +623,14 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "7.1.5",
+      "pluginVersion": "7.3.1",
       "targets": [
         {
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\nleft(date,10) as 'date      ',\nifnull(PD_auth_username,'no_data ') as 'username',\nifnull(PD_auth_password,'no_data ') as 'password',\nifnull(PD_user_login,'no_data') as 'login',\nifnull(PD_auth_token,'no_data') as 'auth_token',\nifnull(PD_post_destination,'no_data') as 'post_destination',\ncount(origin) as '#devices'\nfrom ATVdetails\n\nWHERE\ndate = '$date'\n\nGROUP BY date, PD_auth_username, PD_auth_password, PD_user_login, PD_auth_token, PD_post_destination\n",
+          "rawSql": "SELECT\nleft(date,10) as 'date      ',\nifnull(pogodroid,'no_data ') as 'version',\nifnull(PD_auth_username,'no_data ') as 'username',\nifnull(PD_auth_password,'no_data ') as 'password',\nifnull(PD_user_login,'no_data') as 'login',\nifnull(PD_auth_token,'no_data') as 'auth_token',\nifnull(PD_post_destination,'no_data') as 'post_destination',\ncount(origin) as '#devices'\nfrom ATVdetails\n\nWHERE\ndate = '$date'\n\nGROUP BY date, PD_auth_username, PD_auth_password, PD_user_login, PD_auth_token, PD_post_destination\n",
           "refId": "A",
           "select": [
             [
@@ -645,7 +662,8 @@
       "fieldConfig": {
         "defaults": {
           "custom": {
-            "align": null
+            "align": null,
+            "filterable": false
           },
           "mappings": [],
           "thresholds": {
@@ -856,7 +874,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "7.1.5",
+      "pluginVersion": "7.3.1",
       "targets": [
         {
           "format": "table",
@@ -895,7 +913,8 @@
       "fieldConfig": {
         "defaults": {
           "custom": {
-            "align": null
+            "align": null,
+            "filterable": false
           },
           "mappings": [],
           "thresholds": {
@@ -1034,7 +1053,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "7.1.5",
+      "pluginVersion": "7.3.1",
       "targets": [
         {
           "format": "table",
@@ -1073,7 +1092,8 @@
       "fieldConfig": {
         "defaults": {
           "custom": {
-            "align": null
+            "align": null,
+            "filterable": false
           },
           "mappings": [],
           "thresholds": {
@@ -1138,6 +1158,18 @@
                 "value": 235
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "version"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 65
+              }
+            ]
           }
         ]
       },
@@ -1152,14 +1184,14 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "7.1.5",
+      "pluginVersion": "7.3.1",
       "targets": [
         {
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\nleft(date,10) as 'date',\nifnull(RGC_auth_username,'no_data') as 'username',\nifnull(RGC_auth_password,'no_data') as 'password',\nifnull(RGC_websocket_uri,'no_data') as 'websocket_url',\ncount(origin) as '#devices'\nfrom ATVdetails\n\nWHERE\ndate = '$date'\n\nGROUP BY date, RGC_auth_username, RGC_auth_password, RGC_websocket_uri",
+          "rawSql": "SELECT\nleft(date,10) as 'date',\nifnull(rgc,'no_data') as 'version',\nifnull(RGC_auth_username,'no_data') as 'username',\nifnull(RGC_auth_password,'no_data') as 'password',\nifnull(RGC_websocket_uri,'no_data') as 'websocket_url',\ncount(origin) as '#devices'\nfrom ATVdetails\n\nWHERE\ndate = '$date'\n\nGROUP BY date, RGC_auth_username, RGC_auth_password, RGC_websocket_uri",
           "refId": "A",
           "select": [
             [
@@ -1191,7 +1223,8 @@
       "fieldConfig": {
         "defaults": {
           "custom": {
-            "align": null
+            "align": null,
+            "filterable": false
           },
           "mappings": [],
           "thresholds": {
@@ -1366,7 +1399,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "7.1.5",
+      "pluginVersion": "7.3.1",
       "targets": [
         {
           "format": "table",
@@ -1405,7 +1438,8 @@
       "fieldConfig": {
         "defaults": {
           "custom": {
-            "align": null
+            "align": null,
+            "filterable": false
           },
           "mappings": [],
           "thresholds": {
@@ -1568,7 +1602,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "7.1.5",
+      "pluginVersion": "7.3.1",
       "targets": [
         {
           "format": "table",
@@ -1614,6 +1648,7 @@
         "current": {},
         "datasource": "${DS_POGODB}",
         "definition": "select left(date,10) from ATVdetails;",
+        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": null,
@@ -1654,5 +1689,5 @@
   "timezone": "",
   "title": "10. ATVdetails",
   "uid": "YBmfNzFGz",
-  "version": 11
+  "version": 13
 }
