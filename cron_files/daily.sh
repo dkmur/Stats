@@ -62,10 +62,10 @@ if "$stop_no_quest_remove"
 then
   if [ -z "$SQL_password" ]
   then
-  mysql -h$DB_IP -P$DB_PORT -u$SQL_user $MAD_DB -e "delete pokestop where pokestop_id in (select GUID from trs_quest where date(from_unixtime(quest_timestamp)) < curdate() -interval $no_quest_days day);"
+  mysql -h$DB_IP -P$DB_PORT -u$SQL_user $MAD_DB -e "delete from pokestop where pokestop_id in (select GUID from trs_quest where date(from_unixtime(quest_timestamp)) < curdate() -interval $no_quest_days day);"
   mysql -h$DB_IP -P$DB_PORT -u$SQL_user $MAD_DB -e "delete from trs_quest where GUID not in (select pokestop_id from pokestop);"
   else
-  mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $MAD_DB -e "delete pokestop where pokestop_id in (select GUID from trs_quest where date(from_unixtime(quest_timestamp)) < curdate() -interval $no_quest_days day);"
+  mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $MAD_DB -e "delete from pokestop where pokestop_id in (select GUID from trs_quest where date(from_unixtime(quest_timestamp)) < curdate() -interval $no_quest_days day);"
   mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $MAD_DB -e "delete from trs_quest where GUID not in (select pokestop_id from pokestop);"
   fi
 fi
