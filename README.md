@@ -130,11 +130,10 @@ Steps to be taken to update Stats depend on changes made, to make sure that you 
 ### 7 Note
 
 - Not all information stored in tables stats_worker and stats_area is included in Stats menu options, adapt as you see fit. <br>
-- Menu option 30 contains several queries regarding device setting/information but requires https://github.com/dkmur/ATVdetails <br>
 
 
 
-## Meaning of Stats columns
+## Meaning of Stats columns (tables stats_area and stats_worker)
 
 
 **RPL** Report Length Period : will be 15, 60, 1440 or 10080 minutes  

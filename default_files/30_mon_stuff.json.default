@@ -14,7 +14,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "7.2.2"
+      "version": "7.3.1"
     },
     {
       "type": "panel",
@@ -46,7 +46,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1604258975474,
+  "iteration": 1607366897017,
   "links": [],
   "panels": [
     {
@@ -87,7 +87,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.2.2",
+      "pluginVersion": "7.3.1",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -207,7 +207,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.2.2",
+      "pluginVersion": "7.3.1",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -331,7 +331,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.2.2",
+      "pluginVersion": "7.3.1",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -455,7 +455,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.2.2",
+      "pluginVersion": "7.3.1",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -549,6 +549,7 @@
         "current": {},
         "datasource": "${DS_POGODB}",
         "definition": "select RPL from stats_area;",
+        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": null,
@@ -570,14 +571,15 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_POGODB}",
-        "definition": "select Area from stats_area;",
+        "definition": "select substring_index(Area,'_',1) from stats_area;",
+        "error": null,
         "hide": 0,
         "includeAll": true,
         "label": null,
         "multi": false,
         "name": "Area",
         "options": [],
-        "query": "select Area from stats_area;",
+        "query": "select substring_index(Area,'_',1) from stats_area;",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -598,5 +600,5 @@
   "timezone": "",
   "title": "30. Mon stuff",
   "uid": "MXNPeYtMz",
-  "version": 10
+  "version": 12
 }
