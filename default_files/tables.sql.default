@@ -160,7 +160,7 @@ CREATE TABLE IF NOT EXISTS `pokemon_history_temp` (
   KEY `pokemon_history_temp_last_modified` (`last_modified`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE `ATVdetails` (
+CREATE TABLE IF NOT EXISTS `ATVdetails` (
   `date` date COLLATE utf8mb4_unicode_ci NOT NULL,
   `origin` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `rom` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
