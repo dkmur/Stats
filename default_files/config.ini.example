@@ -12,30 +12,35 @@ MAD_instance_name_1=MAD
 MAD_url_1=http://localhost:5000
 MADmin_username_1=someuser
 MADmin_password_1=somepass
+MAD_path_1=/home/me/MAD/
 
 # MAD instance 2, must be connected to same DB as instance 1
 MAD_instance_name_2=
 MAD_url_2=
 MADmin_username_2=
 MADmin_password_2=
+MAD_path_2=
 
 # MAD instance 3, must be connected to same DB as instance 1
 MAD_instance_name_3=
 MAD_url_3=
 MADmin_username_3=
 MADmin_password_3=
+MAD_path_3=
 
 # MAD instance 4, must be connected to same DB as instance 1
 MAD_instance_name_4=
 MAD_url_4=
 MADmin_username_4=
 MADmin_password_4=
+MAD_path_4=
 
 # MAD instance 5, must be connected to same DB as instance 1
 MAD_instance_name_5=
 MAD_url_5=
 MADmin_username_5=
 MADmin_password_5=
+MAD_path_5=
 
 ## Stats ##
 PATH_TO_STATS=/home/dkmur/temp/Stats/
