@@ -54,7 +54,7 @@ MAD_FENCE_UPDATE_INTERVAL=hour				# hour or day, interval for updating Stats on 
 
 ## ATV details ##
 atvdetails=true						# true/false: get cpu temperature, sw versions and RGC/PD settings from atv 
-job_wait=2m							# wait time for jobs to finish i.e. 2m or 300s
+job_wait=2m						# wait time for jobs to finish i.e. 2m or 300s
 
 ## Grafana ##
 DataSource_stats=pogodb
