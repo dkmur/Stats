@@ -160,6 +160,37 @@ CREATE TABLE IF NOT EXISTS `pokemon_history_temp` (
   KEY `pokemon_history_temp_last_modified` (`last_modified`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+CREATE TABLE `ATVdetails` (
+  `date` date COLLATE utf8mb4_unicode_ci NOT NULL,
+  `origin` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `rom` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `rgc` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `pogodroid` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `pogo` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `pogo_update` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `pd_update` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `rgc_update` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `pingreboot` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `temperature` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `magisk` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `magisk_modules` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ip` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `gmail` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `PD_auth_username` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `PD_auth_password` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `PD_user_id` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `PD_auth_id` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `PD_auth_token` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `PD_post_destination` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `PD_boot_delay` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `PD_injection_delay` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `RGC_auth_username` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `RGC_auth_password` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `RGC_websocket_uri` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `RGC_boot_delay` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`date`,`origin`)
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 ALTER TABLE stats_area
 ADD COLUMN IF NOT EXISTS DBspawns_event int(6) DEFAULT NULL AFTER DBspawns,
 ADD COLUMN IF NOT EXISTS w5 int(6) NOT NULL DEFAULT 0 AFTER AvgMinutesLeft,
@@ -192,3 +223,59 @@ CHANGE COLUMN `Area` `Area` varchar(50) DEFAULT 'World';
 
 ALTER TABLE `Area`
 DROP COLUMN IF EXISTS `id`;
+
+
+SET SESSION innodb_strict_mode=OFF;
+alter table ATVdetails
+add column IF NOT EXISTS `arch` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after origin,
+add column IF NOT EXISTS `pd_update` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after pogo_update,
+add column IF NOT EXISTS `rgc_update` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after pd_update,
+add column IF NOT EXISTS `pingreboot` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after rgc_update,
+add column IF NOT EXISTS `temperature` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after pingreboot,
+change column IF EXISTS `origin` origin varchar(50),
+change column IF EXISTS `eth0` ip varchar(40),
+change column IF EXISTS `magisk_modules` magisk_modules varchar(200),
+add column IF NOT EXISTS `gmail` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL after ip,
+change column IF EXISTS `gmail` gmail varchar(60),
+add column IF NOT EXISTS `PD_user_login` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after PD_auth_password,
+add column IF NOT EXISTS `PD_switch_disable_last_sent` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after PD_injection_delay,
+add column IF NOT EXISTS `PD_intentional_stop` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after PD_switch_disable_last_sent,
+add column IF NOT EXISTS `PD_switch_send_protos` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after PD_intentional_stop,
+add column IF NOT EXISTS `PD_last_time_injected` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after PD_switch_send_protos,
+add column IF NOT EXISTS `PD_switch_disable_external_communication` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after PD_last_time_injected,
+add column IF NOT EXISTS `PD_last_pid_injected` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after PD_switch_disable_external_communication,
+add column IF NOT EXISTS `PD_switch_enable_oomadj` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after PD_last_pid_injected,
+add column IF NOT EXISTS `PD_switch_enable_auth_header` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after PD_switch_enable_oomadj,
+add column IF NOT EXISTS `PD_switch_send_raw_protos` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after PD_switch_enable_auth_header,
+add column IF NOT EXISTS `PD_switch_popup_last_sent` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after PD_switch_send_raw_protos,
+add column IF NOT EXISTS `PD_full_daemon` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after PD_switch_popup_last_sent,
+add column IF NOT EXISTS `PD_switch_enable_mock_location_patch` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after PD_full_daemon,
+add column IF NOT EXISTS `PD_last_system_patch_timestamp` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after PD_switch_enable_mock_location_patch,
+add column IF NOT EXISTS `PD_last_sys_inj` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after PD_last_system_patch_timestamp,
+add column IF NOT EXISTS `PD_default_mappging_mode` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after PD_last_sys_inj,
+add column IF NOT EXISTS `PD_switch_setenforce` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after PD_default_mappging_mode,
+add column IF NOT EXISTS `PD_post_destination_raw` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL after PD_switch_setenforce,
+change column IF EXISTS `PD_post_destination_raw` PD_post_destination_raw varchar(100),
+add column IF NOT EXISTS `PD_session_id` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL after PD_post_destination_raw,
+change column IF EXISTS `PD_session_id` PD_session_id varchar(60),
+add column IF NOT EXISTS `PD_libfilename` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after PD_session_id,
+add column IF NOT EXISTS `PD_latest_version_known` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after PD_libfilename,
+add column IF NOT EXISTS `PD_disable_pogo_freeze_detection` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after PD_latest_version_known,
+add column IF NOT EXISTS `RGC_mediaprojection_previously_started` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after RGC_boot_delay,
+add column IF NOT EXISTS `RGC_suspended_mocking` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after RGC_mediaprojection_previously_started,
+add column IF NOT EXISTS `RGC_reset_agps_once` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after RGC_suspended_mocking,
+add column IF NOT EXISTS `RGC_overwrite_fused` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after RGC_reset_agps_once,
+add column IF NOT EXISTS `RGC_switch_enable_auth_header` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after RGC_overwrite_fused,
+add column IF NOT EXISTS `RGC_reset_agps_continuously` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after RGC_switch_enable_auth_header,
+add column IF NOT EXISTS `RGC_reset_google_play_services` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after RGC_reset_agps_continuously,
+add column IF NOT EXISTS `RGC_last_location_longitude` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after RGC_reset_google_play_services,
+add column IF NOT EXISTS `RGC_last_location_altitude` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after RGC_last_location_longitude,
+add column IF NOT EXISTS `RGC_last_location_latitude` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after RGC_last_location_altitude,
+add column IF NOT EXISTS `RGC_boot_startup` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after RGC_last_location_latitude,
+add column IF NOT EXISTS `RGC_use_mock_location` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after RGC_boot_startup,
+add column IF NOT EXISTS `RGC_oom_adj_override` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after RGC_use_mock_location,
+add column IF NOT EXISTS `RGC_location_reporter_service_running` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after RGC_oom_adj_override,
+add column IF NOT EXISTS `RGC_stop_location_provider_service` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after RGC_location_reporter_service_running,
+add column IF NOT EXISTS `RGC_autostart_services` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after RGC_stop_location_provider_service,
+change column IF EXISTS `RGC_websocket_uri` RGC_websocket_uri varchar(60)
+;

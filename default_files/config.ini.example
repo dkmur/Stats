@@ -6,7 +6,7 @@ DB_PORT=3306
 MAD_DB=rmdb
 STATS_DB=pogodb
 
-## MADmin settings, for quest recalc ##
+## MADmin settings, for quest recalc and getting ATV settings##
 # MAD instance 1
 MAD_instance_name_1=MAD
 MAD_url_1=http://localhost:5000
@@ -19,6 +19,24 @@ MAD_url_2=
 MADmin_username_2=
 MADmin_password_2=
 
+# MAD instance 3, must be connected to same DB as instance 1
+MAD_instance_name_3=
+MAD_url_3=
+MADmin_username_3=
+MADmin_password_3=
+
+# MAD instance 4, must be connected to same DB as instance 1
+MAD_instance_name_4=
+MAD_url_4=
+MADmin_username_4=
+MADmin_password_4=
+
+# MAD instance 5, must be connected to same DB as instance 1
+MAD_instance_name_5=
+MAD_url_5=
+MADmin_username_5=
+MADmin_password_5=
+
 ## Stats ##
 PATH_TO_STATS=/home/dkmur/temp/Stats/
 DEFINED_SCAN_AREAS='Amsterdam, London, Paris'		# only used for visualisation in Stats menu, not used for Grafana
@@ -28,6 +46,10 @@ DEFAULT_AREA=London					# Default area to be used for Stats sql queries, not use
 FENCE=box						# options:MAD/box/world. MAD=use MAD (sub)fences, box=define lat/lon max/min per area yourself, world=like box but Stats will create one big fence covering everything
 MAD_DEVICE_INSERT=false					# auto fill table Area, linking devices to Areas(geofence name of mon_mitm), requires FENCE=MAD. Note: only works if each walker contain max 1 mon_mitm area.  
 MAD_FENCE_UPDATE_INTERVAL=hour				# hour or day, interval for updating Stats on MAD geofences, requires FENCE=MAD. New devices will be added at same interval in case MAD_DEVICE_INSERT=true.
+
+## ATV details ##
+atvdetails=true						# true/false: get cpu temperature, sw versions and RGC/PD settings from atv 
+job_wait=2m							# wait time for jobs to finish i.e. 2m or 300s
 
 ## Grafana ##
 DataSource_stats=pogodb
