@@ -291,8 +291,8 @@ if [[ -z $table_check || -z $column_check ]]; then
   echo ''
   echo ''
   echo 'SQL commands below has fixed it for those that ran into it, but verify to make sure'
-  echo 'ALTER TABLE #MAD_DB.trs_stats_detect CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;'
-  echo 'ALTER TABLE #MAD_DB.trs_stats_location CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;'
+  echo 'ALTER TABLE $MAD_DB.trs_stats_detect CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;'
+  echo 'ALTER TABLE $MAD_DB.trs_stats_location CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;'
 fi
 # Make sure QUEST_END is set when using spawndef reset
 if "$SPAWNDEF15_CLEANUP"
