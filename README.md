@@ -69,6 +69,7 @@ Note: when adding devices, remove ``world.ini`` in /areas and execute ``settings
 
 #### 3.2 Use MAD fences
 - in ``config.ini`` set ``FENCE=MAD``
+- make sure your geofence names are not imported into db and have a name like ``configs/geofences/paris.txt`` !! ``!blame banana``
 - Execute ``./settings.run``, this will create required stats tables, triggers, sql queries , procedures and crontab file <br>
 - Edit crontab ``crontab -e`` and insert content of ``crontab.txt`` located in Stats home. <br>
 - If each walker only contains 1 mon_mitm area, set MAD_DEVICE_INSERT=true in config.ini for automatic assignment. Else assign devices (MAD origins) to the created area's (select Area from STATS_DB.Area;) manually, in mysql:<br>
@@ -81,7 +82,7 @@ insert into ##STATS_DB##.Area (Area,Origin) values
 ```
 Note 1: The geofence name used in MADmin is the Area name within Stats. <br>
 Note 2: in case a geofence consists of sub-fences these names will be stored in column ``Fence`` in stats_area.<br>
-Note 3: make sure to add new devices to ``table Area`` when expanding setup. I never remove origins as I want to keep the data collected.<br>
+Note 3: if MAD_DEVICE_INSERT=false, make sure to add new devices to ``table Area`` when expanding setup. I never remove origins as I want to keep the data collected.<br>
 
 #### 3.3 Manual Area definition
 - in ``config.ini`` set ``FENCE=box``
