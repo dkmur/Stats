@@ -161,7 +161,7 @@ CREATE TABLE IF NOT EXISTS `pokemon_history_temp` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `ATVdetails` (
-  `date` date COLLATE utf8mb4_unicode_ci NOT NULL,
+  `datetime` datetime COLLATE utf8mb4_unicode_ci NOT NULL,
   `origin` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `rom` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `rgc` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -227,6 +227,7 @@ DROP COLUMN IF EXISTS `id`;
 
 SET SESSION innodb_strict_mode=OFF;
 alter table ATVdetails
+CHANGE COLUMN IF EXISTS `date` `datetime` datetime NOT NULL,
 add column IF NOT EXISTS `arch` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after origin,
 add column IF NOT EXISTS `pd_update` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after pogo_update,
 add column IF NOT EXISTS `rgc_update` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after pd_update,

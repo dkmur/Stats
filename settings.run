@@ -79,7 +79,7 @@ then
   echo "Set daily download of ATV settings"
   echo ""
   sed -i "$ a \#\# ATV details" $PATH_TO_STATS/crontab.txt
-  sed -i "$ a 5 1 * * * cd pathToStatscron_files && ./atvdetails.sh" $PATH_TO_STATS/crontab.txt
+  sed -i "$ a 5 0/$atvdetails_hours * * * cd pathToStatscron_files && ./atvdetails.sh" $PATH_TO_STATS/crontab.txt
 fi
 PATH_TO_STATS2=$(sed 's@/@\\/@g' <<< $PATH_TO_STATS)
 cd $PATH_TO_STATS && sed -i "s/pathToStats/$PATH_TO_STATS2/g" *.txt

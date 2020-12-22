@@ -46,7 +46,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1606730594479,
+  "iteration": 1608625676907,
   "links": [],
   "panels": [
     {
@@ -166,7 +166,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\nleft(date,10) as 'date', \nifnull(arch,'no_data') as 'Architecture',\nifnull(rom,'no_data') as 'Rom',\ncount(origin) as '#devices'\nfrom ATVdetails\n\nWHERE\ndate = '$date'\n\nGROUP BY date, arch, rom\n",
+          "rawSql": "SELECT\nleft(datetime,16) as 'datetime', \nifnull(arch,'no_data') as 'Architecture',\nifnull(rom,'no_data') as 'Rom',\ncount(origin) as '#devices'\nfrom ATVdetails\n\nWHERE\ndatetime = '$datetime'\n\nGROUP BY datetime, arch, rom\n",
           "refId": "A",
           "select": [
             [
@@ -285,7 +285,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\nleft(date,10) as 'date',\nifnull(pogo_update,'no_data ') as 'pogo_update',\nifnull(pd_update,'no_data ') as pd_update,\nifnull(rgc_update,'no_data ') as 'rgc_update',\nifnull(pingreboot,'no_data ') as pingreboot, \ncount(origin) as 'devices'\nfrom ATVdetails\n\nWHERE\ndate = '$date'\n\nGROUP BY date, pogo_update, pd_update, rgc_update, pingreboot",
+          "rawSql": "SELECT\nleft(datetime,16) as 'datetime',\nifnull(pogo_update,'no_data ') as 'pogo_update',\nifnull(pd_update,'no_data ') as pd_update,\nifnull(rgc_update,'no_data ') as 'rgc_update',\nifnull(pingreboot,'no_data ') as pingreboot, \ncount(origin) as 'devices'\nfrom ATVdetails\n\nWHERE\ndatetime = '$datetime'\n\nGROUP BY datetime, pogo_update, pd_update, rgc_update, pingreboot",
           "refId": "A",
           "select": [
             [
@@ -380,7 +380,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\nleft(date,10) as 'date', \nifnull(pogo,'no_data') as 'PoGo',\ncount(origin) as '#devices'\nfrom ATVdetails\n\nWHERE\ndate = '$date'\n\nGROUP BY date, pogo\n",
+          "rawSql": "SELECT\nleft(datetime,16) as 'datetime', \nifnull(pogo,'no_data') as 'PoGo',\ncount(origin) as '#devices'\nfrom ATVdetails\n\nWHERE\ndatetime = '$datetime'\n\nGROUP BY datetime, pogo\n",
           "refId": "A",
           "select": [
             [
@@ -475,7 +475,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\nleft(date,10) as 'date', \nifnull(magisk,'no_data') as 'Magisk',\nifnull(magisk_modules,'no_data') as 'Modules loaded',\ncount(origin) as '#devices'\nfrom ATVdetails\n\nWHERE\ndate = '$date'\n\nGROUP BY date, magisk, magisk_modules\n",
+          "rawSql": "SELECT\nleft(datetime,16) as 'datetime', \nifnull(magisk,'no_data') as 'Magisk',\nifnull(magisk_modules,'no_data') as 'Modules loaded',\ncount(origin) as '#devices'\nfrom ATVdetails\n\nWHERE\ndatetime = '$datetime'\n\nGROUP BY datetime, magisk, magisk_modules\n",
           "refId": "A",
           "select": [
             [
@@ -630,7 +630,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\nleft(date,10) as 'date      ',\nifnull(pogodroid,'no_data ') as 'version',\nifnull(PD_auth_username,'no_data ') as 'username',\nifnull(PD_auth_password,'no_data ') as 'password',\nifnull(PD_user_login,'no_data') as 'login',\nifnull(PD_auth_token,'no_data') as 'auth_token',\nifnull(PD_post_destination,'no_data') as 'post_destination',\ncount(origin) as '#devices'\nfrom ATVdetails\n\nWHERE\ndate = '$date'\n\nGROUP BY date, PD_auth_username, PD_auth_password, PD_user_login, PD_auth_token, PD_post_destination\n",
+          "rawSql": "SELECT\nleft(datetime,16) as 'datetime',\nifnull(pogodroid,'no_data ') as 'version',\nifnull(PD_auth_username,'no_data ') as 'username',\nifnull(PD_auth_password,'no_data ') as 'password',\nifnull(PD_user_login,'no_data') as 'login',\nifnull(PD_auth_token,'no_data') as 'auth_token',\nifnull(PD_post_destination,'no_data') as 'post_destination',\ncount(origin) as '#devices'\nfrom ATVdetails\n\nWHERE\ndatetime = '$datetime'\n\nGROUP BY datetime, PD_auth_username, PD_auth_password, PD_user_login, PD_auth_token, PD_post_destination\n",
           "refId": "A",
           "select": [
             [
@@ -881,7 +881,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\nleft(date,10) as 'date',\nifnull(PD_boot_delay,'no_data') as 'bootDelay',\nifnull(PD_injection_delay,'no_data') as 'injectionDelay',\nifnull(PD_switch_disable_last_sent,'no_data') as 'dis_lastSend',\nifnull(PD_intentional_stop,'no_data') as 'intentStop',\nifnull(PD_switch_send_protos,'no_data') as 'sendProto' ,\nifnull(PD_switch_disable_external_communication,'no_data') as 'dis_ExtComms',\nifnull(PD_switch_enable_oomadj,'no_data') as 'en_oomadj',\nifnull(PD_switch_enable_auth_header,'no_data') as 'en_authHeader',\ncount(origin) as '#devices'\nfrom ATVdetails\n\nWHERE\ndate = '$date'\n\nGROUP BY date, PD_boot_delay, PD_injection_delay, PD_switch_disable_last_sent, PD_intentional_stop, PD_switch_send_protos, PD_switch_disable_external_communication, PD_switch_enable_oomadj, PD_switch_enable_auth_header",
+          "rawSql": "SELECT\nleft(datetime,16) as 'datetime',\nifnull(PD_boot_delay,'no_data') as 'bootDelay',\nifnull(PD_injection_delay,'no_data') as 'injectionDelay',\nifnull(PD_switch_disable_last_sent,'no_data') as 'dis_lastSend',\nifnull(PD_intentional_stop,'no_data') as 'intentStop',\nifnull(PD_switch_send_protos,'no_data') as 'sendProto' ,\nifnull(PD_switch_disable_external_communication,'no_data') as 'dis_ExtComms',\nifnull(PD_switch_enable_oomadj,'no_data') as 'en_oomadj',\nifnull(PD_switch_enable_auth_header,'no_data') as 'en_authHeader',\ncount(origin) as '#devices'\nfrom ATVdetails\n\nWHERE\ndatetime = '$datetime'\n\nGROUP BY datetime, PD_boot_delay, PD_injection_delay, PD_switch_disable_last_sent, PD_intentional_stop, PD_switch_send_protos, PD_switch_disable_external_communication, PD_switch_enable_oomadj, PD_switch_enable_auth_header",
           "refId": "A",
           "select": [
             [
@@ -1060,7 +1060,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\nleft(date,10) as 'date      ',\nifnull(PD_switch_send_raw_protos,'no_data') as 'sendRawProto',\nifnull(PD_switch_popup_last_sent,'no_data') as 'popLastSend',\nifnull(PD_full_daemon,'no_data') as 'fullDaemon',\nifnull(PD_switch_enable_mock_location_patch,'no_data') as 'en_MockLoc',\nifnull(PD_default_mappging_mode,'no_data') as 'defMapMode',\nifnull(PD_switch_setenforce,'no_data') as 'setEnforce',\nifnull(PD_disable_pogo_freeze_detection,'no_data') as 'dis_PogoFreeze',\ncount(origin) as '#devices'\nfrom ATVdetails\n\nWHERE\ndate = '$date'\n\nGROUP BY PD_switch_send_raw_protos, PD_switch_popup_last_sent, PD_full_daemon, PD_switch_enable_mock_location_patch, PD_default_mappging_mode, PD_switch_setenforce, PD_disable_pogo_freeze_detection",
+          "rawSql": "SELECT\nleft(datetime,16) as 'datetime',\nifnull(PD_switch_send_raw_protos,'no_data') as 'sendRawProto',\nifnull(PD_switch_popup_last_sent,'no_data') as 'popLastSend',\nifnull(PD_full_daemon,'no_data') as 'fullDaemon',\nifnull(PD_switch_enable_mock_location_patch,'no_data') as 'en_MockLoc',\nifnull(PD_default_mappging_mode,'no_data') as 'defMapMode',\nifnull(PD_switch_setenforce,'no_data') as 'setEnforce',\nifnull(PD_disable_pogo_freeze_detection,'no_data') as 'dis_PogoFreeze',\ncount(origin) as '#devices'\nfrom ATVdetails\n\nWHERE\ndatetime = '$datetime'\n\nGROUP BY PD_switch_send_raw_protos, PD_switch_popup_last_sent, PD_full_daemon, PD_switch_enable_mock_location_patch, PD_default_mappging_mode, PD_switch_setenforce, PD_disable_pogo_freeze_detection",
           "refId": "A",
           "select": [
             [
@@ -1191,7 +1191,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\nleft(date,10) as 'date',\nifnull(rgc,'no_data') as 'version',\nifnull(RGC_auth_username,'no_data') as 'username',\nifnull(RGC_auth_password,'no_data') as 'password',\nifnull(RGC_websocket_uri,'no_data') as 'websocket_url',\ncount(origin) as '#devices'\nfrom ATVdetails\n\nWHERE\ndate = '$date'\n\nGROUP BY date, RGC_auth_username, RGC_auth_password, RGC_websocket_uri",
+          "rawSql": "SELECT\nleft(datetime,16) as 'datetime',\nifnull(rgc,'no_data') as 'version',\nifnull(RGC_auth_username,'no_data') as 'username',\nifnull(RGC_auth_password,'no_data') as 'password',\nifnull(RGC_websocket_uri,'no_data') as 'websocket_url',\ncount(origin) as '#devices'\nfrom ATVdetails\n\nWHERE\ndatetime = '$datetime'\n\nGROUP BY datetime, RGC_auth_username, RGC_auth_password, RGC_websocket_uri",
           "refId": "A",
           "select": [
             [
@@ -1406,7 +1406,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\nleft(date,10) as 'date',\nifnull(RGC_boot_delay,'no_data ') as 'bootDelay',\nifnull(RGC_mediaprojection_previously_started,'no_data') as 'mediaProj',\nifnull(RGC_suspended_mocking,'no_data ') as 'suspMock',\nifnull(RGC_overwrite_fused,'no_data ') as 'overwFused',\nifnull(RGC_switch_enable_auth_header,'no_data') as 'en_AuthHead',\nifnull(RGC_reset_agps_once,'no_data ') as 'resAgps1',\nifnull(RGC_reset_agps_continuously,'no_data') as 'resetAgpsC',\ncount(origin) as '#devices'\nfrom ATVdetails\n\nWHERE\ndate = '$date'\n\nGROUP BY date, RGC_boot_delay, RGC_mediaprojection_previously_started, RGC_suspended_mocking, RGC_reset_agps_once, RGC_overwrite_fused, RGC_switch_enable_auth_header, RGC_reset_agps_continuously",
+          "rawSql": "SELECT\nleft(datetime,16) as 'datetime',\nifnull(RGC_boot_delay,'no_data ') as 'bootDelay',\nifnull(RGC_mediaprojection_previously_started,'no_data') as 'mediaProj',\nifnull(RGC_suspended_mocking,'no_data ') as 'suspMock',\nifnull(RGC_overwrite_fused,'no_data ') as 'overwFused',\nifnull(RGC_switch_enable_auth_header,'no_data') as 'en_AuthHead',\nifnull(RGC_reset_agps_once,'no_data ') as 'resAgps1',\nifnull(RGC_reset_agps_continuously,'no_data') as 'resetAgpsC',\ncount(origin) as '#devices'\nfrom ATVdetails\n\nWHERE\ndatetime = '$datetime'\n\nGROUP BY datetime, RGC_boot_delay, RGC_mediaprojection_previously_started, RGC_suspended_mocking, RGC_reset_agps_once, RGC_overwrite_fused, RGC_switch_enable_auth_header, RGC_reset_agps_continuously",
           "refId": "A",
           "select": [
             [
@@ -1585,7 +1585,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 735
+                "value": 691
               }
             ]
           }
@@ -1609,7 +1609,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\nleft(date,10) as 'date',\nifnull(RGC_reset_google_play_services,'no_data') as 'resetGplay',\nifnull(RGC_boot_startup,'no_data') as 'bootStart',\nifnull(RGC_use_mock_location,'no_data') as 'useMockLoc',\nifnull(RGC_oom_adj_override,'no_data') as 'overOomadj',\nifnull(RGC_location_reporter_service_running,'no_data') as 'locRepRun',\nifnull(RGC_stop_location_provider_service,'no_data') as 'stopLocProv',\nifnull(RGC_autostart_services,'no_data') as 'autostartService',\ncount(origin) as '#devices'\nfrom ATVdetails\n\nWHERE\ndate = '$date'\n\nGROUP BY date, RGC_reset_google_play_services, RGC_boot_startup, RGC_use_mock_location, RGC_oom_adj_override, RGC_location_reporter_service_running, RGC_stop_location_provider_service, RGC_autostart_services",
+          "rawSql": "SELECT\nleft(datetime,16) as 'datetime',\nifnull(RGC_reset_google_play_services,'no_data') as 'resetGplay',\nifnull(RGC_boot_startup,'no_data') as 'bootStart',\nifnull(RGC_use_mock_location,'no_data') as 'useMockLoc',\nifnull(RGC_oom_adj_override,'no_data') as 'overOomadj',\nifnull(RGC_location_reporter_service_running,'no_data') as 'locRepRun',\nifnull(RGC_stop_location_provider_service,'no_data') as 'stopLocProv',\nifnull(RGC_autostart_services,'no_data') as 'autostartService',\ncount(origin) as '#devices'\nfrom ATVdetails\n\nWHERE\ndatetime = '$datetime'\n\nGROUP BY datetime, RGC_reset_google_play_services, RGC_boot_startup, RGC_use_mock_location, RGC_oom_adj_override, RGC_location_reporter_service_running, RGC_stop_location_provider_service, RGC_autostart_services",
           "refId": "A",
           "select": [
             [
@@ -1647,15 +1647,15 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_POGODB}",
-        "definition": "select left(date,10) from ATVdetails;",
+        "definition": "select datetime from ATVdetails;",
         "error": null,
         "hide": 0,
         "includeAll": false,
         "label": null,
         "multi": false,
-        "name": "date",
+        "name": "datetime",
         "options": [],
-        "query": "select left(date,10) from ATVdetails;",
+        "query": "select datetime from ATVdetails;",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -1689,5 +1689,5 @@
   "timezone": "",
   "title": "10. ATVdetails",
   "uid": "YBmfNzFGz",
-  "version": 13
+  "version": 16
 }
