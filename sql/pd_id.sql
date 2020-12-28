@@ -6,7 +6,7 @@ datetime as 'datetime  ', rpad(origin,13," ") as 'origin       ', ifnull(PD_auth
 from ATVdetails
 
 where
-date = curdate() - interval XXA day
+date(datetime) = curdate() - interval XXA day
 
 order by origin
 ;
