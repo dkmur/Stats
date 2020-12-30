@@ -12,3 +12,18 @@ CREATE PROCEDURE pogodb.mon_history_temp_cleanup()
  END;  
 //
 DELIMITER ;
+
+DROP PROCEDURE IF EXISTS rmdb.pokemon_cleanup;
+DELIMITER //
+CREATE PROCEDURE rmdb.pokemon_cleanup()
+ BEGIN
+  DECLARE RowCount INT;
+  SET RowCount = (SELECT count(last_modified) FROM rmdb.pokemon WHERE CONVERT_TZ(last_modified, '+00:00', @@global.time_zone) < now() - interval 1 hour);
+   WHILE RowCount > 0 DO
+   DELETE FROM rmdb.pokemon WHERE CONVERT_TZ(last_modified, '+00:00', @@global.time_zone) < now() - interval 1 hour LIMIT 25000;
+   SET RowCount = RowCount - 25000;
+   SELECT SLEEP(1);
+   END WHILE;
+ END;  
+//
+DELIMITER ;
