@@ -29,7 +29,7 @@ datetime as 'datetime  ', rpad(origin,13," ") as 'origin      ', temperature
 from ATVdetails
 
 where
-date(datime) = curdate() - interval XXA day and
+date(datetime) = curdate() - interval XXA day and
 temperature is not NULL and
 temperature <> ''
 

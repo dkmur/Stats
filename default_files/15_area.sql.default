@@ -1,3 +1,4 @@
+SET SESSION tx_isolation = 'READ-UNCOMMITTED';
 -- Settings
 
 select @Start := concat(date(now() - interval 15 minute),' ', SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 15 minute)) DIV 900) * 900));
