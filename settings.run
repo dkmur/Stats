@@ -8,6 +8,7 @@ cp $PATH_TO_STATS/default_files/tables.sql.default $PATH_TO_STATS/tables.sql
 cp $PATH_TO_STATS/default_files/triggers.sql.default $PATH_TO_STATS/triggers.sql
 cp $PATH_TO_STATS/default_files/procedures.sql.default $PATH_TO_STATS/procedures.sql
 cd $PATH_TO_STATS && sed -i "s/pogodb/$STATS_DB/g" *.sql
+cd $PATH_TO_STATS && sed -i "s/rmdb/$MAD_DB/g" *.sql
 
 echo "Create tables"
 echo ""
