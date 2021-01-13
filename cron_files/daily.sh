@@ -20,8 +20,10 @@ sleep 30s
 if [ -z "$SQL_password" ]
 then
 mysql -h$DB_IP -P$DB_PORT -u$SQL_user $STATS_DB -e "SET SESSION tx_isolation = 'READ-UNCOMMITTED'; CALL mon_history_temp_cleanup();"
+mysqloptimize -h$DB_IP -P$DB_PORT -u$SQL_user $STATS_DB pokemon_history_temp
 else
 mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB -e "SET SESSION tx_isolation = 'READ-UNCOMMITTED'; CALL mon_history_temp_cleanup();"
+mysqloptimize -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB pokemon_history_temp
 fi
 
 # cleanup pokemon_history
@@ -30,8 +32,10 @@ then
   if [ -z "$SQL_password" ]
   then
   mysql -h$DB_IP -P$DB_PORT -u$SQL_user $STATS_DB -e "delete from pokemon_history where first_scanned < curdate() - interval $days_to_keep day;"
+  mysqloptimize -h$DB_IP -P$DB_PORT -u$SQL_user $STATS_DB pokemon_history
   else
   mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB -e "delete from pokemon_history where first_scanned < curdate() - interval $days_to_keep day;"
+  mysqloptimize -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB pokemon_history
   fi
 fi
 
