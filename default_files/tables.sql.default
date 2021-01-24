@@ -188,7 +188,7 @@ CREATE TABLE IF NOT EXISTS `ATVdetails` (
   `RGC_auth_password` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `RGC_websocket_uri` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `RGC_boot_delay` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`date`,`origin`)
+  PRIMARY KEY (`datetime`,`origin`)
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 ALTER TABLE stats_area
