@@ -85,8 +85,8 @@ EOF
 fi
 
 # adjust databases
-sed -i "s/pogodb/$STATS_DB/g" $PATH_TO_STATS/cron_files/*.sql
-sed -i "s/rmdb/$MAD_DB/g" $PATH_TO_STATS/cron_files/*.sql
+sed -i "s/pogodb/$STATS_DB/g" $PATH_TO_STATS/cron_files/*_area.sql
+sed -i "s/rmdb/$MAD_DB/g" $PATH_TO_STATS/cron_files/*_area.sql
 
 # Append new devices to table Area
 if [[ "$FENCE" == "MAD" ]] && [[ "$MAD_DEVICE_INSERT" == "true" ]]
