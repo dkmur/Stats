@@ -85,6 +85,7 @@ EOF
 fi
 
 # adjust databases
+cp $PATH_TO_STATS/default_files/10080_area.sql.default $PATH_TO_STATS/cron_files/10080_area.sql
 sed -i "s/pogodb/$STATS_DB/g" $PATH_TO_STATS/cron_files/*_area.sql
 sed -i "s/rmdb/$MAD_DB/g" $PATH_TO_STATS/cron_files/*_area.sql
 
