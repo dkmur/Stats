@@ -83,6 +83,7 @@ CREATE TABLE IF NOT EXISTS `stats_worker` (
   `Reb` int(11) DEFAULT NULL,
   `ResTot` int(11) DEFAULT NULL,
   `RebTot` int(11) DEFAULT NULL,
+  `missingProtoMinute` smallint(6) DEFAULT 0,
   PRIMARY KEY (`id`),
   KEY `stats_worker_Datetime` (`Datetime`),
   KEY `stats_worker_Worker` (`Worker`),
@@ -210,7 +211,8 @@ MODIFY Last_scanned_7dp int(6);
 
 ALTER TABLE `stats_worker`
 CHANGE COLUMN `TRPL` `TRPL` smallint(6) DEFAULT 0,
-ADD COLUMN IF NOT EXISTS Area varchar(100) AFTER Worker;
+ADD COLUMN IF NOT EXISTS Area varchar(100) AFTER Worker,
+ADD COLUMN IF NOT EXISTS missingProtoMinute smallint(6) DEFAULT 0 AFTER RebTot;
 
 ALTER TABLE `pokemon_history_temp`
 DROP KEY IF EXISTS `pokemon_history_temp_first_scanned`;

@@ -3,6 +3,7 @@
 select @Datetime := concat(date(now() - interval 15 minute),' ', SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 15 minute)) DIV 900) * 900));
 select @Datetime_p1 := concat(date(now() - interval 15 minute),' ', (SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 15 minute)) DIV 900) * 900)));
 select @Datetime_p16 := concat(date(now() - interval 0 minute),' ', (SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 0 minute)) DIV 900) * 900)));
+select @Datetime_p26 := concat(date(now() + interval 15 minute),' ', (SEC_TO_TIME((TIME_TO_SEC(time(now() + interval 15  minute)) DIV 900) * 900)));
 select @Datetime_m15 := concat(date(now() - interval 30 minute),' ', (SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 30 minute)) DIV 900) * 900)));
 select @RPL := '15';
 
@@ -151,11 +152,12 @@ WHERE
 z.Datetime = @Datetime
 ;
 
--- Insert next interval
-
-INSERT INTO pogodb.stats_worker (Datetime,RPL, Worker, Area)
+-- Add Area data on next interval
+-- get data
+Create TEMPORARY TABLE rmdb.tmp50
+AS(
 select
-@Datetime_p16, @RPL, d.name, b.name
+d.name as 'worker', b.name as 'Area'
 from
 rmdb.trs_status a, rmdb.settings_geofence b,
 (
@@ -173,6 +175,18 @@ WHERE
 a.area_id = c.area_id AND
 c.geofence_included = b.geofence_id AND
 d.device_id = a.device_id
+);
+-- update next interval 
+UPDATE pogodb.stats_worker z
+LEFT JOIN rmdb.tmp50 a ON z.worker = a.worker COLLATE utf8mb4_unicode_ci
+SET z.Area=a.Area
+WHERE z.Datetime = @Datetime_p16
+;
+
+-- Insert 2nd next interval
+INSERT INTO pogodb.stats_worker (Datetime,RPL, Worker)
+select @Datetime_p26, @RPL, d.name
+from rmdb.settings_device d
 ;
 
 -- drop temp tables
@@ -185,3 +199,4 @@ drop table rmdb.tmp46;
 drop table rmdb.tmp47;
 drop table rmdb.tmp48;
 drop table rmdb.tmp49;
+drop table rmdb.tmp50;
