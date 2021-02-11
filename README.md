@@ -57,7 +57,7 @@ flush privileges;
 Within Stats it is possible to assign devices to areas (towns) in order to analyze statistics per area providing the possibility to i.e. compare areas or test functionality like PrioQ in a specific area and analyze it's statistics. <br>
 3 options are availabe: <br>
 1. In case you only have one area/town or are simply to lazy to assign devices to an area :P follow steps in 3.1, where area ``world`` will be created.<br>
-2. Use MAD (sub)fences. Area's will be created based on MAD fences or subfences, 3.2. In case each walker contains max 1 mon_mitm area, device to area assignmented is automated.<br>
+2. Recommended: Use MAD (sub)fences. Area's will be created based on MAD fences or subfences, 3.2. In case each walker contains max 1 mon_mitm area, device to area assignmented is automated.<br>
 3. The "old" way, create an area file where you set your area coordinates and assign devices to each area manually. See 3.3<br>
 
 
@@ -100,11 +100,11 @@ insert into ##STATS_DB##.Area (Area,Origin) values
 Note 1: make sure to add new devices to ``table Area`` when expanding setup. I never remove origins as I want to keep the data collected.<br>
 Note 2: in case you stop scanning an area, remove the area.ini file in /areas and execute ``settings.run``<br>
 
-### 4 Grafana (optional)
+### 4 Grafana (optional but recommended)
 - Install Grafana, more details can be found at https://grafana.com/docs/grafana/latest/installation/debian/#install-from-apt-repository or if you prefer to use docker <https://hub.docker.com/r/grafana/grafana>
 - Create datasource on STATS_DB and MAD_DB
 - Add datasource names to config.ini
-- After executing settings.run, import the dashboards from /Stats/grafana
+- After executing settings.run, import the dashboards from /Stats/grafana by selecting ``+`` and then import (Templates 20 and 21 connect to MAD_DB dashboard, the rest to STATS_DB.
 
 
 ### 5 Starting Stats menu
