@@ -170,6 +170,8 @@ Steps to be taken to update Stats depend on changes made, to make sure that you 
 
 **Res** number of pogo restarts  
 **Reb** number of device reboots  
+  
+**missingProtoMinute** every minute we check if lastProtoDateTime < now() - interval 1 minute and step the counter if true  
 
 Or at least this is my understanding of them :)
 
