@@ -14,7 +14,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "7.2.2"
+      "version": "7.4.0"
     },
     {
       "type": "panel",
@@ -46,7 +46,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1604258662801,
+  "iteration": 1613053202094,
   "links": [],
   "panels": [
     {
@@ -87,7 +87,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.2.2",
+      "pluginVersion": "7.4.0",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -207,7 +207,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.2.2",
+      "pluginVersion": "7.4.0",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -229,7 +229,7 @@
           ],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(Datetime,$__interval),\n  100*sum(TRPL)/sum(RPL) AS \"% Uptime\"\nFROM stats_worker\nWHERE\n  $__timeFilter(Datetime) and\n  RPL = '$RPL'\nGROUP BY 1\nORDER BY $__timeGroup(Datetime,$__interval)",
+          "rawSql": "SELECT\n  $__timeGroupAlias(Datetime,$__interval),\n  100*sum(TRPL)/sum(RPL) AS \"% raw data reports received\"\nFROM stats_worker\nWHERE\n  $__timeFilter(Datetime) and\n  RPL = '$RPL'\nGROUP BY 1\nORDER BY $__timeGroup(Datetime,$__interval)",
           "refId": "A",
           "select": [
             [
@@ -263,13 +263,42 @@
               "type": "macro"
             }
           ]
+        },
+        {
+          "format": "time_series",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  $__timeGroupAlias(Datetime,$__interval),\n  100*(sum(RPL)-sum(missingProtoMinute))/sum(RPL) AS \"% time proto received\"\nFROM stats_worker\nWHERE\n  $__timeFilter(Datetime) and\n  RPL = '$RPL'\nGROUP BY 1\nORDER BY $__timeGroup(Datetime,$__interval)",
+          "refId": "B",
+          "select": [
+            [
+              {
+                "params": [
+                  "encounter_id"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "pokemon_history",
+          "timeColumn": "disappear_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
         }
       ],
       "thresholds": [],
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Uptime (raw data received)",
+      "title": "Uptime",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -288,7 +317,7 @@
           "format": "short",
           "label": null,
           "logBase": 1,
-          "max": null,
+          "max": "100",
           "min": null,
           "show": true
         },
@@ -344,7 +373,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.2.2",
+      "pluginVersion": "7.4.0",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -481,7 +510,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.2.2",
+      "pluginVersion": "7.4.0",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -603,7 +632,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.2.2",
+      "pluginVersion": "7.4.0",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -720,7 +749,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.2.2",
+      "pluginVersion": "7.4.0",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -798,7 +827,7 @@
           "format": "short",
           "label": null,
           "logBase": 1,
-          "max": null,
+          "max": "100",
           "min": null,
           "show": true
         },
@@ -817,7 +846,7 @@
       }
     }
   ],
-  "schemaVersion": 26,
+  "schemaVersion": 27,
   "style": "dark",
   "tags": [],
   "templating": {
@@ -827,6 +856,8 @@
         "current": {},
         "datasource": "${DS_POGODB}",
         "definition": "select RPL from stats_area;",
+        "description": null,
+        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": null,
@@ -867,5 +898,5 @@
   "timezone": "",
   "title": "01. Stats KPIs",
   "uid": "jM5txJOMz",
-  "version": 21
+  "version": 22
 }
