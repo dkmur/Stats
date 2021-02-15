@@ -81,7 +81,7 @@ then
   sed -i "$ a \#\# Cleanup spawnpoints not seen or no entime learned for X days" $PATH_TO_STATS/crontab.txt
   sed -i "$ a 19 23 * * * cd pathToStatscron_files/ && mysql userpass < all_spawn_cleanup.sql" $PATH_TO_STATS/crontab.txt
 fi
-if "$SPAWN_CLEANUP_UNFENCED"
+if "$SPAWN_UNFENCED_CLEANUP"
 then
   echo "Enabling unfenced spawnpoint cleanup in cron"
   echo ""
