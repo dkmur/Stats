@@ -61,17 +61,21 @@ job_wait=2m						# wait time for jobs to finish i.e. 2m or 300s
 DataSource_stats=pogodb
 DataSource_MAD=rmdb
 
-## Spawnpoint cleanup/backup ##
-SPAWN_CLEANUP=false
-
-SPAWN_CLEAN_HR=6					# hour to be use in crontab for cleanup
-SPAWN_CLEAN_MIN=13					# minutes to be used in crontab for cleanup
-
-QUEST_START='02:00:00'					# if you don't want spawnpoints discovered during questing hour to be backed up and deleted set both start/end equal i.e. '06:00:00'
-QUEST_END='06:00:00'					# if you don't want spawnpoints discovered during questing hour to be backed up and deleted set both start/end equal i.e. '06:00:00'
-
-SPAWN_UNSEEN_DAYS=5					# number of days a spawnpoint is not scanned before inserting into table spawn_unused and deleting it from trs_spawn, 9999 to disable
-SPAWN_NO_ENDTIME_DAYS=5					# number of days a spawnpoint is discovered yet no endtime found => insert into table spawn_unused and deleting from trs_spawn, 9999 to disable
+## backup of spawnpoints is done to statsdb.spawn_unused, in case you wish to restore them ##
+## Make sure that all geofences have (sub)fence names store inside in between [] ##
+# daily backup/remove spawnpoints discovered during quest scan hours #
+QUEST_SPAWN_CLEANUP=false
+QUEST_SPAWN_CLEAN_HR=6					# hour to be use in crontab
+QUEST_SPAWN_CLEAN_MIN=13				# minutes to be used in crontab
+QUEST_START='02:00:00'					# quest scan start time
+QUEST_END='06:00:00'					# quest scan end time
+# daily backup/remove all spawnpoints unseen for X days or no endtime learned in X days with eventid=1 #
+SPAWN_ALL_CLEANUP=false
+SPAWN_UNSEEN_DAYS=2					# number of days a spawnpoint is not scanned before inserting into table spawn_unused and deleting it from trs_spawn, 9999 to disable
+SPAWN_NO_ENDTIME_DAYS=3					# number of days a spawnpoint is discovered yet no endtime found => insert into table spawn_unused and deleting from trs_spawn, 9999 to disable
+# daily backup/remove all spawnpoints outside monmitm fences seen less then X time today # 
+SPAWN_UNFENCED_CLEANUP=false				# spawnpoint backup to statsdb.spawn_unused and remove from maddb.trs_spawn seen less then SPAWN_UNFENCED_TIMES times today
+SPAWN_UNFENCED_TIMES=3					# minimum number of times a spawnpoint OUTSIDE all monmitm fences has to be seen to keep it in trs_spawn else is will be backed up and removed 
 
 ## Cleaup spawndef 15
 SPAWNDEF15_CLEANUP=false				# daily reset incorrect hourly spawndefs. An hourly spawn must have been seen in first and second 30min period, based on yesterdays hourly data (after QUEST_END)

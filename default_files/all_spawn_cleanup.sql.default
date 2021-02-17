@@ -1,22 +1,3 @@
--- daily cleanup added spawns during quest hours
--- add to backup db
-insert ignore into pogodb.spawn_unused (spawnpoint,latitude,longitude,spawndef,earliest_unseen,last_scanned,first_detection,last_non_scanned,calc_endminsec)
-select spawnpoint,latitude,longitude,spawndef,earliest_unseen,last_scanned,first_detection,last_non_scanned,calc_endminsec
-from rmdb.trs_spawn
-where
-date(first_detection) = curdate() and
-time(first_detection) >= 'QUEST_START' and
-time(first_detection) <= 'QUEST_END'
-;
--- remove from trs_spawn
-delete
-from rmdb.trs_spawn
-where
-date(first_detection) = curdate() and
-time(first_detection) >= 'QUEST_START' and
-time(first_detection) <= 'QUEST_END'
-;
-
 -- backup and delete spawns not seen for x days
 insert ignore into pogodb.spawn_unused (spawnpoint,latitude,longitude,spawndef,earliest_unseen,last_scanned,first_detection,last_non_scanned,calc_endminsec)
 select spawnpoint,latitude,longitude,spawndef,earliest_unseen,last_scanned,first_detection,last_non_scanned,calc_endminsec

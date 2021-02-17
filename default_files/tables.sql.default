@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS `Area` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `spawn_unused` (
-  `spawnpoint` varchar(16) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `spawnpoint` bigint(20) unsigned COLLATE utf8mb4_unicode_ci NOT NULL,
   `latitude` double NOT NULL,
   `longitude` double NOT NULL,
   `spawndef` int(11) NOT NULL DEFAULT 240,
@@ -191,6 +191,9 @@ CREATE TABLE IF NOT EXISTS `ATVdetails` (
   `RGC_boot_delay` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`datetime`,`origin`)
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+ALTER TABLE spawn_unused
+MODIFY spawnpoint bigint(20) unsigned;
 
 ALTER TABLE stats_area
 ADD COLUMN IF NOT EXISTS DBspawns_event int(6) DEFAULT NULL AFTER DBspawns,
