@@ -286,7 +286,7 @@ add column IF NOT EXISTS `RGC_autostart_services` varchar(40) COLLATE utf8mb4_un
 change column IF EXISTS `RGC_websocket_uri` RGC_websocket_uri varchar(60)
 ;
 
-ALTER DATABASE pogodb CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+ALTER DATABASE pogodb CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ALTER TABLE stats_worker CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ALTER TABLE stats_area CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ALTER TABLE Area CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
