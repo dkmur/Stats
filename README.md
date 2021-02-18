@@ -11,11 +11,13 @@ Available data:
 - restart / reboot data  
 - despawn time left  
 - spawnpoint statistics (added, known, last scanned etc)  
+- missing proto received minutes  
 
 Additionally, not related to Stats, but you can optionally set:
 - cleanup op spawnpoint definitions in case they are f..... up by CommDay or Spotlight
 - move spawns discovered during quest scan outside mon area to seperate table and remove from trs_spawn
 - cleanup of trs_spawn for spawnpoint not seen for X days or after X days endtimes are still unknown
+- Remove spawnpoints ouside mon_mitm fences seen less then X times today
 - remove pokestops that became a gym
 - remove pokestops that have no quest scanned for X days
 - weekly re-caculation of quest routes
@@ -44,7 +46,7 @@ Use it at you own risk, because bare in mind this was all done by an idiot!
 ### 2 Initial setup
 
 - Clone Stats and copy config file: <br>``git clone https://github.com/dkmur/Stats.git && cd Stats/ && cp default_files/config.ini.example config.ini``
-- Create stats database and grant privileges. i.e.:  
+- Create stats database and grant privileges to user (make sure not to use ``$`` in password and, no, not going to escape it). i.e.:  
 ```
 create database ##STATS_DB##;
 grant all privileges on ##STATS_DB##.* to ##MYSELF##@localhost;
@@ -67,7 +69,7 @@ Within Stats it is possible to assign devices to areas (towns) in order to analy
 - Edit crontab ``crontab -e`` and insert content of ``crontab.txt`` located in Stats home. <br>
 Note: when adding devices, remove ``world.ini`` in /areas and execute ``settings.run`` or add device origin to table ``Area`` manually
 
-#### 3.2 Use MAD fences
+#### 3.2 Use MAD fences (RECOMMENDED)
 - in ``config.ini`` set ``FENCE=MAD``
 - make sure your geofence names are not imported into db and have a name like ``configs/geofences/paris.txt`` as this will fuckup creation of stats cron files!! ``!blame banana``
 - Execute ``./settings.run``, this will create required stats tables, triggers, sql queries , procedures and crontab file <br>
@@ -107,7 +109,7 @@ Note 2: in case you stop scanning an area, remove the area.ini file in /areas an
 - After executing settings.run, import the dashboards from /Stats/grafana by selecting ``+`` and then import (Templates 20 and 21 connect to MAD_DB dashboard, the rest to STATS_DB.
 
 
-### 5 Starting Stats menu
+### 5 Starting Stats menu, in case you do not use grafana
 
 Optionally, add stats to /usr/local/bin in order to start from any location:  
 ``sudo nano /usr/local/bin/stats`` add ``cd /PATHtoStats/ && ./stats.sh`` and save file  
@@ -130,7 +132,7 @@ Steps to be taken to update Stats depend on changes made, to make sure that you 
 
 ### 7 Note
 
-- Not all information stored in tables stats_worker and stats_area is included in Stats menu options, adapt as you see fit. <br>
+- Not all information stored in tables stats_worker and stats_area is included in Stats menu options or Grafana, adapt as you see fit. <br>
 
 
 
