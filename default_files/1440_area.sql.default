@@ -1,4 +1,4 @@
-set collation_connection = 'utf8mb4_general_ci';
+set collation_connection = 'COLLATE utf8mb4_unicode_ci';
 SET SESSION tx_isolation = 'READ-UNCOMMITTED';
 -- Settings
 
@@ -45,10 +45,10 @@ Mons_nonIV = Mons_all-MonsIV,
 Iv100 = (select count(first_scanned) from rmdb.tmp50 where individual_attack = 15 and individual_defense = 15 and individual_stamina = 15),
 Iv0 = (select count(first_scanned) from rmdb.tmp50 where individual_attack = 0 and individual_defense = 0 and individual_stamina = 0)
 where
-pogodb.stats_area.Area = @Area COLLATE utf8mb4_unicode_ci and
-pogodb.stats_area.Fence = @Fence_name COLLATE utf8mb4_unicode_ci and
-pogodb.stats_area.RPL = @RPL COLLATE utf8mb4_unicode_ci and
-pogodb.stats_area.Datetime = @Start COLLATE utf8mb4_unicode_ci
+pogodb.stats_area.Area = @Area and
+pogodb.stats_area.Fence = @Fence_name and
+pogodb.stats_area.RPL = @RPL and
+pogodb.stats_area.Datetime = @Start
 ;
 
 -- table raid data
@@ -56,10 +56,10 @@ update pogodb.stats_area
 set
 Raid_Egg = (select count(*) from rmdb.raid a, rmdb.gym b where a.gym_id = b.gym_id and CONVERT_TZ(a.last_scanned, '+00:00', @@global.time_zone) >= @Start and CONVERT_TZ(a.last_scanned, '+00:00', @@global.time_zone) < @Stop  and b.latitude < @LatMax and b.latitude > @LatMin and b.longitude > @LonMin and b.longitude < @LonMax)
 where
-pogodb.stats_area.Area = @Area COLLATE utf8mb4_unicode_ci and
-pogodb.stats_area.Fence = @Fence_name COLLATE utf8mb4_unicode_ci and
-pogodb.stats_area.RPL = @RPL COLLATE utf8mb4_unicode_ci and
-pogodb.stats_area.Datetime = @Start COLLATE utf8mb4_unicode_ci
+pogodb.stats_area.Area = @Area and
+pogodb.stats_area.Fence = @Fence_name and
+pogodb.stats_area.RPL = @RPL and
+pogodb.stats_area.Datetime = @Start
 ;
 
 -- update spawnpoint data
@@ -74,10 +74,10 @@ Last_scanned_2d = (select count(*) from rmdb.tmp51 where date(last_non_scanned) 
 Last_scanned_3d = (select count(*) from rmdb.tmp51 where date(last_non_scanned) = date(@Start) - interval 3 day),
 Last_scanned_7dp = (select count(*) from rmdb.tmp51 where date(last_non_scanned) < date(@Start) - interval 7 day)
 where
-pogodb.stats_area.Area = @Area COLLATE utf8mb4_unicode_ci and
-pogodb.stats_area.Fence = @Fence_name COLLATE utf8mb4_unicode_ci and
-pogodb.stats_area.RPL = @RPL COLLATE utf8mb4_unicode_ci and
-pogodb.stats_area.Datetime = @Start COLLATE utf8mb4_unicode_ci
+pogodb.stats_area.Area = @Area and
+pogodb.stats_area.Fence = @Fence_name and
+pogodb.stats_area.RPL = @RPL and
+pogodb.stats_area.Datetime = @Start
 ;
 
 -- update spawndef + minutes remaining + avg despawn time FOR seen spawns/pokes
@@ -92,10 +92,10 @@ w10 = (select count(b.spawnpoint) from rmdb.tmp50 a, rmdb.tmp51 b where a.spawnp
 w15 = (select count(b.spawnpoint) from rmdb.tmp50 a, rmdb.tmp51 b where a.spawnpoint_id = b.spawnpoint and ((b.spawndef <> 15 and timestampdiff(second,first_scanned,disappear_time) >= 900) or(b.spawndef = 15 and timestampdiff(second,first_scanned,disappear_time) >= 2700))),
 w20 = (select count(b.spawnpoint) from rmdb.tmp50 a, rmdb.tmp51 b where a.spawnpoint_id = b.spawnpoint and ((b.spawndef <> 15 and timestampdiff(second,first_scanned,disappear_time) >= 600) or(b.spawndef = 15 and timestampdiff(second,first_scanned,disappear_time) >= 2400)))
 where
-pogodb.stats_area.Area = @Area COLLATE utf8mb4_unicode_ci and
-pogodb.stats_area.Fence = @Fence_name COLLATE utf8mb4_unicode_ci and
-pogodb.stats_area.RPL = @RPL COLLATE utf8mb4_unicode_ci and
-pogodb.stats_area.Datetime = @Start COLLATE utf8mb4_unicode_ci
+pogodb.stats_area.Area = @Area and
+pogodb.stats_area.Fence = @Fence_name and
+pogodb.stats_area.RPL = @RPL and
+pogodb.stats_area.Datetime = @Start
 ;
 
 -- drop tables

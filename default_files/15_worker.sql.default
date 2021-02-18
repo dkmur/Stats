@@ -1,3 +1,4 @@
+set collation_connection = 'utf8mb4_unicode_ci';
 -- Settings
 
 select @Datetime := concat(date(now() - interval 15 minute),' ', SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 15 minute)) DIV 900) * 900));
@@ -42,7 +43,7 @@ where
 transporttype <> 99 and from_unixtime(period) >= @Datetime_p1 and from_unixtime(period) < @Datetime_p16
 group by worker
 );
-alter table rmdb.tmp42 modify worker varchar(100) character set utf8mb4;
+-- alter table rmdb.tmp42 modify worker varchar(100) character set utf8mb4;
 
 Create TEMPORARY TABLE rmdb.tmp45
 AS(
@@ -57,7 +58,7 @@ where
 transporttype = 0 and from_unixtime(period) >= @Datetime_p1 and from_unixtime(period) < @Datetime_p16
 group by worker
 );
-alter table rmdb.tmp45 modify worker varchar(100) character set utf8mb4;
+-- alter table rmdb.tmp45 modify worker varchar(100) character set utf8mb4;
 
 Create TEMPORARY TABLE rmdb.tmp46
 AS(
@@ -72,7 +73,7 @@ where
 transporttype = 1 and from_unixtime(period) >= @Datetime_p1 and from_unixtime(period) < @Datetime_p16
 group by worker
 );
-alter table rmdb.tmp46 modify worker varchar(100) character set utf8mb4;
+-- alter table rmdb.tmp46 modify worker varchar(100) character set utf8mb4;
 
 Create TEMPORARY TABLE rmdb.tmp47
 AS(
@@ -84,7 +85,7 @@ where
 transporttype = 0 and success = 1 and from_unixtime(period) >= @Datetime_p1 and from_unixtime(period) < @Datetime_p16
 group by worker
 );
-alter table rmdb.tmp47 modify worker varchar(100) character set utf8mb4;
+-- alter table rmdb.tmp47 modify worker varchar(100) character set utf8mb4;
 
 Create TEMPORARY TABLE rmdb.tmp48
 AS(
@@ -96,7 +97,7 @@ where
 transporttype = 1 and success = 1 and from_unixtime(period) >= @Datetime_p1 and from_unixtime(period) < @Datetime_p16
 group by worker
 );
-alter table rmdb.tmp48 modify worker varchar(100) character set utf8mb4;
+-- alter table rmdb.tmp48 modify worker varchar(100) character set utf8mb4;
 
 -- table trs_status data
 
@@ -139,14 +140,14 @@ group by worker
 
 -- Fill data of current interval
 UPDATE pogodb.stats_worker z
-left join rmdb.tmp44 a on z.worker = a.worker COLLATE utf8mb4_unicode_ci
-left join rmdb.tmp41 b on z.worker = b.worker COLLATE utf8mb4_unicode_ci
-left join rmdb.tmp42 c on z.worker = c.worker COLLATE utf8mb4_unicode_ci
-left join rmdb.tmp45 d on z.worker = d.worker COLLATE utf8mb4_unicode_ci
-left join rmdb.tmp46 e on z.worker = e.worker COLLATE utf8mb4_unicode_ci
-left join rmdb.tmp47 f on z.worker = f.worker COLLATE utf8mb4_unicode_ci
-left join rmdb.tmp48 g on z.worker = g.worker COLLATE utf8mb4_unicode_ci
-left join rmdb.tmp49 h on z.worker = h.worker COLLATE utf8mb4_unicode_ci
+left join rmdb.tmp44 a on z.worker = a.worker
+left join rmdb.tmp41 b on z.worker = b.worker
+left join rmdb.tmp42 c on z.worker = c.worker
+left join rmdb.tmp45 d on z.worker = d.worker
+left join rmdb.tmp46 e on z.worker = e.worker
+left join rmdb.tmp47 f on z.worker = f.worker
+left join rmdb.tmp48 g on z.worker = g.worker
+left join rmdb.tmp49 h on z.worker = h.worker
 SET z.TRPL=b.TRPL, z.Tmon=b.Tmon, z.IVmon=b.IVmon, z.Mon=b.Mon, z.Quest=b.Quest, z.Raid=b.Raid, z.Tloc=c.Tloc, z.LocOk=c.LocOk, z.LocNok=c.LocNok, z.LocFR=c.LocFR, z.Tp=d.Tp, z.TpOk=d.TpOk, z.TpNok=d.TpNok, z.TpFR=d.TpFR, z.TpSt=f.TpSt, z.Wk=e.Wk, z.WkOk=e.WkOk, z.WkNok=e.WkNok, z.WkFR=e.WkFR, z.WkSt=g.WkSt, z.Shiny=h.Shiny, z.Res=a.Res, z.Reb=a.Reb, z.ResTot=a.ResTot, z.RebTot=a.RebTot
 WHERE
 z.Datetime = @Datetime
