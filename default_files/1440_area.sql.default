@@ -1,4 +1,4 @@
-set collation_connection = 'COLLATE utf8mb4_unicode_ci';
+set collation_connection = 'utf8mb4_unicode_ci';
 SET SESSION tx_isolation = 'READ-UNCOMMITTED';
 -- Settings
 
