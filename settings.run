@@ -278,6 +278,8 @@ sed -i "s/SPAWNDEF15_HOURS/$SPAWNDEF15_HOURS/g" $PATH_TO_STATS/cron_files/*.sql
 
 echo "Creating grafana files"
 echo ""
+DS_STATS="${DataSource_stats^^}"
+DS_MAD="${DataSource_MAD^^}"
 mkdir -p $PATH_TO_STATS/grafana
 cd $PATH_TO_STATS/grafana/ && rm -f *.json && rm -f *.default
 cp $PATH_TO_STATS/default_files/01_stats_kpi.json.default $PATH_TO_STATS/grafana/01_stats_kpi.json
@@ -291,6 +293,8 @@ cp $PATH_TO_STATS/default_files/20_mad_stuff.json.default $PATH_TO_STATS/grafana
 cp $PATH_TO_STATS/default_files/30_mon_stuff.json.default $PATH_TO_STATS/grafana/30_mon_stuff.json
 cd $PATH_TO_STATS/grafana/ && sed -i "s/pogodb/$DataSource_stats/g" *.json
 cd $PATH_TO_STATS/grafana/ && sed -i "s/rmdb/$DataSource_MAD/g" *.json
+cd $PATH_TO_STATS/grafana/ && sed -i "s/POGODB/$DS_STATS/g" *.json
+cd $PATH_TO_STATS/grafana/ && sed -i "s/RMDB/$DS_MAD/g" *.json
 
 ## Checks
 #Check MAD collation, else 15_worker will fail
