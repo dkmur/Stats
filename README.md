@@ -120,14 +120,18 @@ Run ``stats`` or ``./stats.sh``, but give it some time to fill the tables.<br>
 Hopefully that's it.....else......blame someone else :)  
 
 
-### 6 Updating stats
+### 6 Updating
 
-
+**Stats**
 Steps to be taken to update Stats depend on changes made, to make sure that you covered them all:<br>
 - git pull
 - check for changes in config.ini.default located in folder /default_files and adapt config.ini accordingly
 - execute ``./settings.run`` located in Stats root
-- replace crontab with content of crontab.txt located in Stats root 
+- replace crontab with content of crontab.txt located in Stats root  
+
+**Grafana**
+remove template(s) (Dashboards - Manage , select templates and delete)
+import template(s) (as described in last step for initial import in section 4)
 
 
 ### 7 Note
