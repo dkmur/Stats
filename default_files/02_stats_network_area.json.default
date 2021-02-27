@@ -46,7 +46,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1614433157503,
+  "iteration": 1614433157509,
   "links": [],
   "panels": [
     {
@@ -1586,6 +1586,10 @@
         {
           "alias": "average number of reports for multiRoutePositionReportLocations",
           "yaxis": 2
+        },
+        {
+          "alias": "average number of reports",
+          "yaxis": 2
         }
       ],
       "spaceLength": 10,
@@ -1762,5 +1766,5 @@
   "timezone": "",
   "title": "02. Stats network/area level",
   "uid": "KY-d_hOMz",
-  "version": 49
+  "version": 51
 }
