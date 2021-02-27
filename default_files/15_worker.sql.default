@@ -8,6 +8,22 @@ select @Datetime_p26 := concat(date(now() + interval 15 minute),' ', (SEC_TO_TIM
 select @Datetime_m15 := concat(date(now() - interval 30 minute),' ', (SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 30 minute)) DIV 900) * 900)));
 select @RPL := '15';
 
+-- table trs_stats_detect data
+
+Create TEMPORARY TABLE rmdb.tmp41
+AS(
+select
+count(timestamp_scan)*5 as TRPL,
+worker,
+sum(mon) as Tmon,
+sum(mon_iv) as IVmon ,
+sum(mon)-sum(mon_iv) as Mon,
+sum(quest) as Quest,
+sum(raid) as Raid
+from rmdb.trs_stats_detect
+where from_unixtime(timestamp_scan) >= @Datetime_p1 and from_unixtime(timestamp_scan) < @Datetime_p16
+group by worker
+);
 
 -- table trs_stats_location_raw data
 
