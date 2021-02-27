@@ -1,11 +1,13 @@
+SET SESSION innodb_strict_mode=OFF;
+
 CREATE TABLE IF NOT EXISTS `Area` (
   `Area` varchar(50) NOT NULL DEFAULT 'World',
   `Origin` varchar(50) NOT NULL,
   PRIMARY KEY (`Origin`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE IF NOT EXISTS `spawn_unused` (
-  `spawnpoint` bigint(20) unsigned COLLATE utf8mb4_unicode_ci NOT NULL,
+CREATE TABLE `spawn_unused` (
+  `spawnpoint` bigint(20) unsigned DEFAULT NULL,
   `latitude` double NOT NULL,
   `longitude` double NOT NULL,
   `spawndef` int(11) NOT NULL DEFAULT 240,
@@ -14,17 +16,18 @@ CREATE TABLE IF NOT EXISTS `spawn_unused` (
   `first_detection` datetime NOT NULL DEFAULT current_timestamp(),
   `last_non_scanned` datetime DEFAULT NULL,
   `calc_endminsec` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `eventid` int(11) NOT NULL DEFAULT 1,
   UNIQUE KEY `spawnpoint_2` (`spawnpoint`),
   KEY `spawnpoint` (`spawnpoint`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE IF NOT EXISTS `stats_area` (
+CREATE TABLE `stats_area` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `Datetime` datetime NOT NULL,
   `RPL` smallint(6) NOT NULL,
   `TRPL` smallint(6) NOT NULL,
-  `Area` varchar(40) NOT NULL,
-  `Fence` varchar(40) NOT NULL DEFAULT (Area),
+  `Area` varchar(40) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `Fence` varchar(40) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT `Area`,
   `Spawnpoints` smallint(6) DEFAULT NULL,
   `Mons_all` int(10) DEFAULT NULL,
   `Mons_nonIV` int(10) DEFAULT NULL,
@@ -33,6 +36,10 @@ CREATE TABLE IF NOT EXISTS `stats_area` (
   `Iv0` int(6) DEFAULT NULL,
   `MinutesLeft` int(10) DEFAULT NULL,
   `AvgMinutesLeft` int(6) DEFAULT NULL,
+  `w5` int(6) NOT NULL DEFAULT 0,
+  `w10` int(6) NOT NULL DEFAULT 0,
+  `w15` int(6) NOT NULL DEFAULT 0,
+  `w20` int(6) NOT NULL DEFAULT 0,
   `Spawndef15` int(6) DEFAULT NULL,
   `SpawndefNot15` int(6) DEFAULT NULL,
   `Raid_Egg` int(6) DEFAULT NULL,
@@ -50,9 +57,9 @@ CREATE TABLE IF NOT EXISTS `stats_area` (
   KEY `stats_area_RPL` (`RPL`),
   KEY `stats_area_Area` (`Area`),
   KEY `stats_area_Fence` (`Fence`)
-) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1256508 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE IF NOT EXISTS `stats_worker` (
+stats_worker | CREATE TABLE `stats_worker` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `Datetime` datetime NOT NULL,
   `RPL` smallint(6) NOT NULL,
@@ -88,9 +95,9 @@ CREATE TABLE IF NOT EXISTS `stats_worker` (
   KEY `stats_worker_Datetime` (`Datetime`),
   KEY `stats_worker_Worker` (`Worker`),
   KEY `stats_worker_RPL` (`RPL`)
-) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7487972 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE IF NOT EXISTS `pokemon_history` (
+CREATE TABLE `pokemon_history` (
   `encounter_id` bigint(20) unsigned NOT NULL,
   `spawnpoint_id` bigint(20) unsigned NOT NULL,
   `pokemon_id` smallint(6) NOT NULL,
@@ -112,12 +119,12 @@ CREATE TABLE IF NOT EXISTS `pokemon_history` (
   `catch_prob_1` double DEFAULT NULL,
   `catch_prob_2` double DEFAULT NULL,
   `catch_prob_3` double DEFAULT NULL,
-  `rating_attack` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `rating_defense` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `rating_attack` varchar(2) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `rating_defense` varchar(2) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `weather_boosted_condition` smallint(6) DEFAULT NULL,
   `last_modified` datetime DEFAULT NULL,
   `is_shiny` tinyint(1) DEFAULT NULL,
-  `first_scanned` datetime NOT NULL DEFAULT now(),
+  `first_scanned` datetime DEFAULT utc_timestamp(),
   PRIMARY KEY (`encounter_id`),
   KEY `pokemon_history_frist_scanned` (`first_scanned`),
   KEY `pokemon_history_spawnpoint_id` (`spawnpoint_id`),
@@ -126,7 +133,7 @@ CREATE TABLE IF NOT EXISTS `pokemon_history` (
   KEY `pokemon_history_last_modified` (`last_modified`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE IF NOT EXISTS `pokemon_history_temp` (
+CREATE TABLE `pokemon_history_temp` (
   `encounter_id` bigint(20) unsigned NOT NULL,
   `spawnpoint_id` bigint(20) unsigned NOT NULL,
   `pokemon_id` smallint(6) NOT NULL,
@@ -148,12 +155,12 @@ CREATE TABLE IF NOT EXISTS `pokemon_history_temp` (
   `catch_prob_1` double DEFAULT NULL,
   `catch_prob_2` double DEFAULT NULL,
   `catch_prob_3` double DEFAULT NULL,
-  `rating_attack` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `rating_defense` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `rating_attack` varchar(2) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `rating_defense` varchar(2) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `weather_boosted_condition` smallint(6) DEFAULT NULL,
   `last_modified` datetime DEFAULT NULL,
   `is_shiny` tinyint(1) DEFAULT NULL,
-  `first_scanned` datetime NOT NULL DEFAULT now(),
+  `first_scanned` datetime NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`encounter_id`),
   KEY `pokemon_history_temp_spawnpoint_id` (`spawnpoint_id`),
   KEY `pokemon_history_temp_latitude` (`latitude`),
@@ -161,9 +168,10 @@ CREATE TABLE IF NOT EXISTS `pokemon_history_temp` (
   KEY `pokemon_history_temp_last_modified` (`last_modified`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE IF NOT EXISTS `ATVdetails` (
-  `datetime` datetime COLLATE utf8mb4_unicode_ci NOT NULL,
+CREATE TABLE `ATVdetails` (
+  `datetime` datetime NOT NULL,
   `origin` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `arch` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `rom` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `rgc` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `pogodroid` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -174,121 +182,64 @@ CREATE TABLE IF NOT EXISTS `ATVdetails` (
   `pingreboot` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `temperature` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `magisk` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `magisk_modules` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `magisk_modules` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `ip` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `gmail` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `gmail` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `PD_auth_username` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `PD_auth_password` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `PD_user_id` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `PD_user_login` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `PD_auth_id` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `PD_auth_token` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `PD_post_destination` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `PD_boot_delay` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `PD_injection_delay` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `PD_switch_disable_last_sent` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `PD_intentional_stop` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `PD_switch_send_protos` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `PD_last_time_injected` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `PD_switch_disable_external_communication` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `PD_last_pid_injected` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `PD_switch_enable_oomadj` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `PD_switch_enable_auth_header` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `PD_switch_send_raw_protos` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `PD_switch_popup_last_sent` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `PD_full_daemon` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `PD_switch_enable_mock_location_patch` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `PD_last_system_patch_timestamp` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `PD_last_sys_inj` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `PD_default_mappging_mode` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `PD_switch_setenforce` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `PD_post_destination_raw` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `PD_session_id` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `PD_libfilename` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `PD_latest_version_known` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `PD_disable_pogo_freeze_detection` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `RGC_auth_username` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `RGC_auth_password` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `RGC_websocket_uri` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `RGC_websocket_uri` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `RGC_boot_delay` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `RGC_mediaprojection_previously_started` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `RGC_suspended_mocking` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `RGC_reset_agps_once` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `RGC_overwrite_fused` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `RGC_switch_enable_auth_header` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `RGC_reset_agps_continuously` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `RGC_reset_google_play_services` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `RGC_last_location_longitude` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `RGC_last_location_altitude` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `RGC_last_location_latitude` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `RGC_boot_startup` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `RGC_use_mock_location` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `RGC_oom_adj_override` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `RGC_location_reporter_service_running` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `RGC_stop_location_provider_service` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `RGC_autostart_services` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`datetime`,`origin`)
-  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-ALTER TABLE spawn_unused
-MODIFY spawnpoint bigint(20) unsigned;
-
-ALTER TABLE stats_area
-ADD COLUMN IF NOT EXISTS DBspawns_event int(6) DEFAULT NULL AFTER DBspawns,
-ADD COLUMN IF NOT EXISTS w5 int(6) NOT NULL DEFAULT 0 AFTER AvgMinutesLeft,
-ADD COLUMN IF NOT EXISTS w10 int(6) NOT NULL DEFAULT 0 AFTER w5,
-ADD COLUMN IF NOT EXISTS w15 int(6) NOT NULL DEFAULT 0 AFTER w10,
-ADD COLUMN IF NOT EXISTS w20 int(6) NOT NULL DEFAULT 0 AFTER w15,
-ADD COLUMN IF NOT EXISTS Fence varchar(40) NOT NULL DEFAULT (Area) AFTER Area,
-ADD KEY IF NOT EXISTS stats_area_Fence (Fence),
-MODIFY DBspawns int(6),
-MODIFY Spawn_add int(6),
-MODIFY Spawn_NULL int(6),
-MODIFY Last_scanned_today_acc int(6),
-MODIFY Last_scanned_1d int(6),
-MODIFY Last_scanned_2d int(6),
-MODIFY Last_scanned_3d int(6),
-MODIFY Last_scanned_7dp int(6);
+ALTER TABLE `spawn_unused`
+ADD COLUMN IF NOT EXISTS `eventid` int(11) NOT NULL DEFAULT 1 AFTER `calc_endminsec`;
 
 ALTER TABLE `stats_worker`
-CHANGE COLUMN `TRPL` `TRPL` smallint(6) DEFAULT 0,
-ADD COLUMN IF NOT EXISTS Area varchar(100) AFTER Worker,
-ADD COLUMN IF NOT EXISTS missingProtoMinute smallint(6) DEFAULT 0 AFTER RebTot;
-
-ALTER TABLE `pokemon_history_temp`
-DROP KEY IF EXISTS `pokemon_history_temp_first_scanned`;
-
-ALTER TABLE `Area`
-CHANGE COLUMN IF EXISTS `id` `id` bigint(20) NOT NULL,
-DROP PRIMARY KEY, 
-ADD PRIMARY KEY (Origin),
-CHANGE COLUMN `Area` `Area` varchar(50) DEFAULT 'World';
-
-ALTER TABLE `Area`
-DROP COLUMN IF EXISTS `id`;
-
-
-SET SESSION innodb_strict_mode=OFF;
-alter table ATVdetails
-CHANGE COLUMN IF EXISTS `date` `datetime` datetime NOT NULL,
-add column IF NOT EXISTS `arch` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after origin,
-add column IF NOT EXISTS `pd_update` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after pogo_update,
-add column IF NOT EXISTS `rgc_update` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after pd_update,
-add column IF NOT EXISTS `pingreboot` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after rgc_update,
-add column IF NOT EXISTS `temperature` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after pingreboot,
-change column IF EXISTS `origin` origin varchar(50),
-change column IF EXISTS `eth0` ip varchar(40),
-change column IF EXISTS `magisk_modules` magisk_modules varchar(200),
-add column IF NOT EXISTS `gmail` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL after ip,
-change column IF EXISTS `gmail` gmail varchar(60),
-add column IF NOT EXISTS `PD_user_login` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after PD_auth_password,
-add column IF NOT EXISTS `PD_switch_disable_last_sent` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after PD_injection_delay,
-add column IF NOT EXISTS `PD_intentional_stop` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after PD_switch_disable_last_sent,
-add column IF NOT EXISTS `PD_switch_send_protos` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after PD_intentional_stop,
-add column IF NOT EXISTS `PD_last_time_injected` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after PD_switch_send_protos,
-add column IF NOT EXISTS `PD_switch_disable_external_communication` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after PD_last_time_injected,
-add column IF NOT EXISTS `PD_last_pid_injected` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after PD_switch_disable_external_communication,
-add column IF NOT EXISTS `PD_switch_enable_oomadj` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after PD_last_pid_injected,
-add column IF NOT EXISTS `PD_switch_enable_auth_header` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after PD_switch_enable_oomadj,
-add column IF NOT EXISTS `PD_switch_send_raw_protos` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after PD_switch_enable_auth_header,
-add column IF NOT EXISTS `PD_switch_popup_last_sent` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after PD_switch_send_raw_protos,
-add column IF NOT EXISTS `PD_full_daemon` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after PD_switch_popup_last_sent,
-add column IF NOT EXISTS `PD_switch_enable_mock_location_patch` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after PD_full_daemon,
-add column IF NOT EXISTS `PD_last_system_patch_timestamp` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after PD_switch_enable_mock_location_patch,
-add column IF NOT EXISTS `PD_last_sys_inj` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after PD_last_system_patch_timestamp,
-add column IF NOT EXISTS `PD_default_mappging_mode` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after PD_last_sys_inj,
-add column IF NOT EXISTS `PD_switch_setenforce` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after PD_default_mappging_mode,
-add column IF NOT EXISTS `PD_post_destination_raw` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL after PD_switch_setenforce,
-change column IF EXISTS `PD_post_destination_raw` PD_post_destination_raw varchar(100),
-add column IF NOT EXISTS `PD_session_id` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL after PD_post_destination_raw,
-change column IF EXISTS `PD_session_id` PD_session_id varchar(60),
-add column IF NOT EXISTS `PD_libfilename` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after PD_session_id,
-add column IF NOT EXISTS `PD_latest_version_known` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after PD_libfilename,
-add column IF NOT EXISTS `PD_disable_pogo_freeze_detection` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after PD_latest_version_known,
-add column IF NOT EXISTS `RGC_mediaprojection_previously_started` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after RGC_boot_delay,
-add column IF NOT EXISTS `RGC_suspended_mocking` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after RGC_mediaprojection_previously_started,
-add column IF NOT EXISTS `RGC_reset_agps_once` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after RGC_suspended_mocking,
-add column IF NOT EXISTS `RGC_overwrite_fused` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after RGC_reset_agps_once,
-add column IF NOT EXISTS `RGC_switch_enable_auth_header` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after RGC_overwrite_fused,
-add column IF NOT EXISTS `RGC_reset_agps_continuously` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after RGC_switch_enable_auth_header,
-add column IF NOT EXISTS `RGC_reset_google_play_services` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after RGC_reset_agps_continuously,
-add column IF NOT EXISTS `RGC_last_location_longitude` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after RGC_reset_google_play_services,
-add column IF NOT EXISTS `RGC_last_location_altitude` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after RGC_last_location_longitude,
-add column IF NOT EXISTS `RGC_last_location_latitude` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after RGC_last_location_altitude,
-add column IF NOT EXISTS `RGC_boot_startup` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after RGC_last_location_latitude,
-add column IF NOT EXISTS `RGC_use_mock_location` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after RGC_boot_startup,
-add column IF NOT EXISTS `RGC_oom_adj_override` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after RGC_use_mock_location,
-add column IF NOT EXISTS `RGC_location_reporter_service_running` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after RGC_oom_adj_override,
-add column IF NOT EXISTS `RGC_stop_location_provider_service` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after RGC_location_reporter_service_running,
-add column IF NOT EXISTS `RGC_autostart_services` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL after RGC_stop_location_provider_service,
-change column IF EXISTS `RGC_websocket_uri` RGC_websocket_uri varchar(60)
-;
-
-ALTER DATABASE pogodb CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-ALTER TABLE stats_worker CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-ALTER TABLE stats_area CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-ALTER TABLE Area CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-ALTER TABLE pokemon_history CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-ALTER TABLE pokemon_history_temp CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+ADD COLUMN IF NOT EXISTS `locReports` int(11) DEFAULT NULL AFTER `WkSt`,
+ADD COLUMN IF NOT EXISTS `locationsMultiReport` int(11) DEFAULT NULL AFTER `locReports`;

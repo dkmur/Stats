@@ -9,41 +9,37 @@ select @Datetime_m15 := concat(date(now() - interval 30 minute),' ', (SEC_TO_TIM
 select @RPL := '15';
 
 
--- table trs_stats_detect data
-
-Create TEMPORARY TABLE rmdb.tmp41
-AS(
-select
-count(timestamp_scan)*5 as TRPL,
-worker,
-sum(mon) as Tmon,
-sum(mon_iv) as IVmon ,
-sum(mon)-sum(mon_iv) as Mon,
-sum(quest) as Quest,
-sum(raid) as Raid
-from rmdb.trs_stats_detect
-where from_unixtime(timestamp_scan) >= @Datetime_p1 and from_unixtime(timestamp_scan) < @Datetime_p16
-group by worker
-);
-
-
 -- table trs_stats_location_raw data
 
+Create TEMPORARY TABLE rmdb.locrawprep
+AS(
+select
+worker,
+success,
+transporttype,
+fix_ts,
+count(fix_ts) as 'numRep',
+max(data_ts) as 'max_data_ts'
+
+from rmdb.trs_stats_location_raw
+where from_unixtime(period) >= @Datetime_p1 and from_unixtime(period) < @Datetime_p16
+
+group by worker,fix_ts
+);
 
 Create TEMPORARY TABLE rmdb.tmp42
 AS(
 select
 worker,
-count(period) as `Tloc`,
+count(fix_ts) as `Tloc`,
 sum(success) as `LocOk`,
-count(period)-sum(success) as `LocNok`,
-(count(period)-sum(success))/(count(period)+1)*100 as `LocFR`
-from rmdb.trs_stats_location_raw
-where
-transporttype <> 99 and from_unixtime(period) >= @Datetime_p1 and from_unixtime(period) < @Datetime_p16
+count(fix_ts)-sum(success) as `LocNok`,
+(count(fix_ts)-sum(success))/(count(fix_ts)+1)*100 as `LocFR`,
+sum(numRep) as `locReports`
+from rmdb.locrawprep
+where transporttype <> 99
 group by worker
 );
--- alter table rmdb.tmp42 modify worker varchar(100) character set utf8mb4;
 
 Create TEMPORARY TABLE rmdb.tmp45
 AS(
@@ -53,12 +49,10 @@ count(transporttype) as Tp,
 sum(success) as TpOk,
 count(transporttype)-sum(success) as TpNok,
 (count(transporttype)-sum(success))/(count(transporttype)+0.000001)*100 as TpFR
-from rmdb.trs_stats_location_raw
-where 
-transporttype = 0 and from_unixtime(period) >= @Datetime_p1 and from_unixtime(period) < @Datetime_p16
+from rmdb.locrawprep
+where transporttype = 0
 group by worker
 );
--- alter table rmdb.tmp45 modify worker varchar(100) character set utf8mb4;
 
 Create TEMPORARY TABLE rmdb.tmp46
 AS(
@@ -68,36 +62,40 @@ count(transporttype) as Wk,
 sum(success) as WkOk,
 count(transporttype)-sum(success) as WkNok,
 (count(transporttype)-sum(success))/(count(transporttype)+0.00001)*100 as WkFR
-from rmdb.trs_stats_location_raw
-where
-transporttype = 1 and from_unixtime(period) >= @Datetime_p1 and from_unixtime(period) < @Datetime_p16
+from rmdb.locrawprep
+where transporttype = 1
 group by worker
 );
--- alter table rmdb.tmp46 modify worker varchar(100) character set utf8mb4;
 
 Create TEMPORARY TABLE rmdb.tmp47
 AS(
 select
 worker,
-sum(timestampdiff(second,from_unixtime(fix_ts),from_unixtime(data_ts))) as TpSt
-from rmdb.trs_stats_location_raw
-where 
-transporttype = 0 and success = 1 and from_unixtime(period) >= @Datetime_p1 and from_unixtime(period) < @Datetime_p16
+sum(timestampdiff(second,from_unixtime(fix_ts),from_unixtime(max_data_ts))) as TpSt
+from rmdb.locrawprep
+where transporttype = 0 and success = 1 
 group by worker
 );
--- alter table rmdb.tmp47 modify worker varchar(100) character set utf8mb4;
 
 Create TEMPORARY TABLE rmdb.tmp48
 AS(
 select
 worker,
-sum(timestampdiff(second,from_unixtime(fix_ts),from_unixtime(data_ts))) as WkSt
-from rmdb.trs_stats_location_raw
-where 
-transporttype = 1 and success = 1 and from_unixtime(period) >= @Datetime_p1 and from_unixtime(period) < @Datetime_p16
+sum(timestampdiff(second,from_unixtime(fix_ts),from_unixtime(max_data_ts))) as WkSt
+from rmdb.locrawprep
+where transporttype = 1 and success = 1
 group by worker
 );
--- alter table rmdb.tmp48 modify worker varchar(100) character set utf8mb4;
+
+Create TEMPORARY TABLE rmdb.tmp51
+AS(
+select
+worker,
+count(numRep) as `locationsMultiReport`
+from rmdb.locrawprep
+where transporttype <> 99 and numRep > 1
+group by worker
+);
 
 -- table trs_status data
 
@@ -138,7 +136,7 @@ from_unixtime(timestamp_scan) >= @Datetime_p1 and from_unixtime(timestamp_scan) 
 group by worker
 );
 
--- Fill data of current interval
+-- Fill data for current interval
 UPDATE pogodb.stats_worker z
 left join rmdb.tmp44 a on z.worker = a.worker
 left join rmdb.tmp41 b on z.worker = b.worker
@@ -148,7 +146,8 @@ left join rmdb.tmp46 e on z.worker = e.worker
 left join rmdb.tmp47 f on z.worker = f.worker
 left join rmdb.tmp48 g on z.worker = g.worker
 left join rmdb.tmp49 h on z.worker = h.worker
-SET z.TRPL=b.TRPL, z.Tmon=b.Tmon, z.IVmon=b.IVmon, z.Mon=b.Mon, z.Quest=b.Quest, z.Raid=b.Raid, z.Tloc=c.Tloc, z.LocOk=c.LocOk, z.LocNok=c.LocNok, z.LocFR=c.LocFR, z.Tp=d.Tp, z.TpOk=d.TpOk, z.TpNok=d.TpNok, z.TpFR=d.TpFR, z.TpSt=f.TpSt, z.Wk=e.Wk, z.WkOk=e.WkOk, z.WkNok=e.WkNok, z.WkFR=e.WkFR, z.WkSt=g.WkSt, z.Shiny=h.Shiny, z.Res=a.Res, z.Reb=a.Reb, z.ResTot=a.ResTot, z.RebTot=a.RebTot
+left join rmdb.tmp51 i on z.worker = i.worker
+SET z.TRPL=b.TRPL, z.Tmon=b.Tmon, z.IVmon=b.IVmon, z.Mon=b.Mon, z.Quest=b.Quest, z.Raid=b.Raid, z.Tloc=c.Tloc, z.LocOk=c.LocOk, z.LocNok=c.LocNok, z.LocFR=c.LocFR, z.Tp=d.Tp, z.TpOk=d.TpOk, z.TpNok=d.TpNok, z.TpFR=d.TpFR, z.TpSt=f.TpSt, z.Wk=e.Wk, z.WkOk=e.WkOk, z.WkNok=e.WkNok, z.WkFR=e.WkFR, z.WkSt=g.WkSt, z.locReports=c.locReports, z.locationsMultiReport=i.locationsMultiReport, z.Shiny=h.Shiny, z.Res=a.Res, z.Reb=a.Reb, z.ResTot=a.ResTot, z.RebTot=a.RebTot
 WHERE
 z.Datetime = @Datetime
 ;
@@ -201,3 +200,5 @@ drop table rmdb.tmp47;
 drop table rmdb.tmp48;
 drop table rmdb.tmp49;
 drop table rmdb.tmp50;
+drop table rmdb.tmp51;
+DROP TABLE rmdb.locrawprep;
