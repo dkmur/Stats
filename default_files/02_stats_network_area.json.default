@@ -46,7 +46,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1613210578156,
+  "iteration": 1614433157503,
   "links": [],
   "panels": [
     {
@@ -1271,7 +1271,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Location handling (1)",
+      "title": "# Locations handled",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -1388,7 +1388,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Location handling (2)",
+      "title": "Location handling success rate",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -1503,7 +1503,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Location handling (3)",
+      "title": "Location handling time",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -1523,6 +1523,126 @@
           "label": "Seconds",
           "logBase": 1,
           "max": "30",
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_POGODB}",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 41
+      },
+      "hiddenSeries": false,
+      "id": 26,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.4.0",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "alias": "average number of reports for multiRoutePositionReportLocations",
+          "yaxis": 2
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  $__timeGroupAlias(a.Datetime,$__interval),\n  sum(locationsMultiReport) AS \"#locations\",\n  (sum(locReports)-sum(Tloc)+sum(locationsMultiReport))/sum(locationsMultiReport) AS \"average number of reports\"\nFROM stats_worker a, Area b\nWHERE\n  a.RPL = '$RPL' and\n  a.Worker = b.Origin and\n  substring_index(b.Area,'_',1) in ($Area)\nGROUP BY 1\nORDER BY $__timeGroup(a.Datetime,$__interval)\n",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Locations with multiple reports (encounter_all)",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
           "min": null,
           "show": true
         },
@@ -1642,5 +1762,5 @@
   "timezone": "",
   "title": "02. Stats network/area level",
   "uid": "KY-d_hOMz",
-  "version": 46
+  "version": 49
 }
