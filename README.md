@@ -14,7 +14,7 @@ Available data:
 - missing proto received minutes  
 
 Additionally, not related to Stats, but you can optionally set:
-- cleanup op spawnpoint definitions in case they are f..... up by CommDay or Spotlight
+- cleanup op spawnpoint definitions in case they are f..... up by CommDay or Spotlight (does not work anymore if you use redis server for MAD)
 - move spawns discovered during quest scan outside mon area to seperate table and remove from trs_spawn
 - cleanup of trs_spawn for spawnpoint not seen for X days or after X days endtimes are still unknown
 - Remove spawnpoints ouside mon_mitm fences seen less then X times today
