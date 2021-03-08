@@ -77,7 +77,8 @@ SPAWN_NO_ENDTIME_DAYS=3					# number of days a spawnpoint is discovered yet no e
 SPAWN_UNFENCED_CLEANUP=false				# spawnpoint backup to statsdb.spawn_unused and remove from maddb.trs_spawn seen less then SPAWN_UNFENCED_TIMES times today
 SPAWN_UNFENCED_TIMES=3					# minimum number of times a spawnpoint OUTSIDE all monmitm fences has to be seen to keep it in trs_spawn else is will be backed up and removed 
 
-## Cleaup spawndef 15 (does not work anymore when using redis server for MAD as it will just reset all spawndef15 daily)
+## Cleaup spawndef 15
+USING_REDIS_CAHCHE=false                                # using redis server for MAD
 SPAWNDEF15_CLEANUP=false				# daily reset incorrect hourly spawndefs. An hourly spawn must have been seen in first and second 30min period, based on yesterdays hourly data (after QUEST_END)
 SPAWNDEF15_HOURS=15					# number of hours spawnpoint has not been seen in first and second 30min period before resetting spawnpoint
 
