@@ -154,15 +154,15 @@ group by worker
 
 -- Fill data for current interval
 UPDATE pogodb.stats_worker z
-left join rmdb.tmp44 a on z.worker = a.worker
-left join rmdb.tmp41 b on z.worker = b.worker
-left join rmdb.tmp42 c on z.worker = c.worker
-left join rmdb.tmp45 d on z.worker = d.worker
-left join rmdb.tmp46 e on z.worker = e.worker
-left join rmdb.tmp47 f on z.worker = f.worker
-left join rmdb.tmp48 g on z.worker = g.worker
-left join rmdb.tmp49 h on z.worker = h.worker
-left join rmdb.tmp51 i on z.worker = i.worker
+left join rmdb.tmp44 a on z.worker = a.worker COLLATE utf8mb4_unicode_ci
+left join rmdb.tmp41 b on z.worker = b.worker COLLATE utf8mb4_unicode_ci
+left join rmdb.tmp42 c on z.worker = c.worker COLLATE utf8mb4_unicode_ci
+left join rmdb.tmp45 d on z.worker = d.worker COLLATE utf8mb4_unicode_ci
+left join rmdb.tmp46 e on z.worker = e.worker COLLATE utf8mb4_unicode_ci
+left join rmdb.tmp47 f on z.worker = f.worker COLLATE utf8mb4_unicode_ci
+left join rmdb.tmp48 g on z.worker = g.worker COLLATE utf8mb4_unicode_ci
+left join rmdb.tmp49 h on z.worker = h.worker COLLATE utf8mb4_unicode_ci
+left join rmdb.tmp51 i on z.worker = i.worker COLLATE utf8mb4_unicode_ci
 SET z.TRPL=b.TRPL, z.Tmon=b.Tmon, z.IVmon=b.IVmon, z.Mon=b.Mon, z.Quest=b.Quest, z.Raid=b.Raid, z.Tloc=c.Tloc, z.LocOk=c.LocOk, z.LocNok=c.LocNok, z.LocFR=c.LocFR, z.Tp=d.Tp, z.TpOk=d.TpOk, z.TpNok=d.TpNok, z.TpFR=d.TpFR, z.TpSt=f.TpSt, z.Wk=e.Wk, z.WkOk=e.WkOk, z.WkNok=e.WkNok, z.WkFR=e.WkFR, z.WkSt=g.WkSt, z.locReports=c.locReports, z.locationsMultiReport=i.locationsMultiReport, z.Shiny=h.Shiny, z.Res=a.Res, z.Reb=a.Reb, z.ResTot=a.ResTot, z.RebTot=a.RebTot
 WHERE
 z.Datetime = @Datetime
