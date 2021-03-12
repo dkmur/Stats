@@ -27,6 +27,7 @@ column_check=$(mysql $MAD_DB -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password -se
 if [[ -z $table_check || -z $column_check ]];
   then
   echo 'MAD collation check passed'
+  echo ""
   else
   echo "ERROR: (some) MAD table/column collation set incorrect !!!"
   echo "Check https://github.com/Map-A-Droid/MAD/tree/master/scripts/SQL and adapt accordingly"
