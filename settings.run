@@ -16,19 +16,23 @@ if ((${DBversion/./} > 101)) ;
   echo "MariaDB version check passed"
   echo ""
  else
-  echo "Mariadb version should be 10.2 or higher, please upgrade !!!"
+  echo "Mariadb version should be 10.2 or higher !!!"
   echo ""
   exit
 fi
 
 #Check MAD collation, else 15_worker will fail
-table_check=$(mysql $MAD_DB -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password -se "SELECT TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME, TABLE_COLLATION FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '$MAD_DB' and ((TAB$column_check=$(mysql $MAD_DB -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password -se "SELECT TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME, COLUMN_NAME, COLLATION_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '$MAD$if [[ -z $table_check || -z $column_check ]];
+table_check=$(mysql $MAD_DB -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password -se "SELECT TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME, TABLE_COLLATION FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '$MAD_DB' and ((TABLE_NAME = 'trs_stats_detect' or TABLE_NAME = 'trs_stats_location' or TABLE_NAME = 'trs_stats_location_raw'or TABLE_NAME = 'trs_status' or TABLE_NAME = 'trs_stats_detect_mon_raw') and TABLE_COLLATION <>'utf8mb4_unicode_ci');")
+column_check=$(mysql $MAD_DB -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password -se "SELECT TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME, COLUMN_NAME, COLLATION_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '$MAD_DB' and ((TABLE_NAME = 'trs_stats_detect' or TABLE_NAME = 'trs_stats_location' or TABLE_NAME = 'trs_stats_location_raw'or TABLE_NAME = 'trs_status' or TABLE_NAME = 'trs_stats_detect_mon_raw') and COLLATION_NAME <> 'utf8mb4_unicode_ci');")
+if [[ -z $table_check || -z $column_check ]];
   then
   echo 'MAD collation check passed'
   else
   echo "ERROR: (some) MAD table/column collation set incorrect !!!"
   echo "Check https://github.com/Map-A-Droid/MAD/tree/master/scripts/SQL and adapt accordingly"
-  mysql $MAD_DB -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password -se "SELECT TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME, TABLE_COLLATION FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '$MAD_DB' and ((TABLE_NAME = 't$  mysql $MAD_DB -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password -se "SELECT TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME, COLUMN_NAME, COLLATION_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '$MAD_DB' and ((TA$  echo ""
+  mysql $MAD_DB -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password -se "SELECT TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME, TABLE_COLLATION FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '$MAD_DB' and ((TABLE_NAME = 'trs_stats_detect' or TABLE_NAME = 'trs_stats_location' or TABLE_NAME = 'trs_stats_location_raw'or TABLE_NAME = 'trs_status' or TABLE_NAME = 'trs_stats_detect_mon_raw') and TABLE_COLLATION <>'utf8mb4_unicode_ci');"
+  mysql $MAD_DB -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password -se "SELECT TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME, COLUMN_NAME, COLLATION_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '$MAD_DB' and ((TABLE_NAME = 'trs_stats_detect' or TABLE_NAME = 'trs_stats_location' or TABLE_NAME = 'trs_stats_location_raw'or TABLE_NAME = 'trs_status' or TABLE_NAME = 'trs_stats_detect_mon_raw') and COLLATION_NAME <> 'utf8mb4_unicode_ci');"
+  echo ""
   echo ""
   echo "SQL commands below will most likely fix this, but verify before running and execute settings.run afterwards to verify"
   echo "ALTER TABLE $MAD_DB.trs_stats_detect CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
