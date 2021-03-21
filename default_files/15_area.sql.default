@@ -51,17 +51,6 @@ pogodb.stats_area.RPL = @RPL and
 pogodb.stats_area.Datetime = @Start
 ;
 
--- table raid data
-update pogodb.stats_area
-set
-Raid_Egg = (select count(*) from rmdb.raid a, rmdb.gym b where a.gym_id = b.gym_id and CONVERT_TZ(a.last_scanned, '+00:00', @@global.time_zone) >= @Start and CONVERT_TZ(a.last_scanned, '+00:00', @@global.time_zone) < @Stop  and b.latitude < @LatMax and b.latitude > @LatMin and b.longitude > @LonMin and b.longitude < @LonMax)
-where
-pogodb.stats_area.Area = @Area and
-pogodb.stats_area.Fence = @Fence_name and
-pogodb.stats_area.RPL = @RPL and
-pogodb.stats_area.Datetime = @Start
-;
-
 -- update spawnpoint data
 update pogodb.stats_area
 set
