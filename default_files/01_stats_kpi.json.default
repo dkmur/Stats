@@ -46,7 +46,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1613053202094,
+  "iteration": 1616357271501,
   "links": [],
   "panels": [
     {
@@ -106,7 +106,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(a.Datetime,$__interval),\n  sum(Mons_all) AS \"Mons scanned\",\n  100*sum(a.MonsIV)/sum(a.Mons_all) AS \"%IV scanned\"\nFROM stats_area a\nWHERE\n  $__timeFilter(a.datetime) and\n  a.RPL = '$RPL'\nGROUP BY 1\nORDER BY $__timeGroup(a.Datetime,$__interval)",
+          "rawSql": "SELECT\n  $__timeGroupAlias(a.Datetime,$__interval),\n  sum(Mons_all) AS \"Mons scanned\",\n  100*sum(a.MonsIV)/sum(a.Mons_all) AS \"%IV scanned\"\nFROM stats_area a\nWHERE\n  $__timeFilter(a.datetime) and\n  a.RPL = '$RPL' and a.Fence <> 'Unfenced'\nGROUP BY 1\nORDER BY $__timeGroup(a.Datetime,$__interval)",
           "refId": "A",
           "select": [
             [
@@ -646,7 +646,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(a.Datetime,$__interval),\n  100*sum(a.MinutesLeft)/((sum(a.Spawndef15) * 60)+(sum(a.SpawndefNot15) * 30)) AS \"%despawntime left\"\nFROM stats_area a\nWHERE\n  $__timeFilter(a.datetime) and\n  a.RPL = '$RPL'\nGROUP BY 1\nORDER BY $__timeGroup(a.Datetime,$__interval)",
+          "rawSql": "SELECT\n  $__timeGroupAlias(a.Datetime,$__interval),\n  100*sum(a.MinutesLeft)/((sum(a.Spawndef15) * 60)+(sum(a.SpawndefNot15) * 30)) AS \"%despawntime left\"\nFROM stats_area a\nWHERE\n  $__timeFilter(a.datetime) and\n  a.RPL = '$RPL' and a.Fence <> 'Unfenced'\nGROUP BY 1\nORDER BY $__timeGroup(a.Datetime,$__interval)",
           "refId": "A",
           "select": [
             [
@@ -898,5 +898,5 @@
   "timezone": "",
   "title": "01. Stats KPIs",
   "uid": "jM5txJOMz",
-  "version": 22
+  "version": 23
 }

@@ -1,4 +1,4 @@
-INSERT INTO pogodb.stats_area (Datetime,RPL, TRPL, Area, Fence, Spawnpoints,Mons_all, Mons_nonIV, MonsIV, Iv100, Iv0, MinutesLeft, w5, w10, w15, w20, Spawndef15, SpawndefNot15, Raid_Egg)
+INSERT INTO pogodb.stats_area (Datetime,RPL, TRPL, Area, Fence, Spawnpoints,Mons_all, Mons_nonIV, MonsIV, Iv100, Iv0, MinutesLeft, w5, w10, w15, w20, Spawndef15, SpawndefNot15)
 select
 concat(date(curdate() - interval weekday(curdate()) + 7 day),' ','00:00:00'),
 '10080', 
@@ -17,8 +17,7 @@ sum(w10),
 sum(w15),
 sum(w20),
 sum(Spawndef15),
-sum(SpawndefNot15),
-sum(Raid_Egg)
+sum(SpawndefNot15)
 
 from pogodb.stats_area a
 
