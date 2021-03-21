@@ -46,7 +46,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1614433157509,
+  "iteration": 1616357484725,
   "links": [],
   "panels": [
     {
@@ -1523,7 +1523,7 @@
           "label": "Seconds",
           "logBase": 1,
           "max": "30",
-          "min": null,
+          "min": "0",
           "show": true
         },
         {
@@ -1655,7 +1655,7 @@
           "label": null,
           "logBase": 1,
           "max": null,
-          "min": null,
+          "min": "0",
           "show": true
         }
       ],
@@ -1699,7 +1699,7 @@
         "allValue": "",
         "current": {},
         "datasource": "${DS_POGODB}",
-        "definition": "select substring_index(Area,'_',1) from stats_area;",
+        "definition": "select substring_index(Area,'_',1) from stats_area where Area <>'Unfenced';",
         "description": null,
         "error": null,
         "hide": 0,
@@ -1708,7 +1708,7 @@
         "multi": false,
         "name": "Area",
         "options": [],
-        "query": "select substring_index(Area,'_',1) from stats_area;",
+        "query": "select substring_index(Area,'_',1) from stats_area where Area <>'Unfenced';",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -1723,7 +1723,7 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_POGODB}",
-        "definition": "select Fence from stats_area;",
+        "definition": "select Fence from stats_area where Fence <> 'Unfenced';",
         "description": null,
         "error": null,
         "hide": 0,
@@ -1732,7 +1732,7 @@
         "multi": true,
         "name": "Fence",
         "options": [],
-        "query": "select Fence from stats_area;",
+        "query": "select Fence from stats_area where Fence <> 'Unfenced';",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -1766,5 +1766,5 @@
   "timezone": "",
   "title": "02. Stats network/area level",
   "uid": "KY-d_hOMz",
-  "version": 51
+  "version": 54
 }
