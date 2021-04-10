@@ -14,7 +14,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "7.1.5"
+      "version": "7.5.2"
     },
     {
       "type": "datasource",
@@ -53,7 +53,108 @@
       "fieldConfig": {
         "defaults": {
           "custom": {
-            "align": null
+            "align": null,
+            "filterable": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "MAD_instance_name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 160
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "#devices"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 90
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 20,
+      "options": {
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": false,
+            "displayName": "MAD_instance_name"
+          }
+        ]
+      },
+      "pluginVersion": "7.5.2",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select a.name AS 'MAD_instance_name', count(b.device_id) AS '#devices' from madmin_instance a, trs_status b where a.instance_id = b.instance_id group by a.instance_id;\n",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "MAD instances",
+      "type": "table"
+    },
+    {
+      "datasource": "${DS_RMDB}",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": null,
+            "filterable": false
           },
           "mappings": [],
           "thresholds": {
@@ -137,7 +238,7 @@
         "h": 12,
         "w": 12,
         "x": 0,
-        "y": 0
+        "y": 6
       },
       "id": 14,
       "options": {
@@ -149,7 +250,7 @@
           }
         ]
       },
-      "pluginVersion": "7.1.5",
+      "pluginVersion": "7.5.2",
       "targets": [
         {
           "format": "table",
@@ -188,7 +289,8 @@
       "fieldConfig": {
         "defaults": {
           "custom": {
-            "align": null
+            "align": null,
+            "filterable": false
           },
           "mappings": [],
           "thresholds": {
@@ -236,7 +338,7 @@
         "h": 12,
         "w": 12,
         "x": 12,
-        "y": 0
+        "y": 6
       },
       "id": 16,
       "options": {
@@ -248,7 +350,7 @@
           }
         ]
       },
-      "pluginVersion": "7.1.5",
+      "pluginVersion": "7.5.2",
       "targets": [
         {
           "format": "table",
@@ -287,7 +389,8 @@
       "fieldConfig": {
         "defaults": {
           "custom": {
-            "align": null
+            "align": null,
+            "filterable": false
           },
           "mappings": [],
           "thresholds": {
@@ -467,14 +570,14 @@
         "h": 5,
         "w": 24,
         "x": 0,
-        "y": 12
+        "y": 18
       },
       "id": 2,
       "options": {
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "7.1.5",
+      "pluginVersion": "7.5.2",
       "targets": [
         {
           "format": "table",
@@ -513,7 +616,8 @@
       "fieldConfig": {
         "defaults": {
           "custom": {
-            "align": null
+            "align": null,
+            "filterable": false
           },
           "mappings": [],
           "thresholds": {
@@ -621,21 +725,21 @@
         "h": 5,
         "w": 24,
         "x": 0,
-        "y": 17
+        "y": 23
       },
       "id": 4,
       "options": {
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "7.1.5",
+      "pluginVersion": "7.5.2",
       "targets": [
         {
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  count(name) as '#Pools', screendetection, inventory_clear_rounds, inventory_clear_item_amount_tap_duration, enhanced_mode_quest, enhanced_mode_quest_safe_items \nFROM settings_devicepool\nGROUP BY screendetection, inventory_clear_rounds, inventory_clear_item_amount_tap_duration, enhanced_mode_quest, enhanced_mode_quest_safe_items \n",
+          "rawSql": "SELECT\n  count(name) as '#Pools', screendetection, inventory_clear_rounds, enhanced_mode_quest, enhanced_mode_quest_safe_items \nFROM settings_devicepool\nGROUP BY screendetection, inventory_clear_rounds, enhanced_mode_quest, enhanced_mode_quest_safe_items \n",
           "refId": "A",
           "select": [
             [
@@ -667,7 +771,8 @@
       "fieldConfig": {
         "defaults": {
           "custom": {
-            "align": null
+            "align": null,
+            "filterable": false
           },
           "mappings": [],
           "thresholds": {
@@ -847,14 +952,14 @@
         "h": 5,
         "w": 24,
         "x": 0,
-        "y": 22
+        "y": 28
       },
       "id": 6,
       "options": {
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "7.1.5",
+      "pluginVersion": "7.5.2",
       "targets": [
         {
           "format": "table",
@@ -893,7 +998,8 @@
       "fieldConfig": {
         "defaults": {
           "custom": {
-            "align": null
+            "align": null,
+            "filterable": false
           },
           "mappings": [],
           "thresholds": {
@@ -1001,21 +1107,21 @@
         "h": 5,
         "w": 24,
         "x": 0,
-        "y": 27
+        "y": 33
       },
       "id": 8,
       "options": {
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "7.1.5",
+      "pluginVersion": "7.5.2",
       "targets": [
         {
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  count(name) as '#Devices', screendetection, inventory_clear_rounds, inventory_clear_item_amount_tap_duration, enhanced_mode_quest, enhanced_mode_quest_safe_items \nFROM settings_device\nGROUP BY screendetection, inventory_clear_rounds, inventory_clear_item_amount_tap_duration, enhanced_mode_quest, enhanced_mode_quest_safe_items \n",
+          "rawSql": "SELECT\n  count(name) as '#Devices', screendetection, inventory_clear_rounds, enhanced_mode_quest, enhanced_mode_quest_safe_items \nFROM settings_device\nGROUP BY screendetection, inventory_clear_rounds, enhanced_mode_quest, enhanced_mode_quest_safe_items \n",
           "refId": "A",
           "select": [
             [
@@ -1047,7 +1153,8 @@
       "fieldConfig": {
         "defaults": {
           "custom": {
-            "align": null
+            "align": null,
+            "filterable": false
           },
           "mappings": [],
           "thresholds": {
@@ -1167,14 +1274,14 @@
         "h": 5,
         "w": 24,
         "x": 0,
-        "y": 32
+        "y": 38
       },
       "id": 10,
       "options": {
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "7.1.5",
+      "pluginVersion": "7.5.2",
       "targets": [
         {
           "format": "table",
@@ -1213,7 +1320,8 @@
       "fieldConfig": {
         "defaults": {
           "custom": {
-            "align": null
+            "align": null,
+            "filterable": false
           },
           "mappings": [],
           "thresholds": {
@@ -1393,14 +1501,14 @@
         "h": 6,
         "w": 24,
         "x": 0,
-        "y": 37
+        "y": 43
       },
       "id": 12,
       "options": {
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "7.1.5",
+      "pluginVersion": "7.5.2",
       "targets": [
         {
           "format": "table",
@@ -1439,7 +1547,8 @@
       "fieldConfig": {
         "defaults": {
           "custom": {
-            "align": null
+            "align": null,
+            "filterable": false
           },
           "mappings": [],
           "thresholds": {
@@ -1583,14 +1692,14 @@
         "h": 5,
         "w": 24,
         "x": 0,
-        "y": 43
+        "y": 49
       },
       "id": 18,
       "options": {
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "7.1.5",
+      "pluginVersion": "7.5.2",
       "targets": [
         {
           "format": "table",
@@ -1625,7 +1734,7 @@
       "type": "table"
     }
   ],
-  "schemaVersion": 26,
+  "schemaVersion": 27,
   "style": "dark",
   "tags": [],
   "templating": {
@@ -1653,5 +1762,5 @@
   "timezone": "",
   "title": "20. MAD stuff",
   "uid": "xUbpoIcGz",
-  "version": 11
+  "version": 15
 }
