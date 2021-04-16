@@ -14,7 +14,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "7.4.0"
+      "version": "7.5.2"
     },
     {
       "type": "panel",
@@ -46,7 +46,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1613210578156,
+  "iteration": 1618533547224,
   "links": [],
   "panels": [
     {
@@ -58,9 +58,7 @@
       "dashes": false,
       "datasource": "${DS_POGODB}",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "fill": 1,
@@ -89,7 +87,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.0",
+      "pluginVersion": "7.5.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -240,9 +238,7 @@
       "dashes": false,
       "datasource": "${DS_POGODB}",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "fill": 1,
@@ -271,7 +267,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.0",
+      "pluginVersion": "7.5.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -391,9 +387,7 @@
       "dashes": false,
       "datasource": "${DS_POGODB}",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "fill": 1,
@@ -422,7 +416,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.0",
+      "pluginVersion": "7.5.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -508,9 +502,7 @@
       "dashes": false,
       "datasource": "${DS_POGODB}",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "fill": 1,
@@ -539,7 +531,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.0",
+      "pluginVersion": "7.5.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -629,9 +621,7 @@
       "dashes": false,
       "datasource": "${DS_POGODB}",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "fill": 1,
@@ -660,7 +650,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.0",
+      "pluginVersion": "7.5.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -755,9 +745,7 @@
       "dashes": false,
       "datasource": "${DS_POGODB}",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "fill": 1,
@@ -786,7 +774,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.0",
+      "pluginVersion": "7.5.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -872,9 +860,7 @@
       "dashes": false,
       "datasource": "${DS_POGODB}",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "fill": 1,
@@ -903,7 +889,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.0",
+      "pluginVersion": "7.5.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -996,9 +982,7 @@
       "dashes": false,
       "datasource": "${DS_POGODB}",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "fill": 1,
@@ -1027,7 +1011,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.0",
+      "pluginVersion": "7.5.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1169,9 +1153,7 @@
       "dashes": false,
       "datasource": "${DS_POGODB}",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "fill": 1,
@@ -1200,7 +1182,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.0",
+      "pluginVersion": "7.5.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1271,7 +1253,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Location handling (1)",
+      "title": "# Locations handled",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -1315,9 +1297,7 @@
       "dashes": false,
       "datasource": "${DS_POGODB}",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "fill": 1,
@@ -1346,7 +1326,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.0",
+      "pluginVersion": "7.5.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1388,7 +1368,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Location handling (2)",
+      "title": "Location handling success rate",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -1432,9 +1412,7 @@
       "dashes": false,
       "datasource": "${DS_POGODB}",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "fill": 1,
@@ -1463,7 +1441,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.0",
+      "pluginVersion": "7.5.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1503,7 +1481,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Location handling (3)",
+      "title": "Location handling time",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -1523,7 +1501,7 @@
           "label": "Seconds",
           "logBase": 1,
           "max": "30",
-          "min": null,
+          "min": "0",
           "show": true
         },
         {
@@ -1532,6 +1510,128 @@
           "logBase": 1,
           "max": null,
           "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_POGODB}",
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 41
+      },
+      "hiddenSeries": false,
+      "id": 26,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.5.2",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "alias": "average number of reports for multiRoutePositionReportLocations",
+          "yaxis": 2
+        },
+        {
+          "alias": "average number of reports",
+          "yaxis": 2
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  $__timeGroupAlias(a.Datetime,$__interval),\n  sum(locationsMultiReport) AS \"#locations\",\n  (sum(locReports)-sum(Tloc)+sum(locationsMultiReport))/sum(locationsMultiReport) AS \"average number of reports\"\nFROM stats_worker a, Area b\nWHERE\n  a.RPL = '$RPL' and\n  a.Worker = b.Origin and\n  substring_index(b.Area,'_',1) in ($Area)\nGROUP BY 1\nORDER BY $__timeGroup(a.Datetime,$__interval)\n",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Locations with multiple reports (encounter_all)",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": "0",
           "show": true
         }
       ],
@@ -1551,7 +1651,7 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_POGODB}",
-        "definition": "select RPL from stats_area;",
+        "definition": "select distinct(RPL) from stats_area;",
         "description": null,
         "error": null,
         "hide": 0,
@@ -1560,7 +1660,7 @@
         "multi": false,
         "name": "RPL",
         "options": [],
-        "query": "select RPL from stats_area;",
+        "query": "select distinct(RPL) from stats_area;",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -1575,7 +1675,7 @@
         "allValue": "",
         "current": {},
         "datasource": "${DS_POGODB}",
-        "definition": "select substring_index(Area,'_',1) from stats_area;",
+        "definition": "select distinct(substring_index(Area,'_',1)) from stats_area where Area <>'Unfenced';",
         "description": null,
         "error": null,
         "hide": 0,
@@ -1584,7 +1684,7 @@
         "multi": false,
         "name": "Area",
         "options": [],
-        "query": "select substring_index(Area,'_',1) from stats_area;",
+        "query": "select distinct(substring_index(Area,'_',1)) from stats_area where Area <>'Unfenced';",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -1599,7 +1699,7 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_POGODB}",
-        "definition": "select Fence from stats_area;",
+        "definition": "select distinct(Fence) from stats_area where Fence <> 'Unfenced';",
         "description": null,
         "error": null,
         "hide": 0,
@@ -1608,7 +1708,7 @@
         "multi": true,
         "name": "Fence",
         "options": [],
-        "query": "select Fence from stats_area;",
+        "query": "select distinct(Fence) from stats_area where Fence <> 'Unfenced';",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -1642,5 +1742,5 @@
   "timezone": "",
   "title": "02. Stats network/area level",
   "uid": "KY-d_hOMz",
-  "version": 46
+  "version": 55
 }

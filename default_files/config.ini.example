@@ -78,7 +78,7 @@ SPAWN_UNFENCED_CLEANUP=false				# spawnpoint backup to statsdb.spawn_unused and 
 SPAWN_UNFENCED_TIMES=3					# minimum number of times a spawnpoint OUTSIDE all monmitm fences has to be seen to keep it in trs_spawn else is will be backed up and removed 
 
 ## Cleaup spawndef 15
-SPAWNDEF15_CLEANUP=false				# daily reset incorrect hourly spawndefs. An hourly spawn must have been seen in first and second 30min period, based on yesterdays hourly data (after QUEST_END)
+SPAWNDEF15_CLEANUP=false				# daily reset incorrect hourly spawndefs. An hourly spawn must have been seen in first 30min period, based on yesterdays hourly data (after QUEST_END)
 SPAWNDEF15_HOURS=15					# number of hours spawnpoint has not been seen in first and second 30min period before resetting spawnpoint
 
 ## Pokemons scanned cleanup/backup ##

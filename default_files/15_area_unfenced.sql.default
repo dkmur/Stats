@@ -1,0 +1,95 @@
+set collation_connection = 'utf8mb4_unicode_ci';
+SET SESSION tx_isolation = 'READ-UNCOMMITTED';
+-- Settings
+
+select @Start := concat(date(now() - interval 15 minute),' ', SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 15 minute)) DIV 900) * 900));
+select @Stop := concat(date(now() - interval 0 minute),' ', SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 0 minute)) DIV 900) * 900));
+select @RPL := '15';
+select @Area := 'Unfenced';
+select @Fence_name := 'Unfenced';
+
+-- Get Pokemon data
+Create TEMPORARY TABLE rmdb.tmp50
+(INDEX (spawnpoint_id))
+AS(
+select a.spawnpoint_id, a.first_scanned, disappear_time, a.individual_attack, a.individual_defense, a.individual_stamina
+from pogodb.pokemon_history_temp a
+where
+a.first_scanned >= @Start and
+a.first_scanned < @Stop
+);
+
+-- Get Spawnpoint data
+Create TEMPORARY TABLE rmdb.tmp51
+(INDEX (spawnpoint))
+AS(
+select a.spawnpoint, a.last_scanned, a.first_detection, a.last_non_scanned, a.spawndef
+from rmdb.trs_spawn a
+);
+
+-- Get processed area data --
+Create TEMPORARY TABLE rmdb.tmp52
+AS(
+select
+sum(Spawnpoints) as Spawnpoints,
+sum(Mons_all) as Mons_all,
+sum(MonsIV) as MonsIV,
+sum(Mons_nonIV) as Mons_nonIV,
+sum(Iv100) as Iv100,
+sum(Iv0) as Iv0,
+sum(DBspawns) as DBspawns,
+sum(Spawn_add) as Spawn_add,
+sum(Spawn_NULL) as Spawn_NULL,
+sum(Last_scanned_today_acc) as Last_scanned_today_acc,
+sum(Last_scanned_1d) as Last_scanned_1d,
+sum(Last_scanned_2d) as Last_scanned_2d,
+sum(Last_scanned_3d) as Last_scanned_3d,
+sum(Last_scanned_7dp) as Last_scanned_7dp
+from pogodb.stats_area
+where
+pogodb.stats_area.RPL = @RPL and
+pogodb.stats_area.Datetime = @Start
+);
+
+-- Initial insert
+INSERT INTO pogodb.stats_area (Datetime,RPL, TRPL, Area, Fence)
+select @Start, @RPL, @RPL, @Area, @Fence_name;
+
+-- Update Pokemon Data
+update pogodb.stats_area
+set 
+Spawnpoints = (select count(distinct(a.spawnpoint_id))-b.Spawnpoints from rmdb.tmp50 a, rmdb.tmp52 b),
+Mons_all = (select count(a.first_scanned)-b.Mons_all from rmdb.tmp50 a, rmdb.tmp52 b),
+MonsIV = (select count(a.first_scanned)-b.MonsIV from rmdb.tmp50 a, rmdb.tmp52 b where a.individual_attack is not NULL),
+Mons_nonIV = Mons_all-MonsIV,
+Iv100 = (select count(a.first_scanned)-b.Iv100 from rmdb.tmp50 a, rmdb.tmp52 b where a.individual_attack = 15 and a.individual_defense = 15 and a.individual_stamina = 15),
+Iv0 = (select count(a.first_scanned)-b.Iv0 from rmdb.tmp50 a, rmdb.tmp52 b where a.individual_attack = 0 and a.individual_defense = 0 and a.individual_stamina = 0)
+where
+pogodb.stats_area.Area = @Area and
+pogodb.stats_area.Fence = @Fence_name and
+pogodb.stats_area.RPL = @RPL and
+pogodb.stats_area.Datetime = @Start
+;
+
+-- update spawnpoint data
+update pogodb.stats_area
+set
+DBspawns = (select count(a.spawnpoint)-b.DBspawns from rmdb.tmp51 a, rmdb.tmp52 b),
+Spawn_add = (select count(a.spawnpoint)-b.Spawn_add from rmdb.tmp51 a, rmdb.tmp52 b where a.first_detection >= @Start and a.first_detection < @Stop),
+Spawn_NULL = (select count(a.spawnpoint)-b.Spawn_NULL from rmdb.tmp51 a, rmdb.tmp52 b where a.last_scanned is NULL),
+Last_scanned_today_acc = (select count(a.spawnpoint)-b.Last_scanned_today_acc from rmdb.tmp51 a, rmdb.tmp52 b where date(a.last_non_scanned) = date(@Start)),
+Last_scanned_1d = (select count(a.spawnpoint)-b.Last_scanned_1d from rmdb.tmp51 a, rmdb.tmp52 b where date(a.last_non_scanned) = date(@Start) - interval 1 day),
+Last_scanned_2d = (select count(a.spawnpoint)-b.Last_scanned_2d from rmdb.tmp51 a, rmdb.tmp52 b where date(a.last_non_scanned) = date(@Start) - interval 2 day),
+Last_scanned_3d = (select count(a.spawnpoint)-b.Last_scanned_3d from rmdb.tmp51 a, rmdb.tmp52 b where date(a.last_non_scanned) = date(@Start) - interval 3 day),
+Last_scanned_7dp = (select count(a.spawnpoint)-b.Last_scanned_7dp from rmdb.tmp51 a, rmdb.tmp52 b where date(a.last_non_scanned) < date(@Start) - interval 7 day)
+where
+pogodb.stats_area.Area = @Area and
+pogodb.stats_area.Fence = @Fence_name and
+pogodb.stats_area.RPL = @RPL and
+pogodb.stats_area.Datetime = @Start
+;
+
+-- drop tables
+drop table rmdb.tmp50;
+drop table rmdb.tmp51;
+drop table rmdb.tmp52;

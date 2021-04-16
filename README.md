@@ -14,7 +14,7 @@ Available data:
 - missing proto received minutes  
 
 Additionally, not related to Stats, but you can optionally set:
-- cleanup op spawnpoint definitions in case they are f..... up by CommDay or Spotlight
+- cleanup op spawnpoint definitions in case they are f..... up by CommDay or Spotlight  
 - move spawns discovered during quest scan outside mon area to seperate table and remove from trs_spawn
 - cleanup of trs_spawn for spawnpoint not seen for X days or after X days endtimes are still unknown
 - Remove spawnpoints ouside mon_mitm fences seen less then X times today
@@ -77,9 +77,9 @@ Note: when adding devices, remove ``world.ini`` in /areas and execute ``settings
 - If each walker only contains 1 mon_mitm area, set MAD_DEVICE_INSERT=true in config.ini for automatic assignment. Else assign devices (MAD origins) to the created area's (select Area from STATS_DB.Area;) manually, in mysql:<br>
 ```
 insert into ##STATS_DB##.Area (Area,Origin) values
-('Town1','Device01'),
-('Town1','Device02'),
-('Town2','Device01')
+('Town1','Device_town1_01'),
+('Town1','Device_town1_02'),
+('Town2','Device_town2_01')
 ;
 ```
 Note 1: The geofence name used in MADmin is the Area name within Stats. <br>
