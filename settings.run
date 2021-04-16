@@ -47,12 +47,15 @@ fi
 if [ $first_install != "1" ]
   then
   echo "First install of Stats, proceeding"
+  echo ""
   else
   echo "Not first install, checking old V1 table updates"
+  echo ""
     if [[ $V1_check1 != "1" || $V1_check2 != "1" ]]
     then
     echo "FFS you should have updated long time ago, running old table updates"
     echo "This might take a while"
+    echo ""
       if [ -z "$SQL_password" ]
       then
       mysql -h$DB_IP -P$DB_PORT -u$SQL_user $STATS_DB < $PATH_TO_STATS/default_files/table_changes_V1.sql.default
@@ -61,6 +64,7 @@ if [ $first_install != "1" ]
       fi
     else
     echo "All good, proceeding"
+    echo ""
     fi
 fi
 
