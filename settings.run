@@ -21,9 +21,63 @@ if ((${DBversion/./} > 101)) ;
   exit
 fi
 
+# grrrrrrrrrrr had to implement db version long time ago
+# check first install, does stats_worker even exist
+if [ -z "$SQL_password" ]
+  then
+  first_install=$(mysql $STATS_DB -h$DB_IP -P$DB_PORT -u$SQL_user -N -se "SELECT count(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '$STATS_DB' AND TABLE_NAME = 'stats_worker';")
+  else
+  first_install=$(mysql $STATS_DB -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password -N -se "SELECT count(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '$STATS_DB' AND TABLE_NAME = 'stats_worker';")
+fi
+# Check collation on stats_worker
+if [ -z "$SQL_password" ]
+  then
+  V1_check1=$(mysql $STATS_DB -h$DB_IP -P$DB_PORT -u$SQL_user -N -se "SELECT count(*) FROM INFORMATION_SCHEMA.TABLES WHERE table_schema = '$STATS_DB' and table_name = 'stats_worker' and table_collation $
+  else
+  V1_check1=$(mysql $STATS_DB -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password -N -se "SELECT count(*) FROM INFORMATION_SCHEMA.TABLES WHERE table_schema = '$STATS_DB' and table_name = 'stats_worker' and table_collation = 'utf8mb4_unicode_ci';")
+fi
+# Check if column Area exists in stats_worker
+if [ -z "$SQL_password" ]
+  then
+  V1_check2=$(mysql $STATS_DB -h$DB_IP -P$DB_PORT -u$SQL_user -N -se "SELECT count(*) FROM INFORMATION_SCHEMA.COLUMNS where table_schema = '$STATS_DB' and table_name = 'stats_worker' and column_name = '$
+  else
+  V1_check2=$(mysql $STATS_DB -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password -N -se "SELECT count(*) FROM INFORMATION_SCHEMA.COLUMNS where table_schema = '$STATS_DB' and table_name = 'stats_worker' and column_name = 'Area';")
+fi
+
+if [ $first_install != "1" ]
+  then
+  echo "First install of Stats, proceeding"
+  else
+  echo "Not first install, checking old V1 table updates"
+    if [[ $V1_check1 != "1" || $V1_check2 != "1" ]]
+    then
+    echo "FFS you should have updated long time ago, running old table updates"
+    echo "This might take a while"
+      if [ -z "$SQL_password" ]
+      then
+      mysql -h$DB_IP -P$DB_PORT -u$SQL_user $STATS_DB < $PATH_TO_STATS/default_files/table_changes_V1.sql.default
+      else
+      mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB < $PATH_TO_STATS/default_files/table_changes_V1.sql.default
+      fi
+    else
+    echo "All good, proceeding"
+    fi
+fi
+
+
 #Check MAD collation, else 15_worker will fail
-table_check=$(mysql $MAD_DB -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password -se "SELECT TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME, TABLE_COLLATION FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '$MAD_DB' and ((TABLE_NAME = 'trs_stats_detect' or TABLE_NAME = 'trs_stats_location' or TABLE_NAME = 'trs_stats_location_raw'or TABLE_NAME = 'trs_status' or TABLE_NAME = 'trs_stats_detect_mon_raw') and TABLE_COLLATION <>'utf8mb4_unicode_ci');")
-column_check=$(mysql $MAD_DB -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password -se "SELECT TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME, COLUMN_NAME, COLLATION_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '$MAD_DB' and ((TABLE_NAME = 'trs_stats_detect' or TABLE_NAME = 'trs_stats_location' or TABLE_NAME = 'trs_stats_location_raw'or TABLE_NAME = 'trs_status' or TABLE_NAME = 'trs_stats_detect_mon_raw') and COLLATION_NAME <> 'utf8mb4_unicode_ci');")
+if [ -z "$SQL_password" ]
+  then
+  table_check=$(mysql $MAD_DB -h$DB_IP -P$DB_PORT -u$SQL_user -se "SELECT TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME, TABLE_COLLATION FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '$MAD_DB' and ((TABLE_NAME = 'trs_stats_detect' or TABLE_NAME = 'trs_stats_location' or TABLE_NAME = 'trs_stats_location_raw'or TABLE_NAME = 'trs_status' or TABLE_NAME = 'trs_stats_detect_mon_raw') and TABLE_COLLATION <>'utf8mb4_unicode_ci');")
+  else
+  table_check=$(mysql $MAD_DB -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password -se "SELECT TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME, TABLE_COLLATION FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '$MAD_DB' and ((TABLE_NAME = 'trs_stats_detect' or TABLE_NAME = 'trs_stats_location' or TABLE_NAME = 'trs_stats_location_raw'or TABLE_NAME = 'trs_status' or TABLE_NAME = 'trs_stats_detect_mon_raw') and TABLE_COLLATION <>'utf8mb4_unicode_ci');")
+fi
+if [ -z "$SQL_password" ]
+  then
+  column_check=$(mysql $MAD_DB -h$DB_IP -P$DB_PORT -u$SQL_user -se "SELECT TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME, COLUMN_NAME, COLLATION_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '$MAD_DB' and ((TABLE_NAME = 'trs_stats_detect' or TABLE_NAME = 'trs_stats_location' or TABLE_NAME = 'trs_stats_location_raw'or TABLE_NAME = 'trs_status' or TABLE_NAME = 'trs_stats_detect_mon_raw') and COLLATION_NAME <> 'utf8mb4_unicode_ci');")
+  else
+  column_check=$(mysql $MAD_DB -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password -se "SELECT TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME, COLUMN_NAME, COLLATION_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '$MAD_DB' and ((TABLE_NAME = 'trs_stats_detect' or TABLE_NAME = 'trs_stats_location' or TABLE_NAME = 'trs_stats_location_raw'or TABLE_NAME = 'trs_status' or TABLE_NAME = 'trs_stats_detect_mon_raw') and COLLATION_NAME <> 'utf8mb4_unicode_ci');")
+fi
 if [[ -z $table_check || -z $column_check ]];
   then
   echo 'MAD collation check passed'
@@ -31,8 +85,18 @@ if [[ -z $table_check || -z $column_check ]];
   else
   echo "ERROR: (some) MAD table/column collation set incorrect !!!"
   echo "Check https://github.com/Map-A-Droid/MAD/tree/master/scripts/SQL and adapt accordingly"
-  mysql $MAD_DB -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password -se "SELECT TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME, TABLE_COLLATION FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '$MAD_DB' and ((TABLE_NAME = 'trs_stats_detect' or TABLE_NAME = 'trs_stats_location' or TABLE_NAME = 'trs_stats_location_raw'or TABLE_NAME = 'trs_status' or TABLE_NAME = 'trs_stats_detect_mon_raw') and TABLE_COLLATION <>'utf8mb4_unicode_ci');"
-  mysql $MAD_DB -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password -se "SELECT TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME, COLUMN_NAME, COLLATION_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '$MAD_DB' and ((TABLE_NAME = 'trs_stats_detect' or TABLE_NAME = 'trs_stats_location' or TABLE_NAME = 'trs_stats_location_raw'or TABLE_NAME = 'trs_status' or TABLE_NAME = 'trs_stats_detect_mon_raw') and COLLATION_NAME <> 'utf8mb4_unicode_ci');"
+  if [ -z "$SQL_password" ]
+    then
+    mysql $MAD_DB -h$DB_IP -P$DB_PORT -u$SQL_user -se "SELECT TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME, TABLE_COLLATION FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '$MAD_DB' and ((TABLE_NAME = 'trs_stats_detect' or TABLE_NAME = 'trs_stats_location' or TABLE_NAME = 'trs_stats_location_raw'or TABLE_NAME = 'trs_status' or TABLE_NAME = 'trs_stats_detect_mon_raw') and TABLE_COLLATION <>'utf8mb4_unicode_ci');"
+    else
+    mysql $MAD_DB -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password -se "SELECT TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME, TABLE_COLLATION FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '$MAD_DB' and ((TABLE_NAME = 'trs_stats_detect' or TABLE_NAME = 'trs_stats_location' or TABLE_NAME = 'trs_stats_location_raw'or TABLE_NAME = 'trs_status' or TABLE_NAME = 'trs_stats_detect_mon_raw') and TABLE_COLLATION <>'utf8mb4_unicode_ci');"
+  fi
+  if [ -z "$SQL_password" ]
+    then
+    mysql $MAD_DB -h$DB_IP -P$DB_PORT -u$SQL_user -se "SELECT TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME, COLUMN_NAME, COLLATION_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '$MAD_DB' and ((TABLE_NAME = 'trs_stats_detect' or TABLE_NAME = 'trs_stats_location' or TABLE_NAME = 'trs_stats_location_raw'or TABLE_NAME = 'trs_status' or TABLE_NAME = 'trs_stats_detect_mon_raw') and COLLATION_NAME <> 'utf8mb4_unicode_ci');"
+    else
+    mysql $MAD_DB -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password -se "SELECT TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME, COLUMN_NAME, COLLATION_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '$MAD_DB' and ((TABLE_NAME = 'trs_stats_detect' or TABLE_NAME = 'trs_stats_location' or TABLE_NAME = 'trs_stats_location_raw'or TABLE_NAME = 'trs_status' or TABLE_NAME = 'trs_stats_detect_mon_raw') and COLLATION_NAME <> 'utf8mb4_unicode_ci');"
+  fi
   echo ""
   echo ""
   echo "SQL commands below will most likely fix this, but verify before running and execute settings.run afterwards to verify"

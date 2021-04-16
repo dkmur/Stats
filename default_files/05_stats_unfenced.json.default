@@ -14,7 +14,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "7.4.0"
+      "version": "7.5.2"
     },
     {
       "type": "panel",
@@ -46,7 +46,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1616366070334,
+  "iteration": 1618533673637,
   "links": [],
   "panels": [
     {
@@ -56,9 +56,7 @@
       "dashes": false,
       "datasource": "${DS_POGODB}",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "fill": 1,
@@ -87,7 +85,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.0",
+      "pluginVersion": "7.5.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -205,9 +203,7 @@
       "dashes": false,
       "datasource": "${DS_POGODB}",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "fill": 1,
@@ -236,7 +232,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.0",
+      "pluginVersion": "7.5.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -329,9 +325,7 @@
       "dashes": false,
       "datasource": "${DS_POGODB}",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "fill": 1,
@@ -360,7 +354,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.0",
+      "pluginVersion": "7.5.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -448,7 +442,7 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_POGODB}",
-        "definition": "select RPL from stats_area;",
+        "definition": "select distinct(RPL) from stats_area;",
         "description": null,
         "error": null,
         "hide": 0,
@@ -457,7 +451,7 @@
         "multi": false,
         "name": "RPL",
         "options": [],
-        "query": "select RPL from stats_area;",
+        "query": "select distinct(RPL) from stats_area;",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -478,5 +472,5 @@
   "timezone": "",
   "title": "05. Stats Unfenced",
   "uid": "Pi-mGhwGz",
-  "version": 7
+  "version": 8
 }

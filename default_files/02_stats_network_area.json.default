@@ -14,7 +14,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "7.4.0"
+      "version": "7.5.2"
     },
     {
       "type": "panel",
@@ -46,7 +46,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1616357484725,
+  "iteration": 1618533547224,
   "links": [],
   "panels": [
     {
@@ -58,9 +58,7 @@
       "dashes": false,
       "datasource": "${DS_POGODB}",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "fill": 1,
@@ -89,7 +87,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.0",
+      "pluginVersion": "7.5.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -240,9 +238,7 @@
       "dashes": false,
       "datasource": "${DS_POGODB}",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "fill": 1,
@@ -271,7 +267,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.0",
+      "pluginVersion": "7.5.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -391,9 +387,7 @@
       "dashes": false,
       "datasource": "${DS_POGODB}",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "fill": 1,
@@ -422,7 +416,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.0",
+      "pluginVersion": "7.5.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -508,9 +502,7 @@
       "dashes": false,
       "datasource": "${DS_POGODB}",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "fill": 1,
@@ -539,7 +531,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.0",
+      "pluginVersion": "7.5.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -629,9 +621,7 @@
       "dashes": false,
       "datasource": "${DS_POGODB}",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "fill": 1,
@@ -660,7 +650,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.0",
+      "pluginVersion": "7.5.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -755,9 +745,7 @@
       "dashes": false,
       "datasource": "${DS_POGODB}",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "fill": 1,
@@ -786,7 +774,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.0",
+      "pluginVersion": "7.5.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -872,9 +860,7 @@
       "dashes": false,
       "datasource": "${DS_POGODB}",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "fill": 1,
@@ -903,7 +889,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.0",
+      "pluginVersion": "7.5.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -996,9 +982,7 @@
       "dashes": false,
       "datasource": "${DS_POGODB}",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "fill": 1,
@@ -1027,7 +1011,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.0",
+      "pluginVersion": "7.5.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1169,9 +1153,7 @@
       "dashes": false,
       "datasource": "${DS_POGODB}",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "fill": 1,
@@ -1200,7 +1182,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.0",
+      "pluginVersion": "7.5.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1315,9 +1297,7 @@
       "dashes": false,
       "datasource": "${DS_POGODB}",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "fill": 1,
@@ -1346,7 +1326,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.0",
+      "pluginVersion": "7.5.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1432,9 +1412,7 @@
       "dashes": false,
       "datasource": "${DS_POGODB}",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "fill": 1,
@@ -1463,7 +1441,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.0",
+      "pluginVersion": "7.5.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1547,9 +1525,7 @@
       "dashes": false,
       "datasource": "${DS_POGODB}",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "fill": 1,
@@ -1578,7 +1554,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.0",
+      "pluginVersion": "7.5.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1675,7 +1651,7 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_POGODB}",
-        "definition": "select RPL from stats_area;",
+        "definition": "select distinct(RPL) from stats_area;",
         "description": null,
         "error": null,
         "hide": 0,
@@ -1684,7 +1660,7 @@
         "multi": false,
         "name": "RPL",
         "options": [],
-        "query": "select RPL from stats_area;",
+        "query": "select distinct(RPL) from stats_area;",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -1699,7 +1675,7 @@
         "allValue": "",
         "current": {},
         "datasource": "${DS_POGODB}",
-        "definition": "select substring_index(Area,'_',1) from stats_area where Area <>'Unfenced';",
+        "definition": "select distinct(substring_index(Area,'_',1)) from stats_area where Area <>'Unfenced';",
         "description": null,
         "error": null,
         "hide": 0,
@@ -1708,7 +1684,7 @@
         "multi": false,
         "name": "Area",
         "options": [],
-        "query": "select substring_index(Area,'_',1) from stats_area where Area <>'Unfenced';",
+        "query": "select distinct(substring_index(Area,'_',1)) from stats_area where Area <>'Unfenced';",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -1723,7 +1699,7 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_POGODB}",
-        "definition": "select Fence from stats_area where Fence <> 'Unfenced';",
+        "definition": "select distinct(Fence) from stats_area where Fence <> 'Unfenced';",
         "description": null,
         "error": null,
         "hide": 0,
@@ -1732,7 +1708,7 @@
         "multi": true,
         "name": "Fence",
         "options": [],
-        "query": "select Fence from stats_area where Fence <> 'Unfenced';",
+        "query": "select distinct(Fence) from stats_area where Fence <> 'Unfenced';",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -1766,5 +1742,5 @@
   "timezone": "",
   "title": "02. Stats network/area level",
   "uid": "KY-d_hOMz",
-  "version": 54
+  "version": 55
 }
