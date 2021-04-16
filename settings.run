@@ -32,14 +32,14 @@ fi
 # Check collation on stats_worker
 if [ -z "$SQL_password" ]
   then
-  V1_check1=$(mysql $STATS_DB -h$DB_IP -P$DB_PORT -u$SQL_user -N -se "SELECT count(*) FROM INFORMATION_SCHEMA.TABLES WHERE table_schema = '$STATS_DB' and table_name = 'stats_worker' and table_collation $
+  V1_check1=$(mysql $STATS_DB -h$DB_IP -P$DB_PORT -u$SQL_user -N -se "SELECT count(*) FROM INFORMATION_SCHEMA.TABLES WHERE table_schema = '$STATS_DB' and table_name = 'stats_worker' and table_collation = 'utf8mb4_unicode_ci';")
   else
   V1_check1=$(mysql $STATS_DB -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password -N -se "SELECT count(*) FROM INFORMATION_SCHEMA.TABLES WHERE table_schema = '$STATS_DB' and table_name = 'stats_worker' and table_collation = 'utf8mb4_unicode_ci';")
 fi
 # Check if column Area exists in stats_worker
 if [ -z "$SQL_password" ]
   then
-  V1_check2=$(mysql $STATS_DB -h$DB_IP -P$DB_PORT -u$SQL_user -N -se "SELECT count(*) FROM INFORMATION_SCHEMA.COLUMNS where table_schema = '$STATS_DB' and table_name = 'stats_worker' and column_name = '$
+  V1_check2=$(mysql $STATS_DB -h$DB_IP -P$DB_PORT -u$SQL_user -N -se "SELECT count(*) FROM INFORMATION_SCHEMA.COLUMNS where table_schema = '$STATS_DB' and table_name = 'stats_worker' and column_name = 'Area';")
   else
   V1_check2=$(mysql $STATS_DB -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password -N -se "SELECT count(*) FROM INFORMATION_SCHEMA.COLUMNS where table_schema = '$STATS_DB' and table_name = 'stats_worker' and column_name = 'Area';")
 fi
