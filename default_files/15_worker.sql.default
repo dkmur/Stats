@@ -130,8 +130,8 @@ Create TEMPORARY TABLE rmdb.tmp44
 AS(
 select
 c.name as worker,
-a.globalrestartcount-b.ResTot as Res,
-a.globalrebootcount-b.RebTot as Reb,
+IF(a.globalrestartcount-b.ResTot<0,0,a.globalrestartcount-b.ResTot) as Res,
+IF(a.globalrebootcount-b.RebTot<0,0,a.globalrebootcount-b.RebTot) as Reb,
 a.globalrestartcount as ResTot,
 a.globalrebootcount as RebTot
 from rmdb.trs_status a
