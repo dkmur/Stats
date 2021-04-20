@@ -11,9 +11,16 @@ else
         echo ""
 	echo "Start recalculation Quest routes for instance 1"
 
-        query(){
-        mysql  -u$DB_user -p$DB_pass -NB -h$DB_IP -P$DB_PORT $MAD_db -e "$1;"
-        }
+        if [ -z "$SQL_password" ]
+        then
+          query(){
+          mysql  -h$DB_IP -P$DB_PORT -u$SQL_user $MAD_DB -NB -e "$1;"
+          }
+        else
+          query(){
+          mysql  -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $MAD_DB -NB -e "$1;"
+          }
+        fi
         while read -r area_id _ ;do
 	echo Recalculating area_id: $area_id
 	curl -s -u $MADmin_username_1:$MADmin_password_1 -H 'Content-Type: application/json-rpc' -d '{"call": "recalculate"}' $MAD_url_1/api/area/$area_id
@@ -31,9 +38,16 @@ else
         echo ""
         echo "Start recalculation Quest routes for instance 2"
 
-        query(){
-        mysql  -u$DB_user -p$DB_pass -NB -h$DB_IP -P$DB_PORT $MAD_db -e "$1;"
-        }
+        if [ -z "$SQL_password" ]
+        then
+          query(){
+          mysql  -h$DB_IP -P$DB_PORT -u$SQL_user $MAD_DB -NB -e "$1;"
+          }
+        else
+          query(){
+          mysql  -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $MAD_DB -NB -e "$1;"
+          }
+        fi
         while read -r area_id _ ;do
         echo Recalculating area_id: $area_id
         curl -s -u $MADmin_username_2:$MADmin_password_2 -H 'Content-Type: application/json-rpc' -d '{"call": "recalculate"}' $MAD_url_2/api/area/$area_id
@@ -51,9 +65,16 @@ else
         echo ""
         echo "Start recalculation Quest routes for instance 3"
 
-        query(){
-        mysql  -u$DB_user -p$DB_pass -NB -h$DB_IP -P$DB_PORT $MAD_db -e "$1;"
-        }
+        if [ -z "$SQL_password" ]
+        then
+          query(){
+          mysql  -h$DB_IP -P$DB_PORT -u$SQL_user $MAD_DB -NB -e "$1;"
+          }
+        else
+          query(){
+          mysql  -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $MAD_DB -NB -e "$1;"
+          }
+        fi
         while read -r area_id _ ;do
         echo Recalculating area_id: $area_id
         curl -s -u $MADmin_username_3:$MADmin_password_3 -H 'Content-Type: application/json-rpc' -d '{"call": "recalculate"}' $MAD_url_3/api/area/$area_id
@@ -71,9 +92,16 @@ else
         echo ""
         echo "Start recalculation Quest routes for instance 4"
 
-        query(){
-        mysql  -u$DB_user -p$DB_pass -NB -h$DB_IP -P$DB_PORT $MAD_db -e "$1;"
-        }
+        if [ -z "$SQL_password" ]
+        then
+          query(){
+          mysql  -h$DB_IP -P$DB_PORT -u$SQL_user $MAD_DB -NB -e "$1;"
+          }
+        else
+          query(){
+          mysql  -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $MAD_DB -NB -e "$1;"
+          }
+        fi
         while read -r area_id _ ;do
         echo Recalculating area_id: $area_id
         curl -s -u $MADmin_username_4:$MADmin_password_4 -H 'Content-Type: application/json-rpc' -d '{"call": "recalculate"}' $MAD_url_4/api/area/$area_id
@@ -91,9 +119,16 @@ else
         echo ""
         echo "Start recalculation Quest routes for instance 5"
 
-        query(){
-        mysql  -u$DB_user -p$DB_pass -NB -h$DB_IP -P$DB_PORT $MAD_db -e "$1;"
-        }
+        if [ -z "$SQL_password" ]
+        then
+          query(){
+          mysql  -h$DB_IP -P$DB_PORT -u$SQL_user $MAD_DB -NB -e "$1;"
+          }
+        else
+          query(){
+          mysql  -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $MAD_DB -NB -e "$1;"
+          }
+        fi
         while read -r area_id _ ;do
         echo Recalculating area_id: $area_id
         curl -s -u $MADmin_username_5:$MADmin_password_5 -H 'Content-Type: application/json-rpc' -d '{"call": "recalculate"}' $MAD_url_5/api/area/$area_id
