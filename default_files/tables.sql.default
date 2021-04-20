@@ -210,7 +210,7 @@ CREATE TABLE IF NOT EXISTS `ATVdetails` (
   `PD_default_mappging_mode` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `PD_switch_setenforce` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `PD_post_destination_raw` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `PD_session_id` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `PD_session_id` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `PD_libfilename` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `PD_latest_version_known` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `PD_disable_pogo_freeze_detection` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -250,6 +250,9 @@ ALTER TABLE `stats_worker`
 ADD COLUMN IF NOT EXISTS `locReports` int(11) DEFAULT NULL AFTER `WkSt`,
 ADD COLUMN IF NOT EXISTS `locationsMultiReport` int(11) DEFAULT NULL AFTER `locReports`;
 
+ALTER TABLE ATVdetails
+CHANGE COLUMN IF EXISTS `PD_session_id` `PD_session_id` text;
+
 -- update version
 INSERT IGNORE INTO version values ('stats',2);
-UPDATE version set version = 2;
+UPDATE version set version = 3;
