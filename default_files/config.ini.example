@@ -43,7 +43,7 @@ MADmin_password_5=
 MAD_path_5=
 
 ## Stats ##
-PATH_TO_STATS=/home/dkmur/temp/Stats/
+PATH_TO_STATS=/home/dkmur/temp/Stats/                   # do not forget the trailing /
 DEFINED_SCAN_AREAS='Amsterdam, London, Paris'		# only used for visualisation in Stats menu, not used for Grafana
 DEFAULT_AREA=London					# Default area to be used for Stats sql queries, not used for Grafana
 
