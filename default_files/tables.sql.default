@@ -125,6 +125,9 @@ CREATE TABLE IF NOT EXISTS `pokemon_history` (
   `last_modified` datetime DEFAULT NULL,
   `is_shiny` tinyint(1) DEFAULT NULL,
   `first_scanned` datetime DEFAULT utc_timestamp(),
+  `fort_id` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `cell_id` bigint(20) unsigned DEFAULT NULL,
+  `seen_type` enum('wild', 'encounter', 'nearby_stop', 'nearby_cell', 'lure_wild', 'lure_encounter'),
   PRIMARY KEY (`encounter_id`),
   KEY `pokemon_history_frist_scanned` (`first_scanned`),
   KEY `pokemon_history_spawnpoint_id` (`spawnpoint_id`),
@@ -161,6 +164,9 @@ CREATE TABLE IF NOT EXISTS `pokemon_history_temp` (
   `last_modified` datetime DEFAULT NULL,
   `is_shiny` tinyint(1) DEFAULT NULL,
   `first_scanned` datetime NOT NULL DEFAULT current_timestamp(),
+  `fort_id` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `cell_id` bigint(20) unsigned DEFAULT NULL,
+  `seen_type` enum('wild', 'encounter', 'nearby_stop', 'nearby_cell', 'lure_wild', 'lure_encounter'),
   PRIMARY KEY (`encounter_id`),
   KEY `pokemon_history_temp_spawnpoint_id` (`spawnpoint_id`),
   KEY `pokemon_history_temp_latitude` (`latitude`),
@@ -253,6 +259,16 @@ ADD COLUMN IF NOT EXISTS `locationsMultiReport` int(11) DEFAULT NULL AFTER `locR
 ALTER TABLE ATVdetails
 CHANGE COLUMN IF EXISTS `PD_session_id` `PD_session_id` text;
 
+ALTER TABLE pokemon_history
+ADD COLUMN IF NOT EXISTS `fort_id` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `first_scanned`,
+ADD COLUMN IF NOT EXISTS `cell_id` bigint(20) unsigned DEFAULT NULL AFTER `fort_id`,
+ADD COLUMN IF NOT EXISTS `seen_type` enum('wild', 'encounter', 'nearby_stop', 'nearby_cell', 'lure_wild', 'lure_encounter') AFTER `cell_id`;
+
+ALTER TABLE pokemon_history_temp
+ADD COLUMN IF NOT EXISTS `fort_id` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `first_scanned`,
+ADD COLUMN IF NOT EXISTS `cell_id` bigint(20) unsigned DEFAULT NULL AFTER `fort_id`,
+ADD COLUMN IF NOT EXISTS `seen_type` enum('wild', 'encounter', 'nearby_stop', 'nearby_cell', 'lure_wild', 'lure_encounter') AFTER `cell_id`;
+
 -- update version
 INSERT IGNORE INTO version values ('stats',2);
-UPDATE version set version = 3;
+UPDATE version set version = 4;

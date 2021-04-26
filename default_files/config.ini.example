@@ -57,6 +57,9 @@ atvdetails=true						# true/false: get cpu temperature, sw versions and RGC/PD s
 atvdetails_hours=24					# execute download atvdetails every X hours, default 24 => daily
 job_wait=2m						# wait time for jobs to finish i.e. 2m or 300s
 
+## MAD settings ##
+do_nearby_scans=false					# true/false: MAD config option do_nearby_scans enabled?
+
 ## Grafana ##
 DataSource_stats=pogodb
 DataSource_MAD=rmdb
