@@ -27,3 +27,18 @@ CREATE PROCEDURE rmdb.pokemon_cleanup()
  END;  
 //
 DELIMITER ;
+
+DROP PROCEDURE IF EXISTS rmdb.detect_seen_cleanup;
+DELIMITER //
+CREATE PROCEDURE rmdb.detect_seen_cleanup()
+ BEGIN
+  DECLARE RowCount INT;
+  SET RowCount = (SELECT count(encounter_id) FROM rmdb.trs_stats_detect_seen_type WHERE encounter_id not in (SELECT encounter_id FROM rmdb.pokemon));
+   WHILE RowCount > 0 DO
+   DELETE FROM rmdb.trs_stats_detect_seen_type WHERE encounter_id not in (SELECT encounter_id FROM rmdb.pokemon);
+   SET RowCount = RowCount - 25000;
+   SELECT SLEEP(1);
+   END WHILE;
+ END;  
+//
+DELIMITER ;

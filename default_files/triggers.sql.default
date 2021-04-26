@@ -32,3 +32,18 @@ pogodb.pokemon_history_temp.seen_type=new.seen_type
 where
 pogodb.pokemon_history_temp.encounter_id=new.encounter_id
 ;
+
+DROP TRIGGER IF EXISTS seen_data_append;
+CREATE TRIGGER seen_data_append
+after insert, update
+on trs_stats_detect_seen_type for each row
+update pogodb.pokemon_history_temp set
+pogodb.pokemon_history_temp.encounter=new.encounter
+pogodb.pokemon_history_temp.wild=new.wild
+pogodb.pokemon_history_temp.nearby_stop=new.nearby_stop
+pogodb.pokemon_history_temp.nearby_cell=new.nearby_cell
+pogodb.pokemon_history_temp.lure_encounter=new.lure_encounter
+pogodb.pokemon_history_temp.lure_wild=new.lure_wild
+where
+pogodb.pokemon_history_temp.encounter_id=new.encounter_id
+;
