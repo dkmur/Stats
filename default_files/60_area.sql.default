@@ -1,7 +1,6 @@
 set collation_connection = 'utf8mb4_unicode_ci';
 SET SESSION tx_isolation = 'READ-UNCOMMITTED';
 -- Settings
-
 select @Start := concat(date(now() - interval 60 minute),' ', SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 60 minute)) DIV 3600) * 3600));
 select @Stop := concat(date(now() - interval 0 minute),' ', SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 0 minute)) DIV 3600) * 3600));
 select @RPL := '60';
@@ -50,6 +49,27 @@ pogodb.stats_area.Fence = @Fence_name and
 pogodb.stats_area.RPL = @RPL and
 pogodb.stats_area.Datetime = @Start
 ;
+
+-- update detect_seen data
+update pogodb.stats_area
+set
+numWi_En = (select count(spawnpoint_id) from rmdb.tmp50 where encounter >= wild + interval 15 second),
+timeWi_En = (select sum(timestampdiff(second,wild,encounter)) from rmdb.tmp50 where encounter >= wild + interval 15 second),
+numNeSp_Wi = (select count(spawnpoint_id) from rmdb.tmp50 where wild >= nearby_stop + interval 15 second),
+timeNeSp_Wi = (select sum(timestampdiff(second,nearby_stop,wild)) from rmdb.tmp50 where wild >= nearby_stop + interval 15 second),
+numNeSp_En = (select count(spawnpoint_id) from rmdb.tmp50 where encounter >= nearby_stop + interval 15 second),
+timeNeSp_En = (select sum(timestampdiff(second,nearby_stop,encounter)) from rmdb.tmp50 where encounter >= nearby_stop + interval 15 second),
+numNeCl_Wi = (select count(spawnpoint_id) from rmdb.tmp50 where wild >= nearby_cell + interval 15 second),
+timeNeCl_Wi = (select sum(timestampdiff(second,nearby_cell,wild)) from rmdb.tmp50 where wild >= nearby_cell + interval 15 second),
+numNeCl_En = (select count(spawnpoint_id) from rmdb.tmp50 where encounter >= nearby_cell + interval 15 second),
+timeNeCl_En = (select sum(timestampdiff(second,nearby_cell,encounter)) from rmdb.tmp50 where encounter >= nearby_cell + interval 15 second)
+where
+pogodb.stats_area.Area = @Area and
+pogodb.stats_area.Fence = @Fence_name and
+pogodb.stats_area.RPL = @RPL and
+pogodb.stats_area.Datetime = @Start
+;
+
 
 -- update spawnpoint data
 update pogodb.stats_area

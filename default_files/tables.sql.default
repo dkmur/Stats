@@ -52,6 +52,16 @@ CREATE TABLE IF NOT EXISTS `stats_area` (
   `Last_scanned_2d` int(6) DEFAULT NULL,
   `Last_scanned_3d` int(6) DEFAULT NULL,
   `Last_scanned_7dp` int(6) DEFAULT NULL,
+  `numWi_En` int(6) DEFAULT NULL,
+  `timeWi_En` int(6) DEFAULT NULL,
+  `numNeSp_Wi` int(6) DEFAULT NULL,
+  `timeNeSp_Wi` int(6) DEFAULT NULL,
+  `numNeSp_En` int(6) DEFAULT NULL,
+  `timeNeSp_En` int(6) DEFAULT NULL,
+  `numNeCl_Wi` int(6) DEFAULT NULL,
+  `timeNeCl_Wi` int(6) DEFAULT NULL,
+  `numNeCl_En` int(6) DEFAULT NULL,
+  `timeNeCl_En` int(6) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `stats_area_Datetime` (`Datetime`),
   KEY `stats_area_RPL` (`RPL`),
@@ -268,6 +278,18 @@ CREATE TABLE IF NOT EXISTS `version` (
 
 ALTER TABLE `spawn_unused`
 ADD COLUMN IF NOT EXISTS `eventid` int(11) NOT NULL DEFAULT 1 AFTER `calc_endminsec`;
+
+ALTER TABLE `stats_area`
+ADD COLUMN IF NOT EXISTS `numWi_En` int(6) DEFAULT NULL,
+ADD COLUMN IF NOT EXISTS `timeWi_En` int(6) DEFAULT NULL,
+ADD COLUMN IF NOT EXISTS `numNeSp_Wi` int(6) DEFAULT NULL,
+ADD COLUMN IF NOT EXISTS `timeNeSp_Wi` int(6) DEFAULT NULL,
+ADD COLUMN IF NOT EXISTS `numNeSp_En` int(6) DEFAULT NULL,
+ADD COLUMN IF NOT EXISTS `timeNeSp_En` int(6) DEFAULT NULL,
+ADD COLUMN IF NOT EXISTS `numNeCl_Wi` int(6) DEFAULT NULL,
+ADD COLUMN IF NOT EXISTS `timeNeCl_Wi` int(6) DEFAULT NULL,
+ADD COLUMN IF NOT EXISTS `numNeCl_En` int(6) DEFAULT NULL,
+ADD COLUMN IF NOT EXISTS `timeNeCl_En` int(6) DEFAULT NULL;
 
 ALTER TABLE `stats_worker`
 ADD COLUMN IF NOT EXISTS `locReports` int(11) DEFAULT NULL AFTER `WkSt`,
