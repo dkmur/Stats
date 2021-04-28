@@ -136,6 +136,8 @@ CREATE TABLE IF NOT EXISTS `pokemon_history` (
   `lure_wild` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`encounter_id`),
   KEY `pokemon_history_frist_scanned` (`first_scanned`),
+  KEY `pokemon_history_encounter` (`encounter`),
+  KEY `pokemon_history_wild` (`wild`),
   KEY `pokemon_history_spawnpoint_id` (`spawnpoint_id`),
   KEY `pokemon_history_latitude` (`latitude`),
   KEY `pokemon_history_longitude` (`longitude`),
@@ -180,6 +182,9 @@ CREATE TABLE IF NOT EXISTS `pokemon_history_temp` (
   `lure_encounter` datetime NULL DEFAULT NULL,
   `lure_wild` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`encounter_id`),
+  KEY `pokemon_history_temp_first_scanned` (`first_scanned`),
+  KEY `pokemon_history_temp_encounter` (`encounter`),
+  KEY `pokemon_history_temp_wild` (`wild`),
   KEY `pokemon_history_temp_spawnpoint_id` (`spawnpoint_id`),
   KEY `pokemon_history_temp_latitude` (`latitude`),
   KEY `pokemon_history_temp_longitude` (`longitude`),
@@ -280,7 +285,9 @@ ADD COLUMN IF NOT EXISTS `wild` datetime NULL DEFAULT NULL AFTER `encounter`,
 ADD COLUMN IF NOT EXISTS `nearby_stop` datetime NULL DEFAULT NULL AFTER `wild`,
 ADD COLUMN IF NOT EXISTS `nearby_cell` datetime NULL DEFAULT NULL AFTER `nearby_stop`,
 ADD COLUMN IF NOT EXISTS `lure_encounter` datetime NULL DEFAULT NULL AFTER `nearby_cell`,
-ADD COLUMN IF NOT EXISTS `lure_wild` datetime NULL DEFAULT NULL AFTER `lure_encounter`;
+ADD COLUMN IF NOT EXISTS `lure_wild` datetime NULL DEFAULT NULL AFTER `lure_encounter`,
+ADD KEY IF NOT EXISTS `pokemon_history_encounter` (`encounter`),
+ADD KEY IF NOT EXISTS `pokemon_history_wild` (`wild`);
 
 ALTER TABLE pokemon_history_temp
 ADD COLUMN IF NOT EXISTS `fort_id` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `first_scanned`,
@@ -291,7 +298,10 @@ ADD COLUMN IF NOT EXISTS `wild` datetime NULL DEFAULT NULL AFTER `encounter`,
 ADD COLUMN IF NOT EXISTS `nearby_stop` datetime NULL DEFAULT NULL AFTER `wild`,
 ADD COLUMN IF NOT EXISTS `nearby_cell` datetime NULL DEFAULT NULL AFTER `nearby_stop`,
 ADD COLUMN IF NOT EXISTS `lure_encounter` datetime NULL DEFAULT NULL AFTER `nearby_cell`,
-ADD COLUMN IF NOT EXISTS `lure_wild` datetime NULL DEFAULT NULL AFTER `lure_encounter`;
+ADD COLUMN IF NOT EXISTS `lure_wild` datetime NULL DEFAULT NULL AFTER `lure_encounter`,
+ADD KEY IF NOT EXISTS `pokemon_history_temp_first_scanned` (`first_scanned`),
+ADD KEY IF NOT EXISTS `pokemon_history_temp_encounter` (`encounter`),
+ADD KEY IF NOT EXISTS `pokemon_history_temp_wild` (`wild`);
 
 -- update version
 INSERT IGNORE INTO version values ('stats',2);
