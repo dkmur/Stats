@@ -327,4 +327,4 @@ ADD KEY IF NOT EXISTS `pokemon_history_temp_wild` (`wild`);
 
 -- update version
 INSERT IGNORE INTO version values ('stats',2);
-UPDATE version set version = 5;
+UPDATE version set version = 5 where version.key = 'stats';
