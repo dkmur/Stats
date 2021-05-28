@@ -142,3 +142,14 @@ mysql -h$DB_IP -P$DB_PORT -u$SQL_user $MAD_DB -e "delete from gym where last_sca
 else
 mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $MAD_DB -e "delete from gym where last_scanned < curdate() - interval $gym_not_scanned_days day; delete from gymdetails where gym_id not in (select gym_id from gym);"
 fi
+
+# MAD log aggregation
+if "$madlog"
+then
+  if [ -z "$SQL_password" ]
+  then
+    mysql -h$DB_IP -P$DB_PORT -u$SQL_user $STATS_DB < $PATH_TO_STATS/cron_files/madlog1440.sql
+  else
+    mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB < $PATH_TO_STATS/cron_files/madlog1440.sql
+  fi
+fi

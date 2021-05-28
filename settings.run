@@ -381,6 +381,8 @@ cp $PATH_TO_STATS/default_files/1440_worker.sql.default $PATH_TO_STATS/cron_file
 cp $PATH_TO_STATS/default_files/10080_worker.sql.default $PATH_TO_STATS/cron_files/10080_worker.sql
 cp $PATH_TO_STATS/default_files/quest_spawn_cleanup.sql.default $PATH_TO_STATS/cron_files/quest_spawn_cleanup.sql
 cp $PATH_TO_STATS/default_files/all_spawn_cleanup.sql.default $PATH_TO_STATS/cron_files/all_spawn_cleanup.sql
+cp $PATH_TO_STATS/default_files/madlog1440.sql.default $PATH_TO_STATS/cron_files/madlog1440.sql
+cp $PATH_TO_STATS/default_files/madlog10080.sql.default $PATH_TO_STATS/cron_files/madlog10080.sql
 sed -i "s/pogodb/$STATS_DB/g" $PATH_TO_STATS/cron_files/*.sql
 sed -i "s/rmdb/$MAD_DB/g" $PATH_TO_STATS/cron_files/*.sql
 sed -i "s/RPL15/$RPL15/g" $PATH_TO_STATS/cron_files/*.sql
