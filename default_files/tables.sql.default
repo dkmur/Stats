@@ -270,6 +270,65 @@ CREATE TABLE IF NOT EXISTS `ATVdetails` (
   PRIMARY KEY (`datetime`,`origin`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+CREATE TABLE IF NOT EXISTS `error` (
+  `datetime` datetime NOT NULL,
+  `RPL` smallint(6) NOT NULL,
+  `instance` varchar(50) NOT NULL,
+  `errors` INT DEFAULT NULL,
+  `deadlock` INT DEFAULT NULL,
+  `failedPogoStop` INT DEFAULT NULL,
+  `oldConnection` INT DEFAULT NULL,
+  `originTimeout` INT DEFAULT NULL,
+  `wsLost` INT DEFAULT NULL,
+  `killPogoWait` INT DEFAULT NULL,
+  `wokerInitFail` INT DEFAULT NULL,
+  `jobFail` INT DEFAULT NULL,
+  `killInjection` INT DEFAULT NULL,
+  `killSleep` INT DEFAULT NULL,
+  `python` INT DEFAULT NULL,
+  `noItemDelete` INT DEFAULT NULL,
+  PRIMARY KEY (`datetime`),
+  KEY `error_RPL` (`RPL`),
+  KEY `error_instance` (`instance`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `warning` (
+  `datetime` datetime NOT NULL,
+  `RPL` smallint(6) NOT NULL,
+  `instance` varchar(50) NOT NULL,
+  `warns` INT DEFAULT NULL,
+  `failedData` INT DEFAULT NULL,
+  `manyTimeOut` INT DEFAULT NULL,
+  `fallingBehind` INT DEFAULT NULL,
+  `maxFalling` INT DEFAULT NULL,
+  `frozenScreen` INT DEFAULT NULL,
+  `wsTimeout` INT DEFAULT NULL,
+  `wsConnClosed` INT DEFAULT NULL,
+  `noInject` INT DEFAULT NULL,
+  `noPogoStart` INT DEFAULT NULL,
+  `failedScreenshot` INT DEFAULT NULL,
+  `noPTC` INT DEFAULT NULL,
+  `failedTopApp` INT DEFAULT NULL,
+  `pogoRestartFail` INT DEFAULT NULL,
+  `screenFailure` INT DEFAULT NULL,
+  `failedBoxClear` INT DEFAULT NULL,
+  `itemDelUnknown` INT DEFAULT NULL,
+  `noActiveArea` INT DEFAULT NULL,
+  `noMainScreen` INT DEFAULT NULL,
+  `noLocAccess` INT DEFAULT NULL,
+  `noStopProcess` INT DEFAULT NULL,
+  `failStopOpen` INT DEFAULT NULL,
+  `softban` INT DEFAULT NULL,
+  `questFull` INT DEFAULT NULL,
+  `foundGym` INT DEFAULT NULL,
+  `noWalkerConfig` INT DEFAULT NULL,
+  `noStop` INT DEFAULT NULL,
+  `dupMac` INT DEFAULT NULL,
+  PRIMARY KEY (`datetime`),
+  KEY `warning_RPL` (`RPL`),
+  KEY `error_instance` (`instance`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 CREATE TABLE IF NOT EXISTS `version` (
   `key` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `version` smallint(6) NOT NULL,
@@ -327,4 +386,4 @@ ADD KEY IF NOT EXISTS `pokemon_history_temp_wild` (`wild`);
 
 -- update version
 INSERT IGNORE INTO version values ('stats',2);
-UPDATE version set version = 5 where version.key = 'stats';
+UPDATE version set version = 6 where version.key = 'stats';

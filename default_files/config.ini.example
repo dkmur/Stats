@@ -6,7 +6,7 @@ DB_PORT=3306
 MAD_DB=rmdb
 STATS_DB=pogodb
 
-## MADmin settings, for quest recalc and getting ATV settings##
+## MADmin settings ##
 # MAD instance 1
 MAD_instance_name_1=MAD
 MAD_url_1=http://localhost:5000
@@ -57,8 +57,10 @@ atvdetails=true						# true/false: get cpu temperature, sw versions and RGC/PD s
 atvdetails_hours=24					# execute download atvdetails every X hours, default 24 => daily
 job_wait=2m						# wait time for jobs to finish i.e. 2m or 300s
 
-## MAD settings ##
-do_nearby_scans=false					# true/false: MAD config option do_nearby_scans enabled?
+## MAD log processing ##
+madlog=false						# true/false: to process MAD logs hourly and store into DB. MAD logging needs to be set as:
+							# log_filename: <SN>-%Y-%m-%d.log
+							# log_file_rotation: 00:01
 
 ## Grafana ##
 DataSource_stats=pogodb
