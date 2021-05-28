@@ -131,5 +131,299 @@ else
     mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB -e "INSERT IGNORE INTO error (datetime,RPL,instance,errors,deadlock,failedPogoStop,oldConnection,originTimeout,wsLost,killPogoWait,wokerInitFail,jobFail,killInjection,killSleep,python,noItemDelete) VALUES ('$process_hour','60','$MAD_instance_name_1','$errors','$deadlock','$failedPogoStop','$oldConnection','$originTimeout','$wsLost','$killPogoWait','$wokerInitFail','$jobFail','$killInjection','$killSleep','$python','$noItemDelete');"
     mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB -e "INSERT IGNORE INTO warning (datetime,RPL,instance,warns,failedData,manyTimeOut,fallingBehind,maxFalling,frozenScreen,wsTimeout,wsConnClosed,noInject,noPogoStart,failedScreenshot,noPTC,failedTopApp,pogoRestartFail,screenFailure,failedBoxClear,itemDelUnknown,noActiveArea,noMainScreen,noLocAccess,noStopProcess,failStopOpen,softban,questFull,foundGym,noWalkerConfig,noStop,dupMac) VALUES ('$process_hour','60','$MAD_instance_name_1','$warns','$failedData','$manyTimeOut','$fallingBehind','$maxFalling','$frozenScreen','$wsTimeout','$wsConnClosed','$noInject','$noPogoStart','$failedScreenshot','$noPTC','$failedTopApp','$pogoRestartFail','$screenFailure','$failedBoxClear','$itemDelUnknown','$noActiveArea','$noMainScreen','$noLocAccess','$noStopProcess','$failStopOpen','$softban','$questFull','$foundGym','$noWalkerConfig','$noStop','$dupMac');"
   fi
-
 fi
+
+## update db for instance 2
+if [ -z "$MAD_path_2" ]
+then
+  echo ""
+  echo "No 2nd instance defined"
+else
+  echo "Processing MAD logs for $MAD_instance_name_2"
+  echo ""
+  mkdir -p $folder/tmp
+  grep "$interval" $MAD_path_2/logs/$MAD_instance_name_2-$process_date.log > $folder/tmp/$MAD_instance_name_2.log
+#  echo "Errors"
+  errors="$(grep -w \[E\] $folder/tmp/$MAD_instance_name_2.log | grep -v 'Error while getting response from device - Reason' | wc -l)"
+  deadlock="$(grep -w \[E\] $folder/tmp/$MAD_instance_name_2.log | grep -v 'Error while getting response from device - Reason' | grep 'Deadlock found' | wc -l)"
+  failedPogoStop="$(grep \[E\] $folder/tmp/$MAD_instance_name_2.log | grep -v 'Error while getting response from device - Reason' | grep 'Failed stopping com.nianticlabs.pokemongo' | wc -l)"
+  oldConnection="$(grep \[E\] $folder/tmp/$MAD_instance_name_2.log | grep -v 'Error while getting response from device - Reason' | grep 'Old connection open while a new one is attempted to be established' | wc -l)"
+  originTimeout="$(grep \[E\] $folder/tmp/$MAD_instance_name_2.log | grep -v 'Error while getting response from device - Reason' | grep '5 consecutive timeouts or origin'  | wc -l)"
+  wsLost="$(grep \[E\] $folder/tmp/$MAD_instance_name_2.log | grep -v 'Error while getting response from device - Reason' | grep 'Websocket connection to'  | wc -l)"
+  killPogoWait="$(grep \[E\] $folder/tmp/$MAD_instance_name_2.log | grep -v 'Error while getting response from device - Reason' | grep 'Killed while waiting for pogo start'  | wc -l)"
+  wokerInitFail="$(grep \[E\] $folder/tmp/$MAD_instance_name_2.log | grep -v 'Error while getting response from device - Reason' | grep 'Failed initializing worker'  | wc -l)"
+  jobFail="$(grep \[E\] $folder/tmp/$MAD_instance_name_2.log | grep -v 'Error while getting response from device - Reason' | grep -i 'Job jobType'  | wc -l)"
+  killInjection="$(grep \[E\] $folder/tmp/$MAD_instance_name_2.log | grep -v 'Error while getting response from device - Reason' | grep 'Killed while waiting for injection'  | wc -l)"
+  killSleep="$(grep \[E\] $folder/tmp/$MAD_instance_name_2.log | grep -v 'Error while getting response from device - Reason' | grep 'killed while sleeping'  | wc -l)"
+  python="$(grep 'Traceback (most recent call last)' $folder/tmp/$MAD_instance_name_2.log |  wc -l)"
+  noItemDelete="$(grep \[E\] $folder/tmp/$MAD_instance_name_2.log | grep -v 'Error while getting response from device - Reason' | grep 'Unable to delete any items'  | wc -l)"
+
+#  echo "Warnings"
+  warns="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_2.log | wc -l)"
+  failedData="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_2.log | grep 'Worker failed to retrieve proper data' | wc -l)"
+  manyTimeOut="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_2.log | grep 'Too many timeouts' | wc -l)"
+  fallingBehind="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_2.log | grep 'falling behind' | wc -l)"
+  if (( $fallingBehind > 0 ))
+  then
+    maxFalling="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_2.log | grep 'falling behind' | awk '{print ($NF)}' | jq -s max)"
+  else
+    maxFalling=0
+  fi
+  frozenScreen="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_2.log | grep 'Screen is frozen' | wc -l)"
+  wsTimeout="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_2.log | grep 'Timeout, increasing timeout-counter' | wc -l)"
+  wsConnClosed="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_2.log | grep 'Connection' | grep 'closed' | wc -l)"
+  noInject="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_2.log | grep 'Not injected in time - reboot' | wc -l)"
+  noPogoStart="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_2.log | grep 'Failed restarting PoGo - reboot device' | wc -l)"
+  failedScreenshot="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_2.log | grep 'Failed retrieving screenshot' | wc -l)"
+  noPTC="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_2.log | grep 'No PTC Accounts' | wc -l)"
+  failedTopApp="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_2.log | grep 'Failed getting the topmost app' | wc -l)"
+  pogoRestartFail="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_2.log | grep 'Restarting PoGo failed - reboot device' | wc -l)"
+  screenFailure="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_2.log | grep 'Something wrong with screendetection or pogo failure screen' | wc -l)"
+  failedBoxClear="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_2.log | grep 'Failed clearing box' | wc -l)"
+  itemDelUnknown="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_2.log | grep 'Deletion not confirmed' | wc -l)"
+  noActiveArea="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_2.log | grep 'Cannot find any active area defined for current time' | wc -l)"
+  noMainScreen="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_2.log | grep 'Could not get to Mainscreen' | wc -l)"
+  noLocAccess="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_2.log | grep 'has not accessed a location in 300 seconds' | wc -l)"
+  noStopProcess="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_2.log | grep 'has not been processed thrice in a row' | wc -l)"
+  failStopOpen="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_2.log | grep 'Giving up on this stop after 3 failures in open_pokestop loop' | wc -l)"
+  softban="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_2.log | grep 'Softban' | wc -l)"
+  questFull="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_2.log | grep 'Failed getting quest but got items' | wc -l)"
+  foundGym="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_2.log | grep 'Tried to open a stop but found a gym instead' | wc -l)"
+  noWalkerConfig="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_2.log | grep 'Failed to find a walker configuration' | wc -l)"
+  noStop="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_2.log | grep 'yielding a spinnable stop - likely not standing exactly on top' | wc -l)"
+  dupMac="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_2.log | grep 'Duplicate MAC') | wc -l)"
+
+
+  echo "Insert $MAD_instance_name_2 data into DB"
+  echo ""
+  if [ -z "$SQL_password" ]
+  then
+    mysql -h$DB_IP -P$DB_PORT -u$SQL_user $STATS_DB -e "INSERT IGNORE INTO error (datetime,RPL,instance,errors,deadlock,failedPogoStop,oldConnection,originTimeout,wsLost,killPogoWait,wokerInitFail,jobFail,killInjection,killSleep,python,noItemDelete) VALUES ('$process_hour','60','$MAD_instance_name_2','$errors','$deadlock','$failedPogoStop','$oldConnection','$originTimeout','$wsLost','$killPogoWait','$wokerInitFail','$jobFail','$killInjection','$killSleep','$python','$noItemDelete');"
+    mysql -h$DB_IP -P$DB_PORT -u$SQL_user $STATS_DB -e "INSERT IGNORE INTO warning (datetime,RPL,instance,warns,failedData,manyTimeOut,fallingBehind,maxFalling,frozenScreen,wsTimeout,wsConnClosed,noInject,noPogoStart,failedScreenshot,noPTC,failedTopApp,pogoRestartFail,screenFailure,failedBoxClear,itemDelUnknown,noActiveArea,noMainScreen,noLocAccess,noStopProcess,failStopOpen,softban,questFull,foundGym,noWalkerConfig,noStop,dupMac) VALUES ('$process_hour','60','$MAD_instance_name_2','$warns','$failedData','$manyTimeOut','$fallingBehind','$maxFalling','$frozenScreen','$wsTimeout','$wsConnClosed','$noInject','$noPogoStart','$failedScreenshot','$noPTC','$failedTopApp','$pogoRestartFail','$screenFailure','$failedBoxClear','$itemDelUnknown','$noActiveArea','$noMainScreen','$noLocAccess','$noStopProcess','$failStopOpen','$softban','$questFull','$foundGym','$noWalkerConfig','$noStop','$dupMac');"
+  else
+    mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB -e "INSERT IGNORE INTO error (datetime,RPL,instance,errors,deadlock,failedPogoStop,oldConnection,originTimeout,wsLost,killPogoWait,wokerInitFail,jobFail,killInjection,killSleep,python,noItemDelete) VALUES ('$process_hour','60','$MAD_instance_name_2','$errors','$deadlock','$failedPogoStop','$oldConnection','$originTimeout','$wsLost','$killPogoWait','$wokerInitFail','$jobFail','$killInjection','$killSleep','$python','$noItemDelete');"
+    mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB -e "INSERT IGNORE INTO warning (datetime,RPL,instance,warns,failedData,manyTimeOut,fallingBehind,maxFalling,frozenScreen,wsTimeout,wsConnClosed,noInject,noPogoStart,failedScreenshot,noPTC,failedTopApp,pogoRestartFail,screenFailure,failedBoxClear,itemDelUnknown,noActiveArea,noMainScreen,noLocAccess,noStopProcess,failStopOpen,softban,questFull,foundGym,noWalkerConfig,noStop,dupMac) VALUES ('$process_hour','60','$MAD_instance_name_2','$warns','$failedData','$manyTimeOut','$fallingBehind','$maxFalling','$frozenScreen','$wsTimeout','$wsConnClosed','$noInject','$noPogoStart','$failedScreenshot','$noPTC','$failedTopApp','$pogoRestartFail','$screenFailure','$failedBoxClear','$itemDelUnknown','$noActiveArea','$noMainScreen','$noLocAccess','$noStopProcess','$failStopOpen','$softban','$questFull','$foundGym','$noWalkerConfig','$noStop','$dupMac');"
+  fi
+fi
+
+## update db for instance 3
+if [ -z "$MAD_path_3" ]
+then
+  echo ""
+  echo "No 3nd instance defined"
+else
+  echo "Processing MAD logs for $MAD_instance_name_3"
+  echo ""
+  mkdir -p $folder/tmp
+  grep "$interval" $MAD_path_3/logs/$MAD_instance_name_3-$process_date.log > $folder/tmp/$MAD_instance_name_3.log
+#  echo "Errors"
+  errors="$(grep -w \[E\] $folder/tmp/$MAD_instance_name_3.log | grep -v 'Error while getting response from device - Reason' | wc -l)"
+  deadlock="$(grep -w \[E\] $folder/tmp/$MAD_instance_name_3.log | grep -v 'Error while getting response from device - Reason' | grep 'Deadlock found' | wc -l)"
+  failedPogoStop="$(grep \[E\] $folder/tmp/$MAD_instance_name_3.log | grep -v 'Error while getting response from device - Reason' | grep 'Failed stopping com.nianticlabs.pokemongo' | wc -l)"
+  oldConnection="$(grep \[E\] $folder/tmp/$MAD_instance_name_3.log | grep -v 'Error while getting response from device - Reason' | grep 'Old connection open while a new one is attempted to be established' | wc -l)"
+  originTimeout="$(grep \[E\] $folder/tmp/$MAD_instance_name_3.log | grep -v 'Error while getting response from device - Reason' | grep '5 consecutive timeouts or origin'  | wc -l)"
+  wsLost="$(grep \[E\] $folder/tmp/$MAD_instance_name_3.log | grep -v 'Error while getting response from device - Reason' | grep 'Websocket connection to'  | wc -l)"
+  killPogoWait="$(grep \[E\] $folder/tmp/$MAD_instance_name_3.log | grep -v 'Error while getting response from device - Reason' | grep 'Killed while waiting for pogo start'  | wc -l)"
+  wokerInitFail="$(grep \[E\] $folder/tmp/$MAD_instance_name_3.log | grep -v 'Error while getting response from device - Reason' | grep 'Failed initializing worker'  | wc -l)"
+  jobFail="$(grep \[E\] $folder/tmp/$MAD_instance_name_3.log | grep -v 'Error while getting response from device - Reason' | grep -i 'Job jobType'  | wc -l)"
+  killInjection="$(grep \[E\] $folder/tmp/$MAD_instance_name_3.log | grep -v 'Error while getting response from device - Reason' | grep 'Killed while waiting for injection'  | wc -l)"
+  killSleep="$(grep \[E\] $folder/tmp/$MAD_instance_name_3.log | grep -v 'Error while getting response from device - Reason' | grep 'killed while sleeping'  | wc -l)"
+  python="$(grep 'Traceback (most recent call last)' $folder/tmp/$MAD_instance_name_3.log |  wc -l)"
+  noItemDelete="$(grep \[E\] $folder/tmp/$MAD_instance_name_3.log | grep -v 'Error while getting response from device - Reason' | grep 'Unable to delete any items'  | wc -l)"
+
+#  echo "Warnings"
+  warns="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_3.log | wc -l)"
+  failedData="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_3.log | grep 'Worker failed to retrieve proper data' | wc -l)"
+  manyTimeOut="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_3.log | grep 'Too many timeouts' | wc -l)"
+  fallingBehind="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_3.log | grep 'falling behind' | wc -l)"
+  if (( $fallingBehind > 0 ))
+  then
+    maxFalling="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_3.log | grep 'falling behind' | awk '{print ($NF)}' | jq -s max)"
+  else
+    maxFalling=0
+  fi
+  frozenScreen="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_3.log | grep 'Screen is frozen' | wc -l)"
+  wsTimeout="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_3.log | grep 'Timeout, increasing timeout-counter' | wc -l)"
+  wsConnClosed="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_3.log | grep 'Connection' | grep 'closed' | wc -l)"
+  noInject="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_3.log | grep 'Not injected in time - reboot' | wc -l)"
+  noPogoStart="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_3.log | grep 'Failed restarting PoGo - reboot device' | wc -l)"
+  failedScreenshot="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_3.log | grep 'Failed retrieving screenshot' | wc -l)"
+  noPTC="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_3.log | grep 'No PTC Accounts' | wc -l)"
+  failedTopApp="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_3.log | grep 'Failed getting the topmost app' | wc -l)"
+  pogoRestartFail="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_3.log | grep 'Restarting PoGo failed - reboot device' | wc -l)"
+  screenFailure="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_3.log | grep 'Something wrong with screendetection or pogo failure screen' | wc -l)"
+  failedBoxClear="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_3.log | grep 'Failed clearing box' | wc -l)"
+  itemDelUnknown="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_3.log | grep 'Deletion not confirmed' | wc -l)"
+  noActiveArea="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_3.log | grep 'Cannot find any active area defined for current time' | wc -l)"
+  noMainScreen="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_3.log | grep 'Could not get to Mainscreen' | wc -l)"
+  noLocAccess="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_3.log | grep 'has not accessed a location in 300 seconds' | wc -l)"
+  noStopProcess="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_3.log | grep 'has not been processed thrice in a row' | wc -l)"
+  failStopOpen="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_3.log | grep 'Giving up on this stop after 3 failures in open_pokestop loop' | wc -l)"
+  softban="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_3.log | grep 'Softban' | wc -l)"
+  questFull="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_3.log | grep 'Failed getting quest but got items' | wc -l)"
+  foundGym="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_3.log | grep 'Tried to open a stop but found a gym instead' | wc -l)"
+  noWalkerConfig="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_3.log | grep 'Failed to find a walker configuration' | wc -l)"
+  noStop="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_3.log | grep 'yielding a spinnable stop - likely not standing exactly on top' | wc -l)"
+  dupMac="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_3.log | grep 'Duplicate MAC') | wc -l)"
+
+
+  echo "Insert $MAD_instance_name_3 data into DB"
+  echo ""
+  if [ -z "$SQL_password" ]
+  then
+    mysql -h$DB_IP -P$DB_PORT -u$SQL_user $STATS_DB -e "INSERT IGNORE INTO error (datetime,RPL,instance,errors,deadlock,failedPogoStop,oldConnection,originTimeout,wsLost,killPogoWait,wokerInitFail,jobFail,killInjection,killSleep,python,noItemDelete) VALUES ('$process_hour','60','$MAD_instance_name_3','$errors','$deadlock','$failedPogoStop','$oldConnection','$originTimeout','$wsLost','$killPogoWait','$wokerInitFail','$jobFail','$killInjection','$killSleep','$python','$noItemDelete');"
+    mysql -h$DB_IP -P$DB_PORT -u$SQL_user $STATS_DB -e "INSERT IGNORE INTO warning (datetime,RPL,instance,warns,failedData,manyTimeOut,fallingBehind,maxFalling,frozenScreen,wsTimeout,wsConnClosed,noInject,noPogoStart,failedScreenshot,noPTC,failedTopApp,pogoRestartFail,screenFailure,failedBoxClear,itemDelUnknown,noActiveArea,noMainScreen,noLocAccess,noStopProcess,failStopOpen,softban,questFull,foundGym,noWalkerConfig,noStop,dupMac) VALUES ('$process_hour','60','$MAD_instance_name_3','$warns','$failedData','$manyTimeOut','$fallingBehind','$maxFalling','$frozenScreen','$wsTimeout','$wsConnClosed','$noInject','$noPogoStart','$failedScreenshot','$noPTC','$failedTopApp','$pogoRestartFail','$screenFailure','$failedBoxClear','$itemDelUnknown','$noActiveArea','$noMainScreen','$noLocAccess','$noStopProcess','$failStopOpen','$softban','$questFull','$foundGym','$noWalkerConfig','$noStop','$dupMac');"
+  else
+    mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB -e "INSERT IGNORE INTO error (datetime,RPL,instance,errors,deadlock,failedPogoStop,oldConnection,originTimeout,wsLost,killPogoWait,wokerInitFail,jobFail,killInjection,killSleep,python,noItemDelete) VALUES ('$process_hour','60','$MAD_instance_name_3','$errors','$deadlock','$failedPogoStop','$oldConnection','$originTimeout','$wsLost','$killPogoWait','$wokerInitFail','$jobFail','$killInjection','$killSleep','$python','$noItemDelete');"
+    mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB -e "INSERT IGNORE INTO warning (datetime,RPL,instance,warns,failedData,manyTimeOut,fallingBehind,maxFalling,frozenScreen,wsTimeout,wsConnClosed,noInject,noPogoStart,failedScreenshot,noPTC,failedTopApp,pogoRestartFail,screenFailure,failedBoxClear,itemDelUnknown,noActiveArea,noMainScreen,noLocAccess,noStopProcess,failStopOpen,softban,questFull,foundGym,noWalkerConfig,noStop,dupMac) VALUES ('$process_hour','60','$MAD_instance_name_3','$warns','$failedData','$manyTimeOut','$fallingBehind','$maxFalling','$frozenScreen','$wsTimeout','$wsConnClosed','$noInject','$noPogoStart','$failedScreenshot','$noPTC','$failedTopApp','$pogoRestartFail','$screenFailure','$failedBoxClear','$itemDelUnknown','$noActiveArea','$noMainScreen','$noLocAccess','$noStopProcess','$failStopOpen','$softban','$questFull','$foundGym','$noWalkerConfig','$noStop','$dupMac');"
+  fi
+fi
+
+## update db for instance 4
+if [ -z "$MAD_path_4" ]
+then
+  echo ""
+  echo "No 4nd instance defined"
+else
+  echo "Processing MAD logs for $MAD_instance_name_4"
+  echo ""
+  mkdir -p $folder/tmp
+  grep "$interval" $MAD_path_4/logs/$MAD_instance_name_4-$process_date.log > $folder/tmp/$MAD_instance_name_4.log
+#  echo "Errors"
+  errors="$(grep -w \[E\] $folder/tmp/$MAD_instance_name_4.log | grep -v 'Error while getting response from device - Reason' | wc -l)"
+  deadlock="$(grep -w \[E\] $folder/tmp/$MAD_instance_name_4.log | grep -v 'Error while getting response from device - Reason' | grep 'Deadlock found' | wc -l)"
+  failedPogoStop="$(grep \[E\] $folder/tmp/$MAD_instance_name_4.log | grep -v 'Error while getting response from device - Reason' | grep 'Failed stopping com.nianticlabs.pokemongo' | wc -l)"
+  oldConnection="$(grep \[E\] $folder/tmp/$MAD_instance_name_4.log | grep -v 'Error while getting response from device - Reason' | grep 'Old connection open while a new one is attempted to be established' | wc -l)"
+  originTimeout="$(grep \[E\] $folder/tmp/$MAD_instance_name_4.log | grep -v 'Error while getting response from device - Reason' | grep '5 consecutive timeouts or origin'  | wc -l)"
+  wsLost="$(grep \[E\] $folder/tmp/$MAD_instance_name_4.log | grep -v 'Error while getting response from device - Reason' | grep 'Websocket connection to'  | wc -l)"
+  killPogoWait="$(grep \[E\] $folder/tmp/$MAD_instance_name_4.log | grep -v 'Error while getting response from device - Reason' | grep 'Killed while waiting for pogo start'  | wc -l)"
+  wokerInitFail="$(grep \[E\] $folder/tmp/$MAD_instance_name_4.log | grep -v 'Error while getting response from device - Reason' | grep 'Failed initializing worker'  | wc -l)"
+  jobFail="$(grep \[E\] $folder/tmp/$MAD_instance_name_4.log | grep -v 'Error while getting response from device - Reason' | grep -i 'Job jobType'  | wc -l)"
+  killInjection="$(grep \[E\] $folder/tmp/$MAD_instance_name_4.log | grep -v 'Error while getting response from device - Reason' | grep 'Killed while waiting for injection'  | wc -l)"
+  killSleep="$(grep \[E\] $folder/tmp/$MAD_instance_name_4.log | grep -v 'Error while getting response from device - Reason' | grep 'killed while sleeping'  | wc -l)"
+  python="$(grep 'Traceback (most recent call last)' $folder/tmp/$MAD_instance_name_4.log |  wc -l)"
+  noItemDelete="$(grep \[E\] $folder/tmp/$MAD_instance_name_4.log | grep -v 'Error while getting response from device - Reason' | grep 'Unable to delete any items'  | wc -l)"
+
+#  echo "Warnings"
+  warns="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_4.log | wc -l)"
+  failedData="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_4.log | grep 'Worker failed to retrieve proper data' | wc -l)"
+  manyTimeOut="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_4.log | grep 'Too many timeouts' | wc -l)"
+  fallingBehind="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_4.log | grep 'falling behind' | wc -l)"
+  if (( $fallingBehind > 0 ))
+  then
+    maxFalling="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_4.log | grep 'falling behind' | awk '{print ($NF)}' | jq -s max)"
+  else
+    maxFalling=0
+  fi
+  frozenScreen="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_4.log | grep 'Screen is frozen' | wc -l)"
+  wsTimeout="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_4.log | grep 'Timeout, increasing timeout-counter' | wc -l)"
+  wsConnClosed="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_4.log | grep 'Connection' | grep 'closed' | wc -l)"
+  noInject="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_4.log | grep 'Not injected in time - reboot' | wc -l)"
+  noPogoStart="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_4.log | grep 'Failed restarting PoGo - reboot device' | wc -l)"
+  failedScreenshot="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_4.log | grep 'Failed retrieving screenshot' | wc -l)"
+  noPTC="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_4.log | grep 'No PTC Accounts' | wc -l)"
+  failedTopApp="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_4.log | grep 'Failed getting the topmost app' | wc -l)"
+  pogoRestartFail="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_4.log | grep 'Restarting PoGo failed - reboot device' | wc -l)"
+  screenFailure="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_4.log | grep 'Something wrong with screendetection or pogo failure screen' | wc -l)"
+  failedBoxClear="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_4.log | grep 'Failed clearing box' | wc -l)"
+  itemDelUnknown="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_4.log | grep 'Deletion not confirmed' | wc -l)"
+  noActiveArea="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_4.log | grep 'Cannot find any active area defined for current time' | wc -l)"
+  noMainScreen="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_4.log | grep 'Could not get to Mainscreen' | wc -l)"
+  noLocAccess="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_4.log | grep 'has not accessed a location in 400 seconds' | wc -l)"
+  noStopProcess="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_4.log | grep 'has not been processed thrice in a row' | wc -l)"
+  failStopOpen="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_4.log | grep 'Giving up on this stop after 4 failures in open_pokestop loop' | wc -l)"
+  softban="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_4.log | grep 'Softban' | wc -l)"
+  questFull="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_4.log | grep 'Failed getting quest but got items' | wc -l)"
+  foundGym="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_4.log | grep 'Tried to open a stop but found a gym instead' | wc -l)"
+  noWalkerConfig="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_4.log | grep 'Failed to find a walker configuration' | wc -l)"
+  noStop="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_4.log | grep 'yielding a spinnable stop - likely not standing exactly on top' | wc -l)"
+  dupMac="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_4.log | grep 'Duplicate MAC') | wc -l)"
+
+
+  echo "Insert $MAD_instance_name_4 data into DB"
+  echo ""
+  if [ -z "$SQL_password" ]
+  then
+    mysql -h$DB_IP -P$DB_PORT -u$SQL_user $STATS_DB -e "INSERT IGNORE INTO error (datetime,RPL,instance,errors,deadlock,failedPogoStop,oldConnection,originTimeout,wsLost,killPogoWait,wokerInitFail,jobFail,killInjection,killSleep,python,noItemDelete) VALUES ('$process_hour','60','$MAD_instance_name_4','$errors','$deadlock','$failedPogoStop','$oldConnection','$originTimeout','$wsLost','$killPogoWait','$wokerInitFail','$jobFail','$killInjection','$killSleep','$python','$noItemDelete');"
+    mysql -h$DB_IP -P$DB_PORT -u$SQL_user $STATS_DB -e "INSERT IGNORE INTO warning (datetime,RPL,instance,warns,failedData,manyTimeOut,fallingBehind,maxFalling,frozenScreen,wsTimeout,wsConnClosed,noInject,noPogoStart,failedScreenshot,noPTC,failedTopApp,pogoRestartFail,screenFailure,failedBoxClear,itemDelUnknown,noActiveArea,noMainScreen,noLocAccess,noStopProcess,failStopOpen,softban,questFull,foundGym,noWalkerConfig,noStop,dupMac) VALUES ('$process_hour','60','$MAD_instance_name_4','$warns','$failedData','$manyTimeOut','$fallingBehind','$maxFalling','$frozenScreen','$wsTimeout','$wsConnClosed','$noInject','$noPogoStart','$failedScreenshot','$noPTC','$failedTopApp','$pogoRestartFail','$screenFailure','$failedBoxClear','$itemDelUnknown','$noActiveArea','$noMainScreen','$noLocAccess','$noStopProcess','$failStopOpen','$softban','$questFull','$foundGym','$noWalkerConfig','$noStop','$dupMac');"
+  else
+    mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB -e "INSERT IGNORE INTO error (datetime,RPL,instance,errors,deadlock,failedPogoStop,oldConnection,originTimeout,wsLost,killPogoWait,wokerInitFail,jobFail,killInjection,killSleep,python,noItemDelete) VALUES ('$process_hour','60','$MAD_instance_name_4','$errors','$deadlock','$failedPogoStop','$oldConnection','$originTimeout','$wsLost','$killPogoWait','$wokerInitFail','$jobFail','$killInjection','$killSleep','$python','$noItemDelete');"
+    mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB -e "INSERT IGNORE INTO warning (datetime,RPL,instance,warns,failedData,manyTimeOut,fallingBehind,maxFalling,frozenScreen,wsTimeout,wsConnClosed,noInject,noPogoStart,failedScreenshot,noPTC,failedTopApp,pogoRestartFail,screenFailure,failedBoxClear,itemDelUnknown,noActiveArea,noMainScreen,noLocAccess,noStopProcess,failStopOpen,softban,questFull,foundGym,noWalkerConfig,noStop,dupMac) VALUES ('$process_hour','60','$MAD_instance_name_4','$warns','$failedData','$manyTimeOut','$fallingBehind','$maxFalling','$frozenScreen','$wsTimeout','$wsConnClosed','$noInject','$noPogoStart','$failedScreenshot','$noPTC','$failedTopApp','$pogoRestartFail','$screenFailure','$failedBoxClear','$itemDelUnknown','$noActiveArea','$noMainScreen','$noLocAccess','$noStopProcess','$failStopOpen','$softban','$questFull','$foundGym','$noWalkerConfig','$noStop','$dupMac');"
+  fi
+fi
+
+## update db for instance 5
+if [ -z "$MAD_path_5" ]
+then
+  echo ""
+  echo "No 5nd instance defined"
+else
+  echo "Processing MAD logs for $MAD_instance_name_5"
+  echo ""
+  mkdir -p $folder/tmp
+  grep "$interval" $MAD_path_5/logs/$MAD_instance_name_5-$process_date.log > $folder/tmp/$MAD_instance_name_5.log
+#  echo "Errors"
+  errors="$(grep -w \[E\] $folder/tmp/$MAD_instance_name_5.log | grep -v 'Error while getting response from device - Reason' | wc -l)"
+  deadlock="$(grep -w \[E\] $folder/tmp/$MAD_instance_name_5.log | grep -v 'Error while getting response from device - Reason' | grep 'Deadlock found' | wc -l)"
+  failedPogoStop="$(grep \[E\] $folder/tmp/$MAD_instance_name_5.log | grep -v 'Error while getting response from device - Reason' | grep 'Failed stopping com.nianticlabs.pokemongo' | wc -l)"
+  oldConnection="$(grep \[E\] $folder/tmp/$MAD_instance_name_5.log | grep -v 'Error while getting response from device - Reason' | grep 'Old connection open while a new one is attempted to be established' | wc -l)"
+  originTimeout="$(grep \[E\] $folder/tmp/$MAD_instance_name_5.log | grep -v 'Error while getting response from device - Reason' | grep '5 consecutive timeouts or origin'  | wc -l)"
+  wsLost="$(grep \[E\] $folder/tmp/$MAD_instance_name_5.log | grep -v 'Error while getting response from device - Reason' | grep 'Websocket connection to'  | wc -l)"
+  killPogoWait="$(grep \[E\] $folder/tmp/$MAD_instance_name_5.log | grep -v 'Error while getting response from device - Reason' | grep 'Killed while waiting for pogo start'  | wc -l)"
+  wokerInitFail="$(grep \[E\] $folder/tmp/$MAD_instance_name_5.log | grep -v 'Error while getting response from device - Reason' | grep 'Failed initializing worker'  | wc -l)"
+  jobFail="$(grep \[E\] $folder/tmp/$MAD_instance_name_5.log | grep -v 'Error while getting response from device - Reason' | grep -i 'Job jobType'  | wc -l)"
+  killInjection="$(grep \[E\] $folder/tmp/$MAD_instance_name_5.log | grep -v 'Error while getting response from device - Reason' | grep 'Killed while waiting for injection'  | wc -l)"
+  killSleep="$(grep \[E\] $folder/tmp/$MAD_instance_name_5.log | grep -v 'Error while getting response from device - Reason' | grep 'killed while sleeping'  | wc -l)"
+  python="$(grep 'Traceback (most recent call last)' $folder/tmp/$MAD_instance_name_5.log |  wc -l)"
+  noItemDelete="$(grep \[E\] $folder/tmp/$MAD_instance_name_5.log | grep -v 'Error while getting response from device - Reason' | grep 'Unable to delete any items'  | wc -l)"
+
+#  echo "Warnings"
+  warns="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_5.log | wc -l)"
+  failedData="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_5.log | grep 'Worker failed to retrieve proper data' | wc -l)"
+  manyTimeOut="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_5.log | grep 'Too many timeouts' | wc -l)"
+  fallingBehind="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_5.log | grep 'falling behind' | wc -l)"
+  if (( $fallingBehind > 0 ))
+  then
+    maxFalling="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_5.log | grep 'falling behind' | awk '{print ($NF)}' | jq -s max)"
+  else
+    maxFalling=0
+  fi
+  frozenScreen="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_5.log | grep 'Screen is frozen' | wc -l)"
+  wsTimeout="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_5.log | grep 'Timeout, increasing timeout-counter' | wc -l)"
+  wsConnClosed="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_5.log | grep 'Connection' | grep 'closed' | wc -l)"
+  noInject="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_5.log | grep 'Not injected in time - reboot' | wc -l)"
+  noPogoStart="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_5.log | grep 'Failed restarting PoGo - reboot device' | wc -l)"
+  failedScreenshot="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_5.log | grep 'Failed retrieving screenshot' | wc -l)"
+  noPTC="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_5.log | grep 'No PTC Accounts' | wc -l)"
+  failedTopApp="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_5.log | grep 'Failed getting the topmost app' | wc -l)"
+  pogoRestartFail="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_5.log | grep 'Restarting PoGo failed - reboot device' | wc -l)"
+  screenFailure="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_5.log | grep 'Something wrong with screendetection or pogo failure screen' | wc -l)"
+  failedBoxClear="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_5.log | grep 'Failed clearing box' | wc -l)"
+  itemDelUnknown="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_5.log | grep 'Deletion not confirmed' | wc -l)"
+  noActiveArea="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_5.log | grep 'Cannot find any active area defined for current time' | wc -l)"
+  noMainScreen="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_5.log | grep 'Could not get to Mainscreen' | wc -l)"
+  noLocAccess="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_5.log | grep 'has not accessed a location in 500 seconds' | wc -l)"
+  noStopProcess="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_5.log | grep 'has not been processed thrice in a row' | wc -l)"
+  failStopOpen="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_5.log | grep 'Giving up on this stop after 5 failures in open_pokestop loop' | wc -l)"
+  softban="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_5.log | grep 'Softban' | wc -l)"
+  questFull="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_5.log | grep 'Failed getting quest but got items' | wc -l)"
+  foundGym="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_5.log | grep 'Tried to open a stop but found a gym instead' | wc -l)"
+  noWalkerConfig="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_5.log | grep 'Failed to find a walker configuration' | wc -l)"
+  noStop="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_5.log | grep 'yielding a spinnable stop - likely not standing exactly on top' | wc -l)"
+  dupMac="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_5.log | grep 'Duplicate MAC') | wc -l)"
+
+
+  echo "Insert $MAD_instance_name_5 data into DB"
+  echo ""
+  if [ -z "$SQL_password" ]
+  then
+    mysql -h$DB_IP -P$DB_PORT -u$SQL_user $STATS_DB -e "INSERT IGNORE INTO error (datetime,RPL,instance,errors,deadlock,failedPogoStop,oldConnection,originTimeout,wsLost,killPogoWait,wokerInitFail,jobFail,killInjection,killSleep,python,noItemDelete) VALUES ('$process_hour','60','$MAD_instance_name_5','$errors','$deadlock','$failedPogoStop','$oldConnection','$originTimeout','$wsLost','$killPogoWait','$wokerInitFail','$jobFail','$killInjection','$killSleep','$python','$noItemDelete');"
+    mysql -h$DB_IP -P$DB_PORT -u$SQL_user $STATS_DB -e "INSERT IGNORE INTO warning (datetime,RPL,instance,warns,failedData,manyTimeOut,fallingBehind,maxFalling,frozenScreen,wsTimeout,wsConnClosed,noInject,noPogoStart,failedScreenshot,noPTC,failedTopApp,pogoRestartFail,screenFailure,failedBoxClear,itemDelUnknown,noActiveArea,noMainScreen,noLocAccess,noStopProcess,failStopOpen,softban,questFull,foundGym,noWalkerConfig,noStop,dupMac) VALUES ('$process_hour','60','$MAD_instance_name_5','$warns','$failedData','$manyTimeOut','$fallingBehind','$maxFalling','$frozenScreen','$wsTimeout','$wsConnClosed','$noInject','$noPogoStart','$failedScreenshot','$noPTC','$failedTopApp','$pogoRestartFail','$screenFailure','$failedBoxClear','$itemDelUnknown','$noActiveArea','$noMainScreen','$noLocAccess','$noStopProcess','$failStopOpen','$softban','$questFull','$foundGym','$noWalkerConfig','$noStop','$dupMac');"
+  else
+    mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB -e "INSERT IGNORE INTO error (datetime,RPL,instance,errors,deadlock,failedPogoStop,oldConnection,originTimeout,wsLost,killPogoWait,wokerInitFail,jobFail,killInjection,killSleep,python,noItemDelete) VALUES ('$process_hour','60','$MAD_instance_name_5','$errors','$deadlock','$failedPogoStop','$oldConnection','$originTimeout','$wsLost','$killPogoWait','$wokerInitFail','$jobFail','$killInjection','$killSleep','$python','$noItemDelete');"
+    mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB -e "INSERT IGNORE INTO warning (datetime,RPL,instance,warns,failedData,manyTimeOut,fallingBehind,maxFalling,frozenScreen,wsTimeout,wsConnClosed,noInject,noPogoStart,failedScreenshot,noPTC,failedTopApp,pogoRestartFail,screenFailure,failedBoxClear,itemDelUnknown,noActiveArea,noMainScreen,noLocAccess,noStopProcess,failStopOpen,softban,questFull,foundGym,noWalkerConfig,noStop,dupMac) VALUES ('$process_hour','60','$MAD_instance_name_5','$warns','$failedData','$manyTimeOut','$fallingBehind','$maxFalling','$frozenScreen','$wsTimeout','$wsConnClosed','$noInject','$noPogoStart','$failedScreenshot','$noPTC','$failedTopApp','$pogoRestartFail','$screenFailure','$failedBoxClear','$itemDelUnknown','$noActiveArea','$noMainScreen','$noLocAccess','$noStopProcess','$failStopOpen','$softban','$questFull','$foundGym','$noWalkerConfig','$noStop','$dupMac');"
+  fi
+fi
+
+echo ""
+echo "All done!"
