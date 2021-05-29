@@ -17,7 +17,8 @@ else
   echo "Processing MAD logs for $MAD_instance_name_1"
   echo ""
   mkdir -p $folder/tmp
-  grep "$interval" $MAD_path_1/logs/$MAD_instance_name_1-$process_date.log > $folder/tmp/$MAD_instance_name_1.log
+#  grep "$interval" $MAD_path_1/logs/$MAD_instance_name_1-$process_date.log > $folder/tmp/$MAD_instance_name_1.log
+  grep "\[$interval" $MAD_path_1/logs/*$MAD_instance_name_1* > $folder/tmp/$MAD_instance_name_1.log
 #  echo "Errors"
   errors="$(grep -w \[E\] $folder/tmp/$MAD_instance_name_1.log | grep -v 'Error while getting response from device - Reason' | wc -l)"
   deadlock="$(grep -w \[E\] $folder/tmp/$MAD_instance_name_1.log | grep -v 'Error while getting response from device - Reason' | grep 'Deadlock found' | wc -l)"
@@ -141,8 +142,9 @@ then
 else
   echo "Processing MAD logs for $MAD_instance_name_2"
   echo ""
-  mkdir -p $folder/tmp
-  grep "$interval" $MAD_path_2/logs/$MAD_instance_name_2-$process_date.log > $folder/tmp/$MAD_instance_name_2.log
+#  mkdir -p $folder/tmp
+#  grep "$interval" $MAD_path_2/logs/$MAD_instance_name_2-$process_date.log > $folder/tmp/$MAD_instance_name_2.log
+  grep "\[$interval" $MAD_path_2/logs/*$MAD_instance_name_2* > $folder/tmp/$MAD_instance_name_2.log
 #  echo "Errors"
   errors="$(grep -w \[E\] $folder/tmp/$MAD_instance_name_2.log | grep -v 'Error while getting response from device - Reason' | wc -l)"
   deadlock="$(grep -w \[E\] $folder/tmp/$MAD_instance_name_2.log | grep -v 'Error while getting response from device - Reason' | grep 'Deadlock found' | wc -l)"
@@ -214,8 +216,9 @@ then
 else
   echo "Processing MAD logs for $MAD_instance_name_3"
   echo ""
-  mkdir -p $folder/tmp
-  grep "$interval" $MAD_path_3/logs/$MAD_instance_name_3-$process_date.log > $folder/tmp/$MAD_instance_name_3.log
+#  mkdir -p $folder/tmp
+#  grep "$interval" $MAD_path_3/logs/$MAD_instance_name_3-$process_date.log > $folder/tmp/$MAD_instance_name_3.log
+  grep "\[$interval" $MAD_path_3/logs/*$MAD_instance_name_3* > $folder/tmp/$MAD_instance_name_3.log
 #  echo "Errors"
   errors="$(grep -w \[E\] $folder/tmp/$MAD_instance_name_3.log | grep -v 'Error while getting response from device - Reason' | wc -l)"
   deadlock="$(grep -w \[E\] $folder/tmp/$MAD_instance_name_3.log | grep -v 'Error while getting response from device - Reason' | grep 'Deadlock found' | wc -l)"
@@ -287,8 +290,9 @@ then
 else
   echo "Processing MAD logs for $MAD_instance_name_4"
   echo ""
-  mkdir -p $folder/tmp
-  grep "$interval" $MAD_path_4/logs/$MAD_instance_name_4-$process_date.log > $folder/tmp/$MAD_instance_name_4.log
+#  mkdir -p $folder/tmp
+#  grep "$interval" $MAD_path_4/logs/$MAD_instance_name_4-$process_date.log > $folder/tmp/$MAD_instance_name_4.log
+  grep "\[$interval" $MAD_path_4/logs/*$MAD_instance_name_4* > $folder/tmp/$MAD_instance_name_4.log
 #  echo "Errors"
   errors="$(grep -w \[E\] $folder/tmp/$MAD_instance_name_4.log | grep -v 'Error while getting response from device - Reason' | wc -l)"
   deadlock="$(grep -w \[E\] $folder/tmp/$MAD_instance_name_4.log | grep -v 'Error while getting response from device - Reason' | grep 'Deadlock found' | wc -l)"
@@ -360,8 +364,9 @@ then
 else
   echo "Processing MAD logs for $MAD_instance_name_5"
   echo ""
-  mkdir -p $folder/tmp
-  grep "$interval" $MAD_path_5/logs/$MAD_instance_name_5-$process_date.log > $folder/tmp/$MAD_instance_name_5.log
+#  mkdir -p $folder/tmp
+#  grep "$interval" $MAD_path_5/logs/$MAD_instance_name_5-$process_date.log > $folder/tmp/$MAD_instance_name_5.log
+  grep "\[$interval" $MAD_path_5/logs/*$MAD_instance_name_5* > $folder/tmp/$MAD_instance_name_5.log
 #  echo "Errors"
   errors="$(grep -w \[E\] $folder/tmp/$MAD_instance_name_5.log | grep -v 'Error while getting response from device - Reason' | wc -l)"
   deadlock="$(grep -w \[E\] $folder/tmp/$MAD_instance_name_5.log | grep -v 'Error while getting response from device - Reason' | grep 'Deadlock found' | wc -l)"

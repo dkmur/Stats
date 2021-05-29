@@ -58,9 +58,7 @@ atvdetails_hours=24					# execute download atvdetails every X hours, default 24 
 job_wait=2m						# wait time for jobs to finish i.e. 2m or 300s
 
 ## MAD log processing ##
-madlog=false						# true/false: to process MAD logs hourly and store into DB. MAD logging needs to be set as:
-							# log_filename: <SN>-%Y-%m-%d.log
-							# log_file_rotation: 00:01
+madlog=false						# true/false: to process MAD logs hourly and store into DB. MAD logfiles need to contain instance name!!
 
 ## Grafana ##
 DataSource_stats=pogodb
