@@ -287,6 +287,7 @@ CREATE TABLE IF NOT EXISTS `error` (
   `killSleep` INT DEFAULT NULL,
   `python` INT DEFAULT NULL,
   `noItemDelete` INT DEFAULT NULL,
+  `tesseract` INT DEFAULT NULL,
   PRIMARY KEY (`datetime`,`RPL`,`instance`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -380,6 +381,10 @@ ADD KEY IF NOT EXISTS `pokemon_history_temp_first_scanned` (`first_scanned`),
 ADD KEY IF NOT EXISTS `pokemon_history_temp_encounter` (`encounter`),
 ADD KEY IF NOT EXISTS `pokemon_history_temp_wild` (`wild`);
 
+ALTER TABLE error
+ADD COLUMN IF NOT EXISTS `tesseract` INT DEFAULT NULL
+;
+
 -- update version
 INSERT IGNORE INTO version values ('stats',2);
-UPDATE version set version = 6 where version.key = 'stats';
+UPDATE version set version = 7 where version.key = 'stats';

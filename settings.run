@@ -417,6 +417,61 @@ cd $PATH_TO_STATS/grafana/ && sed -i "s/rmdb/$DataSource_MAD/g" *.json
 cd $PATH_TO_STATS/grafana/ && sed -i "s/POGODB/$DS_STATS/g" *.json
 cd $PATH_TO_STATS/grafana/ && sed -i "s/RMDB/$DS_MAD/g" *.json
 
+#MAD log process check
+if [ -z "$SQL_password" ]
+then
+  firstInstall=$(mysql -h$DB_IP -P$DB_PORT -u$SQL_user $STATS_DB -N -se "SELECT count(*) FROM error;")
+else
+  firstInstall=$(mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB -N -se "SELECT count(*) FROM error;")
+fi
+
+#firstInstall=0
+
+if [ $firstInstall = 0 ]
+then
+  echo ""
+  echo "No MAD logs processed yet, do you wish to process last 6 days?"
+  read -p "Continue (y/n)?" choice
+  if [ $choice = "y" ] || [ $choice = "yes" ] || [ $choice = "Y" ] || [ $choice = "Yes" ]
+  then
+    hoursback=144
+    while test $hoursback != 0
+    do
+      echo ""
+      echo ""
+      echo "Hourly data: processing now - $hoursback hours"
+      echo ""
+      cp $PATH_TO_STATS/cron_files/madlog.sh $PATH_TO_STATS/cron_files/madlog.sh.tmp
+      sed -i "s/1 hour ago/$hoursback hour ago/g" $PATH_TO_STATS/cron_files/madlog.sh.tmp
+      cd $PATH_TO_STATS/cron_files && ./madlog.sh.tmp
+      rm $PATH_TO_STATS/cron_files/madlog.sh.tmp
+      hoursback="$(( hoursback - 1 ))"
+    done
+  fi
+  if [ $choice = "y" ] || [ $choice = "yes" ] || [ $choice = "Y" ] || [ $choice = "Yes" ]
+  then
+    hoursback=8640
+    while test $hoursback != 0
+    do
+      echo ""
+      echo ""
+      echo "Daily data: processing now - $hoursback minutes"
+      echo ""
+      cp $PATH_TO_STATS/default_files/madlog1440.sql.default $PATH_TO_STATS/default_files/madlog1440.sql.tmp
+      sed -i "s/interval 1440 minute/interval $hoursback minute/g" $PATH_TO_STATS/default_files/madlog1440.sql.tmp
+      sed -i "s/Stats/$STATS_DB/g" $PATH_TO_STATS/default_files/madlog1440.sql.tmp
+      if [ -z "$SQL_password" ]
+        then
+          mysql -h$DB_IP -P$DB_PORT -u$SQL_user $STATS_DB < $PATH_TO_STATS/default_files/madlog1440.sql.tmp
+        else
+          mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB < $PATH_TO_STATS/default_files/madlog1440.sql.tmp
+      fi
+      rm $PATH_TO_STATS/default_files/madlog1440.sql.tmp
+      hoursback="$(( hoursback - 1440 ))"
+    done
+  fi
+fi
+
 ## Checks
 # Make sure QUEST_END is set when using spawndef reset
 if "$SPAWNDEF15_CLEANUP"

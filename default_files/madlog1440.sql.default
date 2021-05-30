@@ -1,6 +1,6 @@
 select @Datetime := concat(date(now() - interval 1440 minute),' ', SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 1440 minute)) DIV 86400) * 86400));
 
-INSERT IGNORE INTO pogodb.error (datetime,RPL,instance,errors,deadlock,failedPogoStop,oldConnection,originTimeout,wsLost,killPogoWait,wokerInitFail,jobFail,killInjection,killSleep,python,noItemDelete)
+INSERT IGNORE INTO pogodb.error (datetime,RPL,instance,errors,deadlock,failedPogoStop,oldConnection,originTimeout,wsLost,killPogoWait,wokerInitFail,jobFail,killInjection,killSleep,python,noItemDelete,tesseract)
 select
 @Datetime,
 '1440',
@@ -17,7 +17,8 @@ sum(jobFail),
 sum(killInjection),
 sum(killSleep),
 sum(python),
-sum(noItemDelete)
+sum(noItemDelete),
+sum(tesseract)
 from pogodb.error
 where Datetime like concat(left(@Datetime,10),'%') and RPL = 60
 group by instance

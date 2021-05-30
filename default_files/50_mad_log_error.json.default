@@ -46,7 +46,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1622363280335,
+  "iteration": 1622408951288,
   "links": [],
   "panels": [
     {
@@ -54,7 +54,8 @@
         "#Errors": "dark-red",
         "Total #Errors": "dark-red",
         "Total #MAD Errors": "dark-red",
-        "Total #Python Errors": "dark-blue"
+        "Total #Python Errors": "dark-blue",
+        "Unspecified Erros": "dark-yellow"
       },
       "bars": false,
       "dashLength": 10,
@@ -94,7 +95,12 @@
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
-      "seriesOverrides": [],
+      "seriesOverrides": [
+        {
+          "alias": "Unspecified Erros",
+          "yaxis": 2
+        }
+      ],
       "spaceLength": 10,
       "stack": false,
       "steppedLine": false,
@@ -104,7 +110,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\r\n$__timeGroup(datetime,$__interval) AS \"time\",\r\nsum(errors) as 'Total #MAD Errors',\r\nsum(python) as 'Total #Python Errors'\r\n\r\nFROM error\r\n\r\nWHERE\r\nRPL='$RPL' and\r\ninstance in ($Instance)\r\nGROUP BY 1  \r\nORDER BY $__timeGroup(datetime,$__interval)",
+          "rawSql": "SELECT\r\n$__timeGroup(datetime,$__interval) AS \"time\",\r\nsum(errors) as 'Total #MAD Errors',\r\nsum(python) as 'Total #Python Errors',\r\nsum(errors)-sum(deadlock)-sum(failedPogoStop)-sum(oldConnection)-sum(originTimeout)-sum(wsLost)-sum(killPogoWait)-sum(wokerInitFail)-sum(jobFail)-sum(killInjection)-sum(killSleep)-sum(noItemDelete) as 'Unspecified Erros'\r\n\r\n\r\nFROM error\r\n\r\nWHERE\r\nRPL='$RPL' and\r\ninstance in ($Instance)\r\nGROUP BY 1  \r\nORDER BY $__timeGroup(datetime,$__interval)",
           "refId": "A",
           "select": [
             [
@@ -158,7 +164,7 @@
           "label": null,
           "logBase": 1,
           "max": null,
-          "min": null,
+          "min": "0",
           "show": true
         }
       ],
@@ -290,6 +296,125 @@
       "aliasColors": {
         "#Errors": "dark-red",
         "Failed executing query: 1213 (40001): Deadlock found when trying to get lock; try restarting transaction": "dark-red",
+        "Total #Errors": "dark-red",
+        "Total #MAD Errors": "dark-red",
+        "Total #Python Errors": "dark-blue"
+      },
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_POGODB}",
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 0,
+        "y": 7
+      },
+      "hiddenSeries": false,
+      "id": 9,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.5.7",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n$__timeGroup(datetime,$__interval) AS \"time\",\r\nsum(tesseract) as 'Tesseract errors'\r\n\r\nFROM error\r\n\r\nWHERE\r\nRPL='$RPL' and\r\ninstance in ($Instance)\r\nGROUP BY 1  \r\nORDER BY $__timeGroup(datetime,$__interval)",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Tesseract",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {
+        "#Errors": "dark-red",
+        "Failed executing query: 1213 (40001): Deadlock found when trying to get lock; try restarting transaction": "dark-red",
         "Failed stopping com.nianticlabs.pokemongo, please check if SU has been granted": "dark-red",
         "Total #Errors": "dark-red",
         "Total #MAD Errors": "dark-red",
@@ -309,7 +434,7 @@
       "gridPos": {
         "h": 7,
         "w": 12,
-        "x": 0,
+        "x": 12,
         "y": 7
       },
       "hiddenSeries": false,
@@ -371,127 +496,6 @@
       "timeRegions": [],
       "timeShift": null,
       "title": "PoGo",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "aliasColors": {
-        "#Errors": "dark-red",
-        "5 consecutive timeouts or origin is no longer connected, cleanup": "dark-blue",
-        "Failed executing query: 1213 (40001): Deadlock found when trying to get lock; try restarting transaction": "dark-red",
-        "Old connection open while a new one is attempted to be established, aborting handling of connection": "dark-red",
-        "Total #Errors": "dark-red",
-        "Total #MAD Errors": "dark-red",
-        "Total #Python Errors": "dark-blue"
-      },
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "${DS_POGODB}",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
-      "fill": 1,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 7,
-        "w": 12,
-        "x": 12,
-        "y": 7
-      },
-      "hiddenSeries": false,
-      "id": 5,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 1,
-      "nullPointMode": "null",
-      "options": {
-        "alertThreshold": true
-      },
-      "percentage": false,
-      "pluginVersion": "7.5.7",
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "format": "time_series",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "SELECT\r\n$__timeGroup(datetime,$__interval) AS \"time\",\r\nsum(oldConnection) as 'Old connection open while a new one is attempted to be established, aborting handling of connection',\r\nsum(originTimeout) as '5 consecutive timeouts or origin is no longer connected, cleanup'\r\n\r\nFROM error\r\n\r\nWHERE\r\nRPL='$RPL' and\r\ninstance in ($Instance)\r\nGROUP BY 1  \r\nORDER BY $__timeGroup(datetime,$__interval)",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "timeColumn": "time",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "WebSocket",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -653,13 +657,12 @@
     {
       "aliasColors": {
         "#Errors": "dark-red",
+        "5 consecutive timeouts or origin is no longer connected, cleanup": "dark-blue",
         "Failed executing query: 1213 (40001): Deadlock found when trying to get lock; try restarting transaction": "dark-red",
-        "Failed initializing worker, connection terminated exceptionally": "dark-red",
-        "Killed while waiting for pogo start": "dark-blue",
+        "Old connection open while a new one is attempted to be established, aborting handling of connection": "dark-red",
         "Total #Errors": "dark-red",
         "Total #MAD Errors": "dark-red",
-        "Total #Python Errors": "dark-blue",
-        "Websocket connection to DeviceX lost while running healthchecks, connection terminated exceptionally": "dark-orange"
+        "Total #Python Errors": "dark-blue"
       },
       "bars": false,
       "dashLength": 10,
@@ -678,7 +681,7 @@
         "y": 14
       },
       "hiddenSeries": false,
-      "id": 8,
+      "id": 5,
       "legend": {
         "avg": false,
         "current": false,
@@ -709,7 +712,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\r\n$__timeGroup(datetime,$__interval) AS \"time\",\r\nsum(wokerInitFail) as 'Failed initializing worker, connection terminated exceptionally',\r\nsum(killPogoWait) as 'Killed while waiting for pogo start',\r\nsum(wslost) as 'Websocket connection to DeviceX lost while running healthchecks, connection terminated exceptionally'\r\n\r\nFROM error\r\n\r\nWHERE\r\nRPL='$RPL' and\r\ninstance in ($Instance)\r\nGROUP BY 1  \r\nORDER BY $__timeGroup(datetime,$__interval)",
+          "rawSql": "SELECT\r\n$__timeGroup(datetime,$__interval) AS \"time\",\r\nsum(oldConnection) as 'Old connection open while a new one is attempted to be established, aborting handling of connection',\r\nsum(originTimeout) as '5 consecutive timeouts or origin is no longer connected, cleanup'\r\n\r\nFROM error\r\n\r\nWHERE\r\nRPL='$RPL' and\r\ninstance in ($Instance)\r\nGROUP BY 1  \r\nORDER BY $__timeGroup(datetime,$__interval)",
           "refId": "A",
           "select": [
             [
@@ -735,7 +738,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "WorkerBase",
+      "title": "WebSocket",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -891,6 +894,128 @@
         "align": false,
         "alignLevel": null
       }
+    },
+    {
+      "aliasColors": {
+        "#Errors": "dark-red",
+        "Failed executing query: 1213 (40001): Deadlock found when trying to get lock; try restarting transaction": "dark-red",
+        "Failed initializing worker, connection terminated exceptionally": "dark-red",
+        "Killed while waiting for pogo start": "dark-blue",
+        "Total #Errors": "dark-red",
+        "Total #MAD Errors": "dark-red",
+        "Total #Python Errors": "dark-blue",
+        "Websocket connection to DeviceX lost while running healthchecks, connection terminated exceptionally": "dark-orange"
+      },
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_POGODB}",
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 12,
+        "y": 21
+      },
+      "hiddenSeries": false,
+      "id": 8,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.5.7",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n$__timeGroup(datetime,$__interval) AS \"time\",\r\nsum(wokerInitFail) as 'Failed initializing worker, connection terminated exceptionally',\r\nsum(killPogoWait) as 'Killed while waiting for pogo start',\r\nsum(wslost) as 'Websocket connection to DeviceX lost while running healthchecks, connection terminated exceptionally'\r\n\r\nFROM error\r\n\r\nWHERE\r\nRPL='$RPL' and\r\ninstance in ($Instance)\r\nGROUP BY 1  \r\nORDER BY $__timeGroup(datetime,$__interval)",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "WorkerBase",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     }
   ],
   "refresh": false,
@@ -950,12 +1075,12 @@
     ]
   },
   "time": {
-    "from": "now-24h",
+    "from": "now-2d",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "50. MAD log errors",
   "uid": "UCHh-duMa",
-  "version": 8
+  "version": 10
 }

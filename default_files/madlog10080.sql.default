@@ -1,6 +1,6 @@
 select @Datetime := concat(date(curdate() - interval weekday(curdate()) + 7 day),' ','00:00:00');
 
-INSERT IGNORE INTO pogodb.error (datetime,RPL,instance,errors,deadlock,failedPogoStop,oldConnection,originTimeout,wsLost,killPogoWait,wokerInitFail,jobFail,killInjection,killSleep,python,noItemDelete)
+INSERT IGNORE INTO pogodb.error (datetime,RPL,instance,errors,deadlock,failedPogoStop,oldConnection,originTimeout,wsLost,killPogoWait,wokerInitFail,jobFail,killInjection,killSleep,python,noItemDelete,tesseract)
 select
 @Datetime,
 '10080',
@@ -17,7 +17,8 @@ sum(jobFail),
 sum(killInjection),
 sum(killSleep),
 sum(python),
-sum(noItemDelete)
+sum(noItemDelete),
+sum(tesseract)
 from pogodb.error
 where datetime >= date(curdate() - interval weekday(curdate()) + 7 day) and RPL = 1440
 group by instance
