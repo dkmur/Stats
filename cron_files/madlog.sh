@@ -69,7 +69,7 @@ else
   foundGym="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_1.log | grep 'Tried to open a stop but found a gym instead' | wc -l)"
   noWalkerConfig="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_1.log | grep 'Failed to find a walker configuration' | wc -l)"
   noStop="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_1.log | grep 'yielding a spinnable stop - likely not standing exactly on top' | wc -l)"
-  dupMac="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_1.log | grep 'Duplicate MAC') | wc -l)"
+  dupMac="$(grep 'Duplicate MAC' $folder/tmp/$MAD_instance_name_1.log | wc -l)"
 # cat 20210525_0008_MAD2.log | grep -w \[W\] | grep -v 'Worker failed to retrieve proper data' | grep -v 'Too many timeouts' | grep -v 'falling behind' | grep -v 'Screen is frozen' | grep -v 'Timeout, increasing timeout-counter' | grep -v 'Not injected in time - reboot' | grep -v 'Failed restarting PoGo - reboot device' | grep -v 'Failed retrieving screenshot' | grep -v 'No PTC Accounts' | grep -v 'Failed getting the topmost app' | grep -v 'Restarting PoGo failed - reboot device' | grep -v 'Something wrong with screendetection or pogo failure screen' | grep -v 'Failed clearing box' | grep -v 'Deletion not confirmed' | grep -v 'Cannot find any active area defined for current time' | grep -v 'Could not get to Mainscreen' | grep -v 'has not accessed a location in 300 seconds' | grep -v 'has not been processed thrice in a row' | grep -v 'Giving up on this stop after 3 failures in open_pokestop loop' | grep -v 'Softban' | grep -v 'Failed getting quest but got items' | grep -v 'Tried to open a stop but found a gym instead' | grep -v 'Failed to find a walker configuration' | grep -v 'yielding a spinnable stop - likely not standing exactly on top'
 
 #  echo ""
@@ -160,7 +160,7 @@ else
   killSleep="$(grep \[E\] $folder/tmp/$MAD_instance_name_2.log | grep -v 'Error while getting response from device - Reason' | grep 'killed while sleeping'  | wc -l)"
   python="$(grep 'Traceback (most recent call last)' $folder/tmp/$MAD_instance_name_2.log |  wc -l)"
   noItemDelete="$(grep \[E\] $folder/tmp/$MAD_instance_name_2.log | grep -v 'Error while getting response from device - Reason' | grep 'Unable to delete any items'  | wc -l)"
-  tesseract="$(grep \[E\] $folder/tmp/$MAD_instance_name_1.log | grep -v 'Error while getting response from device - Reason' | grep 'Tesseract Error'  | wc -l)"
+  tesseract="$(grep \[E\] $folder/tmp/$MAD_instance_name_2.log | grep -v 'Error while getting response from device - Reason' | grep 'Tesseract Error'  | wc -l)"
 
 #  echo "Warnings"
   warns="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_2.log | wc -l)"
@@ -195,8 +195,7 @@ else
   foundGym="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_2.log | grep 'Tried to open a stop but found a gym instead' | wc -l)"
   noWalkerConfig="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_2.log | grep 'Failed to find a walker configuration' | wc -l)"
   noStop="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_2.log | grep 'yielding a spinnable stop - likely not standing exactly on top' | wc -l)"
-  dupMac="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_2.log | grep 'Duplicate MAC') | wc -l)"
-
+  dupMac="$(grep 'Duplicate MAC' $folder/tmp/$MAD_instance_name_2.log | wc -l)"
 
   echo "Insert $MAD_instance_name_2 data into DB"
   echo ""
@@ -235,7 +234,7 @@ else
   killSleep="$(grep \[E\] $folder/tmp/$MAD_instance_name_3.log | grep -v 'Error while getting response from device - Reason' | grep 'killed while sleeping'  | wc -l)"
   python="$(grep 'Traceback (most recent call last)' $folder/tmp/$MAD_instance_name_3.log |  wc -l)"
   noItemDelete="$(grep \[E\] $folder/tmp/$MAD_instance_name_3.log | grep -v 'Error while getting response from device - Reason' | grep 'Unable to delete any items'  | wc -l)"
-  tesseract="$(grep \[E\] $folder/tmp/$MAD_instance_name_1.log | grep -v 'Error while getting response from device - Reason' | grep 'Tesseract Error'  | wc -l)"
+  tesseract="$(grep \[E\] $folder/tmp/$MAD_instance_name_3.log | grep -v 'Error while getting response from device - Reason' | grep 'Tesseract Error'  | wc -l)"
 
 #  echo "Warnings"
   warns="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_3.log | wc -l)"
@@ -270,8 +269,7 @@ else
   foundGym="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_3.log | grep 'Tried to open a stop but found a gym instead' | wc -l)"
   noWalkerConfig="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_3.log | grep 'Failed to find a walker configuration' | wc -l)"
   noStop="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_3.log | grep 'yielding a spinnable stop - likely not standing exactly on top' | wc -l)"
-  dupMac="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_3.log | grep 'Duplicate MAC') | wc -l)"
-
+  dupMac="$(grep 'Duplicate MAC' $folder/tmp/$MAD_instance_name_3.log | wc -l)"
 
   echo "Insert $MAD_instance_name_3 data into DB"
   echo ""
@@ -310,7 +308,7 @@ else
   killSleep="$(grep \[E\] $folder/tmp/$MAD_instance_name_4.log | grep -v 'Error while getting response from device - Reason' | grep 'killed while sleeping'  | wc -l)"
   python="$(grep 'Traceback (most recent call last)' $folder/tmp/$MAD_instance_name_4.log |  wc -l)"
   noItemDelete="$(grep \[E\] $folder/tmp/$MAD_instance_name_4.log | grep -v 'Error while getting response from device - Reason' | grep 'Unable to delete any items'  | wc -l)"
-  tesseract="$(grep \[E\] $folder/tmp/$MAD_instance_name_1.log | grep -v 'Error while getting response from device - Reason' | grep 'Tesseract Error'  | wc -l)"
+  tesseract="$(grep \[E\] $folder/tmp/$MAD_instance_name_4.log | grep -v 'Error while getting response from device - Reason' | grep 'Tesseract Error'  | wc -l)"
 
 #  echo "Warnings"
   warns="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_4.log | wc -l)"
@@ -345,8 +343,7 @@ else
   foundGym="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_4.log | grep 'Tried to open a stop but found a gym instead' | wc -l)"
   noWalkerConfig="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_4.log | grep 'Failed to find a walker configuration' | wc -l)"
   noStop="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_4.log | grep 'yielding a spinnable stop - likely not standing exactly on top' | wc -l)"
-  dupMac="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_4.log | grep 'Duplicate MAC') | wc -l)"
-
+  dupMac="$(grep 'Duplicate MAC' $folder/tmp/$MAD_instance_name_4.log | wc -l)"
 
   echo "Insert $MAD_instance_name_4 data into DB"
   echo ""
@@ -385,7 +382,7 @@ else
   killSleep="$(grep \[E\] $folder/tmp/$MAD_instance_name_5.log | grep -v 'Error while getting response from device - Reason' | grep 'killed while sleeping'  | wc -l)"
   python="$(grep 'Traceback (most recent call last)' $folder/tmp/$MAD_instance_name_5.log |  wc -l)"
   noItemDelete="$(grep \[E\] $folder/tmp/$MAD_instance_name_5.log | grep -v 'Error while getting response from device - Reason' | grep 'Unable to delete any items'  | wc -l)"
-  tesseract="$(grep \[E\] $folder/tmp/$MAD_instance_name_1.log | grep -v 'Error while getting response from device - Reason' | grep 'Tesseract Error'  | wc -l)"
+  tesseract="$(grep \[E\] $folder/tmp/$MAD_instance_name_5.log | grep -v 'Error while getting response from device - Reason' | grep 'Tesseract Error'  | wc -l)"
 
 #  echo "Warnings"
   warns="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_5.log | wc -l)"
@@ -420,8 +417,7 @@ else
   foundGym="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_5.log | grep 'Tried to open a stop but found a gym instead' | wc -l)"
   noWalkerConfig="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_5.log | grep 'Failed to find a walker configuration' | wc -l)"
   noStop="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_5.log | grep 'yielding a spinnable stop - likely not standing exactly on top' | wc -l)"
-  dupMac="$(grep -w \[W\] $folder/tmp/$MAD_instance_name_5.log | grep 'Duplicate MAC') | wc -l)"
-
+  dupMac="$(grep 'Duplicate MAC' $folder/tmp/$MAD_instance_name_5.log | wc -l)"
 
   echo "Insert $MAD_instance_name_5 data into DB"
   echo ""
