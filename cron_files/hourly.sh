@@ -45,3 +45,9 @@ then
   mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $MAD_DB -e "delete from trs_stats_location_raw where from_unixtime(period) < now() - interval 1 hour;"
   fi
 fi
+
+# process MAD logs
+if "$madlog"
+then
+  cd $PATH_TO_STATS/cron_files/ && ./madlog.sh
+fi

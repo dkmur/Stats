@@ -1,0 +1,63 @@
+select @Datetime := concat(date(now() - interval 1440 minute),' ', SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 1440 minute)) DIV 86400) * 86400));
+
+INSERT IGNORE INTO pogodb.error (datetime,RPL,instance,errors,deadlock,failedPogoStop,oldConnection,originTimeout,wsLost,killPogoWait,wokerInitFail,jobFail,killInjection,killSleep,python,noItemDelete,tesseract)
+select
+@Datetime,
+'1440',
+instance,
+sum(errors),
+sum(deadlock),
+sum(failedPogoStop),
+sum(oldConnection),
+sum(originTimeout),
+sum(wsLost),
+sum(killPogoWait),
+sum(wokerInitFail),
+sum(jobFail),
+sum(killInjection),
+sum(killSleep),
+sum(python),
+sum(noItemDelete),
+sum(tesseract)
+from pogodb.error
+where Datetime like concat(left(@Datetime,10),'%') and RPL = 60
+group by instance
+;
+
+INSERT IGNORE INTO pogodb.warning (datetime,RPL,instance,warns,failedData,manyTimeOut,fallingBehind,maxFalling,frozenScreen,wsTimeout,wsConnClosed,noInject,noPogoStart,failedScreenshot,noPTC,failedTopApp,pogoRestartFail,screenFailure,failedBoxClear,itemDelUnknown,noActiveArea,noMainScreen,noLocAccess,noStopProcess,failStopOpen,softban,questFull,foundGym,noWalkerConfig,noStop,dupMac)
+select
+@Datetime,
+'1440',
+instance,
+sum(warns),
+sum(failedData),
+sum(manyTimeOut),
+sum(fallingBehind),
+max(maxFalling),
+sum(frozenScreen),
+sum(wsTimeout),
+sum(wsConnClosed),
+sum(noInject),
+sum(noPogoStart),
+sum(failedScreenshot),
+sum(noPTC),
+sum(failedTopApp),
+sum(pogoRestartFail),
+sum(screenFailure),
+sum(failedBoxClear),
+sum(itemDelUnknown),
+sum(noActiveArea),
+sum(noMainScreen),
+sum(noLocAccess),
+sum(noStopProcess),
+sum(failStopOpen),
+sum(softban),
+sum(questFull),
+sum(foundGym),
+sum(noWalkerConfig),
+sum(noStop),
+sum(dupMac)
+from pogodb.warning
+where Datetime like concat(left(@Datetime,10),'%') and RPL = 60
+group by instance
+;

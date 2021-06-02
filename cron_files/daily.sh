@@ -83,6 +83,16 @@ then
   fi
 fi
 
+# cleanup of mad log tables
+if [ -z "$SQL_password" ]
+then
+  mysql -h$DB_IP -P$DB_PORT -u$SQL_user $STATS_DB -e "delete from error where (RPL = 60 and Datetime < curdate() - interval $log60 day) or (RPL = 1440 and Datetime < curdate() - interval $log1440 day) or (RPL = 10080 and Datetime < curdate() - interval $log10080 day);"
+  mysql -h$DB_IP -P$DB_PORT -u$SQL_user $STATS_DB -e "delete from warning where (RPL = 60 and Datetime < curdate() - interval $log60 day) or (RPL = 1440 and Datetime < curdate() - interval $log1440 day) or (RPL = 10080 and Datetime < curdate() - interval $log10080 day);"
+else
+  mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB -e "delete from error where (RPL = 60 and Datetime < curdate() - interval $log60 day) or (RPL = 1440 and Datetime < curdate() - interval $log1440 day) or (RPL = 10080 and Datetime < curdate() - interval $log10080 day);"
+  mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB -e "delete from warning where (RPL = 60 and Datetime < curdate() - interval $log60 day) or (RPL = 1440 and Datetime < curdate() - interval $log1440 day) or (RPL = 10080 and Datetime < curdate() - interval $log10080 day);"
+fi
+
 # MAD cleanup trs_stats_detect
 if "$trs_stats_detect"
 then
@@ -141,4 +151,15 @@ then
 mysql -h$DB_IP -P$DB_PORT -u$SQL_user $MAD_DB -e "delete from gym where last_scanned < curdate() - interval $gym_not_scanned_days day; delete from gymdetails where gym_id not in (select gym_id from gym);"
 else
 mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $MAD_DB -e "delete from gym where last_scanned < curdate() - interval $gym_not_scanned_days day; delete from gymdetails where gym_id not in (select gym_id from gym);"
+fi
+
+# MAD log aggregation
+if "$madlog"
+then
+  if [ -z "$SQL_password" ]
+  then
+    mysql -h$DB_IP -P$DB_PORT -u$SQL_user $STATS_DB < $PATH_TO_STATS/cron_files/madlog1440.sql
+  else
+    mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB < $PATH_TO_STATS/cron_files/madlog1440.sql
+  fi
 fi
