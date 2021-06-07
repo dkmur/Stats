@@ -354,7 +354,7 @@ ADD COLUMN IF NOT EXISTS `locReports` int(11) DEFAULT NULL AFTER `WkSt`,
 ADD COLUMN IF NOT EXISTS `locationsMultiReport` int(11) DEFAULT NULL AFTER `locReports`;
 
 ALTER TABLE ATVdetails
-CHANGE COLUMN IF EXISTS `PD_session_id` `PD_session_id` text
+CHANGE COLUMN IF EXISTS `PD_session_id` `PD_session_id` text,
 ADD COLUMN IF NOT EXISTS `MACw` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `magisk_modules`,
 ADD COLUMN IF NOT EXISTS `MACe` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL ADFTER `MACw`
 ;
