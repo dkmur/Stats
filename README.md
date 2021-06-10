@@ -43,6 +43,7 @@ Use it at you own risk, because bare in mind this was all done by an idiot!
 - Mariadb > 10.2
 - Mariadb to be installed on server Stats is running on
 - mysql strict mode disabled
+- Make sure ``jq`` is installed (sudo apt-get install jq)<BR>
 
 ### 2 Initial setup
 
