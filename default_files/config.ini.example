@@ -6,7 +6,7 @@ DB_PORT=3306
 MAD_DB=rmdb
 STATS_DB=pogodb
 
-## MADmin settings, for quest recalc and getting ATV settings##
+## MADmin settings ##
 # MAD instance 1
 MAD_instance_name_1=MAD
 MAD_url_1=http://localhost:5000
@@ -57,6 +57,9 @@ atvdetails=true						# true/false: get cpu temperature, sw versions and RGC/PD s
 atvdetails_hours=24					# execute download atvdetails every X hours, default 24 => daily
 job_wait=2m						# wait time for jobs to finish i.e. 2m or 300s
 
+## MAD log processing ##
+madlog=false						# true/false: to process MAD logs hourly and store into DB. MAD logfiles need to contain instance name!!
+
 ## Grafana ##
 DataSource_stats=pogodb
 DataSource_MAD=rmdb
@@ -102,14 +105,21 @@ gym_not_scanned_days=9999				# delete gym if not scanned for X days
 mad_backup=true						# Daily backup MAD database to /MADbackup. Following tables are excluded: filestore_chunks/filestore_meta/pokemon/raid/weather/trs_status/trs_visited/trs_stats_detect/trs_stats_detect_mon_raw/trs_stats_detect_fort_raw/trs_stats_location/trs_stats_location_raw/trs_quest/trs_usage/trs_s2cells
 backup_delete_days=7					# number of days to keep a backup after which it is deleted 
 
-## Stats cleanup for different ReportPeriodLength in days ##
+## Cleanup of tables ##
+
+# Stats table cleanup (stats_worker + stats_area) for different ReportPeriodLength in days
 RPL15=90
 RPL60=180
 RPL1440=9999
 RPL10080=9999
 
-## MAD tables cleanup (true or false) ##
-pokemon=false						# delete data from table pokemon older then 1 hour
+# MAD log table cleanup (warning+error) for different ReportPeriodLength in days
+log60=180
+log1440=9999
+log10080=9999
+
+# MAD tables cleanup (true or false) #
+pokemon=false						# delete data from table pokemon + trs_stats_detect_seen_type older then 1 hour
 trs_stats_detect_raw=false                              # delete data from table trs_stats_detect_raw older then 1 hour
 trs_stats_location_raw=false                            # delete data from table trs_stats_location_raw  older then 1 hour
 trs_stats_detect=false					# delete yesterdays data from table trs_stats_detect
