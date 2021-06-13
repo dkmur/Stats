@@ -459,7 +459,7 @@ then
       echo ""
       cp $PATH_TO_STATS/default_files/madlog1440.sql.default $PATH_TO_STATS/default_files/madlog1440.sql.tmp
       sed -i "s/interval 1440 minute/interval $hoursback minute/g" $PATH_TO_STATS/default_files/madlog1440.sql.tmp
-      sed -i "s/Stats/$STATS_DB/g" $PATH_TO_STATS/default_files/madlog1440.sql.tmp
+      sed -i "s/pogodb/$STATS_DB/g" $PATH_TO_STATS/default_files/madlog1440.sql.tmp
       if [ -z "$SQL_password" ]
         then
           mysql -h$DB_IP -P$DB_PORT -u$SQL_user $STATS_DB < $PATH_TO_STATS/default_files/madlog1440.sql.tmp
