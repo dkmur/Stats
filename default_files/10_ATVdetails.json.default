@@ -14,7 +14,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "7.3.1"
+      "version": "7.5.7"
     },
     {
       "type": "datasource",
@@ -46,13 +46,16 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1608625676907,
+  "iteration": 1623863977839,
   "links": [],
   "panels": [
     {
       "datasource": "${DS_POGODB}",
       "fieldConfig": {
         "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
           "custom": {
             "align": null,
             "filterable": false
@@ -142,6 +145,10 @@
               {
                 "id": "custom.width",
                 "value": 67
+              },
+              {
+                "id": "custom.displayMode",
+                "value": "json-view"
               }
             ]
           }
@@ -159,7 +166,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "7.3.1",
+      "pluginVersion": "7.5.7",
       "targets": [
         {
           "format": "table",
@@ -197,6 +204,9 @@
       "datasource": "${DS_POGODB}",
       "fieldConfig": {
         "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
           "custom": {
             "align": null,
             "filterable": false
@@ -278,7 +288,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "7.3.1",
+      "pluginVersion": "7.5.7",
       "targets": [
         {
           "format": "table",
@@ -316,6 +326,9 @@
       "datasource": "${DS_POGODB}",
       "fieldConfig": {
         "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
           "custom": {
             "align": null,
             "filterable": false
@@ -373,7 +386,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "7.3.1",
+      "pluginVersion": "7.5.7",
       "targets": [
         {
           "format": "table",
@@ -411,6 +424,9 @@
       "datasource": "${DS_POGODB}",
       "fieldConfig": {
         "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
           "custom": {
             "align": null,
             "filterable": false
@@ -440,6 +456,10 @@
               {
                 "id": "custom.width",
                 "value": 66
+              },
+              {
+                "id": "custom.displayMode",
+                "value": "json-view"
               }
             ]
           },
@@ -468,7 +488,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "7.3.1",
+      "pluginVersion": "7.5.7",
       "targets": [
         {
           "format": "table",
@@ -506,6 +526,9 @@
       "datasource": "${DS_POGODB}",
       "fieldConfig": {
         "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
           "custom": {
             "align": null,
             "filterable": false
@@ -606,7 +629,23 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 71
+                "value": 73
+              },
+              {
+                "id": "custom.displayMode",
+                "value": "json-view"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "datetime"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 148
               }
             ]
           }
@@ -621,16 +660,21 @@
       "id": 11,
       "options": {
         "showHeader": true,
-        "sortBy": []
+        "sortBy": [
+          {
+            "desc": false,
+            "displayName": "post_destination"
+          }
+        ]
       },
-      "pluginVersion": "7.3.1",
+      "pluginVersion": "7.5.7",
       "targets": [
         {
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\nleft(datetime,16) as 'datetime',\nifnull(pogodroid,'no_data ') as 'version',\nifnull(PD_auth_username,'no_data ') as 'username',\nifnull(PD_auth_password,'no_data ') as 'password',\nifnull(PD_user_login,'no_data') as 'login',\nifnull(PD_auth_token,'no_data') as 'auth_token',\nifnull(PD_post_destination,'no_data') as 'post_destination',\ncount(origin) as '#devices'\nfrom ATVdetails\n\nWHERE\ndatetime = '$datetime'\n\nGROUP BY datetime, PD_auth_username, PD_auth_password, PD_user_login, PD_auth_token, PD_post_destination\n",
+          "rawSql": "SELECT\nleft(datetime,16) as 'datetime',\nifnull(pogodroid,'no_data ') as 'version',\nifnull(PD_auth_username,'no_data ') as 'username',\nifnull(PD_auth_password,'no_data ') as 'password',\nifnull(PD_user_login,'no_data') as 'login',\nifnull(PD_auth_token,'no_data') as 'auth_token',\nifnull(PD_post_destination,'no_data') as 'post_destination',\ncount(origin) as '#devices'\nfrom ATVdetails\n\nWHERE\ndatetime = '$datetime'\n\nGROUP BY datetime, pogodroid, PD_auth_username, PD_auth_password, PD_user_login, PD_auth_token, PD_post_destination\n",
           "refId": "A",
           "select": [
             [
@@ -661,6 +705,9 @@
       "datasource": "${DS_POGODB}",
       "fieldConfig": {
         "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
           "custom": {
             "align": null,
             "filterable": false
@@ -874,7 +921,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "7.3.1",
+      "pluginVersion": "7.5.7",
       "targets": [
         {
           "format": "table",
@@ -912,6 +959,9 @@
       "datasource": "${DS_POGODB}",
       "fieldConfig": {
         "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
           "custom": {
             "align": null,
             "filterable": false
@@ -1039,6 +1089,18 @@
                 "value": 121
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "datetime"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 141
+              }
+            ]
           }
         ]
       },
@@ -1053,7 +1115,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "7.3.1",
+      "pluginVersion": "7.5.7",
       "targets": [
         {
           "format": "table",
@@ -1091,6 +1153,9 @@
       "datasource": "${DS_POGODB}",
       "fieldConfig": {
         "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
           "custom": {
             "align": null,
             "filterable": false
@@ -1170,6 +1235,18 @@
                 "value": 65
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "datetime"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 144
+              }
+            ]
           }
         ]
       },
@@ -1184,7 +1261,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "7.3.1",
+      "pluginVersion": "7.5.7",
       "targets": [
         {
           "format": "table",
@@ -1222,6 +1299,9 @@
       "datasource": "${DS_POGODB}",
       "fieldConfig": {
         "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
           "custom": {
             "align": null,
             "filterable": false
@@ -1399,7 +1479,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "7.3.1",
+      "pluginVersion": "7.5.7",
       "targets": [
         {
           "format": "table",
@@ -1437,6 +1517,9 @@
       "datasource": "${DS_POGODB}",
       "fieldConfig": {
         "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
           "custom": {
             "align": null,
             "filterable": false
@@ -1602,7 +1685,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "7.3.1",
+      "pluginVersion": "7.5.7",
       "targets": [
         {
           "format": "table",
@@ -1635,10 +1718,358 @@
       "timeShift": null,
       "title": "RemoteGpsController (3)",
       "type": "table"
+    },
+    {
+      "datasource": "${DS_POGODB}",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": null,
+            "filterable": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "minTemp"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 77
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "maxTemp"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 77
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "avgTemp"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 78
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 7,
+        "x": 0,
+        "y": 48
+      },
+      "id": 22,
+      "options": {
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "7.5.7",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\nleft(datetime,16) as 'datetime',\nmin(temperature) as 'minTemp',\navg(temperature) as 'avgTemp',\nmax(temperature) as 'maxTemp'\nfrom ATVdetails\n\nWHERE\ndatetime = '$datetime'\n\nGROUP BY datetime\n",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Temperature",
+      "type": "table"
+    },
+    {
+      "datasource": "${DS_POGODB}",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": null,
+            "filterable": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "minTemp"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 77
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "maxTemp"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 77
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "avgTemp"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 78
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Origin"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 140
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 5,
+        "x": 7,
+        "y": 48
+      },
+      "id": 23,
+      "options": {
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "7.5.7",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\nOrigin,\nTemperature\nfrom ATVdetails\n\nWHERE\ndatetime = '$datetime'\n\norder by temperature DESC\nlimit 5\n",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Temperature (Top 5)",
+      "type": "table"
+    },
+    {
+      "datasource": "${DS_POGODB}",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": null,
+            "filterable": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "minTemp"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 77
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "maxTemp"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 77
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "avgTemp"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 78
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Origin"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 140
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 5,
+        "x": 12,
+        "y": 48
+      },
+      "id": 24,
+      "options": {
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "7.5.7",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\nOrigin,\nTemperature\nfrom ATVdetails\n\nWHERE\ndatetime = '$datetime' and\ntemperature <> \"\"\n\norder by temperature ASC\nlimit 5\n",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Temperature (Lowest 5)",
+      "type": "table"
     }
   ],
   "refresh": false,
-  "schemaVersion": 26,
+  "schemaVersion": 27,
   "style": "dark",
   "tags": [],
   "templating": {
@@ -1648,6 +2079,7 @@
         "current": {},
         "datasource": "${DS_POGODB}",
         "definition": "select datetime from ATVdetails;",
+        "description": null,
         "error": null,
         "hide": 0,
         "includeAll": false,
@@ -1689,5 +2121,5 @@
   "timezone": "",
   "title": "10. ATVdetails",
   "uid": "YBmfNzFGz",
-  "version": 16
+  "version": 26
 }
