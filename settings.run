@@ -405,9 +405,12 @@ cp $PATH_TO_STATS/default_files/01_stats_kpi.json.default $PATH_TO_STATS/grafana
 cp $PATH_TO_STATS/default_files/02_stats_network_area.json.default $PATH_TO_STATS/grafana/02_stats_network_area.json
 cp $PATH_TO_STATS/default_files/03_stats_network_area_ex.json.default $PATH_TO_STATS/grafana/03_stats_network_area_ex.json
 cp $PATH_TO_STATS/default_files/04_stats_worker.json.default $PATH_TO_STATS/grafana/04_stats_worker.json
+cp $PATH_TO_STATS/default_files/05_stats_unfenced.json.default $PATH_TO_STATS/grafana/05_stats_unfenced.json
+cp $PATH_TO_STATS/default_files/06_nearby_fenced.json.default $PATH_TO_STATS/grafana/06_nearby_fenced.json
 cp $PATH_TO_STATS/default_files/10_ATVdetails.json.default $PATH_TO_STATS/grafana/10_ATVdetails.json
 cp $PATH_TO_STATS/default_files/11_stats_atvdetails_combined.json.default $PATH_TO_STATS/grafana/11_stats_atvdetails_combined.json
 cp $PATH_TO_STATS/default_files/12_stats_atvdetails_combined_ex.json.default $PATH_TO_STATS/grafana/12_stats_atvdetails_combined_ex.json
+cp $PATH_TO_STATS/default_files/13_device_overview.json.default $PATH_TO_STATS/grafana/13_device_overview.json
 cp $PATH_TO_STATS/default_files/20_mad_stuff.json.default $PATH_TO_STATS/grafana/20_mad_stuff.json
 cp $PATH_TO_STATS/default_files/30_mon_stuff.json.default $PATH_TO_STATS/grafana/30_mon_stuff.json
 cp $PATH_TO_STATS/default_files/50_mad_log_error.json.default $PATH_TO_STATS/grafana/50_mad_log_error.json
