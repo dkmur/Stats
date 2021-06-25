@@ -15,8 +15,8 @@ AS(
 select a.spawnpoint_id, least(IFNULL(a.encounter,a.wild),a.wild) as `first_scanned_adapted`, disappear_time, a.individual_attack, a.individual_defense, a.individual_stamina, a.first_scanned, a.encounter, a.wild, a.nearby_stop, a.nearby_cell, a.lure_encounter, a.lure_wild
 from pogodb.pokemon_history_temp a
 where
-least(a.encounter,a.wild) >= @Start and
-least(a.encounter,a.wild) < @Stop and
+least(IFNULL(a.encounter,a.wild),a.wild) >= @Start and
+least(IFNULL(a.encounter,a.wild),a.wild) < @Stop and
 ST_CONTAINS(@Fence, point(a.latitude,a.longitude))
 );
 
