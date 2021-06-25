@@ -8,7 +8,7 @@ STATS_DB=pogodb
 
 ## MADmin settings ##
 # MAD instance 1
-MAD_instance_name_1=MAD
+MAD_instance_name_1=mad                   # MAD status-name as defined in config.ini, default = mad
 MAD_url_1=http://localhost:5000
 MADmin_username_1=someuser
 MADmin_password_1=somepass
