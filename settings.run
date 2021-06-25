@@ -412,6 +412,7 @@ cp $PATH_TO_STATS/default_files/11_stats_atvdetails_combined.json.default $PATH_
 cp $PATH_TO_STATS/default_files/12_stats_atvdetails_combined_ex.json.default $PATH_TO_STATS/grafana/12_stats_atvdetails_combined_ex.json
 cp $PATH_TO_STATS/default_files/13_device_overview.json.default $PATH_TO_STATS/grafana/13_device_overview.json
 cp $PATH_TO_STATS/default_files/20_mad_stuff.json.default $PATH_TO_STATS/grafana/20_mad_stuff.json
+cp $PATH_TO_STATS/default_files/21_mad_cpu_mem.json.default $PATH_TO_STATS/grafana/21_mad_cpu_mem.json
 cp $PATH_TO_STATS/default_files/30_mon_stuff.json.default $PATH_TO_STATS/grafana/30_mon_stuff.json
 cp $PATH_TO_STATS/default_files/50_mad_log_error.json.default $PATH_TO_STATS/grafana/50_mad_log_error.json
 cp $PATH_TO_STATS/default_files/51_mad_log_warning.json.default $PATH_TO_STATS/grafana/51_mad_log_warning.json
