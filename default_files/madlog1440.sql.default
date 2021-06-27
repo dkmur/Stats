@@ -24,7 +24,7 @@ where Datetime like concat(left(@Datetime,10),'%') and RPL = 60
 group by instance
 ;
 
-INSERT IGNORE INTO pogodb.warning (datetime,RPL,instance,warns,failedData,manyTimeOut,fallingBehind,maxFalling,frozenScreen,wsTimeout,wsConnClosed,noInject,noPogoStart,failedScreenshot,noPTC,failedTopApp,pogoRestartFail,screenFailure,failedBoxClear,itemDelUnknown,noActiveArea,noMainScreen,noLocAccess,noStopProcess,failStopOpen,softban,questFull,foundGym,noWalkerConfig,noStop,dupMac)
+INSERT IGNORE INTO pogodb.warning (datetime,RPL,instance,warns,failedData,manyTimeOut,fallingBehind,maxFalling,frozenScreen,wsTimeout,wsConnClosed,noInject,noPogoStart,failedScreenshot,noPTC,failedTopApp,pogoRestartFail,screenFailure,failedBoxClear,itemDelUnknown,noActiveArea,noMainScreen,noLocAccess,noStopProcess,failStopOpen,softban,questFull,foundGym,noWalkerConfig,noStop,dupMac,failStopSpin,noLogin,failPostMove)
 select
 @Datetime,
 '1440',
@@ -56,7 +56,10 @@ sum(questFull),
 sum(foundGym),
 sum(noWalkerConfig),
 sum(noStop),
-sum(dupMac)
+sum(dupMac),
+sum(failStopSpin),
+sum(noLogin),
+sum(failPostMove)
 from pogodb.warning
 where Datetime like concat(left(@Datetime,10),'%') and RPL = 60
 group by instance

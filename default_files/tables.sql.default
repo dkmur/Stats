@@ -325,6 +325,9 @@ CREATE TABLE IF NOT EXISTS `warning` (
   `noWalkerConfig` INT DEFAULT NULL,
   `noStop` INT DEFAULT NULL,
   `dupMac` INT DEFAULT NULL,
+  `failStopSpin` INT DEFAULT NULL,
+  `noLogin` INT DEFAULT NULL,
+  `failPostMove` INT DEFAULT NULL,
   PRIMARY KEY (`datetime`,`RPL`,`instance`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -390,6 +393,13 @@ ALTER TABLE error
 ADD COLUMN IF NOT EXISTS `tesseract` INT DEFAULT NULL
 ;
 
+ALTER TABLE warning
+ADD COLUMN IF NOT EXISTS `failStopSpin` INT DEFAULT NULL,
+ADD COLUMN IF NOT EXISTS `noLogin` INT DEFAULT NULL,
+ADD COLUMN IF NOT EXISTS `failPostMove` INT DEFAULT NULL
+;
+
+
 -- update version
 INSERT IGNORE INTO version values ('stats',2);
-UPDATE version set version = 7 where version.key = 'stats';
+UPDATE version set version = 8 where version.key = 'stats';
