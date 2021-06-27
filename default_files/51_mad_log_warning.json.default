@@ -1,4 +1,34 @@
 {
+  "__inputs": [
+    {
+      "name": "DS_POGODB",
+      "label": "pogodb",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "mysql",
+      "pluginName": "MySQL"
+    }
+  ],
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "7.5.8"
+    },
+    {
+      "type": "panel",
+      "id": "graph",
+      "name": "Graph",
+      "version": ""
+    },
+    {
+      "type": "datasource",
+      "id": "mysql",
+      "name": "MySQL",
+      "version": "1.0.0"
+    }
+  ],
   "annotations": {
     "list": [
       {
@@ -15,8 +45,8 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 89,
-  "iteration": 1622409049199,
+  "id": null,
+  "iteration": 1624784891523,
   "links": [],
   "panels": [
     {
@@ -30,7 +60,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "pogodb",
+      "datasource": "${DS_POGODB}",
       "fieldConfig": {
         "defaults": {},
         "overrides": []
@@ -61,7 +91,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "7.5.8",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -80,7 +110,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\r\n$__timeGroup(datetime,$__interval) AS \"time\",\r\nsum(warns) as 'Total #MAD Warnings',\r\nsum(warns)-sum(failedData)-sum(manyTimeOut)-sum(fallingBehind)-sum(frozenScreen)-sum(wsTimeout)-sum(wsConnClosed)-sum(noInject)-sum(noPogoStart)-sum(failedScreenshot)-sum(noPTC)-sum(failedTopApp)-sum(pogoRestartFail)-sum(screenFailure)-sum(failedBoxClear)-sum(itemDelUnknown)-sum(noActiveArea)-sum(noMainScreen)-sum(noLocAccess)-sum(noStopProcess)-sum(failStopOpen)-sum(softban)-sum(questFull)-sum(foundGym)-sum(noWalkerConfig)-sum(noStop) as 'Unspecified Warnings'\r\n\r\nFROM warning\r\n\r\nWHERE\r\nRPL='$RPL' and\r\ninstance in ($Instance)\r\nGROUP BY 1  \r\nORDER BY $__timeGroup(datetime,$__interval)",
+          "rawSql": "SELECT\r\n$__timeGroup(datetime,$__interval) AS \"time\",\r\nsum(warns) as 'Total #MAD Warnings',\r\nsum(warns)-sum(failedData)-sum(manyTimeOut)-sum(fallingBehind)-sum(frozenScreen)-sum(wsTimeout)-sum(wsConnClosed)-sum(noInject)-sum(noPogoStart)-sum(failedScreenshot)-sum(noPTC)-sum(failedTopApp)-sum(pogoRestartFail)-sum(screenFailure)-sum(failedBoxClear)-sum(itemDelUnknown)-sum(noActiveArea)-sum(noMainScreen)-sum(noLocAccess)-sum(noStopProcess)-sum(failStopOpen)-sum(softban)-sum(questFull)-sum(foundGym)-sum(noWalkerConfig)-sum(noStop)-sum(ifnull(failStopSpin,0))-sum(ifnull(noLogin,0))-sum(ifnull(failPostMove,0)) as 'Unspecified Warnings'\r\n\r\nFROM warning\r\n\r\nWHERE\r\nRPL='$RPL' and\r\ninstance in ($Instance)\r\nGROUP BY 1  \r\nORDER BY $__timeGroup(datetime,$__interval)",
           "refId": "A",
           "select": [
             [
@@ -125,7 +155,7 @@
           "format": "short",
           "label": null,
           "logBase": 1,
-          "max": null,
+          "max": "1500",
           "min": null,
           "show": true
         },
@@ -133,7 +163,7 @@
           "format": "short",
           "label": null,
           "logBase": 1,
-          "max": null,
+          "max": "100",
           "min": null,
           "show": true
         }
@@ -156,7 +186,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "pogodb",
+      "datasource": "${DS_POGODB}",
       "fieldConfig": {
         "defaults": {},
         "overrides": []
@@ -187,7 +217,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "7.5.8",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -251,7 +281,7 @@
           "format": "short",
           "label": null,
           "logBase": 1,
-          "max": null,
+          "max": "100",
           "min": null,
           "show": true
         },
@@ -259,7 +289,7 @@
           "format": "short",
           "label": null,
           "logBase": 1,
-          "max": null,
+          "max": "2500",
           "min": null,
           "show": true
         }
@@ -281,7 +311,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "pogodb",
+      "datasource": "${DS_POGODB}",
       "fieldConfig": {
         "defaults": {},
         "overrides": []
@@ -312,7 +342,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "7.5.8",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -401,7 +431,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "pogodb",
+      "datasource": "${DS_POGODB}",
       "fieldConfig": {
         "defaults": {},
         "overrides": []
@@ -432,7 +462,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "7.5.8",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -521,7 +551,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "pogodb",
+      "datasource": "${DS_POGODB}",
       "fieldConfig": {
         "defaults": {},
         "overrides": []
@@ -552,7 +582,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "7.5.8",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -566,7 +596,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\r\n$__timeGroup(datetime,$__interval) AS \"time\",\r\nsum(frozenScreen) as 'Screen is frozen',\r\nsum(noPogoStart) as 'Failed restarting PoGo - reboot device',\r\nsum(failedScreenshot) as 'Failed retrieving screenshot',\r\nsum(pogoRestartFail) as 'Restarting PoGo failed - reboot device',\r\nsum(screenFailure) as 'Something wrong with screendetection or pogo failure screen',\r\nsum(noMainScreen) as '_check_pogo_main_screen: Could not get to Mainscreen within 10 attempts'\r\n\r\nFROM warning\r\n\r\nWHERE\r\nRPL='$RPL' and\r\ninstance in ($Instance)\r\nGROUP BY 1  \r\nORDER BY $__timeGroup(datetime,$__interval)",
+          "rawSql": "SELECT\r\n$__timeGroup(datetime,$__interval) AS \"time\",\r\nsum(noPogoStart) as 'Failed restarting PoGo - reboot device',\r\nsum(noMainScreen) as '_check_pogo_main_screen: Could not get to Mainscreen within 10 attempts',\r\nsum(pogoRestartFail) as 'Restarting PoGo failed - reboot device',\r\nsum(screenFailure) as 'Something wrong with screendetection or pogo failure screen'\r\n\r\nFROM warning\r\n\r\nWHERE\r\nRPL='$RPL' and\r\ninstance in ($Instance)\r\nGROUP BY 1  \r\nORDER BY $__timeGroup(datetime,$__interval)",
           "refId": "A",
           "select": [
             [
@@ -592,7 +622,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "WorkerBase",
+      "title": "WorkerBase (1)",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -611,7 +641,127 @@
           "format": "short",
           "label": null,
           "logBase": 1,
+          "max": "50",
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
           "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {
+        "#Errors": "dark-red",
+        "Screen is frozen": "dark-green",
+        "Total #Errors": "dark-red",
+        "Total #MAD Errors": "dark-red",
+        "Total #MAD Warnings": "dark-red",
+        "Total #Python Errors": "dark-blue"
+      },
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_POGODB}",
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 12,
+        "y": 14
+      },
+      "hiddenSeries": false,
+      "id": 15,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.5.8",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n$__timeGroup(datetime,$__interval) AS \"time\",\r\nsum(frozenScreen) as 'Screen is frozen',\r\nsum(failPostMove) as 'Worker failed running post_move_location_routine, stopping worker',\r\nsum(failedScreenshot) as 'Failed retrieving screenshot',\r\nsum(noLogin) as 'Could not login again - (clearing game data + restarting device)'\r\n\r\nFROM warning\r\n\r\nWHERE\r\nRPL='$RPL' and\r\ninstance in ($Instance)\r\nGROUP BY 1  \r\nORDER BY $__timeGroup(datetime,$__interval)",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "WorkerBase (2)",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": "50",
           "min": null,
           "show": true
         },
@@ -641,7 +791,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "pogodb",
+      "datasource": "${DS_POGODB}",
       "fieldConfig": {
         "defaults": {},
         "overrides": []
@@ -651,8 +801,8 @@
       "gridPos": {
         "h": 7,
         "w": 12,
-        "x": 12,
-        "y": 14
+        "x": 0,
+        "y": 21
       },
       "hiddenSeries": false,
       "id": 3,
@@ -672,7 +822,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "7.5.8",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -756,12 +906,13 @@
         "Total #MAD Errors": "dark-red",
         "Total #MAD Warnings": "dark-red",
         "Total #Python Errors": "dark-blue",
-        "Worker Breda12 has not accessed a location in 300 seconds, removing from routemanager": "dark-blue"
+        "Worker Breda12 has not accessed a location in 300 seconds, removing from routemanager": "dark-blue",
+        "Worker xx has not accessed a location in 300 seconds, removing from routemanager": "dark-blue"
       },
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "pogodb",
+      "datasource": "${DS_POGODB}",
       "fieldConfig": {
         "defaults": {},
         "overrides": []
@@ -771,7 +922,7 @@
       "gridPos": {
         "h": 7,
         "w": 12,
-        "x": 0,
+        "x": 12,
         "y": 21
       },
       "hiddenSeries": false,
@@ -792,7 +943,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "7.5.8",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -811,7 +962,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\r\n$__timeGroup(datetime,$__interval) AS \"time\",\r\nsum(noLocAccess) as 'Worker Breda12 has not accessed a location in 300 seconds, removing from routemanager'\r\n\r\nFROM warning\r\n\r\nWHERE\r\nRPL='$RPL' and\r\ninstance in ($Instance)\r\nGROUP BY 1  \r\nORDER BY $__timeGroup(datetime,$__interval)",
+          "rawSql": "SELECT\r\n$__timeGroup(datetime,$__interval) AS \"time\",\r\nsum(noLocAccess) as 'Worker xx has not accessed a location in 300 seconds, removing from routemanager'\r\n\r\nFROM warning\r\n\r\nWHERE\r\nRPL='$RPL' and\r\ninstance in ($Instance)\r\nGROUP BY 1  \r\nORDER BY $__timeGroup(datetime,$__interval)",
           "refId": "A",
           "select": [
             [
@@ -886,7 +1037,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "pogodb",
+      "datasource": "${DS_POGODB}",
       "fieldConfig": {
         "defaults": {},
         "overrides": []
@@ -896,8 +1047,8 @@
       "gridPos": {
         "h": 7,
         "w": 12,
-        "x": 12,
-        "y": 21
+        "x": 0,
+        "y": 28
       },
       "hiddenSeries": false,
       "id": 12,
@@ -917,7 +1068,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "7.5.8",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1002,132 +1153,6 @@
     {
       "aliasColors": {
         "#Errors": "dark-red",
-        "Failed clearing box 1 time(s) in a row, retry later": "dark-blue",
-        "Total #Errors": "dark-red",
-        "Total #MAD Errors": "dark-red",
-        "Total #MAD Warnings": "dark-red",
-        "Total #Python Errors": "dark-blue",
-        "Unable to confirm the current location (Location(lat,lng)) yielding a spinnable stop - likely not standing exactly on top": "dark-green"
-      },
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "pogodb",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
-      "fill": 1,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 7,
-        "w": 12,
-        "x": 0,
-        "y": 28
-      },
-      "hiddenSeries": false,
-      "id": 9,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 1,
-      "nullPointMode": "null",
-      "options": {
-        "alertThreshold": true
-      },
-      "percentage": false,
-      "pluginVersion": "7.5.7",
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [
-        {
-          "alias": "max MITM data processing workers are falling behind",
-          "yaxis": 2
-        }
-      ],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "format": "time_series",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "SELECT\r\n$__timeGroup(datetime,$__interval) AS \"time\",\r\nsum(failedBoxClear) as 'Failed clearing box 1 time(s) in a row, retry later',\r\nsum(itemDelUnknown) as 'Deletion not confirmed within 35s for item: x',\r\nsum(noStop) as 'Unable to confirm the current location (Location(lat,lng)) yielding a spinnable stop - likely not standing exactly on top'\r\n\r\nFROM warning\r\n\r\nWHERE\r\nRPL='$RPL' and\r\ninstance in ($Instance)\r\nGROUP BY 1  \r\nORDER BY $__timeGroup(datetime,$__interval)",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "timeColumn": "time",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "WorkerQuests",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "aliasColors": {
-        "#Errors": "dark-red",
         "Giving up on this stop after 3 failures in open_pokestop loop": "dark-blue",
         "Total #Errors": "dark-red",
         "Total #MAD Errors": "dark-red",
@@ -1137,7 +1162,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "pogodb",
+      "datasource": "${DS_POGODB}",
       "fieldConfig": {
         "defaults": {},
         "overrides": []
@@ -1168,7 +1193,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "7.5.8",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1208,7 +1233,134 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "WorkerQuests",
+      "title": "WorkerQuests (1)",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": "200",
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {
+        "#Errors": "dark-red",
+        "Failed clearing box 1 time(s) in a row, retry later": "dark-blue",
+        "Total #Errors": "dark-red",
+        "Total #MAD Errors": "dark-red",
+        "Total #MAD Warnings": "dark-red",
+        "Total #Python Errors": "dark-blue",
+        "Unable to confirm the current location (Location(lat,lng)) yielding a spinnable stop - likely not standing exactly on top": "dark-green",
+        "giving up spinning after 4 tries in handle_stop loop": "dark-purple"
+      },
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_POGODB}",
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 0,
+        "y": 35
+      },
+      "hiddenSeries": false,
+      "id": 9,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.5.8",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "alias": "max MITM data processing workers are falling behind",
+          "yaxis": 2
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n$__timeGroup(datetime,$__interval) AS \"time\",\r\nsum(failedBoxClear) as 'Failed clearing box 1 time(s) in a row, retry later',\r\nsum(itemDelUnknown) as 'Deletion not confirmed within 35s for item: x',\r\nsum(noStop) as 'Unable to confirm the current location (Location(lat,lng)) yielding a spinnable stop - likely not standing exactly on top',\r\nsum(failStopSpin) as 'giving up spinning after 4 tries in handle_stop loop'\r\n\r\nFROM warning\r\n\r\nWHERE\r\nRPL='$RPL' and\r\ninstance in ($Instance)\r\nGROUP BY 1  \r\nORDER BY $__timeGroup(datetime,$__interval)",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "WorkerQuests (2)",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -1257,7 +1409,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "pogodb",
+      "datasource": "${DS_POGODB}",
       "fieldConfig": {
         "defaults": {},
         "overrides": []
@@ -1267,7 +1419,7 @@
       "gridPos": {
         "h": 7,
         "w": 12,
-        "x": 0,
+        "x": 12,
         "y": 35
       },
       "hiddenSeries": false,
@@ -1288,7 +1440,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "7.5.8",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1352,7 +1504,7 @@
           "format": "short",
           "label": null,
           "logBase": 1,
-          "max": null,
+          "max": "50",
           "min": null,
           "show": true
         },
@@ -1382,7 +1534,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "pogodb",
+      "datasource": "${DS_POGODB}",
       "fieldConfig": {
         "defaults": {},
         "overrides": []
@@ -1392,8 +1544,8 @@
       "gridPos": {
         "h": 7,
         "w": 12,
-        "x": 12,
-        "y": 35
+        "x": 0,
+        "y": 42
       },
       "hiddenSeries": false,
       "id": 14,
@@ -1413,7 +1565,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "7.5.8",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1507,7 +1659,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "pogodb",
+      "datasource": "${DS_POGODB}",
       "fieldConfig": {
         "defaults": {},
         "overrides": []
@@ -1517,7 +1669,7 @@
       "gridPos": {
         "h": 7,
         "w": 12,
-        "x": 0,
+        "x": 12,
         "y": 42
       },
       "hiddenSeries": false,
@@ -1538,7 +1690,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "7.5.8",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1602,7 +1754,7 @@
           "format": "short",
           "label": null,
           "logBase": 1,
-          "max": null,
+          "max": "100",
           "min": null,
           "show": true
         },
@@ -1629,12 +1781,8 @@
     "list": [
       {
         "allValue": null,
-        "current": {
-          "selected": false,
-          "text": "60",
-          "value": "60"
-        },
-        "datasource": "pogodb",
+        "current": {},
+        "datasource": "${DS_POGODB}",
         "definition": "select distinct(RPL) from warning;",
         "description": null,
         "error": null,
@@ -1657,12 +1805,8 @@
       },
       {
         "allValue": null,
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
-        "datasource": "pogodb",
+        "current": {},
+        "datasource": "${DS_POGODB}",
         "definition": "select distinct(instance) from warning;",
         "description": null,
         "error": null,
@@ -1686,12 +1830,12 @@
     ]
   },
   "time": {
-    "from": "now-2d",
+    "from": "now-7d",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "51. MAD log warnings",
   "uid": "UCHh-duMb",
-  "version": 6
+  "version": 12
 }
