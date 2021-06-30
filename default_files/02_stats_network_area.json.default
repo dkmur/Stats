@@ -14,12 +14,12 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "7.5.7"
+      "version": "8.0.3"
     },
     {
       "type": "panel",
       "id": "graph",
-      "name": "Graph",
+      "name": "Graph (old)",
       "version": ""
     },
     {
@@ -46,7 +46,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1624207112827,
+  "iteration": 1625090552211,
   "links": [],
   "panels": [
     {
@@ -57,10 +57,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_POGODB}",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -87,12 +83,13 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "8.0.3",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
       "seriesOverrides": [
         {
+          "$$hashKey": "object:698",
           "alias": "% IV",
           "yaxis": 2
         }
@@ -210,6 +207,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:395",
           "format": "short",
           "label": "#Mons",
           "logBase": 1,
@@ -218,6 +216,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:396",
           "format": "short",
           "label": "% IV",
           "logBase": 1,
@@ -237,10 +236,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_POGODB}",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -267,12 +262,13 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "8.0.3",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
       "seriesOverrides": [
         {
+          "$$hashKey": "object:4446",
           "alias": "% time proto received",
           "yaxis": 1
         }
@@ -359,6 +355,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:861",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -367,6 +364,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:862",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -386,10 +384,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_POGODB}",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -416,7 +410,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "8.0.3",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -474,6 +468,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:299",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -482,6 +477,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:300",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -501,10 +497,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_POGODB}",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -531,7 +523,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "8.0.3",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -589,6 +581,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:3411",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -597,6 +590,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:3412",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -620,10 +614,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_POGODB}",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -650,16 +640,18 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "8.0.3",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
       "seriesOverrides": [
         {
+          "$$hashKey": "object:1173",
           "alias": "Spawns added",
           "yaxis": 2
         },
         {
+          "$$hashKey": "object:1174",
           "alias": "Spawns unknown",
           "yaxis": 2
         }
@@ -717,6 +709,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:1471",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -725,6 +718,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:1472",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -744,10 +738,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_POGODB}",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -774,7 +764,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "8.0.3",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -832,6 +822,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:1803",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -840,6 +831,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:1804",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -859,10 +851,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_POGODB}",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -889,7 +877,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "8.0.3",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -952,6 +940,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:2265",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -960,6 +949,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:2266",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -981,10 +971,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_POGODB}",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -1011,12 +997,13 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "8.0.3",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
       "seriesOverrides": [
         {
+          "$$hashKey": "object:609",
           "alias": "%time left",
           "yaxis": 2
         }
@@ -1125,6 +1112,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:2382",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -1133,6 +1121,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:2383",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -1152,10 +1141,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_POGODB}",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -1182,36 +1167,43 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "8.0.3",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
       "seriesOverrides": [
         {
+          "$$hashKey": "object:3940",
           "alias": "Locaction Failure Rate",
           "yaxis": 2
         },
         {
+          "$$hashKey": "object:3941",
           "alias": "Teleport Failure Rate",
           "yaxis": 2
         },
         {
+          "$$hashKey": "object:3942",
           "alias": "Location Failure Rate",
           "yaxis": 2
         },
         {
+          "$$hashKey": "object:3943",
           "alias": "Walk Failure Rate",
           "yaxis": 2
         },
         {
+          "$$hashKey": "object:3944",
           "alias": "Walk Success Rate",
           "yaxis": 2
         },
         {
+          "$$hashKey": "object:3945",
           "alias": "Teleport Success Rate",
           "yaxis": 2
         },
         {
+          "$$hashKey": "object:3946",
           "alias": "Location Success Rate",
           "yaxis": 2
         }
@@ -1269,6 +1261,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:3255",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -1277,6 +1270,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:3256",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -1296,10 +1290,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_POGODB}",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -1326,7 +1316,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "8.0.3",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1384,6 +1374,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:2219",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -1392,6 +1383,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:2220",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -1411,10 +1403,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_POGODB}",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -1441,7 +1429,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "8.0.3",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1497,6 +1485,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:3870",
           "format": "short",
           "label": "Seconds",
           "logBase": 1,
@@ -1505,6 +1494,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:3871",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -1524,10 +1514,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_POGODB}",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -1554,16 +1540,18 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "8.0.3",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
       "seriesOverrides": [
         {
+          "$$hashKey": "object:613",
           "alias": "average number of reports for multiRoutePositionReportLocations",
           "yaxis": 2
         },
         {
+          "$$hashKey": "object:592",
           "alias": "average number of reports",
           "yaxis": 2
         }
@@ -1619,6 +1607,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:131",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -1627,6 +1616,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:132",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -1642,7 +1632,7 @@
     }
   ],
   "refresh": false,
-  "schemaVersion": 27,
+  "schemaVersion": 30,
   "style": "dark",
   "tags": [],
   "templating": {
@@ -1666,7 +1656,6 @@
         "skipUrlSync": false,
         "sort": 3,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -1681,7 +1670,7 @@
         "hide": 0,
         "includeAll": true,
         "label": null,
-        "multi": false,
+        "multi": true,
         "name": "Area",
         "options": [],
         "query": "select distinct(substring_index(Area,'_',1)) from stats_area where Area <>'Unfenced';",
@@ -1690,7 +1679,6 @@
         "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -1714,7 +1702,6 @@
         "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -1742,5 +1729,5 @@
   "timezone": "",
   "title": "02. Stats network/area level",
   "uid": "KY-d_hOMz",
-  "version": 56
+  "version": 57
 }
