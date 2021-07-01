@@ -123,7 +123,10 @@ else
         echo "Starting jobs for instance 2"
         echo ""
         cp $PATH_TO_STATS/default_files/ATVdetails.json $MAD_path_2/personal_commands/
-        curl -u $MADmin_username_2:$MADmin_password_2 "$MAD_url_2/delete_log"
+	if [[ "$MAD_path_2" != "$MAD_path_1" ]]
+	then
+		curl -u $MADmin_username_2:$MADmin_password_2 "$MAD_url_2/delete_log"
+	fi
         curl -u $MADmin_username_2:$MADmin_password_2 "$MAD_url_2/reload_jobs"
         curl -u $MADmin_username_2:$MADmin_password_2 "$MAD_url_2/install_file_all_devices?jobname=ATVdetails&type=jobType.CHAIN"
         echo ""
@@ -231,7 +234,10 @@ else
         echo "Starting jobs for instance 3"
         echo ""
         cp $PATH_TO_STATS/default_files/ATVdetails.json $MAD_path_3/personal_commands/
-        curl -u $MADmin_username_3:$MADmin_password_3 "$MAD_url_3/delete_log"
+        if [[ "$MAD_path_3" != "$MAD_path_1" ]]
+        then
+                curl -u $MADmin_username_2:$MADmin_password_2 "$MAD_url_3/delete_log"
+        fi
         curl -u $MADmin_username_3:$MADmin_password_3 "$MAD_url_3/reload_jobs"
         curl -u $MADmin_username_3:$MADmin_password_3 "$MAD_url_3/install_file_all_devices?jobname=ATVdetails&type=jobType.CHAIN"
         echo ""
@@ -339,7 +345,10 @@ else
         echo "Starting jobs for instance 4"
         echo ""
         cp $PATH_TO_STATS/default_files/ATVdetails.json $MAD_path_4/personal_commands/
-        curl -u $MADmin_username_4:$MADmin_password_4 "$MAD_url_4/delete_log"
+        if [[ "$MAD_path_4" != "$MAD_path_1" ]]
+        then
+                curl -u $MADmin_username_2:$MADmin_password_2 "$MAD_url_4/delete_log"
+        fi
         curl -u $MADmin_username_4:$MADmin_password_4 "$MAD_url_4/reload_jobs"
         curl -u $MADmin_username_4:$MADmin_password_4 "$MAD_url_4/install_file_all_devices?jobname=ATVdetails&type=jobType.CHAIN"
         echo ""
@@ -448,7 +457,10 @@ else
         echo "Starting jobs for instance 5"
         echo ""
         cp $PATH_TO_STATS/default_files/ATVdetails.json $MAD_path_5/personal_commands/
-        curl -u $MADmin_username_5:$MADmin_password_5 "$MAD_url_5/delete_log"
+        if [[ "$MAD_path_5" != "$MAD_path_1" ]]
+        then
+                curl -u $MADmin_username_2:$MADmin_password_2 "$MAD_url_5/delete_log"
+        fi
         curl -u $MADmin_username_5:$MADmin_password_5 "$MAD_url_5/reload_jobs"
         curl -u $MADmin_username_5:$MADmin_password_5 "$MAD_url_5/install_file_all_devices?jobname=ATVdetails&type=jobType.CHAIN"
         echo ""
