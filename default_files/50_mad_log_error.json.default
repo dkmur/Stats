@@ -14,12 +14,12 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "7.5.7"
+      "version": "8.0.4"
     },
     {
       "type": "panel",
       "id": "graph",
-      "name": "Graph",
+      "name": "Graph (old)",
       "version": ""
     },
     {
@@ -46,7 +46,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1622408951288,
+  "iteration": 1625674725823,
   "links": [],
   "panels": [
     {
@@ -61,10 +61,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_POGODB}",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -91,12 +87,13 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "8.0.4",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
       "seriesOverrides": [
         {
+          "$$hashKey": "object:1137",
           "alias": "Unspecified Erros",
           "yaxis": 2
         }
@@ -152,18 +149,20 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:278",
           "format": "short",
           "label": null,
           "logBase": 1,
-          "max": null,
+          "max": "300",
           "min": null,
           "show": true
         },
         {
+          "$$hashKey": "object:279",
           "format": "short",
           "label": null,
           "logBase": 1,
-          "max": null,
+          "max": "100",
           "min": "0",
           "show": true
         }
@@ -185,10 +184,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_POGODB}",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -215,7 +210,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "8.0.4",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -271,6 +266,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:278",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -279,6 +275,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:279",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -296,6 +293,7 @@
       "aliasColors": {
         "#Errors": "dark-red",
         "Failed executing query: 1213 (40001): Deadlock found when trying to get lock; try restarting transaction": "dark-red",
+        "Tesseract errors": "dark-red",
         "Total #Errors": "dark-red",
         "Total #MAD Errors": "dark-red",
         "Total #Python Errors": "dark-blue"
@@ -304,10 +302,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_POGODB}",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -334,7 +328,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "8.0.4",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -390,14 +384,16 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:278",
           "format": "short",
           "label": null,
           "logBase": 1,
-          "max": null,
+          "max": "100",
           "min": null,
           "show": true
         },
         {
+          "$$hashKey": "object:279",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -425,10 +421,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_POGODB}",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -455,7 +447,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "8.0.4",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -511,14 +503,16 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:278",
           "format": "short",
           "label": null,
           "logBase": 1,
-          "max": null,
+          "max": "100",
           "min": null,
           "show": true
         },
         {
+          "$$hashKey": "object:279",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -547,10 +541,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_POGODB}",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -577,7 +567,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "8.0.4",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -633,14 +623,16 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:278",
           "format": "short",
           "label": null,
           "logBase": 1,
-          "max": null,
+          "max": "100",
           "min": null,
           "show": true
         },
         {
+          "$$hashKey": "object:279",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -668,10 +660,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_POGODB}",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -698,7 +686,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "8.0.4",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -754,6 +742,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:278",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -762,6 +751,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:279",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -779,6 +769,7 @@
       "aliasColors": {
         "#Errors": "dark-red",
         "Failed executing query: 1213 (40001): Deadlock found when trying to get lock; try restarting transaction": "dark-red",
+        "Job jobType.PASSTHROUGH could not be executed successfully": "dark-red",
         "Killed while waiting for injection": "dark-red",
         "Total #Errors": "dark-red",
         "Total #MAD Errors": "dark-red",
@@ -788,10 +779,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_POGODB}",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -818,7 +805,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "8.0.4",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -874,136 +861,16 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:278",
           "format": "short",
           "label": null,
           "logBase": 1,
-          "max": null,
+          "max": "100",
           "min": null,
           "show": true
         },
         {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "aliasColors": {
-        "#Errors": "dark-red",
-        "Failed executing query: 1213 (40001): Deadlock found when trying to get lock; try restarting transaction": "dark-red",
-        "Failed initializing worker, connection terminated exceptionally": "dark-red",
-        "Killed while waiting for pogo start": "dark-blue",
-        "Total #Errors": "dark-red",
-        "Total #MAD Errors": "dark-red",
-        "Total #Python Errors": "dark-blue",
-        "Websocket connection to DeviceX lost while running healthchecks, connection terminated exceptionally": "dark-orange"
-      },
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "${DS_POGODB}",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
-      "fill": 1,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 7,
-        "w": 12,
-        "x": 12,
-        "y": 21
-      },
-      "hiddenSeries": false,
-      "id": 8,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 1,
-      "nullPointMode": "null",
-      "options": {
-        "alertThreshold": true
-      },
-      "percentage": false,
-      "pluginVersion": "7.5.7",
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "format": "time_series",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "SELECT\r\n$__timeGroup(datetime,$__interval) AS \"time\",\r\nsum(wokerInitFail) as 'Failed initializing worker, connection terminated exceptionally',\r\nsum(killPogoWait) as 'Killed while waiting for pogo start',\r\nsum(wslost) as 'Websocket connection to DeviceX lost while running healthchecks, connection terminated exceptionally'\r\n\r\nFROM error\r\n\r\nWHERE\r\nRPL='$RPL' and\r\ninstance in ($Instance)\r\nGROUP BY 1  \r\nORDER BY $__timeGroup(datetime,$__interval)",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "timeColumn": "time",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "WorkerBase",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
+          "$$hashKey": "object:279",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -1019,7 +886,7 @@
     }
   ],
   "refresh": false,
-  "schemaVersion": 27,
+  "schemaVersion": 30,
   "style": "dark",
   "tags": [],
   "templating": {
@@ -1043,7 +910,6 @@
         "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -1067,7 +933,6 @@
         "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -1075,12 +940,12 @@
     ]
   },
   "time": {
-    "from": "now-2d",
+    "from": "now-7d",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "50. MAD log errors",
   "uid": "UCHh-duMa",
-  "version": 10
+  "version": 14
 }

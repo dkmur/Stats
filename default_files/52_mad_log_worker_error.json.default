@@ -46,7 +46,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1625656589893,
+  "iteration": 1625657924145,
   "links": [],
   "panels": [
     {
@@ -647,126 +647,6 @@
         "align": false,
         "alignLevel": null
       }
-    },
-    {
-      "aliasColors": {
-        "#Errors": "dark-red",
-        "Failed executing query: 1213 (40001): Deadlock found when trying to get lock; try restarting transaction": "dark-red",
-        "Failed initializing worker, connection terminated exceptionally": "dark-red",
-        "Killed while waiting for pogo start": "dark-blue",
-        "Total #Errors": "dark-red",
-        "Total #MAD Errors": "dark-red",
-        "Total #Python Errors": "dark-blue",
-        "Websocket connection to DeviceX lost while running healthchecks, connection terminated exceptionally": "dark-orange"
-      },
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "${DS_POGODB}",
-      "fill": 1,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 7,
-        "w": 12,
-        "x": 12,
-        "y": 14
-      },
-      "hiddenSeries": false,
-      "id": 8,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 1,
-      "nullPointMode": "null",
-      "options": {
-        "alertThreshold": true
-      },
-      "percentage": false,
-      "pluginVersion": "8.0.4",
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "format": "time_series",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "SELECT\r\n$__timeGroup(datetime,$__interval) AS \"time\",\r\nsum(wokerInitFail) as 'Failed initializing worker, connection terminated exceptionally',\r\nsum(killPogoWait) as 'Killed while waiting for pogo start',\r\nsum(wslost) as 'Websocket connection to DeviceX lost while running healthchecks, connection terminated exceptionally'\r\n\r\nFROM error_worker a, Area b\r\n\r\nWHERE\r\na.Origin = b.Origin and\r\na.RPL='$RPL' and\r\na.instance in ($Instance) and\r\nb.Area in ($Area) and\r\na.Origin in ($Worker)\r\nGROUP BY 1  \r\nORDER BY $__timeGroup(datetime,$__interval)",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "timeColumn": "time",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "WorkerBase",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "$$hashKey": "object:278",
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "$$hashKey": "object:279",
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
     }
   ],
   "refresh": false,
@@ -802,7 +682,7 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_POGODB}",
-        "definition": "select distinct(instance) from error;",
+        "definition": "select distinct(instance) from error_worker;",
         "description": null,
         "error": null,
         "hide": 0,
@@ -811,7 +691,7 @@
         "multi": false,
         "name": "Instance",
         "options": [],
-        "query": "select distinct(instance) from error;",
+        "query": "select distinct(instance) from error_worker;",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -871,5 +751,5 @@
   "timezone": "",
   "title": "52. MAD log errors, worker/area level",
   "uid": "UCHh-duMe",
-  "version": 5
+  "version": 7
 }
