@@ -59,6 +59,7 @@ job_wait=2m						# wait time for jobs to finish i.e. 2m or 300s
 
 ## MAD log processing ##
 madlog=false						# true/false: to process MAD logs hourly and store into DB. MAD logfiles need to contain instance name!!
+madlog_worker=false					# true/false: to process logs on worker level as well
 
 ## Grafana ##
 DataSource_stats=pogodb
@@ -117,6 +118,11 @@ RPL10080=9999
 log60=180
 log1440=9999
 log10080=9999
+
+# MAD log table cleanup worker level (warning_worker+error_worker) for different ReportPeriodLength in days
+log_worker60=90
+log_worker1440=9999
+log_worker10080=9999
 
 # MAD tables cleanup (true or false) #
 pokemon=false						# delete data from table pokemon + trs_stats_detect_seen_type older then 1 hour

@@ -1,0 +1,62 @@
+select @Datetime := concat(date(curdate() - interval weekday(curdate()) + 7 day),' ','00:00:00');
+
+INSERT IGNORE INTO pogodb.error_worker (datetime,Origin,RPL,instance,errors,failedPogoStop,oldConnection,originTimeout,wsLost,killPogoWait,wokerInitFail,killInjection,killSleep,noItemDelete,tesseract)
+select
+@Datetime,
+Origin,
+'10080',
+instance,
+sum(errors),
+sum(failedPogoStop),
+sum(oldConnection),
+sum(originTimeout),
+sum(wsLost),
+sum(killPogoWait),
+sum(wokerInitFail),
+sum(killInjection),
+sum(killSleep),
+sum(noItemDelete),
+sum(tesseract)
+from pogodb.error_worker
+where datetime >= date(curdate() - interval weekday(curdate()) + 7 day) and RPL = 1440
+group by Origin, instance
+;
+
+INSERT IGNORE INTO pogodb.warning (datetime,Origin,RPL,instance,warns,failedData,manyTimeOut,frozenScreen,wsTimeout,wsConnClosed,noInject,noPogoStart,failedScreenshot,noPTC,failedTopApp,pogoRestartFail,screenFailure,failedBoxClear,itemDelUnknown,noActiveArea,noMainScreen,noLocAccess,noStopProcess,failStopOpen,softban,questFull,foundGym,noWalkerConfig,noStop,failStopSpin,noLogin,failPostMove)
+select
+@Datetime,
+Origin,
+'10080',
+instance,
+sum(warns),
+sum(failedData),
+sum(manyTimeOut),
+sum(frozenScreen),
+sum(wsTimeout),
+sum(wsConnClosed),
+sum(noInject),
+sum(noPogoStart),
+sum(failedScreenshot),
+sum(noPTC),
+sum(failedTopApp),
+sum(pogoRestartFail),
+sum(screenFailure),
+sum(failedBoxClear),
+sum(itemDelUnknown),
+sum(noActiveArea),
+sum(noMainScreen),
+sum(noLocAccess),
+sum(noStopProcess),
+sum(failStopOpen),
+sum(softban),
+sum(questFull),
+sum(foundGym),
+sum(noWalkerConfig),
+sum(noStop),
+sum(failStopSpin),
+sum(noLogin),
+sum(failPostMove)
+from pogodb.warning_worker
+where datetime >= date(curdate() - interval weekday(curdate()) + 7 day) and RPL = 1440
+group by Origin,instance
+;

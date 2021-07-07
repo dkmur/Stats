@@ -14,7 +14,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "8.0.3"
+      "version": "8.0.4"
     },
     {
       "type": "panel",
@@ -46,12 +46,16 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1625090552211,
+  "iteration": 1625657917178,
   "links": [],
   "panels": [
     {
       "aliasColors": {
-        "% IV": "dark-blue"
+        "#Errors": "dark-red",
+        "Total #Errors": "dark-red",
+        "Total #MAD Errors": "dark-red",
+        "Total #MAD Warnings": "dark-blue",
+        "Total #Python Errors": "dark-blue"
       },
       "bars": false,
       "dashLength": 10,
@@ -60,7 +64,7 @@
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
-        "h": 9,
+        "h": 7,
         "w": 12,
         "x": 0,
         "y": 0
@@ -83,14 +87,14 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.0.3",
+      "pluginVersion": "8.0.4",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
       "seriesOverrides": [
         {
-          "$$hashKey": "object:698",
-          "alias": "% IV",
+          "$$hashKey": "object:401",
+          "alias": "Unspecified Warnings",
           "yaxis": 2
         }
       ],
@@ -103,81 +107,19 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroup(Datetime,$__interval) as 'time',\n  sum(Mons_all) AS \"Mons_all\",\n  sum(MonsIV) AS \"MonsIV\"\nFROM stats_area\nWHERE\n  $__timeFilter(datetime) and\n  RPL = '$RPL' and\n  substring_index(Area,'_',1) in ($Area) and\n  Fence in ($Fence)\nGROUP BY 1\nORDER BY $__timeGroup(Datetime,$__interval)",
+          "rawSql": "SELECT\r\n$__timeGroup(datetime,$__interval) AS \"time\",\r\nsum(warns) as 'Total #MAD Warnings',\r\nsum(warns)-sum(failedData)-sum(manyTimeOut)-sum(frozenScreen)-sum(wsTimeout)-sum(wsConnClosed)-sum(noInject)-sum(noPogoStart)-sum(failedScreenshot)-sum(noPTC)-sum(failedTopApp)-sum(pogoRestartFail)-sum(screenFailure)-sum(failedBoxClear)-sum(itemDelUnknown)-sum(noActiveArea)-sum(noMainScreen)-sum(noLocAccess)-sum(noStopProcess)-sum(failStopOpen)-sum(softban)-sum(questFull)-sum(foundGym)-sum(noWalkerConfig)-sum(noStop)-sum(ifnull(failStopSpin,0))-sum(ifnull(noLogin,0))-sum(ifnull(failPostMove,0)) as 'Unspecified Warnings'\r\n\r\nFROM warning_worker a, Area b\r\n\r\nWHERE\r\na.Origin = b.Origin and\r\na.RPL='$RPL' and\r\na.instance in ($Instance) and\r\nb.Area in ($Area) and\r\na.Origin in ($Worker)\r\nGROUP BY 1  \r\nORDER BY $__timeGroup(datetime,$__interval)",
           "refId": "A",
           "select": [
             [
               {
                 "params": [
-                  "Mons_all"
-                ],
-                "type": "column"
-              },
-              {
-                "params": [
-                  "sum"
-                ],
-                "type": "aggregate"
-              },
-              {
-                "params": [
-                  "Mons_all"
-                ],
-                "type": "alias"
-              }
-            ],
-            [
-              {
-                "params": [
-                  "MonsIV"
-                ],
-                "type": "column"
-              },
-              {
-                "params": [
-                  "sum"
-                ],
-                "type": "aggregate"
-              },
-              {
-                "params": [
-                  "MonsIV"
-                ],
-                "type": "alias"
-              }
-            ]
-          ],
-          "table": "stats_area",
-          "timeColumn": "Datetime",
-          "timeColumnType": "datetime",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        },
-        {
-          "format": "time_series",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(Datetime,$__interval),\n  100*sum(MonsIV)/sum(Mons_all) AS '% IV'\nFROM stats_area\nWHERE\n  $__timeFilter(datetime) and\n  RPL = '$RPL' and\n  substring_index(Area,'_',1) in ($Area) and\n  Fence in ($Fence)\nGROUP BY 1\nORDER BY $__timeGroup(Datetime,$__interval)",
-          "refId": "B",
-          "select": [
-            [
-              {
-                "params": [
-                  "AvgMinutesLeft"
+                  "value"
                 ],
                 "type": "column"
               }
             ]
           ],
-          "table": "stats_area",
-          "timeColumn": "Datetime",
-          "timeColumnType": "datetime",
+          "timeColumn": "time",
           "where": [
             {
               "name": "$__timeFilter",
@@ -191,7 +133,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Mons scanned",
+      "title": "Warnings",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -207,20 +149,20 @@
       },
       "yaxes": [
         {
-          "$$hashKey": "object:395",
+          "$$hashKey": "object:657",
           "format": "short",
-          "label": "#Mons",
+          "label": null,
           "logBase": 1,
           "max": null,
           "min": null,
           "show": true
         },
         {
-          "$$hashKey": "object:396",
+          "$$hashKey": "object:658",
           "format": "short",
-          "label": "% IV",
+          "label": null,
           "logBase": 1,
-          "max": "100",
+          "max": null,
           "min": null,
           "show": true
         }
@@ -231,7 +173,14 @@
       }
     },
     {
-      "aliasColors": {},
+      "aliasColors": {
+        "#Errors": "dark-red",
+        "Timeout, increasing timeout-counter": "dark-blue",
+        "Total #Errors": "dark-red",
+        "Total #MAD Errors": "dark-red",
+        "Total #MAD Warnings": "dark-red",
+        "Total #Python Errors": "dark-blue"
+      },
       "bars": false,
       "dashLength": 10,
       "dashes": false,
@@ -239,13 +188,13 @@
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
-        "h": 9,
+        "h": 7,
         "w": 12,
         "x": 12,
         "y": 0
       },
       "hiddenSeries": false,
-      "id": 22,
+      "id": 7,
       "legend": {
         "avg": false,
         "current": false,
@@ -262,17 +211,11 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.0.3",
+      "pluginVersion": "8.0.4",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
-      "seriesOverrides": [
-        {
-          "$$hashKey": "object:4446",
-          "alias": "% time proto received",
-          "yaxis": 1
-        }
-      ],
+      "seriesOverrides": [],
       "spaceLength": 10,
       "stack": false,
       "steppedLine": false,
@@ -282,50 +225,19 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(a.Datetime,$__interval),\n  100*sum(a.TRPL)/sum(a.RPL) AS \"% raw data reports received\"\nFROM stats_worker a, Area b\nWHERE\n  $__timeFilter(datetime) and\n  a.RPL = '$RPL' and\n  a.Worker = b.Origin and\n  substring_index(b.Area,'_',1) in ($Area)\nGROUP BY 1\nORDER BY $__timeGroup(a.Datetime,$__interval)",
+          "rawSql": "SELECT\r\n$__timeGroup(datetime,$__interval) AS \"time\",\r\nsum(wsTimeout) as 'Timeout, increasing timeout-counter',\r\nsum(wsConnClosed) as 'Connection (was) closed'\r\nFROM warning_worker a, Area b\r\n\r\nWHERE\r\na.Origin = b.Origin and\r\na.RPL='$RPL' and\r\na.instance in ($Instance) and\r\nb.Area in ($Area) and\r\na.Origin in ($Worker)\r\nGROUP BY 1  \r\nORDER BY $__timeGroup(datetime,$__interval)",
           "refId": "A",
           "select": [
             [
               {
                 "params": [
-                  "encounter_id"
+                  "value"
                 ],
                 "type": "column"
               }
             ]
           ],
-          "table": "pokemon_history",
-          "timeColumn": "disappear_time",
-          "timeColumnType": "timestamp",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        },
-        {
-          "format": "time_series",
-          "group": [],
-          "hide": false,
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(a.Datetime,$__interval),\n  100*(sum(a.RPL)-sum(a.missingProtoMinute))/sum(a.RPL) AS \"% time proto received\"\nFROM stats_worker a, Area b\nWHERE\n  $__timeFilter(datetime) and\n  a.RPL = '$RPL' and\n  a.Worker = b.Origin and\n  substring_index(b.Area,'_',1) in ($Area)\nGROUP BY 1\nORDER BY $__timeGroup(a.Datetime,$__interval)",
-          "refId": "B",
-          "select": [
-            [
-              {
-                "params": [
-                  "encounter_id"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "table": "pokemon_history",
-          "timeColumn": "disappear_time",
-          "timeColumnType": "timestamp",
+          "timeColumn": "time",
           "where": [
             {
               "name": "$__timeFilter",
@@ -339,7 +251,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Uptime",
+      "title": "Websocket",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -355,20 +267,20 @@
       },
       "yaxes": [
         {
-          "$$hashKey": "object:861",
+          "$$hashKey": "object:657",
           "format": "short",
           "label": null,
           "logBase": 1,
-          "max": "100",
+          "max": null,
           "min": null,
           "show": true
         },
         {
-          "$$hashKey": "object:862",
+          "$$hashKey": "object:658",
           "format": "short",
           "label": null,
           "logBase": 1,
-          "max": "100",
+          "max": null,
           "min": null,
           "show": true
         }
@@ -379,7 +291,14 @@
       }
     },
     {
-      "aliasColors": {},
+      "aliasColors": {
+        "#Errors": "dark-red",
+        "Too many timeouts - Restarting game": "dark-blue",
+        "Total #Errors": "dark-red",
+        "Total #MAD Errors": "dark-red",
+        "Total #MAD Warnings": "dark-red",
+        "Total #Python Errors": "dark-blue"
+      },
       "bars": false,
       "dashLength": 10,
       "dashes": false,
@@ -387,10 +306,10 @@
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
-        "h": 8,
+        "h": 7,
         "w": 12,
         "x": 0,
-        "y": 9
+        "y": 7
       },
       "hiddenSeries": false,
       "id": 4,
@@ -410,7 +329,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.0.3",
+      "pluginVersion": "8.0.4",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -424,21 +343,19 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(a.Datetime,$__interval),\n  sum(a.Reb) AS \"Reboots\",\n  sum(a.Res) AS \"Restarts\"\nFROM stats_worker a, Area b\nWHERE\n  $__timeFilter(a.datetime) and\n  a.RPL = '$RPL' and\n  a.Worker = b.Origin and\n  substring_index(b.Area,'_',1) in ($Area)\nGROUP BY 1\nORDER BY $__timeGroup(a.Datetime,$__interval)",
+          "rawSql": "SELECT\r\n$__timeGroup(datetime,$__interval) AS \"time\",\r\nsum(manyTimeOut) as 'Too many timeouts - Restarting game',\r\nsum(noInject) as 'Not injected in time - reboot'\r\nFROM warning_worker a, Area b\r\n\r\nWHERE\r\na.Origin = b.Origin and\r\na.RPL='$RPL' and\r\na.instance in ($Instance) and\r\nb.Area in ($Area) and\r\na.Origin in ($Worker)\r\nGROUP BY 1  \r\nORDER BY $__timeGroup(datetime,$__interval)",
           "refId": "A",
           "select": [
             [
               {
                 "params": [
-                  "id"
+                  "value"
                 ],
                 "type": "column"
               }
             ]
           ],
-          "table": "stats_worker",
-          "timeColumn": "Datetime",
-          "timeColumnType": "datetime",
+          "timeColumn": "time",
           "where": [
             {
               "name": "$__timeFilter",
@@ -452,7 +369,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Restart/reboot",
+      "title": "MITMBase",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -468,16 +385,16 @@
       },
       "yaxes": [
         {
-          "$$hashKey": "object:299",
+          "$$hashKey": "object:657",
           "format": "short",
           "label": null,
           "logBase": 1,
           "max": null,
-          "min": "0",
+          "min": null,
           "show": true
         },
         {
-          "$$hashKey": "object:300",
+          "$$hashKey": "object:658",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -492,7 +409,14 @@
       }
     },
     {
-      "aliasColors": {},
+      "aliasColors": {
+        "#Errors": "dark-red",
+        "Screen is frozen": "dark-green",
+        "Total #Errors": "dark-red",
+        "Total #MAD Errors": "dark-red",
+        "Total #MAD Warnings": "dark-red",
+        "Total #Python Errors": "dark-blue"
+      },
       "bars": false,
       "dashLength": 10,
       "dashes": false,
@@ -500,13 +424,13 @@
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
-        "h": 8,
+        "h": 7,
         "w": 12,
         "x": 12,
-        "y": 9
+        "y": 7
       },
       "hiddenSeries": false,
-      "id": 18,
+      "id": 15,
       "legend": {
         "avg": false,
         "current": false,
@@ -523,7 +447,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.0.3",
+      "pluginVersion": "8.0.4",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -537,21 +461,19 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(a.Datetime,$__interval),\n  sum(a.Quest) AS \"Quest\"\nFROM stats_worker a, Area b\nWHERE\n  $__timeFilter(a.datetime) and\n  a.RPL = '$RPL' and\n  a.Worker = b.Origin and\n  substring_index(b.Area,'_',1) in ($Area)\nGROUP BY 1\nORDER BY $__timeGroup(a.Datetime,$__interval)",
+          "rawSql": "SELECT\r\n$__timeGroup(datetime,$__interval) AS \"time\",\r\nsum(frozenScreen) as 'Screen is frozen',\r\nsum(failPostMove) as 'Worker failed running post_move_location_routine, stopping worker',\r\nsum(failedScreenshot) as 'Failed retrieving screenshot',\r\nsum(noLogin) as 'Could not login again - (clearing game data + restarting device)'\r\n\r\nFROM warning_worker a, Area b\r\n\r\nWHERE\r\na.Origin = b.Origin and\r\na.RPL='$RPL' and\r\na.instance in ($Instance) and\r\nb.Area in ($Area) and\r\na.Origin in ($Worker)\r\nGROUP BY 1  \r\nORDER BY $__timeGroup(datetime,$__interval)",
           "refId": "A",
           "select": [
             [
               {
                 "params": [
-                  "id"
+                  "value"
                 ],
                 "type": "column"
               }
             ]
           ],
-          "table": "stats_worker",
-          "timeColumn": "Datetime",
-          "timeColumnType": "datetime",
+          "timeColumn": "time",
           "where": [
             {
               "name": "$__timeFilter",
@@ -565,7 +487,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Quest scanned",
+      "title": "WorkerBase (2)",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -581,7 +503,7 @@
       },
       "yaxes": [
         {
-          "$$hashKey": "object:3411",
+          "$$hashKey": "object:657",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -590,7 +512,7 @@
           "show": true
         },
         {
-          "$$hashKey": "object:3412",
+          "$$hashKey": "object:658",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -606,9 +528,12 @@
     },
     {
       "aliasColors": {
-        "DBspawns": "dark-blue",
-        "Scanned today": "dark-green",
-        "Spawns unknown": "semi-dark-red"
+        "#Errors": "dark-red",
+        "Screen is frozen": "dark-green",
+        "Total #Errors": "dark-red",
+        "Total #MAD Errors": "dark-red",
+        "Total #MAD Warnings": "dark-red",
+        "Total #Python Errors": "dark-blue"
       },
       "bars": false,
       "dashLength": 10,
@@ -617,10 +542,10 @@
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
-        "h": 8,
+        "h": 7,
         "w": 12,
         "x": 0,
-        "y": 17
+        "y": 14
       },
       "hiddenSeries": false,
       "id": 6,
@@ -640,131 +565,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.0.3",
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [
-        {
-          "$$hashKey": "object:1173",
-          "alias": "Spawns added",
-          "yaxis": 2
-        },
-        {
-          "$$hashKey": "object:1174",
-          "alias": "Spawns unknown",
-          "yaxis": 2
-        }
-      ],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "format": "time_series",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(Datetime,$__interval),\n  sum(DBspawns) AS \"DBspawns\",\n  sum(Last_scanned_today_acc) AS \"Scanned today\",\n  sum(Spawn_add) AS \"Spawns added\",\n  sum(Spawn_NULL) AS \"Spawns unknown\"\nFROM stats_area\nWHERE\n  $__timeFilter(datetime) and\n  RPL = '$RPL' and\n  substring_index(Area,'_',1) in ($Area) and\n  Fence in ($Fence)\nGROUP BY 1\nORDER BY $__timeGroup(Datetime,$__interval)",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "AvgMinutesLeft"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "table": "stats_area",
-          "timeColumn": "Datetime",
-          "timeColumnType": "datetime",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Spawnpoints",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "$$hashKey": "object:1471",
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "$$hashKey": "object:1472",
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "${DS_POGODB}",
-      "fill": 1,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 17
-      },
-      "hiddenSeries": false,
-      "id": 8,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 1,
-      "nullPointMode": "null",
-      "options": {
-        "alertThreshold": true
-      },
-      "percentage": false,
-      "pluginVersion": "8.0.3",
+      "pluginVersion": "8.0.4",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -778,21 +579,19 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(Datetime,$__interval),\n  sum(Last_scanned_1d) AS \"Last scanned yesterday\",\n  sum(Last_scanned_2d) AS \"Last scanned 2d ago\",\n  sum(Last_scanned_3d) AS \"Last scanned 3d ago\",\n  sum(Last_scanned_7dp) AS \"Last scanned >7d ago\"\nFROM stats_area\nWHERE\n  $__timeFilter(datetime) and\n  RPL = '$RPL' and\n  substring_index(Area,'_',1) in ($Area) and\n  Fence in ($Fence)\nGROUP BY 1\nORDER BY $__timeGroup(Datetime,$__interval)",
+          "rawSql": "SELECT\r\n$__timeGroup(datetime,$__interval) AS \"time\",\r\nsum(noPogoStart) as 'Failed restarting PoGo - reboot device',\r\nsum(noMainScreen) as '_check_pogo_main_screen: Could not get to Mainscreen within 10 attempts',\r\nsum(pogoRestartFail) as 'Restarting PoGo failed - reboot device',\r\nsum(screenFailure) as 'Something wrong with screendetection or pogo failure screen'\r\n\r\nFROM warning_worker a, Area b\r\n\r\nWHERE\r\na.Origin = b.Origin and\r\na.RPL='$RPL' and\r\na.instance in ($Instance) and\r\nb.Area in ($Area) and\r\na.Origin in ($Worker)\r\nGROUP BY 1  \r\nORDER BY $__timeGroup(datetime,$__interval)",
           "refId": "A",
           "select": [
             [
               {
                 "params": [
-                  "AvgMinutesLeft"
+                  "value"
                 ],
                 "type": "column"
               }
             ]
           ],
-          "table": "stats_area",
-          "timeColumn": "Datetime",
-          "timeColumnType": "datetime",
+          "timeColumn": "time",
           "where": [
             {
               "name": "$__timeFilter",
@@ -806,7 +605,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Spawns unseen details",
+      "title": "WorkerBase (1)",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -822,7 +621,7 @@
       },
       "yaxes": [
         {
-          "$$hashKey": "object:1803",
+          "$$hashKey": "object:657",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -831,125 +630,7 @@
           "show": true
         },
         {
-          "$$hashKey": "object:1804",
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "${DS_POGODB}",
-      "fill": 1,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 25
-      },
-      "hiddenSeries": false,
-      "id": 10,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 1,
-      "nullPointMode": "null",
-      "options": {
-        "alertThreshold": true
-      },
-      "percentage": false,
-      "pluginVersion": "8.0.3",
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [
-        {
-          "alias": "60m spawn",
-          "yaxis": 2
-        }
-      ],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "format": "time_series",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(Datetime,$__interval),\n  sum(Spawndef15) AS \"60m spawn\",\n  sum(SpawndefNot15) AS \"30m spawn\"\nFROM stats_area\nWHERE\n  $__timeFilter(datetime) and\n  RPL = '$RPL' and\n  substring_index(Area,'_',1) in ($Area) and\n  Fence in ($Fence)\nGROUP BY 1\nORDER BY $__timeGroup(Datetime,$__interval)",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "AvgMinutesLeft"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "table": "stats_area",
-          "timeColumn": "Datetime",
-          "timeColumnType": "datetime",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Spawndef",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "$$hashKey": "object:2265",
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "$$hashKey": "object:2266",
+          "$$hashKey": "object:658",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -965,7 +646,13 @@
     },
     {
       "aliasColors": {
-        "%time left": "dark-blue"
+        "#Errors": "dark-red",
+        "Total #Errors": "dark-red",
+        "Total #MAD Errors": "dark-red",
+        "Total #MAD Warnings": "dark-red",
+        "Total #Python Errors": "dark-blue",
+        "Worker Breda12 has not accessed a location in 300 seconds, removing from routemanager": "dark-blue",
+        "Worker xx has not accessed a location in 300 seconds, removing from routemanager": "dark-blue"
       },
       "bars": false,
       "dashLength": 10,
@@ -974,10 +661,370 @@
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
-        "h": 8,
+        "h": 7,
         "w": 12,
         "x": 12,
-        "y": 25
+        "y": 14
+      },
+      "hiddenSeries": false,
+      "id": 11,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "8.0.4",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "$$hashKey": "object:645",
+          "alias": "max MITM data processing workers are falling behind",
+          "yaxis": 2
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n$__timeGroup(datetime,$__interval) AS \"time\",\r\nsum(noLocAccess) as 'Worker xx has not accessed a location in 300 seconds, removing from routemanager'\r\n\r\nFROM warning_worker a, Area b\r\n\r\nWHERE\r\na.Origin = b.Origin and\r\na.RPL='$RPL' and\r\na.instance in ($Instance) and\r\nb.Area in ($Area) and\r\na.Origin in ($Worker)\r\nGROUP BY 1  \r\nORDER BY $__timeGroup(datetime,$__interval)",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "RouteManagerBase",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:657",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:658",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {
+        "#Errors": "dark-red",
+        "Total #Errors": "dark-red",
+        "Total #MAD Errors": "dark-red",
+        "Total #MAD Warnings": "dark-red",
+        "Total #Python Errors": "dark-blue",
+        "Worker failed to retrieve proper data at Lat,Lon. Worker will continue with the next location": "dark-blue"
+      },
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_POGODB}",
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 0,
+        "y": 21
+      },
+      "hiddenSeries": false,
+      "id": 3,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "8.0.4",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n$__timeGroup(datetime,$__interval) AS \"time\",\r\nsum(failedData) as 'Worker failed to retrieve proper data at Lat,Lon. Worker will continue with the next location'\r\n\r\nFROM warning_worker a, Area b\r\n\r\nWHERE\r\na.Origin = b.Origin and\r\na.RPL='$RPL' and\r\na.instance in ($Instance) and\r\nb.Area in ($Area) and\r\na.Origin in ($Worker)\r\nGROUP BY 1  \r\nORDER BY $__timeGroup(datetime,$__interval)",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "WorkerMITM",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:657",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:658",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {
+        "#Errors": "dark-red",
+        "Giving up on this stop after 3 failures in open_pokestop loop": "dark-blue",
+        "Total #Errors": "dark-red",
+        "Total #MAD Errors": "dark-red",
+        "Total #MAD Warnings": "dark-red",
+        "Total #Python Errors": "dark-blue"
+      },
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_POGODB}",
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 12,
+        "y": 21
+      },
+      "hiddenSeries": false,
+      "id": 13,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "8.0.4",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n$__timeGroup(datetime,$__interval) AS \"time\",\r\nsum(failStopOpen) as 'Giving up on this stop after 3 failures in open_pokestop loop',\r\nsum(softban) as 'Softban - return to main screen and open again',\r\nsum(questFull) as 'Failed getting quest but got items - quest box is probably full. Starting cleanup routine.',\r\nsum(foundGym) as 'Tried to open a stop but found a gym instead!'\r\n\r\nFROM warning_worker a, Area b\r\n\r\nWHERE\r\na.Origin = b.Origin and\r\na.RPL='$RPL' and\r\na.instance in ($Instance) and\r\nb.Area in ($Area) and\r\na.Origin in ($Worker)\r\nGROUP BY 1  \r\nORDER BY $__timeGroup(datetime,$__interval)",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "WorkerQuests (1)",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:657",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:658",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {
+        "#Errors": "dark-red",
+        "Stop Location(lat,lng) has not been processed thrice in a row, please check your DB": "dark-blue",
+        "Total #Errors": "dark-red",
+        "Total #MAD Errors": "dark-red",
+        "Total #MAD Warnings": "dark-red",
+        "Total #Python Errors": "dark-blue"
+      },
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_POGODB}",
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 0,
+        "y": 28
       },
       "hiddenSeries": false,
       "id": 12,
@@ -997,14 +1044,14 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.0.3",
+      "pluginVersion": "8.0.4",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
       "seriesOverrides": [
         {
-          "$$hashKey": "object:609",
-          "alias": "%time left",
+          "$$hashKey": "object:839",
+          "alias": "max MITM data processing workers are falling behind",
           "yaxis": 2
         }
       ],
@@ -1017,433 +1064,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(Datetime,$__interval),\n  100*sum(w5)/sum(Mons_all) AS '% scanned within 5m',\n  100*sum(w10)/sum(Mons_all) AS '% scanned within 10m',\n  100*sum(w15)/sum(Mons_all) AS '% scanned within 15m',\n  100*sum(w20)/sum(Mons_all) AS '% scanned within 20m'\nFROM stats_area\nWHERE\n  $__timeFilter(datetime) and\n  RPL = '$RPL' and\n  substring_index(Area,'_',1) in ($Area) and\n  Fence in ($Fence)\nGROUP BY 1\nORDER BY $__timeGroup(Datetime,$__interval)",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "AvgMinutesLeft"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "table": "stats_area",
-          "timeColumn": "Datetime",
-          "timeColumnType": "datetime",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        },
-        {
-          "format": "time_series",
-          "group": [
-            {
-              "params": [
-                "$__interval",
-                "none"
-              ],
-              "type": "time"
-            }
-          ],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(Datetime,$__interval),\n  100*sum(MinutesLeft)/((sum(Spawndef15) * 60)+(sum(SpawndefNot15) * 30)) AS \"%time left\"\nFROM stats_area\nWHERE\n  RPL = '$RPL' and\n  substring_index(Area,'_',1) in ($Area) and\n  Fence in ($Fence)\nGROUP BY 1\nORDER BY $__timeGroup(Datetime,$__interval)",
-          "refId": "B",
-          "select": [
-            [
-              {
-                "params": [
-                  "AvgMinutesLeft"
-                ],
-                "type": "column"
-              },
-              {
-                "params": [
-                  "avg"
-                ],
-                "type": "aggregate"
-              },
-              {
-                "params": [
-                  "AvgMinutesLeft"
-                ],
-                "type": "alias"
-              }
-            ]
-          ],
-          "table": "pogodb.stats_area",
-          "timeColumn": "Datetime",
-          "where": [
-            {
-              "name": "",
-              "params": [
-                "RPL",
-                "=",
-                "'$RPL'"
-              ],
-              "type": "expression"
-            }
-          ]
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Despawn time left",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "$$hashKey": "object:2382",
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": "100",
-          "min": null,
-          "show": true
-        },
-        {
-          "$$hashKey": "object:2383",
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": "100",
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "${DS_POGODB}",
-      "fill": 1,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 33
-      },
-      "hiddenSeries": false,
-      "id": 14,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 1,
-      "nullPointMode": "null",
-      "options": {
-        "alertThreshold": true
-      },
-      "percentage": false,
-      "pluginVersion": "8.0.3",
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [
-        {
-          "$$hashKey": "object:3940",
-          "alias": "Locaction Failure Rate",
-          "yaxis": 2
-        },
-        {
-          "$$hashKey": "object:3941",
-          "alias": "Teleport Failure Rate",
-          "yaxis": 2
-        },
-        {
-          "$$hashKey": "object:3942",
-          "alias": "Location Failure Rate",
-          "yaxis": 2
-        },
-        {
-          "$$hashKey": "object:3943",
-          "alias": "Walk Failure Rate",
-          "yaxis": 2
-        },
-        {
-          "$$hashKey": "object:3944",
-          "alias": "Walk Success Rate",
-          "yaxis": 2
-        },
-        {
-          "$$hashKey": "object:3945",
-          "alias": "Teleport Success Rate",
-          "yaxis": 2
-        },
-        {
-          "$$hashKey": "object:3946",
-          "alias": "Location Success Rate",
-          "yaxis": 2
-        }
-      ],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "format": "time_series",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(a.Datetime,$__interval),\n  sum(a.Tloc) AS \"#Locations handled\",\n  sum(a.Tp) AS \"#Teleports\",\n  sum(a.Wk) AS \"#Walk\"\nFROM stats_worker a, Area b\nWHERE\n  a.RPL = '$RPL' and\n  a.Worker = b.Origin and\n  substring_index(b.Area,'_',1) in ($Area)\nGROUP BY 1\nORDER BY $__timeGroup(a.Datetime,$__interval)",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "id"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "table": "stats_worker",
-          "timeColumn": "Datetime",
-          "timeColumnType": "datetime",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "# Locations handled",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "$$hashKey": "object:3255",
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "$$hashKey": "object:3256",
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": "100",
-          "min": "95",
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "${DS_POGODB}",
-      "fill": 1,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 33
-      },
-      "hiddenSeries": false,
-      "id": 20,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 1,
-      "nullPointMode": "null",
-      "options": {
-        "alertThreshold": true
-      },
-      "percentage": false,
-      "pluginVersion": "8.0.3",
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "format": "time_series",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(a.Datetime,$__interval),\n  100*sum(a.LocOk)/sum(a.Tloc) AS \"Location Success Rate\",\n  100*sum(a.TpOk)/sum(a.Tp) AS \"Teleport Success Rate\",\n  100*sum(a.WkOk)/sum(a.Wk) AS \"Walk Success Rate\"\nFROM stats_worker a, Area b\nWHERE\n  a.RPL = '$RPL' and\n  a.Worker = b.Origin and\n  substring_index(b.Area,'_',1) in ($Area)\nGROUP BY 1\nORDER BY $__timeGroup(a.Datetime,$__interval)",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "id"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "table": "stats_worker",
-          "timeColumn": "Datetime",
-          "timeColumnType": "datetime",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Location handling success rate",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "$$hashKey": "object:2219",
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": "100",
-          "min": "95",
-          "show": true
-        },
-        {
-          "$$hashKey": "object:2220",
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "${DS_POGODB}",
-      "fill": 1,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 41
-      },
-      "hiddenSeries": false,
-      "id": 24,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 1,
-      "nullPointMode": "null",
-      "options": {
-        "alertThreshold": true
-      },
-      "percentage": false,
-      "pluginVersion": "8.0.3",
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "format": "time_series",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(a.Datetime,$__interval),\n  sum(a.TpSt)/sum(a.TpOk) AS \"Teleport time\",\n  sum(a.WkSt)/sum(a.WkOk) AS \"Walk time\"\nFROM stats_worker a, Area b\nWHERE\n  a.RPL = '$RPL' and\n  a.Worker = b.Origin and\n  substring_index(b.Area,'_',1) in ($Area)\nGROUP BY 1\nORDER BY $__timeGroup(a.Datetime,$__interval)",
+          "rawSql": "SELECT\r\n$__timeGroup(datetime,$__interval) AS \"time\",\r\nsum(noStopProcess) as 'Stop Location(lat,lng) has not been processed thrice in a row, please check your DB'\r\n\r\nFROM warning_worker a, Area b\r\n\r\nWHERE\r\na.Origin = b.Origin and\r\na.RPL='$RPL' and\r\na.instance in ($Instance) and\r\nb.Area in ($Area) and\r\na.Origin in ($Worker)\r\nGROUP BY 1  \r\nORDER BY $__timeGroup(datetime,$__interval)",
           "refId": "A",
           "select": [
             [
@@ -1469,7 +1090,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Location handling time",
+      "title": "RouteManagerQuests",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -1485,16 +1106,16 @@
       },
       "yaxes": [
         {
-          "$$hashKey": "object:3870",
+          "$$hashKey": "object:657",
           "format": "short",
-          "label": "Seconds",
+          "label": null,
           "logBase": 1,
-          "max": "30",
-          "min": "0",
+          "max": null,
+          "min": null,
           "show": true
         },
         {
-          "$$hashKey": "object:3871",
+          "$$hashKey": "object:658",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -1509,7 +1130,14 @@
       }
     },
     {
-      "aliasColors": {},
+      "aliasColors": {
+        "#Errors": "dark-red",
+        "Failed getting the topmost app": "dark-blue",
+        "Total #Errors": "dark-red",
+        "Total #MAD Errors": "dark-red",
+        "Total #MAD Warnings": "dark-red",
+        "Total #Python Errors": "dark-blue"
+      },
       "bars": false,
       "dashLength": 10,
       "dashes": false,
@@ -1517,13 +1145,13 @@
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
-        "h": 8,
+        "h": 7,
         "w": 12,
         "x": 12,
-        "y": 41
+        "y": 28
       },
       "hiddenSeries": false,
-      "id": 26,
+      "id": 5,
       "legend": {
         "avg": false,
         "current": false,
@@ -1540,19 +1168,14 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.0.3",
+      "pluginVersion": "8.0.4",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
       "seriesOverrides": [
         {
-          "$$hashKey": "object:613",
-          "alias": "average number of reports for multiRoutePositionReportLocations",
-          "yaxis": 2
-        },
-        {
-          "$$hashKey": "object:592",
-          "alias": "average number of reports",
+          "$$hashKey": "object:1771",
+          "alias": "max MITM data processing workers are falling behind",
           "yaxis": 2
         }
       ],
@@ -1565,7 +1188,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(a.Datetime,$__interval),\n  sum(locationsMultiReport) AS \"#locations\",\n  (sum(locReports)-sum(Tloc)+sum(locationsMultiReport))/sum(locationsMultiReport) AS \"average number of reports\"\nFROM stats_worker a, Area b\nWHERE\n  a.RPL = '$RPL' and\n  a.Worker = b.Origin and\n  substring_index(b.Area,'_',1) in ($Area)\nGROUP BY 1\nORDER BY $__timeGroup(a.Datetime,$__interval)\n",
+          "rawSql": "SELECT\r\n$__timeGroup(datetime,$__interval) AS \"time\",\r\nsum(failedTopApp) as 'Failed getting the topmost app',\r\nsum(noPTC) as 'No PTC Accounts are set - hope we are login and never logout'\r\n\r\nFROM warning_worker a, Area b\r\n\r\nWHERE\r\na.Origin = b.Origin and\r\na.RPL='$RPL' and\r\na.instance in ($Instance) and\r\nb.Area in ($Area) and\r\na.Origin in ($Worker)\r\nGROUP BY 1  \r\nORDER BY $__timeGroup(datetime,$__interval)",
           "refId": "A",
           "select": [
             [
@@ -1591,7 +1214,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Locations with multiple reports (encounter_all)",
+      "title": "screenPath",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -1607,7 +1230,7 @@
       },
       "yaxes": [
         {
-          "$$hashKey": "object:131",
+          "$$hashKey": "object:657",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -1616,12 +1239,262 @@
           "show": true
         },
         {
-          "$$hashKey": "object:132",
+          "$$hashKey": "object:658",
           "format": "short",
           "label": null,
           "logBase": 1,
           "max": null,
-          "min": "0",
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {
+        "#Errors": "dark-red",
+        "Failed clearing box 1 time(s) in a row, retry later": "dark-blue",
+        "Total #Errors": "dark-red",
+        "Total #MAD Errors": "dark-red",
+        "Total #MAD Warnings": "dark-red",
+        "Total #Python Errors": "dark-blue",
+        "Unable to confirm the current location (Location(lat,lng)) yielding a spinnable stop - likely not standing exactly on top": "dark-green",
+        "giving up spinning after 4 tries in handle_stop loop": "dark-purple"
+      },
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_POGODB}",
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 0,
+        "y": 35
+      },
+      "hiddenSeries": false,
+      "id": 9,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "8.0.4",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "$$hashKey": "object:1869",
+          "alias": "max MITM data processing workers are falling behind",
+          "yaxis": 2
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n$__timeGroup(datetime,$__interval) AS \"time\",\r\nsum(failedBoxClear) as 'Failed clearing box 1 time(s) in a row, retry later',\r\nsum(itemDelUnknown) as 'Deletion not confirmed within 35s for item: x',\r\nsum(noStop) as 'Unable to confirm the current location (Location(lat,lng)) yielding a spinnable stop - likely not standing exactly on top',\r\nsum(failStopSpin) as 'giving up spinning after 4 tries in handle_stop loop'\r\n\r\nFROM warning_worker a, Area b\r\n\r\nWHERE\r\na.Origin = b.Origin and\r\na.RPL='$RPL' and\r\na.instance in ($Instance) and\r\nb.Area in ($Area) and\r\na.Origin in ($Worker)\r\nGROUP BY 1  \r\nORDER BY $__timeGroup(datetime,$__interval)",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "WorkerQuests (2)",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:657",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:658",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {
+        "#Errors": "dark-red",
+        "Cannot find any active area defined for current time. Check Walker entries": "dark-blue",
+        "Total #Errors": "dark-red",
+        "Total #MAD Errors": "dark-red",
+        "Total #MAD Warnings": "dark-red",
+        "Total #Python Errors": "dark-blue"
+      },
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_POGODB}",
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 12,
+        "y": 35
+      },
+      "hiddenSeries": false,
+      "id": 10,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "8.0.4",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "$$hashKey": "object:1845",
+          "alias": "max MITM data processing workers are falling behind",
+          "yaxis": 2
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n$__timeGroup(datetime,$__interval) AS \"time\",\r\nsum(noActiveArea) as 'Cannot find any active area defined for current time. Check Walker entries',\r\nsum(noWalkerConfig) as 'Failed to find a walker configuration'\r\n\r\nFROM warning_worker a, Area b\r\n\r\nWHERE\r\na.Origin = b.Origin and\r\na.RPL='$RPL' and\r\na.instance in ($Instance) and\r\nb.Area in ($Area) and\r\na.Origin in ($Worker)\r\nGROUP BY 1  \r\nORDER BY $__timeGroup(datetime,$__interval)",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "WorkerFactory",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:657",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:658",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
           "show": true
         }
       ],
@@ -1641,7 +1514,7 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_POGODB}",
-        "definition": "select distinct(RPL) from stats_area;",
+        "definition": "select distinct(RPL) from warning;",
         "description": null,
         "error": null,
         "hide": 0,
@@ -1650,18 +1523,41 @@
         "multi": false,
         "name": "RPL",
         "options": [],
-        "query": "select distinct(RPL) from stats_area;",
+        "query": "select distinct(RPL) from warning;",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
-        "sort": 3,
+        "sort": 0,
         "tagValuesQuery": "",
         "tagsQuery": "",
         "type": "query",
         "useTags": false
       },
       {
-        "allValue": "",
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_POGODB}",
+        "definition": "select distinct(instance) from warning_worker;",
+        "description": null,
+        "error": null,
+        "hide": 0,
+        "includeAll": true,
+        "label": null,
+        "multi": true,
+        "name": "Instance",
+        "options": [],
+        "query": "select distinct(instance) from warning_worker;",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
         "current": {},
         "datasource": "${DS_POGODB}",
         "definition": "select distinct(substring_index(Area,'_',1)) from stats_area where Area <>'Unfenced';",
@@ -1678,56 +1574,37 @@
         "regex": "",
         "skipUrlSync": false,
         "sort": 0,
-        "tagValuesQuery": "",
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
+        "type": "query"
       },
       {
         "allValue": null,
         "current": {},
         "datasource": "${DS_POGODB}",
-        "definition": "select distinct(Fence) from stats_area where Fence <> 'Unfenced';",
+        "definition": "select distinct(Origin) from warning_worker;",
         "description": null,
         "error": null,
         "hide": 0,
         "includeAll": true,
         "label": null,
         "multi": true,
-        "name": "Fence",
+        "name": "Worker",
         "options": [],
-        "query": "select distinct(Fence) from stats_area where Fence <> 'Unfenced';",
+        "query": "select distinct(Origin) from warning_worker;",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
         "sort": 0,
-        "tagValuesQuery": "",
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
+        "type": "query"
       }
     ]
   },
   "time": {
-    "from": "now-30d",
+    "from": "now-24h",
     "to": "now"
   },
-  "timepicker": {
-    "refresh_intervals": [
-      "5s",
-      "10s",
-      "30s",
-      "1m",
-      "5m",
-      "15m",
-      "30m",
-      "1h",
-      "2h",
-      "1d"
-    ]
-  },
+  "timepicker": {},
   "timezone": "",
-  "title": "02. Stats network/area level",
-  "uid": "KY-d_hOMz",
-  "version": 57
+  "title": "53. MAD log warnings , worker/area level",
+  "uid": "UCHh-duMf",
+  "version": 3
 }

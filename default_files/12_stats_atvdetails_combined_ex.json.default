@@ -14,12 +14,12 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "7.3.6"
+      "version": "8.0.3"
     },
     {
       "type": "panel",
       "id": "graph",
-      "name": "Graph",
+      "name": "Graph (old)",
       "version": ""
     },
     {
@@ -46,21 +46,18 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1609949190687,
+  "iteration": 1625090522164,
   "links": [],
   "panels": [
     {
-      "aliasColors": {},
+      "aliasColors": {
+        "aarch64": "dark-red",
+        "armv8l": "dark-green"
+      },
       "bars": false,
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_POGODB}",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -87,64 +84,78 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.6",
+      "pluginVersion": "8.0.3",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
       "seriesOverrides": [
         {
+          "$$hashKey": "object:1877",
           "alias": "aarch64 Restarts",
           "yaxis": 2
         },
         {
+          "$$hashKey": "object:1878",
           "alias": "aarch64 Reboots",
           "yaxis": 2
         },
         {
+          "$$hashKey": "object:1879",
           "alias": "aarch64 #Reboots per device",
           "yaxis": 2
         },
         {
+          "$$hashKey": "object:1880",
           "alias": "aarch64 #Restarts per device",
           "yaxis": 2
         },
         {
+          "$$hashKey": "object:1881",
           "alias": "armv8l #Restarts per device",
           "yaxis": 2
         },
         {
+          "$$hashKey": "object:1882",
           "alias": "armv8l #Reboots per device",
           "yaxis": 2
         },
         {
+          "$$hashKey": "object:1883",
           "alias": "armv8l\narmv8l #Reboots per device",
           "yaxis": 2
         },
         {
+          "$$hashKey": "object:1884",
           "alias": "armv8l\narmv8l #Restarts per device",
           "yaxis": 2
         },
         {
+          "$$hashKey": "object:1885",
           "alias": "aarch64 #Events per device",
           "yaxis": 2
         },
         {
+          "$$hashKey": "object:1886",
           "alias": "armv8l #Events per device",
           "yaxis": 2
         },
         {
+          "$$hashKey": "object:1887",
           "alias": "aarch64 #Events (restart or reboot) per device",
           "yaxis": 2
         },
         {
+          "$$hashKey": "object:1888",
           "alias": "armv8l #Events (restart or reboot) per device",
           "yaxis": 2
         },
         {
+          "$$hashKey": "object:1889",
           "alias": "aarch64 Avg #restart+reboot /device /h",
           "yaxis": 2
         },
         {
+          "$$hashKey": "object:1890",
           "alias": "armv8l Avg #restart+reboot /device /h",
           "yaxis": 2
         }
@@ -158,7 +169,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\nb.arch,\n$__timeGroup(a.datetime,$__interval) as 'time',\nsum(a.LocOk)/sum(a.Tloc)*100 'Location success rate',\n-- sum(a.reb)/count(a.reb) as '#Reboots per device',\n-- sum(a.res)/count(a.res) as '#Restarts per device'\n(sum(a.res)+sum(a.reb))/count(a.Worker) as 'Avg #restart+reboot /device /h'\n\nFROM stats_worker a, ATVdetails b\n\nWHERE\n$__timeFilter(a.datetime) and\na.Worker COLLATE utf8mb4_unicode_ci = b.Origin and\ndate(a.Datetime) = b.datetime and\na.RPL = 60 and\ntime(a.datetime) not in ($Hours_excluded) and\nb.arch in ($architecture)\n-- a.Datetime >= curdate() -interval 7 day\nGROUP by b.arch, date(a.Datetime)\n\n",
+          "rawSql": "SELECT\nb.arch,\n$__timeGroup(a.datetime,$__interval) as 'time',\nsum(a.LocOk)/sum(a.Tloc)*100 'Location success rate'\n-- sum(a.reb)/count(a.reb) as '#Reboots per device',\n-- sum(a.res)/count(a.res) as '#Restarts per device'\n-- (sum(a.res)+sum(a.reb))/count(a.Worker) as 'Avg #restart+reboot /device /h'\n\nFROM stats_worker a, ATVdetails b\n\nWHERE\n$__timeFilter(a.datetime) and\na.Worker COLLATE utf8mb4_unicode_ci = b.Origin and\ndate(a.Datetime) = b.datetime and\na.RPL = 60 and\ntime(a.datetime) not in ($Hours_excluded) and\nb.arch in ($architecture)\n-- a.Datetime >= curdate() -interval 7 day\nGROUP by b.arch, date(a.Datetime)\nORDER BY a.Datetime ASC\n\n",
           "refId": "A",
           "select": [
             [
@@ -184,7 +195,121 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Performance by architecture",
+      "title": "Performance by architecture (Location Handling Success Rate)",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:2459",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:2460",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {
+        "aarch64": "dark-red",
+        "armv8l": "dark-green"
+      },
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_POGODB}",
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "hiddenSeries": false,
+      "id": 14,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "8.0.3",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\nb.arch,\n$__timeGroup(a.datetime,$__interval) as 'time',\n-- sum(a.LocOk)/sum(a.Tloc)*100 'Location success rate',\n-- sum(a.reb)/count(a.reb) as '#Reboots per device',\n-- sum(a.res)/count(a.res) as '#Restarts per device'\n(sum(a.res)+sum(a.reb))/count(a.Worker) as 'Avg #restart+reboot /device /h'\n\nFROM stats_worker a, ATVdetails b\n\nWHERE\n$__timeFilter(a.datetime) and\na.Worker COLLATE utf8mb4_unicode_ci = b.Origin and\ndate(a.Datetime) = b.datetime and\na.RPL = 60 and\ntime(a.datetime) not in ($Hours_excluded) and\nb.arch in ($architecture)\n-- a.Datetime >= curdate() -interval 7 day\nGROUP by b.arch, date(a.Datetime)\nORDER BY a.Datetime ASC\n",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Performance by architecture (Avg #restart+reboot /device /h)",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -222,24 +347,139 @@
       }
     },
     {
-      "aliasColors": {},
+      "aliasColors": {
+        "aarch64 % raw data reports received": "dark-red",
+        "aarch64 %time proto received": "dark-blue",
+        "armv8l % raw data reports received": "dark-green",
+        "armv8l %time proto received": "dark-purple"
+      },
       "bars": false,
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_POGODB}",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
-        "overrides": []
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 8
       },
+      "hiddenSeries": false,
+      "id": 16,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "8.0.3",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\nb.arch,\n$__timeGroup(a.datetime,$__interval) as 'time',\n100*sum(a.TRPL)/sum(a.RPL) AS \"% raw data reports received\",\n100*(sum(a.rpl)-sum(missingProtoMinute))/sum(a.rpl) as '%time proto received'\n\nFROM stats_worker a, ATVdetails b\n\nWHERE\n$__timeFilter(a.datetime) and\na.Worker COLLATE utf8mb4_unicode_ci = b.Origin and\ndate(a.Datetime) = b.datetime and\na.RPL = 60 and\ntime(a.datetime) not in ($Hours_excluded) and\nb.arch in ($architecture)\n-- a.Datetime >= curdate() -interval 7 day\nGROUP by b.arch, date(a.Datetime)\nORDER BY a.Datetime ASC\n",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "encounter_id"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "pokemon_history",
+          "timeColumn": "disappear_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Performance by architecture (Uptime)",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:2788",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": "100",
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:2789",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {
+        "aarch64": "dark-red",
+        "armv8l": "dark-green"
+      },
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_POGODB}",
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 0
+        "y": 8
       },
       "hiddenSeries": false,
       "id": 4,
@@ -259,12 +499,13 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.6",
+      "pluginVersion": "8.0.3",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
       "seriesOverrides": [
         {
+          "$$hashKey": "object:1346",
           "alias": "aarch64",
           "yaxis": 2
         }
@@ -278,7 +519,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\nb.arch,\n$__timeGroup(a.datetime,$__interval) as 'time',\ncount(a.res) as '#devices'\n\nFROM stats_worker a, ATVdetails b\n\nWHERE\n$__timeFilter(a.datetime) and\na.Worker COLLATE utf8mb4_unicode_ci = b.Origin and\ndate(a.Datetime) = b.datetime and\na.RPL = 60 and\ntime(a.datetime) not in ($Hours_excluded) and\nb.arch in ($architecture)\n-- a.Datetime >= curdate() -interval 7 day\nGROUP by b.arch, a.Datetime",
+          "rawSql": "SELECT\nb.arch,\n$__timeGroup(a.datetime,$__interval) as 'time',\ncount(a.res) as '#devices'\n\nFROM stats_worker a, ATVdetails b\n\nWHERE\n$__timeFilter(a.datetime) and\na.Worker COLLATE utf8mb4_unicode_ci = b.Origin and\ndate(a.Datetime) = b.datetime and\na.RPL = 60 and\ntime(a.datetime) not in ($Hours_excluded) and\nb.arch in ($architecture)\n-- a.Datetime >= curdate() -interval 7 day\nGROUP by b.arch, a.Datetime\nORDER BY a.Datetime ASC",
           "refId": "A",
           "select": [
             [
@@ -320,6 +561,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:2869",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -328,6 +570,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:2870",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -347,19 +590,13 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_POGODB}",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 8
+        "y": 16
       },
       "hiddenSeries": false,
       "id": 6,
@@ -379,89 +616,157 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.6",
+      "pluginVersion": "8.0.3",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
       "seriesOverrides": [
         {
+          "$$hashKey": "object:583",
           "alias": "0.185.0 #Events (restart or reboot) per device",
           "yaxis": 2
         },
         {
+          "$$hashKey": "object:584",
           "alias": "0.185.1 #Events (restart or reboot) per device",
           "yaxis": 2
         },
         {
+          "$$hashKey": "object:585",
           "alias": "0.185.3 #Events (restart or reboot) per device",
           "yaxis": 2
         },
         {
+          "$$hashKey": "object:586",
           "alias": "0.187.1 #Events (restart or reboot) per device",
           "yaxis": 2
         },
         {
+          "$$hashKey": "object:587",
           "alias": "0.187.2 #Events (restart or reboot) per device",
           "yaxis": 2
         },
         {
+          "$$hashKey": "object:588",
           "alias": "0.187.2 Avg #restart+reboot /device /h",
           "yaxis": 2
         },
         {
+          "$$hashKey": "object:589",
           "alias": "0.187.1 Avg #restart+reboot /device /h",
           "yaxis": 2
         },
         {
+          "$$hashKey": "object:590",
           "alias": "0.185.3 Avg #restart+reboot /device /h",
           "yaxis": 2
         },
         {
+          "$$hashKey": "object:591",
           "alias": "0.185.1 Avg #restart+reboot /device /h",
           "yaxis": 2
         },
         {
+          "$$hashKey": "object:592",
           "alias": "0.189.0 Avg #restart+reboot /device /h",
           "yaxis": 2
         },
         {
+          "$$hashKey": "object:593",
           "alias": "0.191.0 Avg #restart+reboot /device /h",
           "yaxis": 2
         },
         {
+          "$$hashKey": "object:594",
           "alias": "0.191.1 Avg #restart+reboot /device /h",
           "yaxis": 2
         },
         {
+          "$$hashKey": "object:595",
           "alias": "0.191.2 Avg #restart+reboot /device /h",
           "yaxis": 2
         },
         {
+          "$$hashKey": "object:596",
           "alias": "0.193.0 Avg #restart+reboot /device /h",
           "yaxis": 2
         },
         {
+          "$$hashKey": "object:597",
           "alias": "0.193.1 Avg #restart+reboot /device /h",
           "yaxis": 2
         },
         {
+          "$$hashKey": "object:598",
           "alias": "0.193.2 Avg #restart+reboot /device /h",
           "yaxis": 2
         },
         {
+          "$$hashKey": "object:599",
           "alias": "0.193.3 Avg #restart+reboot /device /h",
           "yaxis": 2
         },
         {
+          "$$hashKey": "object:600",
           "alias": "0.195.0 Avg #restart+reboot /device /h",
           "yaxis": 2
         },
         {
+          "$$hashKey": "object:601",
           "alias": "0.195.1 Avg #restart+reboot /device /h",
           "yaxis": 2
         },
         {
+          "$$hashKey": "object:602",
           "alias": "0.195.2 Avg #restart+reboot /device /h",
+          "yaxis": 2
+        },
+        {
+          "$$hashKey": "object:603",
+          "alias": "0.197.1 Avg #restart+reboot /device /h",
+          "yaxis": 2
+        },
+        {
+          "$$hashKey": "object:1392",
+          "alias": "0.201.1 Avg #restart+reboot /device /h",
+          "yaxis": 2
+        },
+        {
+          "$$hashKey": "object:1393",
+          "alias": "0.203.0 Avg #restart+reboot /device /h",
+          "yaxis": 2
+        },
+        {
+          "$$hashKey": "object:1394",
+          "alias": "0.199.0 Avg #restart+reboot /device /h",
+          "yaxis": 2
+        },
+        {
+          "$$hashKey": "object:1395",
+          "alias": "0.203.1 Avg #restart+reboot /device /h",
+          "yaxis": 2
+        },
+        {
+          "$$hashKey": "object:1396",
+          "alias": "0.205.1 Avg #restart+reboot /device /h",
+          "yaxis": 2
+        },
+        {
+          "$$hashKey": "object:1397",
+          "alias": "0.209.0 Avg #restart+reboot /device /h",
+          "yaxis": 2
+        },
+        {
+          "$$hashKey": "object:1398",
+          "alias": "0.207.2 Avg #restart+reboot /device /h",
+          "yaxis": 2
+        },
+        {
+          "alias": "Avg #restart+reboot /device /h 0.211.3",
+          "yaxis": 2
+        },
+        {
+          "alias": "Avg #restart+reboot /device /h 0.209.0",
           "yaxis": 2
         }
       ],
@@ -474,7 +779,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\nb.pogo,\n$__timeGroup(a.datetime,$__interval) as 'time',\nsum(a.LocOk)/sum(a.Tloc)*100 'Location success rate',\n-- sum(a.reb)/count(a.reb) as '#Reboots per device',\n-- sum(a.res)/count(a.res) as '#Restarts per device'\n(sum(a.res)+sum(a.reb))/count(a.Worker) as 'Avg #restart+reboot /device /h'\n\nFROM stats_worker a, ATVdetails b\n\nWHERE\n$__timeFilter(a.datetime) and\na.Worker COLLATE utf8mb4_unicode_ci = b.Origin and\ndate(a.Datetime) = b.datetime and\na.RPL = 60 and\ntime(a.datetime) not in ($Hours_excluded) and\nb.pogo in ($pogo)\n-- a.Datetime >= curdate() -interval 7 day\nGROUP by b.pogo, date(a.Datetime)",
+          "rawSql": "SELECT\nb.pogo,\n$__timeGroup(a.datetime,$__interval) as 'time',\nsum(a.LocOk)/sum(a.Tloc)*100 'Location success rate',\n-- sum(a.reb)/count(a.reb) as '#Reboots per device',\n-- sum(a.res)/count(a.res) as '#Restarts per device'\n(sum(a.res)+sum(a.reb))/count(a.Worker) as 'Avg #restart+reboot /device /h'\n\nFROM stats_worker a, ATVdetails b\n\nWHERE\n$__timeFilter(a.datetime) and\na.Worker COLLATE utf8mb4_unicode_ci = b.Origin and\ndate(a.Datetime) = b.datetime and\na.RPL = 60 and\ntime(a.datetime) not in ($Hours_excluded) and\nb.pogo in ($pogo)\n-- a.Datetime >= curdate() -interval 7 day\nGROUP by b.pogo, date(a.Datetime)\nORDER BY a.Datetime ASC",
           "refId": "A",
           "select": [
             [
@@ -516,6 +821,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:2913",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -524,6 +830,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:2914",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -543,19 +850,13 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_POGODB}",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 8
+        "y": 16
       },
       "hiddenSeries": false,
       "id": 8,
@@ -575,7 +876,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.6",
+      "pluginVersion": "8.0.3",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -589,7 +890,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\nb.pogo,\n$__timeGroup(a.datetime,$__interval) as 'time',\ncount(a.res) as '#devices'\n\nFROM stats_worker a, ATVdetails b\n\nWHERE\n$__timeFilter(a.datetime) and\na.Worker COLLATE utf8mb4_unicode_ci = b.Origin and\ndate(a.Datetime) = b.datetime and\na.RPL = 60 and\ntime(a.datetime) not in ($Hours_excluded) and\nb.pogo in ($pogo)\n-- a.Datetime >= curdate() -interval 7 day\nGROUP by b.pogo, a.Datetime",
+          "rawSql": "SELECT\nb.pogo,\n$__timeGroup(a.datetime,$__interval) as 'time',\ncount(a.res) as '#devices'\n\nFROM stats_worker a, ATVdetails b\n\nWHERE\n$__timeFilter(a.datetime) and\na.Worker COLLATE utf8mb4_unicode_ci = b.Origin and\ndate(a.Datetime) = b.datetime and\na.RPL = 60 and\ntime(a.datetime) not in ($Hours_excluded) and\nb.pogo in ($pogo)\n-- a.Datetime >= curdate() -interval 7 day\nGROUP by b.pogo, a.Datetime\nORDER BY a.Datetime ASC",
           "refId": "A",
           "select": [
             [
@@ -631,6 +932,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:2957",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -639,6 +941,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:2958",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -658,19 +961,13 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_POGODB}",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 16
+        "y": 24
       },
       "hiddenSeries": false,
       "id": 10,
@@ -690,33 +987,114 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.6",
+      "pluginVersion": "8.0.3",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
       "seriesOverrides": [
         {
+          "$$hashKey": "object:2852",
           "alias": "28.0 Avg #restart+reboot /device /h",
           "yaxis": 2
         },
         {
+          "$$hashKey": "object:2853",
           "alias": "29.4 Avg #restart+reboot /device /h",
           "yaxis": 2
         },
         {
+          "$$hashKey": "object:2854",
           "alias": "1.8.3 Avg #restart+reboot /device /h",
           "yaxis": 2
         },
         {
+          "$$hashKey": "object:2855",
           "alias": "1.9.0 Avg #restart+reboot /device /h",
           "yaxis": 2
         },
         {
+          "$$hashKey": "object:2856",
           "alias": "29.6 Location success rate",
           "yaxis": 1
         },
         {
+          "$$hashKey": "object:2857",
           "alias": "29.6 Avg #restart+reboot /device /h",
+          "yaxis": 2
+        },
+        {
+          "$$hashKey": "object:451",
+          "alias": "29.8 Avg #restart+reboot /device /h",
+          "yaxis": 2
+        },
+        {
+          "$$hashKey": "object:452",
+          "alias": "29.9 Avg #restart+reboot /device /h",
+          "yaxis": 2
+        },
+        {
+          "$$hashKey": "object:453",
+          "alias": "29.10 Avg #restart+reboot /device /h",
+          "yaxis": 2
+        },
+        {
+          "$$hashKey": "object:454",
+          "alias": "29.11 Avg #restart+reboot /device /h",
+          "yaxis": 2
+        },
+        {
+          "$$hashKey": "object:1645",
+          "alias": "29.14 Avg #restart+reboot /device /h",
+          "yaxis": 2
+        },
+        {
+          "$$hashKey": "object:1646",
+          "alias": "29.15 Avg #restart+reboot /device /h",
+          "yaxis": 2
+        },
+        {
+          "$$hashKey": "object:1647",
+          "alias": "29.16 Avg #restart+reboot /device /h",
+          "yaxis": 2
+        },
+        {
+          "$$hashKey": "object:1648",
+          "alias": "30.0.1 Avg #restart+reboot /device /h",
+          "yaxis": 2
+        },
+        {
+          "$$hashKey": "object:1649",
+          "alias": "30.0.2 Avg #restart+reboot /device /h",
+          "yaxis": 2
+        },
+        {
+          "$$hashKey": "object:1650",
+          "alias": "30.0.6 Avg #restart+reboot /device /h",
+          "yaxis": 2
+        },
+        {
+          "$$hashKey": "object:1651",
+          "alias": "31.0.3 Avg #restart+reboot /device /h",
+          "yaxis": 2
+        },
+        {
+          "alias": "Avg #restart+reboot /device /h 30.0.2",
+          "yaxis": 2
+        },
+        {
+          "alias": "Avg #restart+reboot /device /h 31.0.6",
+          "yaxis": 2
+        },
+        {
+          "alias": "Avg #restart+reboot /device /h 30.0.6",
+          "yaxis": 2
+        },
+        {
+          "alias": "Avg #restart+reboot /device /h 32.0.1",
+          "yaxis": 2
+        },
+        {
+          "alias": "Avg #restart+reboot /device /h 31.0.3",
           "yaxis": 2
         }
       ],
@@ -729,7 +1107,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\nb.pogodroid,\n$__timeGroup(a.datetime,$__interval) as 'time',\nsum(a.LocOk)/sum(a.Tloc)*100 'Location success rate',\n-- sum(a.reb)/count(a.reb) as '#Reboots per device',\n-- sum(a.res)/count(a.res) as '#Restarts per device'\n(sum(a.res)+sum(a.reb))/(count(a.Worker)) as 'Avg #restart+reboot /device /h'\n\nFROM stats_worker a, ATVdetails b\n\nWHERE\n$__timeFilter(a.datetime) and\na.Worker COLLATE utf8mb4_unicode_ci = b.Origin and\ndate(a.Datetime) = b.datetime and\na.RPL = 60 and\ntime(a.datetime) not in ($Hours_excluded) and\nb.pogodroid in ($pogodroid)\nGROUP by b.pogodroid, a.Datetime",
+          "rawSql": "SELECT\nb.pogodroid,\n$__timeGroup(a.datetime,$__interval) as 'time',\nsum(a.LocOk)/sum(a.Tloc)*100 'Location success rate',\n-- sum(a.reb)/count(a.reb) as '#Reboots per device',\n-- sum(a.res)/count(a.res) as '#Restarts per device'\n(sum(a.res)+sum(a.reb))/(count(a.Worker)) as 'Avg #restart+reboot /device /h'\n\nFROM stats_worker a, ATVdetails b\n\nWHERE\n$__timeFilter(a.datetime) and\na.Worker COLLATE utf8mb4_unicode_ci = b.Origin and\ndate(a.Datetime) = b.datetime and\na.RPL = 60 and\ntime(a.datetime) not in ($Hours_excluded) and\nb.pogodroid in ($pogodroid)\nGROUP by b.pogodroid, date(a.Datetime)\nORDER BY a.Datetime ASC",
           "refId": "A",
           "select": [
             [
@@ -771,6 +1149,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:448",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -779,6 +1158,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:449",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -798,19 +1178,13 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_POGODB}",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 16
+        "y": 24
       },
       "hiddenSeries": false,
       "id": 12,
@@ -830,7 +1204,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.6",
+      "pluginVersion": "8.0.3",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -844,7 +1218,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\nb.pogodroid,\n$__timeGroup(a.datetime,$__interval) as 'time',\ncount(a.res) as '#devices'\n\nFROM stats_worker a, ATVdetails b\n\nWHERE\n$__timeFilter(a.datetime) and\na.Worker COLLATE utf8mb4_unicode_ci = b.Origin and\ndate(a.Datetime) = b.datetime and\na.RPL = 60 and\ntime(a.datetime) not in ($Hours_excluded) and\nb.pogodroid in ($pogodroid)\n-- a.Datetime >= curdate() -interval 7 day\nGROUP BY b.pogodroid, a.Datetime",
+          "rawSql": "SELECT\nb.pogodroid,\n$__timeGroup(a.datetime,$__interval) as 'time',\ncount(a.res) as '#devices'\n\nFROM stats_worker a, ATVdetails b\n\nWHERE\n$__timeFilter(a.datetime) and\na.Worker COLLATE utf8mb4_unicode_ci = b.Origin and\ndate(a.Datetime) = b.datetime and\na.RPL = 60 and\ntime(a.datetime) not in ($Hours_excluded) and\nb.pogodroid in ($pogodroid)\n-- a.Datetime >= curdate() -interval 7 day\nGROUP BY b.pogodroid, a.Datetime\nORDER BY a.Datetime ASC",
           "refId": "A",
           "select": [
             [
@@ -886,6 +1260,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:922",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -894,6 +1269,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:923",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -908,7 +1284,7 @@
       }
     }
   ],
-  "schemaVersion": 26,
+  "schemaVersion": 30,
   "style": "dark",
   "tags": [],
   "templating": {
@@ -918,6 +1294,7 @@
         "current": {},
         "datasource": "${DS_POGODB}",
         "definition": "select arch from ATVdetails;",
+        "description": null,
         "error": null,
         "hide": 0,
         "includeAll": true,
@@ -931,7 +1308,6 @@
         "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -941,6 +1317,7 @@
         "current": {},
         "datasource": "${DS_POGODB}",
         "definition": "select pogodroid from ATVdetails;",
+        "description": null,
         "error": null,
         "hide": 0,
         "includeAll": false,
@@ -954,7 +1331,6 @@
         "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -964,6 +1340,7 @@
         "current": {},
         "datasource": "${DS_POGODB}",
         "definition": "select pogo from ATVdetails;",
+        "description": null,
         "error": null,
         "hide": 0,
         "includeAll": false,
@@ -977,7 +1354,6 @@
         "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -987,6 +1363,7 @@
         "current": {},
         "datasource": "${DS_POGODB}",
         "definition": "select concat(hour(Datetime),':00:00') as 'Time' from stats_area where date(Datetime) = curdate() - interval 1 day;",
+        "description": null,
         "error": null,
         "hide": 0,
         "includeAll": false,
@@ -1000,7 +1377,6 @@
         "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -1028,5 +1404,5 @@
   "timezone": "",
   "title": "12. Stats combined with ATVdetails exclude hours",
   "uid": "L-mKZqdGb",
-  "version": 28
+  "version": 48
 }

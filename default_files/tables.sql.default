@@ -207,7 +207,9 @@ CREATE TABLE IF NOT EXISTS `ATVdetails` (
   `arch` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `rom` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `rgc` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `mitm` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `pogodroid` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `vmapper` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `pogo` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `pogo_update` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `pd_update` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -269,6 +271,19 @@ CREATE TABLE IF NOT EXISTS `ATVdetails` (
   `RGC_location_reporter_service_running` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `RGC_stop_location_provider_service` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `RGC_autostart_services` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `VM_bootdelay` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `VM_gzip` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `VM_betamode` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `VM_patchedpid` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `VM_selinux` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `VM_daemon` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `VM_authpassword` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `VM_authuser` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `VM_injector` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `VM_authid` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `VM_origin` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `VM_postdest` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `VM_script` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`datetime`,`origin`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -291,6 +306,25 @@ CREATE TABLE IF NOT EXISTS `error` (
   `noItemDelete` INT DEFAULT NULL,
   `tesseract` INT DEFAULT NULL,
   PRIMARY KEY (`datetime`,`RPL`,`instance`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `error_worker` (
+  `datetime` datetime NOT NULL,
+  `Origin` varchar(50) NOT NULL, 
+  `RPL` smallint(6) NOT NULL,
+  `instance` varchar(50) NOT NULL,
+  `errors` INT DEFAULT NULL,
+  `failedPogoStop` INT DEFAULT NULL,
+  `oldConnection` INT DEFAULT NULL,
+  `originTimeout` INT DEFAULT NULL,
+  `wsLost` INT DEFAULT NULL,
+  `killPogoWait` INT DEFAULT NULL,
+  `wokerInitFail` INT DEFAULT NULL,
+  `killInjection` INT DEFAULT NULL,
+  `killSleep` INT DEFAULT NULL,
+  `noItemDelete` INT DEFAULT NULL,
+  `tesseract` INT DEFAULT NULL,
+  PRIMARY KEY (`datetime`,`Origin`, `RPL`, `instance`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `warning` (
@@ -331,6 +365,42 @@ CREATE TABLE IF NOT EXISTS `warning` (
   PRIMARY KEY (`datetime`,`RPL`,`instance`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+CREATE TABLE IF NOT EXISTS `warning_worker` (
+  `datetime` datetime NOT NULL,
+  `Origin` varchar(50) NOT NULL,
+  `RPL` smallint(6) NOT NULL,
+  `instance` varchar(50) NOT NULL,
+  `warns` INT DEFAULT NULL,
+  `failedData` INT DEFAULT NULL,
+  `manyTimeOut` INT DEFAULT NULL,
+  `frozenScreen` INT DEFAULT NULL,
+  `wsTimeout` INT DEFAULT NULL,
+  `wsConnClosed` INT DEFAULT NULL,
+  `noInject` INT DEFAULT NULL,
+  `noPogoStart` INT DEFAULT NULL,
+  `failedScreenshot` INT DEFAULT NULL,
+  `noPTC` INT DEFAULT NULL,
+  `failedTopApp` INT DEFAULT NULL,
+  `pogoRestartFail` INT DEFAULT NULL,
+  `screenFailure` INT DEFAULT NULL,
+  `failedBoxClear` INT DEFAULT NULL,
+  `itemDelUnknown` INT DEFAULT NULL,
+  `noActiveArea` INT DEFAULT NULL,
+  `noMainScreen` INT DEFAULT NULL,
+  `noLocAccess` INT DEFAULT NULL,
+  `noStopProcess` INT DEFAULT NULL,
+  `failStopOpen` INT DEFAULT NULL,
+  `softban` INT DEFAULT NULL,
+  `questFull` INT DEFAULT NULL,
+  `foundGym` INT DEFAULT NULL,
+  `noWalkerConfig` INT DEFAULT NULL,
+  `noStop` INT DEFAULT NULL,
+  `failStopSpin` INT DEFAULT NULL,
+  `noLogin` INT DEFAULT NULL,
+  `failPostMove` INT DEFAULT NULL,
+  PRIMARY KEY (`datetime`,`Origin`, `RPL`, `instance`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 CREATE TABLE IF NOT EXISTS `version` (
   `key` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `version` smallint(6) NOT NULL,
@@ -359,7 +429,22 @@ ADD COLUMN IF NOT EXISTS `locationsMultiReport` int(11) DEFAULT NULL AFTER `locR
 ALTER TABLE ATVdetails
 CHANGE COLUMN IF EXISTS `PD_session_id` `PD_session_id` text,
 ADD COLUMN IF NOT EXISTS `MACw` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `magisk_modules`,
-ADD COLUMN IF NOT EXISTS `MACe` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `MACw`
+ADD COLUMN IF NOT EXISTS `MACe` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `MACw`,
+ADD COLUMN IF NOT EXISTS `mitm` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `rgc`,
+ADD COLUMN IF NOT EXISTS `vmapper` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `pogodroid`,
+ADD COLUMN IF NOT EXISTS `VM_bootdelay` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+ADD COLUMN IF NOT EXISTS `VM_gzip` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+ADD COLUMN IF NOT EXISTS `VM_betamode` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+ADD COLUMN IF NOT EXISTS `VM_patchedpid` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+ADD COLUMN IF NOT EXISTS `VM_selinux` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+ADD COLUMN IF NOT EXISTS `VM_daemon` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+ADD COLUMN IF NOT EXISTS `VM_authpassword` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+ADD COLUMN IF NOT EXISTS `VM_authuser` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+ADD COLUMN IF NOT EXISTS `VM_injector` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+ADD COLUMN IF NOT EXISTS `VM_authid` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+ADD COLUMN IF NOT EXISTS `VM_origin` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+ADD COLUMN IF NOT EXISTS `VM_postdest` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+ADD COLUMN IF NOT EXISTS `VM_script` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ;
 
 ALTER TABLE pokemon_history
@@ -373,7 +458,8 @@ ADD COLUMN IF NOT EXISTS `nearby_cell` datetime NULL DEFAULT NULL AFTER `nearby_
 ADD COLUMN IF NOT EXISTS `lure_encounter` datetime NULL DEFAULT NULL AFTER `nearby_cell`,
 ADD COLUMN IF NOT EXISTS `lure_wild` datetime NULL DEFAULT NULL AFTER `lure_encounter`,
 ADD KEY IF NOT EXISTS `pokemon_history_encounter` (`encounter`),
-ADD KEY IF NOT EXISTS `pokemon_history_wild` (`wild`);
+ADD KEY IF NOT EXISTS `pokemon_history_wild` (`wild`)
+;
 
 ALTER TABLE pokemon_history_temp
 ADD COLUMN IF NOT EXISTS `fort_id` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `first_scanned`,
@@ -387,7 +473,8 @@ ADD COLUMN IF NOT EXISTS `lure_encounter` datetime NULL DEFAULT NULL AFTER `near
 ADD COLUMN IF NOT EXISTS `lure_wild` datetime NULL DEFAULT NULL AFTER `lure_encounter`,
 ADD KEY IF NOT EXISTS `pokemon_history_temp_first_scanned` (`first_scanned`),
 ADD KEY IF NOT EXISTS `pokemon_history_temp_encounter` (`encounter`),
-ADD KEY IF NOT EXISTS `pokemon_history_temp_wild` (`wild`);
+ADD KEY IF NOT EXISTS `pokemon_history_temp_wild` (`wild`)
+;
 
 ALTER TABLE error
 ADD COLUMN IF NOT EXISTS `tesseract` INT DEFAULT NULL
@@ -402,4 +489,4 @@ ADD COLUMN IF NOT EXISTS `failPostMove` INT DEFAULT NULL
 
 -- update version
 INSERT IGNORE INTO version values ('stats',2);
-UPDATE version set version = 8 where version.key = 'stats';
+UPDATE version set version = 11 where version.key = 'stats';
