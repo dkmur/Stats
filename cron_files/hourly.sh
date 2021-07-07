@@ -51,3 +51,9 @@ if "$madlog"
 then
   cd $PATH_TO_STATS/cron_files/ && ./madlog.sh
 fi
+
+# process MAD logs worker level
+if "$madlog_worker"
+then
+  cd $PATH_TO_STATS/cron_files/ && ./madlog_worker.sh
+fi

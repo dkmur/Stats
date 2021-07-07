@@ -93,6 +93,16 @@ else
   mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB -e "delete from warning where (RPL = 60 and Datetime < curdate() - interval $log60 day) or (RPL = 1440 and Datetime < curdate() - interval $log1440 day) or (RPL = 10080 and Datetime < curdate() - interval $log10080 day);"
 fi
 
+# cleanup of mad log tables, worker level
+if [ -z "$SQL_password" ]
+then
+  mysql -h$DB_IP -P$DB_PORT -u$SQL_user $STATS_DB -e "delete from error_worker where (RPL = 60 and Datetime < curdate() - interval $log_worker60 day) or (RPL = 1440 and Datetime < curdate() - interval $log_worker1440 day) or (RPL = 10080 and Datetime < curdate() - interval $log_worker10080 day);"
+  mysql -h$DB_IP -P$DB_PORT -u$SQL_user $STATS_DB -e "delete from warning_worker where (RPL = 60 and Datetime < curdate() - interval $log_worker60 day) or (RPL = 1440 and Datetime < curdate() - interval $log_worker1440 day) or (RPL = 10080 and Datetime < curdate() - interval $log_worker10080 day);"
+else
+  mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB -e "delete from error_worker where (RPL = 60 and Datetime < curdate() - interval $log_worker60 day) or (RPL = 1440 and Datetime < curdate() - interval $log_worker1440 day) or (RPL = 10080 and Datetime < curdate() - interval $log_worker10080 day);"
+  mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB -e "delete from warning_worker where (RPL = 60 and Datetime < curdate() - interval $log_worker60 day) or (RPL = 1440 and Datetime < curdate() - interval $log_worker1440 day) or (RPL = 10080 and Datetime < curdate() - interval $log_worker10080 day);"
+fi
+
 # MAD cleanup trs_stats_detect
 if "$trs_stats_detect"
 then
@@ -161,5 +171,16 @@ then
     mysql -h$DB_IP -P$DB_PORT -u$SQL_user $STATS_DB < $PATH_TO_STATS/cron_files/madlog1440.sql
   else
     mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB < $PATH_TO_STATS/cron_files/madlog1440.sql
+  fi
+fi
+
+# MAD log aggregation worker level
+if "$madlog_worker"
+then
+  if [ -z "$SQL_password" ]
+  then
+    mysql -h$DB_IP -P$DB_PORT -u$SQL_user $STATS_DB < $PATH_TO_STATS/cron_files/madlog_worker1440.sql
+  else
+    mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB < $PATH_TO_STATS/cron_files/madlog_worker1440.sql
   fi
 fi

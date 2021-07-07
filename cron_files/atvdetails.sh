@@ -23,7 +23,7 @@ else
 	sleep $job_wait
 	echo ""
 	echo "Start processing jobs instance 1"
-        mysql $STATS_DB -u$SQL_user -p$SQL_password -h$DB_IP -P$DB_PORT -N -e "insert ignore into ATVdetails (datetime,origin) select SEC_TO_TIME((TIME_TO_SEC(time(now())) DIV 3600) * 3600), name from $MAD_DB.settings_device;"
+#        mysql $STATS_DB -u$SQL_user -p$SQL_password -h$DB_IP -P$DB_PORT -N -e "insert ignore into ATVdetails (datetime,origin) select SEC_TO_TIME((TIME_TO_SEC(time(now())) DIV 3600) * 3600), name from $MAD_DB.settings_device;"
 
         query(){
         mysql -u$SQL_user -p$SQL_password -NB -h$DB_IP -P$DB_PORT $STATS_DB -e "$1;"
@@ -135,7 +135,7 @@ else
         sleep $job_wait
         echo ""
         echo "Start processing jobs instance 2"
-        mysql $STATS_DB -u$SQL_user -p$SQL_password -h$DB_IP -P$DB_PORT -N -e "insert ignore into ATVdetails (datetime,origin) select SEC_TO_TIME((TIME_TO_SEC(time(now())) DIV 3600) * 3600), name from $MAD_DB.settings_device;"
+#        mysql $STATS_DB -u$SQL_user -p$SQL_password -h$DB_IP -P$DB_PORT -N -e "insert ignore into ATVdetails (datetime,origin) select SEC_TO_TIME((TIME_TO_SEC(time(now())) DIV 3600) * 3600), name from $MAD_DB.settings_device;"
 
         query(){
         mysql -u$SQL_user -p$SQL_password -NB -h$DB_IP -P$DB_PORT $STATS_DB -e "$1;"
@@ -247,7 +247,7 @@ else
         sleep $job_wait
         echo ""
         echo "Start processing jobs instance 3"
-        mysql $STATS_DB -u$SQL_user -p$SQL_password -h$DB_IP -P$DB_PORT -N -e "insert ignore into ATVdetails (datetime,origin) select SEC_TO_TIME((TIME_TO_SEC(time(now())) DIV 3600) * 3600), name from $MAD_DB.settings_device;"
+#        mysql $STATS_DB -u$SQL_user -p$SQL_password -h$DB_IP -P$DB_PORT -N -e "insert ignore into ATVdetails (datetime,origin) select SEC_TO_TIME((TIME_TO_SEC(time(now())) DIV 3600) * 3600), name from $MAD_DB.settings_device;"
 
         query(){
         mysql -u$SQL_user -p$SQL_password -NB -h$DB_IP -P$DB_PORT $STATS_DB -e "$1;"
@@ -359,7 +359,7 @@ else
         sleep $job_wait
         echo ""
         echo "Start processing jobs instance 4"
-        mysql $STATS_DB -u$SQL_user -p$SQL_password -h$DB_IP -P$DB_PORT -N -e "insert ignore into ATVdetails (datetime,origin) select SEC_TO_TIME((TIME_TO_SEC(time(now())) DIV 3600) * 3600), name from $MAD_DB.settings_device;"
+#        mysql $STATS_DB -u$SQL_user -p$SQL_password -h$DB_IP -P$DB_PORT -N -e "insert ignore into ATVdetails (datetime,origin) select SEC_TO_TIME((TIME_TO_SEC(time(now())) DIV 3600) * 3600), name from $MAD_DB.settings_device;"
 
         query(){
         mysql -u$SQL_user -p$SQL_password -NB -h$DB_IP -P$DB_PORT $STATS_DB -e "$1;"
@@ -472,7 +472,7 @@ else
         sleep $job_wait
         echo ""
         echo "Start processing jobs instance 5"
-        mysql $STATS_DB -u$SQL_user -p$SQL_password -h$DB_IP -P$DB_PORT -N -e "insert ignore into ATVdetails (datetime,origin) select SEC_TO_TIME((TIME_TO_SEC(time(now())) DIV 3600) * 3600), name from $MAD_DB.settings_device;"
+#        mysql $STATS_DB -u$SQL_user -p$SQL_password -h$DB_IP -P$DB_PORT -N -e "insert ignore into ATVdetails (datetime,origin) select SEC_TO_TIME((TIME_TO_SEC(time(now())) DIV 3600) * 3600), name from $MAD_DB.settings_device;"
 
         query(){
         mysql -u$SQL_user -p$SQL_password -NB -h$DB_IP -P$DB_PORT $STATS_DB -e "$1;"

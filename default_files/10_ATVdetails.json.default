@@ -14,7 +14,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "7.5.7"
+      "version": "8.0.4"
     },
     {
       "type": "datasource",
@@ -46,7 +46,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1623863977839,
+  "iteration": 1625507635029,
   "links": [],
   "panels": [
     {
@@ -58,6 +58,7 @@
           },
           "custom": {
             "align": null,
+            "displayMode": "auto",
             "filterable": false
           },
           "mappings": [],
@@ -166,7 +167,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "8.0.4",
       "targets": [
         {
           "format": "table",
@@ -209,6 +210,7 @@
           },
           "custom": {
             "align": null,
+            "displayMode": "auto",
             "filterable": false
           },
           "mappings": [],
@@ -288,7 +290,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "8.0.4",
       "targets": [
         {
           "format": "table",
@@ -331,6 +333,7 @@
           },
           "custom": {
             "align": null,
+            "displayMode": "auto",
             "filterable": false
           },
           "mappings": [],
@@ -386,7 +389,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "8.0.4",
       "targets": [
         {
           "format": "table",
@@ -429,6 +432,7 @@
           },
           "custom": {
             "align": null,
+            "displayMode": "auto",
             "filterable": false
           },
           "mappings": [],
@@ -488,7 +492,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "8.0.4",
       "targets": [
         {
           "format": "table",
@@ -531,6 +535,7 @@
           },
           "custom": {
             "align": null,
+            "displayMode": "auto",
             "filterable": false
           },
           "mappings": [],
@@ -667,7 +672,7 @@
           }
         ]
       },
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "8.0.4",
       "targets": [
         {
           "format": "table",
@@ -710,6 +715,7 @@
           },
           "custom": {
             "align": null,
+            "displayMode": "auto",
             "filterable": false
           },
           "mappings": [],
@@ -921,7 +927,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "8.0.4",
       "targets": [
         {
           "format": "table",
@@ -964,6 +970,7 @@
           },
           "custom": {
             "align": null,
+            "displayMode": "auto",
             "filterable": false
           },
           "mappings": [],
@@ -1115,7 +1122,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "8.0.4",
       "targets": [
         {
           "format": "table",
@@ -1158,6 +1165,7 @@
           },
           "custom": {
             "align": null,
+            "displayMode": "auto",
             "filterable": false
           },
           "mappings": [],
@@ -1261,7 +1269,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "8.0.4",
       "targets": [
         {
           "format": "table",
@@ -1304,6 +1312,7 @@
           },
           "custom": {
             "align": null,
+            "displayMode": "auto",
             "filterable": false
           },
           "mappings": [],
@@ -1479,7 +1488,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "8.0.4",
       "targets": [
         {
           "format": "table",
@@ -1522,6 +1531,7 @@
           },
           "custom": {
             "align": null,
+            "displayMode": "auto",
             "filterable": false
           },
           "mappings": [],
@@ -1685,7 +1695,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "8.0.4",
       "targets": [
         {
           "format": "table",
@@ -1728,6 +1738,7 @@
           },
           "custom": {
             "align": null,
+            "displayMode": "auto",
             "filterable": false
           },
           "mappings": [],
@@ -1795,7 +1806,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "8.0.4",
       "targets": [
         {
           "format": "table",
@@ -1836,6 +1847,7 @@
           },
           "custom": {
             "align": null,
+            "displayMode": "auto",
             "filterable": false
           },
           "mappings": [],
@@ -1915,7 +1927,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "8.0.4",
       "targets": [
         {
           "format": "table",
@@ -1956,6 +1968,7 @@
           },
           "custom": {
             "align": null,
+            "displayMode": "auto",
             "filterable": false
           },
           "mappings": [],
@@ -2035,7 +2048,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "7.5.7",
+      "pluginVersion": "8.0.4",
       "targets": [
         {
           "format": "table",
@@ -2069,7 +2082,7 @@
     }
   ],
   "refresh": false,
-  "schemaVersion": 27,
+  "schemaVersion": 30,
   "style": "dark",
   "tags": [],
   "templating": {
@@ -2078,7 +2091,7 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_POGODB}",
-        "definition": "select datetime from ATVdetails;",
+        "definition": "select left(datetime,19) from ATVdetails;",
         "description": null,
         "error": null,
         "hide": 0,
@@ -2087,13 +2100,12 @@
         "multi": false,
         "name": "datetime",
         "options": [],
-        "query": "select datetime from ATVdetails;",
+        "query": "select left(datetime,19) from ATVdetails;",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
         "sort": 4,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -2121,5 +2133,5 @@
   "timezone": "",
   "title": "10. ATVdetails",
   "uid": "YBmfNzFGz",
-  "version": 26
+  "version": 31
 }
