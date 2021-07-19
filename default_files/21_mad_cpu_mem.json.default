@@ -14,12 +14,12 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "7.3.6"
+      "version": "8.0.6"
     },
     {
       "type": "panel",
       "id": "graph",
-      "name": "Graph",
+      "name": "Graph (old)",
       "version": ""
     },
     {
@@ -46,7 +46,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1609885898829,
+  "iteration": 1626541415604,
   "links": [],
   "panels": [
     {
@@ -55,29 +55,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_RMDB}",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "align": null,
-            "filterable": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -104,7 +81,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.6",
+      "pluginVersion": "8.0.6",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -167,6 +144,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:127",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -175,6 +153,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:128",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -194,12 +173,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_RMDB}",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -226,7 +199,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.6",
+      "pluginVersion": "8.0.6",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -305,7 +278,7 @@
     }
   ],
   "refresh": false,
-  "schemaVersion": 26,
+  "schemaVersion": 30,
   "style": "dark",
   "tags": [],
   "templating": {
@@ -314,7 +287,8 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_RMDB}",
-        "definition": "select instance from trs_usage;",
+        "definition": "select distinct(instance) from trs_usage;",
+        "description": null,
         "error": null,
         "hide": 0,
         "includeAll": true,
@@ -322,13 +296,12 @@
         "multi": true,
         "name": "instance",
         "options": [],
-        "query": "select instance from trs_usage;",
+        "query": "select distinct(instance) from trs_usage;",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
         "sort": 1,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -336,12 +309,12 @@
     ]
   },
   "time": {
-    "from": "now-30d",
+    "from": "now-7d",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "21. MAD CPU/mem",
   "uid": "s2oB5ebMk",
-  "version": 2
+  "version": 4
 }
