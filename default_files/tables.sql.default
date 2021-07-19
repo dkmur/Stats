@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS `stats_area` (
   `TRPL` smallint(6) NOT NULL,
   `Area` varchar(40) COLLATE utf8mb4_unicode_ci NOT NULL,
   `Fence` varchar(40) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT `Area`,
-  `Spawnpoints` smallint(6) DEFAULT NULL,
+  `Spawnpoints` int(6) DEFAULT NULL,
   `Mons_all` int(10) DEFAULT NULL,
   `Mons_nonIV` int(10) DEFAULT NULL,
   `MonsIV` int(10) DEFAULT NULL,
@@ -420,7 +420,9 @@ ADD COLUMN IF NOT EXISTS `timeNeSp_En` int(6) DEFAULT NULL,
 ADD COLUMN IF NOT EXISTS `numNeCl_Wi` int(6) DEFAULT NULL,
 ADD COLUMN IF NOT EXISTS `timeNeCl_Wi` int(6) DEFAULT NULL,
 ADD COLUMN IF NOT EXISTS `numNeCl_En` int(6) DEFAULT NULL,
-ADD COLUMN IF NOT EXISTS `timeNeCl_En` int(6) DEFAULT NULL;
+ADD COLUMN IF NOT EXISTS `timeNeCl_En` int(6) DEFAULT NULL,
+MODIFY Spawnpoints int(6);
+
 
 ALTER TABLE `stats_worker`
 ADD COLUMN IF NOT EXISTS `locReports` int(11) DEFAULT NULL AFTER `WkSt`,
@@ -489,4 +491,4 @@ ADD COLUMN IF NOT EXISTS `failPostMove` INT DEFAULT NULL
 
 -- update version
 INSERT IGNORE INTO version values ('stats',2);
-UPDATE version set version = 11 where version.key = 'stats';
+UPDATE version set version = 12 where version.key = 'stats';
