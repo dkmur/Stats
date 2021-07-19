@@ -288,6 +288,7 @@ CREATE TABLE IF NOT EXISTS `ATVdetails` (
   `VM_fridastarted` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `VM_patchedpid` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `VM_fridaver` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `VM_openlucky` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`datetime`,`origin`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -460,7 +461,8 @@ ADD COLUMN IF NOT EXISTS `VM_script` varchar(40) COLLATE utf8mb4_unicode_ci DEFA
 ADD COLUMN IF NOT EXISTS `VM_Autoupdate` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
 ADD COLUMN IF NOT EXISTS `VM_fridastarted` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
 ADD COLUMN IF NOT EXISTS `VM_patchedpid` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-ADD COLUMN IF NOT EXISTS `VM_fridaver` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+ADD COLUMN IF NOT EXISTS `VM_fridaver` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+ADD COLUMN IF NOT EXISTS `VM_openlucky` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ;
 
 ALTER TABLE pokemon_history
