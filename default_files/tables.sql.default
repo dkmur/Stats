@@ -284,6 +284,10 @@ CREATE TABLE IF NOT EXISTS `ATVdetails` (
   `VM_origin` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `VM_postdest` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `VM_script` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `VM_Autoupdate` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `VM_fridastarted` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `VM_patchedpid` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `VM_fridaver` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`datetime`,`origin`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -452,7 +456,11 @@ ADD COLUMN IF NOT EXISTS `VM_injector` varchar(40) COLLATE utf8mb4_unicode_ci DE
 ADD COLUMN IF NOT EXISTS `VM_authid` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
 ADD COLUMN IF NOT EXISTS `VM_origin` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
 ADD COLUMN IF NOT EXISTS `VM_postdest` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-ADD COLUMN IF NOT EXISTS `VM_script` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+ADD COLUMN IF NOT EXISTS `VM_script` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+ADD COLUMN IF NOT EXISTS `VM_Autoupdate` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+ADD COLUMN IF NOT EXISTS `VM_fridastarted` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+ADD COLUMN IF NOT EXISTS `VM_patchedpid` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+ADD COLUMN IF NOT EXISTS `VM_fridaver` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ;
 
 ALTER TABLE pokemon_history
