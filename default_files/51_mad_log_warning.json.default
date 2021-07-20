@@ -14,12 +14,12 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "7.5.8"
+      "version": "8.0.6"
     },
     {
       "type": "panel",
       "id": "graph",
-      "name": "Graph",
+      "name": "Graph (old)",
       "version": ""
     },
     {
@@ -46,7 +46,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1624784891523,
+  "iteration": 1626711294635,
   "links": [],
   "panels": [
     {
@@ -61,10 +61,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_POGODB}",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -91,12 +87,13 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.8",
+      "pluginVersion": "8.0.6",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
       "seriesOverrides": [
         {
+          "$$hashKey": "object:401",
           "alias": "Unspecified Warnings",
           "yaxis": 2
         }
@@ -152,6 +149,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:657",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -160,6 +158,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:658",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -187,10 +186,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_POGODB}",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -217,12 +212,13 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.8",
+      "pluginVersion": "8.0.6",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
       "seriesOverrides": [
         {
+          "$$hashKey": "object:1539",
           "alias": "max MITM data processing workers are falling behind",
           "yaxis": 2
         }
@@ -278,6 +274,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:657",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -286,6 +283,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:658",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -312,10 +310,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_POGODB}",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -342,7 +336,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.8",
+      "pluginVersion": "8.0.6",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -398,6 +392,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:657",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -406,6 +401,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:658",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -432,10 +428,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_POGODB}",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -462,7 +454,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.8",
+      "pluginVersion": "8.0.6",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -518,6 +510,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:657",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -526,6 +519,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:658",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -552,10 +546,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_POGODB}",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -582,7 +572,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.8",
+      "pluginVersion": "8.0.6",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -638,6 +628,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:657",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -646,6 +637,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:658",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -672,10 +664,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_POGODB}",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -702,7 +690,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.8",
+      "pluginVersion": "8.0.6",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -716,7 +704,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\r\n$__timeGroup(datetime,$__interval) AS \"time\",\r\nsum(frozenScreen) as 'Screen is frozen',\r\nsum(failPostMove) as 'Worker failed running post_move_location_routine, stopping worker',\r\nsum(failedScreenshot) as 'Failed retrieving screenshot',\r\nsum(noLogin) as 'Could not login again - (clearing game data + restarting device)'\r\n\r\nFROM warning\r\n\r\nWHERE\r\nRPL='$RPL' and\r\ninstance in ($Instance)\r\nGROUP BY 1  \r\nORDER BY $__timeGroup(datetime,$__interval)",
+          "rawSql": "SELECT\r\n$__timeGroup(datetime,$__interval) AS \"time\",\r\nsum(frozenScreen) as 'Screen is frozen',\r\nsum(failPostMove) as 'Worker failed running post_move_location_routine, stopping worker',\r\nsum(failedScreenshot) as 'Failed retrieving screenshot',\r\nsum(noLogin) as 'Could not login again - (clearing game data + restarting device)',\r\nsum(gpsError) as 'Detected GPS error - reboot device'\r\n\r\nFROM warning\r\n\r\nWHERE\r\nRPL='$RPL' and\r\ninstance in ($Instance)\r\nGROUP BY 1  \r\nORDER BY $__timeGroup(datetime,$__interval)",
           "refId": "A",
           "select": [
             [
@@ -758,6 +746,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:657",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -766,6 +755,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:658",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -792,10 +782,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_POGODB}",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -822,7 +808,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.8",
+      "pluginVersion": "8.0.6",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -878,6 +864,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:657",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -886,6 +873,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:658",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -913,10 +901,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_POGODB}",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -943,7 +927,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.8",
+      "pluginVersion": "8.0.6",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1004,6 +988,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:657",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -1012,6 +997,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:658",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -1038,10 +1024,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_POGODB}",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -1068,7 +1050,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.8",
+      "pluginVersion": "8.0.6",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1129,6 +1111,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:657",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -1137,6 +1120,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:658",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -1163,10 +1147,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_POGODB}",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -1193,7 +1173,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.8",
+      "pluginVersion": "8.0.6",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1249,6 +1229,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:657",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -1257,6 +1238,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:658",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -1285,10 +1267,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_POGODB}",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -1315,12 +1293,13 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.8",
+      "pluginVersion": "8.0.6",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
       "seriesOverrides": [
         {
+          "$$hashKey": "object:1869",
           "alias": "max MITM data processing workers are falling behind",
           "yaxis": 2
         }
@@ -1376,6 +1355,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:657",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -1384,6 +1364,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:658",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -1410,10 +1391,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_POGODB}",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -1440,12 +1417,13 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.8",
+      "pluginVersion": "8.0.6",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
       "seriesOverrides": [
         {
+          "$$hashKey": "object:1771",
           "alias": "max MITM data processing workers are falling behind",
           "yaxis": 2
         }
@@ -1459,7 +1437,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\r\n$__timeGroup(datetime,$__interval) AS \"time\",\r\nsum(failedTopApp) as 'Failed getting the topmost app',\r\nsum(noPTC) as 'No PTC Accounts are set - hope we are login and never logout'\r\n\r\nFROM warning\r\n\r\nWHERE\r\nRPL='$RPL' and\r\ninstance in ($Instance)\r\nGROUP BY 1  \r\nORDER BY $__timeGroup(datetime,$__interval)",
+          "rawSql": "SELECT\r\n$__timeGroup(datetime,$__interval) AS \"time\",\r\nsum(failedTopApp) as 'Failed getting the topmost app',\r\nsum(noPTC) as 'No PTC Accounts are set - hope we are login and never logout',\r\nsum(inGameError) as 'In game error detected',\r\nsum(pogoNotOpen) as 'PoGo is not opened! Current topmost app: xx'\r\n\r\nFROM warning\r\n\r\nWHERE\r\nRPL='$RPL' and\r\ninstance in ($Instance)\r\nGROUP BY 1  \r\nORDER BY $__timeGroup(datetime,$__interval)",
           "refId": "A",
           "select": [
             [
@@ -1501,6 +1479,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:657",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -1509,6 +1488,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:658",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -1535,10 +1515,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_POGODB}",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -1565,7 +1541,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.8",
+      "pluginVersion": "8.0.6",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1626,6 +1602,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:657",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -1634,6 +1611,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:658",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -1660,10 +1638,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_POGODB}",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -1690,12 +1664,13 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.8",
+      "pluginVersion": "8.0.6",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
       "seriesOverrides": [
         {
+          "$$hashKey": "object:1845",
           "alias": "max MITM data processing workers are falling behind",
           "yaxis": 2
         }
@@ -1751,6 +1726,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:657",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -1759,6 +1735,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:658",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -1774,7 +1751,7 @@
     }
   ],
   "refresh": false,
-  "schemaVersion": 27,
+  "schemaVersion": 30,
   "style": "dark",
   "tags": [],
   "templating": {
@@ -1798,7 +1775,6 @@
         "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -1822,7 +1798,6 @@
         "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -1837,5 +1812,5 @@
   "timezone": "",
   "title": "51. MAD log warnings",
   "uid": "UCHh-duMb",
-  "version": 12
+  "version": 13
 }

@@ -25,7 +25,7 @@ ST_CONTAINS(@Fence, point(a.latitude,a.longitude))
 Create TEMPORARY TABLE rmdb.tmp51
 (INDEX (spawnpoint))
 AS(
-select a.spawnpoint, a.last_scanned, a.first_detection, a.last_non_scanned, a.spawndef
+select a.spawnpoint, a.last_scanned, a.first_detection, a.last_non_scanned, a.spawndef, a.eventid
 from rmdb.trs_spawn a
 where
 ST_CONTAINS(@Fence, point(a.latitude,a.longitude))
@@ -76,6 +76,7 @@ pogodb.stats_area.Datetime = @Start
 update pogodb.stats_area
 set
 DBspawns = (select count(*) from rmdb.tmp51),
+DBspawns_event = (select count(*) from rmdb.tmp51 where eventid in (select id from rmdb.trs_event where @Start >= event_start and @Start < event_end)),
 Spawn_add = (select count(*) from rmdb.tmp51 where first_detection >= @Start and first_detection < @Stop),
 Spawn_NULL = (select count(*) from rmdb.tmp51 where last_scanned is NULL),
 Last_scanned_today_acc = (select count(*) from rmdb.tmp51 where date(last_non_scanned) = date(@Start)),

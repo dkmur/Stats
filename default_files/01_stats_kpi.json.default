@@ -14,12 +14,12 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "7.5.2"
+      "version": "8.0.6"
     },
     {
       "type": "panel",
       "id": "graph",
-      "name": "Graph",
+      "name": "Graph (old)",
       "version": ""
     },
     {
@@ -46,7 +46,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1618533491749,
+  "iteration": 1626548256564,
   "links": [],
   "panels": [
     {
@@ -55,10 +55,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_POGODB}",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -85,12 +81,13 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.2",
+      "pluginVersion": "8.0.6",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
       "seriesOverrides": [
         {
+          "$$hashKey": "object:740",
           "alias": "%IV scanned",
           "yaxis": 2
         }
@@ -146,6 +143,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:4863",
           "format": "short",
           "label": "#Mons",
           "logBase": 1,
@@ -154,6 +152,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:4864",
           "format": "short",
           "label": "%IV",
           "logBase": 1,
@@ -173,10 +172,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_POGODB}",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -203,7 +198,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.2",
+      "pluginVersion": "8.0.6",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -310,6 +305,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:3285",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -318,6 +314,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:3286",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -337,10 +334,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_POGODB}",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -367,7 +360,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.2",
+      "pluginVersion": "8.0.6",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -445,6 +438,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:3175",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -453,6 +447,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:3176",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -472,10 +467,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_POGODB}",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -502,12 +493,13 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.2",
+      "pluginVersion": "8.0.6",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
       "seriesOverrides": [
         {
+          "$$hashKey": "object:214",
           "alias": "Avgerage # device reboots per hour",
           "yaxis": 2
         }
@@ -565,19 +557,21 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:1659",
           "format": "short",
           "label": "# restarts /h",
           "logBase": 1,
           "max": null,
-          "min": null,
+          "min": "0",
           "show": true
         },
         {
+          "$$hashKey": "object:1660",
           "format": "short",
           "label": "#reboots /h",
           "logBase": 1,
           "max": null,
-          "min": null,
+          "min": "0",
           "show": true
         }
       ],
@@ -592,10 +586,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_POGODB}",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -622,7 +612,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.2",
+      "pluginVersion": "8.0.6",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -680,6 +670,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:646",
           "format": "short",
           "label": "% despawn time left",
           "logBase": 1,
@@ -688,6 +679,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:647",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -707,10 +699,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_POGODB}",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -737,24 +725,28 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.2",
+      "pluginVersion": "8.0.6",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
       "seriesOverrides": [
         {
+          "$$hashKey": "object:1397",
           "alias": "Avgerage # Pogo restarts",
           "yaxis": 2
         },
         {
+          "$$hashKey": "object:1398",
           "alias": "Avgerage # device reboots",
           "yaxis": 2
         },
         {
+          "$$hashKey": "object:1399",
           "alias": "Avgerage # Pogo restarts per hour",
           "yaxis": 2
         },
         {
+          "$$hashKey": "object:1400",
           "alias": "Avgerage # device reboots per hour",
           "yaxis": 2
         }
@@ -812,6 +804,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:849",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -820,6 +813,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:850",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -834,7 +828,7 @@
       }
     }
   ],
-  "schemaVersion": 27,
+  "schemaVersion": 30,
   "style": "dark",
   "tags": [],
   "templating": {
@@ -858,7 +852,6 @@
         "skipUrlSync": false,
         "sort": 3,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
