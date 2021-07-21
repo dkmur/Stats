@@ -12,8 +12,8 @@ if [ -z "$MAD_path_1" ]; then
 else
         echo "Inserting all origins into tables"
         echo ""
-        mysql $STATS_DB -u$SQL_user -p$SQL_password -h$DB_IP -P$DB_PORT -N -e "insert ignore into warning_worker (datetime,origin,RPL,instance) select SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 60 minute)) DIV 3600) * 3600), a.name, 60, b.name from $MAD_DB.settings_device a, rmdb.madmin_instance b where a.instance_id = b.instance_id;"
-        mysql $STATS_DB -u$SQL_user -p$SQL_password -h$DB_IP -P$DB_PORT -N -e "insert ignore into error_worker (datetime,origin,RPL,instance) select SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 60 minute)) DIV 3600) * 3600), a.name, 60, b.name from $MAD_DB.settings_device a, rmdb.madmin_instance b where a.instance_id = b.instance_id;"
+        mysql $STATS_DB -u$SQL_user -p$SQL_password -h$DB_IP -P$DB_PORT -N -e "insert ignore into warning_worker (datetime,origin,RPL,instance) select SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 60 minute)) DIV 3600) * 3600), a.name, 60, b.name from $MAD_DB.settings_device a, $MAD_DB.madmin_instance b where a.instance_id = b.instance_id;"
+        mysql $STATS_DB -u$SQL_user -p$SQL_password -h$DB_IP -P$DB_PORT -N -e "insert ignore into error_worker (datetime,origin,RPL,instance) select SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 60 minute)) DIV 3600) * 3600), a.name, 60, b.name from $MAD_DB.settings_device a, $MAD_DB.madmin_instance b where a.instance_id = b.instance_id;"
         echo ""
         echo "Processing MAD logs for $MAD_instance_name_1 workers"
 
@@ -81,8 +81,8 @@ if [ -z "$MAD_path_2" ]; then
 else
         echo "Inserting all origins into tables"
         echo ""
-        mysql $STATS_DB -u$SQL_user -p$SQL_password -h$DB_IP -P$DB_PORT -N -e "insert ignore into warning_worker (datetime,origin,RPL,instance) select SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 60 minute)) DIV 3600) * 3600), a.name, 60, b.name from $MAD_DB.settings_device a, rmdb.madmin_instance b where a.instance_id = b.instance_id;"
-        mysql $STATS_DB -u$SQL_user -p$SQL_password -h$DB_IP -P$DB_PORT -N -e "insert ignore into error_worker (datetime,origin,RPL,instance) select SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 60 minute)) DIV 3600) * 3600), a.name, 60, b.name from $MAD_DB.settings_device a, rmdb.madmin_instance b where a.instance_id = b.instance_id;"
+        mysql $STATS_DB -u$SQL_user -p$SQL_password -h$DB_IP -P$DB_PORT -N -e "insert ignore into warning_worker (datetime,origin,RPL,instance) select SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 60 minute)) DIV 3600) * 3600), a.name, 60, b.name from $MAD_DB.settings_device a, $MAD_DB.madmin_instance b where a.instance_id = b.instance_id;"
+        mysql $STATS_DB -u$SQL_user -p$SQL_password -h$DB_IP -P$DB_PORT -N -e "insert ignore into error_worker (datetime,origin,RPL,instance) select SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 60 minute)) DIV 3600) * 3600), a.name, 60, b.name from $MAD_DB.settings_device a, $MAD_DB.madmin_instance b where a.instance_id = b.instance_id;"
         echo ""
         echo "Processing MAD logs for $MAD_instance_name_2 workers"
 
@@ -149,8 +149,8 @@ if [ -z "$MAD_path_3" ]; then
 else
         echo "Inserting all origins into tables"
         echo ""
-        mysql $STATS_DB -u$SQL_user -p$SQL_password -h$DB_IP -P$DB_PORT -N -e "insert ignore into warning_worker (datetime,origin,RPL,instance) select SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 60 minute)) DIV 3600) * 3600), a.name, 60, b.name from $MAD_DB.settings_device a, rmdb.madmin_instance b where a.instance_id = b.instance_id;"
-        mysql $STATS_DB -u$SQL_user -p$SQL_password -h$DB_IP -P$DB_PORT -N -e "insert ignore into error_worker (datetime,origin,RPL,instance) select SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 60 minute)) DIV 3600) * 3600), a.name, 60, b.name from $MAD_DB.settings_device a, rmdb.madmin_instance b where a.instance_id = b.instance_id;"
+        mysql $STATS_DB -u$SQL_user -p$SQL_password -h$DB_IP -P$DB_PORT -N -e "insert ignore into warning_worker (datetime,origin,RPL,instance) select SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 60 minute)) DIV 3600) * 3600), a.name, 60, b.name from $MAD_DB.settings_device a, $MAD_DB.madmin_instance b where a.instance_id = b.instance_id;"
+        mysql $STATS_DB -u$SQL_user -p$SQL_password -h$DB_IP -P$DB_PORT -N -e "insert ignore into error_worker (datetime,origin,RPL,instance) select SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 60 minute)) DIV 3600) * 3600), a.name, 60, b.name from $MAD_DB.settings_device a, $MAD_DB.madmin_instance b where a.instance_id = b.instance_id;"
         echo ""
         echo "Processing MAD logs for $MAD_instance_name_3 workers"
 
@@ -217,8 +217,8 @@ if [ -z "$MAD_path_4" ]; then
 else
         echo "Inserting all origins into tables"
         echo ""
-        mysql $STATS_DB -u$SQL_user -p$SQL_password -h$DB_IP -P$DB_PORT -N -e "insert ignore into warning_worker (datetime,origin,RPL,instance) select SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 60 minute)) DIV 3600) * 3600), a.name, 60, b.name from $MAD_DB.settings_device a, rmdb.madmin_instance b where a.instance_id = b.instance_id;"
-        mysql $STATS_DB -u$SQL_user -p$SQL_password -h$DB_IP -P$DB_PORT -N -e "insert ignore into error_worker (datetime,origin,RPL,instance) select SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 60 minute)) DIV 3600) * 3600), a.name, 60, b.name from $MAD_DB.settings_device a, rmdb.madmin_instance b where a.instance_id = b.instance_id;"
+        mysql $STATS_DB -u$SQL_user -p$SQL_password -h$DB_IP -P$DB_PORT -N -e "insert ignore into warning_worker (datetime,origin,RPL,instance) select SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 60 minute)) DIV 3600) * 3600), a.name, 60, b.name from $MAD_DB.settings_device a, $MAD_DB.madmin_instance b where a.instance_id = b.instance_id;"
+        mysql $STATS_DB -u$SQL_user -p$SQL_password -h$DB_IP -P$DB_PORT -N -e "insert ignore into error_worker (datetime,origin,RPL,instance) select SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 60 minute)) DIV 3600) * 3600), a.name, 60, b.name from $MAD_DB.settings_device a, $MAD_DB.madmin_instance b where a.instance_id = b.instance_id;"
         echo ""
         echo "Processing MAD logs for $MAD_instance_name_4 workers"
 
@@ -285,8 +285,8 @@ if [ -z "$MAD_path_5" ]; then
 else
         echo "Inserting all origins into tables"
         echo ""
-        mysql $STATS_DB -u$SQL_user -p$SQL_password -h$DB_IP -P$DB_PORT -N -e "insert ignore into warning_worker (datetime,origin,RPL,instance) select SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 60 minute)) DIV 3600) * 3600), a.name, 60, b.name from $MAD_DB.settings_device a, rmdb.madmin_instance b where a.instance_id = b.instance_id;"
-        mysql $STATS_DB -u$SQL_user -p$SQL_password -h$DB_IP -P$DB_PORT -N -e "insert ignore into error_worker (datetime,origin,RPL,instance) select SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 60 minute)) DIV 3600) * 3600), a.name, 60, b.name from $MAD_DB.settings_device a, rmdb.madmin_instance b where a.instance_id = b.instance_id;"
+        mysql $STATS_DB -u$SQL_user -p$SQL_password -h$DB_IP -P$DB_PORT -N -e "insert ignore into warning_worker (datetime,origin,RPL,instance) select SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 60 minute)) DIV 3600) * 3600), a.name, 60, b.name from $MAD_DB.settings_device a, $MAD_DB.madmin_instance b where a.instance_id = b.instance_id;"
+        mysql $STATS_DB -u$SQL_user -p$SQL_password -h$DB_IP -P$DB_PORT -N -e "insert ignore into error_worker (datetime,origin,RPL,instance) select SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 60 minute)) DIV 3600) * 3600), a.name, 60, b.name from $MAD_DB.settings_device a, $MAD_DB.madmin_instance b where a.instance_id = b.instance_id;"
         echo ""
         echo "Processing MAD logs for $MAD_instance_name_5 workers"
 
