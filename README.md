@@ -24,6 +24,7 @@ Additionally, not related to Stats, but you can optionally set:
 - cleanup of MAD tables pokemon/detection/location
 - backup relevant tables from MAD database
 - delete gyms that have not been scanned for X days
+- process of MAD logs to db
 
 With limited knowlegde, help from my best friend Google, the attitude "steal with pride" and some perseverance this is what I cooked up.
 
