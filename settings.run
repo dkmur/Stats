@@ -55,11 +55,15 @@ if [ $first_install != "1" ]
     echo "FFS you should have updated long time ago, running old table updates"
     echo "This might take a while"
     echo ""
+    cp $PATH_TO_STATS/default_files/table_changes_V1.sql.default $PATH_TO_STATS/table_changes_V1.sql
+    sed -i "s/pogodb/$STATS_DB/g" $PATH_TO_STATS/table_changes_V1.sql
       if [ -z "$SQL_password" ]
       then
-      mysql -h$DB_IP -P$DB_PORT -u$SQL_user $STATS_DB < $PATH_TO_STATS/default_files/table_changes_V1.sql.default
+      mysql -h$DB_IP -P$DB_PORT -u$SQL_user $STATS_DB < $PATH_TO_STATS/table_changes_V1.sql
+      rm -f $PATH_TO_STATS/table_changes_V1.sql
       else
-      mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB < $PATH_TO_STATS/default_files/table_changes_V1.sql.default
+      mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB < $PATH_TO_STATS/table_changes_V1.sql
+      rm -f $PATH_TO_STATS/table_changes_V1.sql
       fi
     else
     echo "All good, proceeding"
