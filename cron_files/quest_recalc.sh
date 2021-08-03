@@ -27,7 +27,7 @@ else
         echo Sleeping $quest_recalc_wait
 	echo ""
 	sleep $quest_recalc_wait
-	done < <(query "select a.area_id from settings_area_pokestops a, settings_area b, madmin_instance c where a.area_id = b.area_id and b.instance_id = c.instance_id and a.route_calc_algorithm = 'route' and c.name = '$MAD_instance_name_1';")
+	done < <(query "select a.area_id from settings_area_pokestops a, settings_area b, madmin_instance c where a.area_id = b.area_id and b.instance_id = c.instance_id and a.route_calc_algorithm = 'route' and a.level = 0 and c.name = '$MAD_instance_name_1';")
 fi
 
 ## recalculate Quest routes for instance 2
@@ -54,7 +54,7 @@ else
         echo Sleeping $quest_recalc_wait
         echo ""
         sleep $quest_recalc_wait
-	done < <(query "select a.area_id from settings_area_pokestops a, settings_area b, madmin_instance c where a.area_id = b.area_id and b.instance_id = c.instance_id and a.route_calc_algorithm = 'route' and c.name = '$MAD_instance_name_2';")
+	done < <(query "select a.area_id from settings_area_pokestops a, settings_area b, madmin_instance c where a.area_id = b.area_id and b.instance_id = c.instance_id and a.route_calc_algorithm = 'route' and a.level = 0 and c.name = '$MAD_instance_name_2';")
 fi
 
 ## recalculate Quest routes for instance 3
@@ -81,7 +81,7 @@ else
         echo Sleeping $quest_recalc_wait
         echo ""
         sleep $quest_recalc_wait
-        done < <(query "select a.area_id from settings_area_pokestops a, settings_area b, madmin_instance c where a.area_id = b.area_id and b.instance_id = c.instance_id and a.route_calc_algorithm = 'route' and c.name = '$MAD_instance_name_3';")
+        done < <(query "select a.area_id from settings_area_pokestops a, settings_area b, madmin_instance c where a.area_id = b.area_id and b.instance_id = c.instance_id and a.route_calc_algorithm = 'route' and a.level = 0 and c.name = '$MAD_instance_name_3';")
 fi
 
 ## recalculate Quest routes for instance 4
@@ -108,7 +108,7 @@ else
         echo Sleeping $quest_recalc_wait
         echo ""
         sleep $quest_recalc_wait
-        done < <(query "select a.area_id from settings_area_pokestops a, settings_area b, madmin_instance c where a.area_id = b.area_id and b.instance_id = c.instance_id and a.route_calc_algorithm = 'route' and c.name = '$MAD_instance_name_4';")
+        done < <(query "select a.area_id from settings_area_pokestops a, settings_area b, madmin_instance c where a.area_id = b.area_id and b.instance_id = c.instance_id and a.route_calc_algorithm = 'route' and a.level = 0 and c.name = '$MAD_instance_name_4';")
 fi
 
 ## recalculate Quest routes for instance 5
@@ -135,5 +135,5 @@ else
         echo Sleeping $quest_recalc_wait
         echo ""
         sleep $quest_recalc_wait
-        done < <(query "select a.area_id from settings_area_pokestops a, settings_area b, madmin_instance c where a.area_id = b.area_id and b.instance_id = c.instance_id and a.route_calc_algorithm = 'route' and c.name = '$MAD_instance_name_5';")
+        done < <(query "select a.area_id from settings_area_pokestops a, settings_area b, madmin_instance c where a.area_id = b.area_id and b.instance_id = c.instance_id and a.route_calc_algorithm = 'route' and a.level = 0 and c.name = '$MAD_instance_name_5';")
 fi
