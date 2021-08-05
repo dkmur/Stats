@@ -14,7 +14,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "8.0.4"
+      "version": "8.0.6"
     },
     {
       "type": "datasource",
@@ -46,7 +46,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1625507635029,
+  "iteration": 1628200281472,
   "links": [],
   "panels": [
     {
@@ -145,11 +145,23 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 67
+                "value": 74
               },
               {
                 "id": "custom.displayMode",
                 "value": "json-view"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "datetime"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 149
               }
             ]
           }
@@ -167,14 +179,14 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.0.4",
+      "pluginVersion": "8.0.6",
       "targets": [
         {
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\nleft(datetime,16) as 'datetime', \nifnull(arch,'no_data') as 'Architecture',\nifnull(rom,'no_data') as 'Rom',\ncount(origin) as '#devices'\nfrom ATVdetails\n\nWHERE\ndatetime = '$datetime'\n\nGROUP BY datetime, arch, rom\n",
+          "rawSql": "SELECT\nleft(datetime,16) as 'datetime', \nifnull(arch,'no_data') as 'Architecture',\nifnull(rom,'no_data') as 'Rom',\nif(mitm='','no_data',mitm) as 'mitm',\ncount(origin) as '#devices'\nfrom ATVdetails\n\nWHERE\ndatetime = '$datetime'\n\nGROUP BY datetime, arch, rom,mitm\n",
           "refId": "A",
           "select": [
             [
@@ -261,7 +273,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 85
+                "value": 94
               }
             ]
           },
@@ -274,6 +286,30 @@
               {
                 "id": "custom.width",
                 "value": 90
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "vm_update"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 93
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "datetime"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 142
               }
             ]
           }
@@ -290,14 +326,14 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.0.4",
+      "pluginVersion": "8.0.6",
       "targets": [
         {
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\nleft(datetime,16) as 'datetime',\nifnull(pogo_update,'no_data ') as 'pogo_update',\nifnull(pd_update,'no_data ') as pd_update,\nifnull(rgc_update,'no_data ') as 'rgc_update',\nifnull(pingreboot,'no_data ') as pingreboot, \ncount(origin) as 'devices'\nfrom ATVdetails\n\nWHERE\ndatetime = '$datetime'\n\nGROUP BY datetime, pogo_update, pd_update, rgc_update, pingreboot",
+          "rawSql": "SELECT\nleft(datetime,16) as 'datetime',\nifnull(pogo_update,'no_data ') as 'pogo_update',\nifnull(rgc_update,'no_data ') as 'rgc_update',\nifnull(pd_update,'no_data ') as 'pd_update',\nifnull(VM_Autoupdate,'no_data ') as 'vm_update',\nifnull(pingreboot,'no_data ') as 'pingreboot', \ncount(origin) as 'devices'\nfrom ATVdetails\n\nWHERE\ndatetime = '$datetime'\n\nGROUP BY datetime, pogo_update, pd_update, rgc_update, pingreboot",
           "refId": "A",
           "select": [
             [
@@ -375,6 +411,18 @@
                 "value": 76
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "datetime"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 148
+              }
+            ]
           }
         ]
       },
@@ -389,7 +437,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.0.4",
+      "pluginVersion": "8.0.6",
       "targets": [
         {
           "format": "table",
@@ -478,6 +526,18 @@
                 "value": 96
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "datetime"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 150
+              }
+            ]
           }
         ]
       },
@@ -492,7 +552,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.0.4",
+      "pluginVersion": "8.0.6",
       "targets": [
         {
           "format": "table",
@@ -672,7 +732,7 @@
           }
         ]
       },
-      "pluginVersion": "8.0.4",
+      "pluginVersion": "8.0.6",
       "targets": [
         {
           "format": "table",
@@ -927,7 +987,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.0.4",
+      "pluginVersion": "8.0.6",
       "targets": [
         {
           "format": "table",
@@ -1122,7 +1182,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.0.4",
+      "pluginVersion": "8.0.6",
       "targets": [
         {
           "format": "table",
@@ -1154,6 +1214,338 @@
       "timeFrom": null,
       "timeShift": null,
       "title": "PogoDroid (3)",
+      "type": "table"
+    },
+    {
+      "datasource": "${DS_POGODB}",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": null,
+            "displayMode": "auto",
+            "filterable": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "sendRawProto"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 107
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "date      "
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 92
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "popLastSend"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 99
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "fullDaemon"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 90
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "enMock"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 70
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "defMapMode"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 99
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "setEnforce"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 86
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "en_MockLoc"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 98
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "dis_PogoFreeze"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 121
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "datetime"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 141
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "vmapper"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 72
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "injector"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 66
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "script"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 63
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "daemon"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 68
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "bootdelay"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 81
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "gzip"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 47
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "betamode"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 84
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "selinux"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 62
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "destination"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 253
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "authid"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 119
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "openLucky"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 85
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 24,
+        "x": 0,
+        "y": 30
+      },
+      "id": 25,
+      "options": {
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "vmapper"
+          }
+        ]
+      },
+      "pluginVersion": "8.0.6",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\nleft(datetime,16) as 'datetime',\nifnull(vmapper,'no_data') as 'vmapper',\nifnull(VM_injector,'no_data') as 'injector',\nifnull(VM_script,'no_data') as 'script',\nifnull(VM_daemon,'no_data') as 'daemon',\nifnull(VM_bootdelay,'no_data') as 'bootdelay',\nifnull(VM_gzip,'no_data') as 'gzip',\nifnull(VM_betamode,'no_data') as 'betamode',\nifnull(VM_selinux,'no_data') as 'selinux',\nifnull(VM_authid,'no_data') as 'authid',\nifnull(VM_openlucky, 'no_data') as 'openLucky',\nifnull(VM_postdest, 'no_data') as 'destination',\ncount(VM_origin) as '#devices'\nfrom ATVdetails\n\nWHERE\ndatetime = '$datetime'\n\nGROUP BY vmapper,VM_injector,VM_script,VM_daemon,VM_bootdelay,VM_gzip,VM_betamode,VM_selinux,VM_authid,VM_postdest",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "VMapper",
       "type": "table"
     },
     {
@@ -1262,14 +1654,14 @@
         "h": 6,
         "w": 24,
         "x": 0,
-        "y": 30
+        "y": 36
       },
       "id": 18,
       "options": {
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.0.4",
+      "pluginVersion": "8.0.6",
       "targets": [
         {
           "format": "table",
@@ -1481,14 +1873,14 @@
         "h": 6,
         "w": 24,
         "x": 0,
-        "y": 36
+        "y": 42
       },
       "id": 19,
       "options": {
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.0.4",
+      "pluginVersion": "8.0.6",
       "targets": [
         {
           "format": "table",
@@ -1688,14 +2080,14 @@
         "h": 6,
         "w": 24,
         "x": 0,
-        "y": 42
+        "y": 48
       },
       "id": 20,
       "options": {
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.0.4",
+      "pluginVersion": "8.0.6",
       "targets": [
         {
           "format": "table",
@@ -1799,14 +2191,14 @@
         "h": 4,
         "w": 7,
         "x": 0,
-        "y": 48
+        "y": 54
       },
       "id": 22,
       "options": {
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.0.4",
+      "pluginVersion": "8.0.6",
       "targets": [
         {
           "format": "table",
@@ -1920,14 +2312,14 @@
         "h": 7,
         "w": 5,
         "x": 7,
-        "y": 48
+        "y": 54
       },
       "id": 23,
       "options": {
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.0.4",
+      "pluginVersion": "8.0.6",
       "targets": [
         {
           "format": "table",
@@ -2041,14 +2433,14 @@
         "h": 7,
         "w": 5,
         "x": 12,
-        "y": 48
+        "y": 54
       },
       "id": 24,
       "options": {
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.0.4",
+      "pluginVersion": "8.0.6",
       "targets": [
         {
           "format": "table",
@@ -2133,5 +2525,5 @@
   "timezone": "",
   "title": "10. ATVdetails",
   "uid": "YBmfNzFGz",
-  "version": 31
+  "version": 37
 }
