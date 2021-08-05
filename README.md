@@ -1,6 +1,6 @@
 # Stats
 
-This idiot once had the idea it would be good to analyze statistics in more detail in order to compare different area's, devices and measure the effect of parameter changes in order to properly tune the setup as well as creating the ability to evaluate functionality like PrioQ.
+This idiot once had the idea it would be good to analyze statistics in more detail in order to compare different area's, devices and measure the effect of parameter changes in order to properly tune the setup as well as creating the ability to evaluate functionality like PrioQ and nearby scanning.
 
 Available data:  
 - interval period of 15, 60, 1440 and 10080 minutes  
@@ -43,8 +43,8 @@ Use it at you own risk, because bare in mind this was all done by an idiot!
 - Activation of (raw)stats in MAD config.ini (statistic,game_stats,game_stats_raw) and ``game_stats_save_time`` at default 300s
 - Mariadb > 10.2
 - Mariadb to be installed on server Stats is running on
-- mysql strict mode disabled
-- Make sure ``jq`` is installed (sudo apt-get install jq)<BR>
+- mysql strict mode disabled (should be done already for MAD)
+- Make sure ``jq`` is installed else,  ``sudo apt-get install jq``<BR>
 
 ### 2 Initial setup
 
@@ -59,25 +59,18 @@ flush privileges;
 - Make sure SQL_user has privileges on both STATS_DB and MAD_DB.  
 
 ### 3 Define areas and add devices
-Within Stats it is possible to assign devices to areas (towns) in order to analyze statistics per area providing the possibility to i.e. compare areas or test functionality like PrioQ in a specific area and analyze it's statistics. <br>
-3 options are availabe: <br>
-1. In case you only have one area/town or are simply to lazy to assign devices to an area :P follow steps in 3.1, where area ``world`` will be created.<br>
-2. Recommended: Use MAD (sub)fences. Area's will be created based on MAD fences or subfences, 3.2. In case each walker contains max 1 mon_mitm area, device to area assignmented is automated.<br>
-3. The "old" way, create an area file where you set your area coordinates and assign devices to each area manually. See 3.3<br>
-
-
-#### 3.1 Quick setup
-- in ``config.ini`` set ``FENCE=world``
-- Execute ``./settings.run``, this will create required stats tables, triggers, sql queries, procedures and crontab file. <br>
-- Edit crontab ``crontab -e`` and insert content of ``crontab.txt`` located in Stats home. <br>
-Note: when adding devices, remove ``world.ini`` in /areas and execute ``settings.run`` or add device origin to table ``Area`` manually
-
-#### 3.2 Use MAD fences (RECOMMENDED)
-- in ``config.ini`` set ``FENCE=MAD``
-- make sure your geofence names are not imported into db and have a name like ``configs/geofences/paris.txt`` as this will fuckup creation of stats cron files!! ``!blame banana``
+Recommended way, making use of MAD mon_mitm fences.
+- fill out MAD instance and database details in ``config.ini``
+- in ``config.ini`` set ``FENCE=MAD``  
+- Advised to set all options for MAD table cleanup to true, way down in config.ini  
+- check any other settings in config.ini and set to your preference  
+- note: for really old setups, make sure your geofence names are not imported into db and have a name like ``configs/geofences/paris.txt`` as this will fuckup creation of stats cron files!! ``!blame banana``  
 - Execute ``./settings.run``, this will create required stats tables, triggers, sql queries , procedures and crontab file <br>
 - Edit crontab ``crontab -e`` and insert content of ``crontab.txt`` located in Stats home. <br>
-- If each walker only contains 1 mon_mitm area, set MAD_DEVICE_INSERT=true in config.ini for automatic assignment. Else assign devices (MAD origins) to the created area's (select Area from STATS_DB.Area;) manually, in mysql:<br>
+
+Adding devices:  
+- If each walker only contains 1 mon_mitm area, set MAD_DEVICE_INSERT=true in config.ini for automatic assignment.  
+- Else assign devices (MAD origins) to the created area's, table Area, manually, in mysql:<br>
 ```
 insert into ##STATS_DB##.Area (Area,Origin) values
 ('Town1','Device_town1_01'),
@@ -89,38 +82,11 @@ Note 1: The geofence name used in MADmin is the Area name within Stats. <br>
 Note 2: in case a geofence consists of sub-fences these names will be stored in column ``Fence`` in stats_area.<br>
 Note 3: if MAD_DEVICE_INSERT=false, make sure to add new devices to ``table Area`` when expanding setup. I never remove origins as I want to keep the data collected.<br>
 
-#### 3.3 Manual Area definition
-- in ``config.ini`` set ``FENCE=box``
-- for each Area or Town you whish to define: in /areas create an area file, i.e. ``cp area.ini.example paris.ini`` and edit the settings <br>
-- Execute ``./settings.run``, this will create required stats tables, triggers, sql queries , procedures and crontab file <br>
-- Assign devices (MAD origins) to the created area's/towns on previous steps, in mysql:<br>
-- Edit crontab ``crontab -e`` and insert content of ``crontab.txt`` located in Stats home. <br>
-```
-insert into ##STATS_DB##.Area (Area,Origin) values
-('Town1','Device01'),
-('Town1','Device02'),
-('Town2','Device01')
-;
-```
-Note 1: make sure to add new devices to ``table Area`` when expanding setup. I never remove origins as I want to keep the data collected.<br>
-Note 2: in case you stop scanning an area, remove the area.ini file in /areas and execute ``settings.run``<br>
-
-### 4 Grafana (optional but recommended)
+### 4 Grafana
 - Install Grafana, more details can be found at https://grafana.com/docs/grafana/latest/installation/debian/#install-from-apt-repository or if you prefer to use docker <https://hub.docker.com/r/grafana/grafana>
 - Create datasource on STATS_DB and MAD_DB
 - Add datasource names to config.ini
 - After executing settings.run, import the dashboards from /Stats/grafana by selecting ``+`` and then import (Templates 20 and 21 connect to MAD_DB dashboard, the rest to STATS_DB.
-
-
-### 5 Starting Stats menu, in case you do not use grafana
-
-Optionally, add stats to /usr/local/bin in order to start from any location:  
-``sudo nano /usr/local/bin/stats`` add ``cd /PATHtoStats/ && ./stats.sh`` and save file  
-``sudo chmod +x /usr/local/bin/stats``  
-<br>
-Run ``stats`` or ``./stats.sh``, but give it some time to fill the tables.<br>
-<br>
-Hopefully that's it.....else......blame someone else :)  
 
 
 ### 6 Updating
