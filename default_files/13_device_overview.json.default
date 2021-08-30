@@ -14,7 +14,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "7.4.0"
+      "version": "8.1.1"
     },
     {
       "type": "datasource",
@@ -38,6 +38,12 @@
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
         "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
         "type": "dashboard"
       }
     ]
@@ -46,7 +52,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1612983648672,
+  "iteration": 1630360984718,
   "links": [],
   "panels": [
     {
@@ -58,6 +64,7 @@
           },
           "custom": {
             "align": null,
+            "displayMode": "auto",
             "filterable": true
           },
           "mappings": [],
@@ -84,7 +91,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 140
+                "value": 101
               }
             ]
           },
@@ -156,7 +163,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 120
+                "value": 110
               }
             ]
           },
@@ -168,7 +175,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 70
+                "value": 59
               }
             ]
           },
@@ -195,6 +202,102 @@
                 "value": 126
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 77
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "instance"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 86
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "macEth"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 132
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "macWifi"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 127
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "VM"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 71
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "mitm"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 96
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "VMdeviceID"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 111
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "PDdeviceID"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 130
+              }
+            ]
           }
         ]
       },
@@ -207,21 +310,16 @@
       "id": 2,
       "options": {
         "showHeader": true,
-        "sortBy": [
-          {
-            "desc": false,
-            "displayName": "Origin"
-          }
-        ]
+        "sortBy": []
       },
-      "pluginVersion": "7.4.0",
+      "pluginVersion": "8.1.1",
       "targets": [
         {
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\nOrigin,\nifnull(ip,'no_data') as 'ip',\nifnull(arch,'no_data') as 'arch',\nifnull(rom,'no_data') as 'rom',\nifnull(pogo,'no_data') as 'pogo',\nifnull(pogodroid,'no_data') as 'PD',\nifnull(rgc,'no_data ') as 'RGC',\nifnull(PD_auth_id,'no_data') as 'deviceID',\ngmail\nFROM ATVdetails\nWHERE date(datetime) = '$Date'\nORDER BY Origin ASC\n",
+          "rawSql": "SELECT\na.Origin, b.name as 'instance',\nifnull(a.ip,'no_data') as 'ip',\nifnull(a.arch,'no_data') as 'arch',\nifnull(a.rom,'no_data') as 'rom',\nifnull(a.pogo,'no_data') as 'pogo',\nifnull(a.mitm,'no_data') as 'mitm',\nifnull(a.pogodroid,'no_data') as 'PD',\nifnull(a.vmapper,'no_data') as 'VM',\nifnull(a.rgc,'no_data ') as 'RGC',\nifnull(e.auth_id,'no_data') as 'PDdeviceID',\nifnull(f.deviceid,'no_data') as 'VMdeviceID',\nifnull(a.macE,'no_data') as 'macEth',\nifnull(a.macW,'no_data') as 'macWifi',\na.gmail\nFROM ATVgeneral a, rmdb.madmin_instance b, rmdb.trs_status c, rmdb.settings_device d, ATVpd e, ATVvm f\nWHERE a.datetime = '$Date' and e.datetime = '$Date' and f.datetime = '$Date' and a.Origin = e.Origin and a.Origin = f.Origin and a.Origin = d.name and c.device_id = d.device_id and c.instance_id = b.instance_id\nORDER BY a.Origin ASC\n",
           "refId": "A",
           "select": [
             [
@@ -247,7 +345,7 @@
       "type": "table"
     }
   ],
-  "schemaVersion": 27,
+  "schemaVersion": 30,
   "style": "dark",
   "tags": [],
   "templating": {
@@ -256,7 +354,7 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_POGODB}",
-        "definition": "select left(date(Datetime),10) from ATVdetails;",
+        "definition": "select left(datetime,19) from ATVdetails;",
         "description": null,
         "error": null,
         "hide": 0,
@@ -265,13 +363,12 @@
         "multi": false,
         "name": "Date",
         "options": [],
-        "query": "select left(date(Datetime),10) from ATVdetails;",
+        "query": "select left(datetime,19) from ATVdetails;",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
         "sort": 2,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -286,5 +383,5 @@
   "timezone": "",
   "title": "13. Device overview",
   "uid": "RVgxODPGz",
-  "version": 14
+  "version": 32
 }
