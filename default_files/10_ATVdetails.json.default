@@ -14,7 +14,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "8.0.6"
+      "version": "8.1.1"
     },
     {
       "type": "datasource",
@@ -38,6 +38,12 @@
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
         "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
         "type": "dashboard"
       }
     ]
@@ -46,7 +52,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1628200281472,
+  "iteration": 1630356902238,
   "links": [],
   "panels": [
     {
@@ -164,6 +170,18 @@
                 "value": 149
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "vmscript"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 78
+              }
+            ]
           }
         ]
       },
@@ -179,14 +197,14 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "8.1.1",
       "targets": [
         {
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\nleft(datetime,16) as 'datetime', \nifnull(arch,'no_data') as 'Architecture',\nifnull(rom,'no_data') as 'Rom',\nif(mitm='','no_data',mitm) as 'mitm',\ncount(origin) as '#devices'\nfrom ATVdetails\n\nWHERE\ndatetime = '$datetime'\n\nGROUP BY datetime, arch, rom,mitm\n",
+          "rawSql": "SELECT\nleft(datetime,16) as 'datetime', \nifnull(arch,'no_data') as 'Architecture',\nifnull(rom,'no_data') as 'Rom',\nifnull(vm_script,'no_data') as 'vmscript',\nif(mitm='','no_data',mitm) as 'mitm',\ncount(origin) as '#devices'\nfrom ATVgeneral\n\nWHERE\ndatetime = '$datetime'\n\nGROUP BY datetime, arch, rom,mitm\n",
           "refId": "A",
           "select": [
             [
@@ -210,7 +228,7 @@
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Architecture / Rom",
+      "title": "ATV general",
       "type": "table"
     },
     {
@@ -326,14 +344,14 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "8.1.1",
       "targets": [
         {
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\nleft(datetime,16) as 'datetime',\nifnull(pogo_update,'no_data ') as 'pogo_update',\nifnull(rgc_update,'no_data ') as 'rgc_update',\nifnull(pd_update,'no_data ') as 'pd_update',\nifnull(VM_Autoupdate,'no_data ') as 'vm_update',\nifnull(pingreboot,'no_data ') as 'pingreboot', \ncount(origin) as 'devices'\nfrom ATVdetails\n\nWHERE\ndatetime = '$datetime'\n\nGROUP BY datetime, pogo_update, pd_update, rgc_update, pingreboot",
+          "rawSql": "SELECT\nleft(datetime,16) as 'datetime',\nifnull(pogo_update,'no_data ') as 'pogo_update',\nifnull(rgc_update,'no_data ') as 'rgc_update',\nifnull(pd_update,'no_data ') as 'pd_update',\nifnull(vm_update,'no_data ') as 'vm_update',\nifnull(pingreboot,'no_data ') as 'pingreboot', \ncount(origin) as 'devices'\nfrom ATVgeneral\n\nWHERE\ndatetime = '$datetime'\n\nGROUP BY datetime, pogo_update, pd_update, rgc_update, pingreboot",
           "refId": "A",
           "select": [
             [
@@ -357,7 +375,7 @@
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Rom options",
+      "title": "ATV config options",
       "type": "table"
     },
     {
@@ -423,6 +441,42 @@
                 "value": 148
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "RGC"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 69
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "PD"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 69
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "VMapper"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 80
+              }
+            ]
           }
         ]
       },
@@ -437,14 +491,14 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "8.1.1",
       "targets": [
         {
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\nleft(datetime,16) as 'datetime', \nifnull(pogo,'no_data') as 'PoGo',\ncount(origin) as '#devices'\nfrom ATVdetails\n\nWHERE\ndatetime = '$datetime'\n\nGROUP BY datetime, pogo\n",
+          "rawSql": "SELECT\nleft(datetime,16) as 'datetime',\nifnull(rgc,'no_data') as 'RGC',\nifnull(pogo,'no_data') as 'PoGo',\nifnull(pogodroid,'no_data') as 'PD',\nifnull(vmapper,'no_data') as 'VM',\ncount(origin) as '#devices'\nfrom ATVgeneral\n\nWHERE\ndatetime = '$datetime'\n\nGROUP BY datetime, pogo\n",
           "refId": "A",
           "select": [
             [
@@ -468,7 +522,7 @@
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "PoGo release",
+      "title": "Versions",
       "type": "table"
     },
     {
@@ -552,14 +606,14 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "8.1.1",
       "targets": [
         {
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\nleft(datetime,16) as 'datetime', \nifnull(magisk,'no_data') as 'Magisk',\nifnull(magisk_modules,'no_data') as 'Modules loaded',\ncount(origin) as '#devices'\nfrom ATVdetails\n\nWHERE\ndatetime = '$datetime'\n\nGROUP BY datetime, magisk, magisk_modules\n",
+          "rawSql": "SELECT\nleft(datetime,16) as 'datetime', \nifnull(magisk,'no_data') as 'Magisk',\nifnull(magisk_modules,'no_data') as 'Modules loaded',\ncount(origin) as '#devices'\nfrom ATVgeneral\n\nWHERE\ndatetime = '$datetime'\n\nGROUP BY datetime, magisk, magisk_modules\n",
           "refId": "A",
           "select": [
             [
@@ -584,6 +638,579 @@
       "timeFrom": null,
       "timeShift": null,
       "title": "Magisk / modules",
+      "type": "table"
+    },
+    {
+      "datasource": "${DS_POGODB}",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": null,
+            "displayMode": "auto",
+            "filterable": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "date"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 90
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "username"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 83
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "password"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 83
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "websocket_url"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 235
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "version"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 65
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "datetime"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 144
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 24,
+        "x": 0,
+        "y": 12
+      },
+      "id": 18,
+      "options": {
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "8.1.1",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\nleft(datetime,16) as 'datetime',\nifnull(auth_username,'no_data') as 'username',\nifnull(auth_password,'no_data') as 'password',\nifnull(websocket_uri,'no_data') as 'websocket_url',\ncount(origin) as '#devices'\nfrom ATVrgc\n\nWHERE\ndatetime = '$datetime'\n\nGROUP BY datetime, auth_username, auth_password, websocket_uri",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "RemoteGpsController (1)",
+      "type": "table"
+    },
+    {
+      "datasource": "${DS_POGODB}",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": null,
+            "displayMode": "auto",
+            "filterable": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "boot_delay"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 86
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "mediaProj"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 82
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "suspMock"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 83
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "resAgps1"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 79
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "overwFused"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 94
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "enAuthHead"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 95
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "resetAgpsC"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 90
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "date      "
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 163
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "boot_Delay"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 93
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "bootDelay"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 85
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "date"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 95
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "en_AuthHead"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 106
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 24,
+        "x": 0,
+        "y": 18
+      },
+      "id": 19,
+      "options": {
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "8.1.1",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\nleft(datetime,16) as 'datetime',\nifnull(boot_delay,'no_data ') as 'bootDelay',\nifnull(mediaprojection_previously_started,'no_data') as 'mediaProj',\nifnull(suspended_mocking,'no_data ') as 'suspMock',\nifnull(overwrite_fused,'no_data ') as 'overwFused',\nifnull(switch_enable_auth_header,'no_data') as 'en_AuthHead',\nifnull(reset_agps_once,'no_data ') as 'resAgps1',\nifnull(reset_agps_continuously,'no_data') as 'resetAgpsC',\ncount(origin) as '#devices'\nfrom ATVrgc\n\nWHERE\ndatetime = '$datetime'\n\nGROUP BY datetime, boot_delay, mediaprojection_previously_started, suspended_mocking, reset_agps_once, overwrite_fused, switch_enable_auth_header, reset_agps_continuously",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "RemoteGpsController (2)",
+      "type": "table"
+    },
+    {
+      "datasource": "${DS_POGODB}",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": null,
+            "displayMode": "auto",
+            "filterable": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "resetGplay"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 83
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "bootStart"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 81
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "useMock"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 74
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "overOomadj"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 90
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "locRepRun"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 90
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "stopLocProv"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 97
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "autoService"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 92
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "date"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 87
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "autostartService"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 125
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "useMockLoc"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 97
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "#devices"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 691
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 24,
+        "x": 0,
+        "y": 24
+      },
+      "id": 20,
+      "options": {
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "8.1.1",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\nleft(datetime,16) as 'datetime',\nifnull(reset_google_play_services,'no_data') as 'resetGplay',\nifnull(boot_startup,'no_data') as 'bootStart',\nifnull(use_mock_location,'no_data') as 'useMockLoc',\nifnull(oom_adj_override,'no_data') as 'overOomadj',\nifnull(location_reporter_service_running,'no_data') as 'locRepRun',\nifnull(stop_location_provider_service,'no_data') as 'stopLocProv',\nifnull(autostart_services,'no_data') as 'autostartService',\ncount(origin) as '#devices'\nfrom ATVrgc\n\nWHERE\ndatetime = '$datetime'\n\nGROUP BY datetime, reset_google_play_services, boot_startup, use_mock_location, oom_adj_override, location_reporter_service_running, stop_location_provider_service, autostart_services",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "RemoteGpsController (3)",
       "type": "table"
     },
     {
@@ -720,7 +1347,7 @@
         "h": 6,
         "w": 24,
         "x": 0,
-        "y": 12
+        "y": 30
       },
       "id": 11,
       "options": {
@@ -732,14 +1359,14 @@
           }
         ]
       },
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "8.1.1",
       "targets": [
         {
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\nleft(datetime,16) as 'datetime',\nifnull(pogodroid,'no_data ') as 'version',\nifnull(PD_auth_username,'no_data ') as 'username',\nifnull(PD_auth_password,'no_data ') as 'password',\nifnull(PD_user_login,'no_data') as 'login',\nifnull(PD_auth_token,'no_data') as 'auth_token',\nifnull(PD_post_destination,'no_data') as 'post_destination',\ncount(origin) as '#devices'\nfrom ATVdetails\n\nWHERE\ndatetime = '$datetime'\n\nGROUP BY datetime, pogodroid, PD_auth_username, PD_auth_password, PD_user_login, PD_auth_token, PD_post_destination\n",
+          "rawSql": "SELECT\nleft(datetime,16) as 'datetime',\nifnull(auth_username,'no_data ') as 'username',\nifnull(auth_password,'no_data ') as 'password',\nifnull(user_login,'no_data') as 'login',\nifnull(auth_token,'no_data') as 'auth_token',\nifnull(post_destination,'no_data') as 'post_destination',\ncount(origin) as '#devices'\nfrom ATVpd\n\nWHERE\ndatetime = '$datetime'\n\nGROUP BY datetime, auth_username, auth_password, user_login, auth_token, post_destination\n",
           "refId": "A",
           "select": [
             [
@@ -838,7 +1465,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 77
+                "value": 90
               }
             ]
           },
@@ -850,7 +1477,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 79
+                "value": 94
               }
             ]
           },
@@ -910,7 +1537,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 77
+                "value": 86
               }
             ]
           },
@@ -973,6 +1600,18 @@
                 "value": 111
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "datetime"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 151
+              }
+            ]
           }
         ]
       },
@@ -980,21 +1619,21 @@
         "h": 6,
         "w": 24,
         "x": 0,
-        "y": 18
+        "y": 36
       },
       "id": 12,
       "options": {
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "8.1.1",
       "targets": [
         {
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\nleft(datetime,16) as 'datetime',\nifnull(PD_boot_delay,'no_data') as 'bootDelay',\nifnull(PD_injection_delay,'no_data') as 'injectionDelay',\nifnull(PD_switch_disable_last_sent,'no_data') as 'dis_lastSend',\nifnull(PD_intentional_stop,'no_data') as 'intentStop',\nifnull(PD_switch_send_protos,'no_data') as 'sendProto' ,\nifnull(PD_switch_disable_external_communication,'no_data') as 'dis_ExtComms',\nifnull(PD_switch_enable_oomadj,'no_data') as 'en_oomadj',\nifnull(PD_switch_enable_auth_header,'no_data') as 'en_authHeader',\ncount(origin) as '#devices'\nfrom ATVdetails\n\nWHERE\ndatetime = '$datetime'\n\nGROUP BY datetime, PD_boot_delay, PD_injection_delay, PD_switch_disable_last_sent, PD_intentional_stop, PD_switch_send_protos, PD_switch_disable_external_communication, PD_switch_enable_oomadj, PD_switch_enable_auth_header",
+          "rawSql": "SELECT\nleft(datetime,16) as 'datetime',\nifnull(boot_delay,'no_data') as 'bootDelay',\nifnull(injection_delay,'no_data') as 'injectionDelay',\nifnull(switch_disable_last_sent,'no_data') as 'dis_lastSend',\nifnull(intentional_stop,'no_data') as 'intentStop',\nifnull(switch_send_protos,'no_data') as 'sendProto' ,\nifnull(switch_disable_external_communication,'no_data') as 'dis_ExtComms',\nifnull(switch_enable_oomadj,'no_data') as 'en_oomadj',\nifnull(switch_enable_auth_header,'no_data') as 'en_authHeader',\ncount(origin) as '#devices'\nfrom ATVpd\n\nWHERE\ndatetime = '$datetime'\n\nGROUP BY datetime, boot_delay, injection_delay, switch_disable_last_sent, intentional_stop, switch_send_protos, switch_disable_external_communication, switch_enable_oomadj, switch_enable_auth_header",
           "refId": "A",
           "select": [
             [
@@ -1057,7 +1696,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 107
+                "value": 119
               }
             ]
           },
@@ -1175,21 +1814,21 @@
         "h": 6,
         "w": 24,
         "x": 0,
-        "y": 24
+        "y": 42
       },
       "id": 14,
       "options": {
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "8.1.1",
       "targets": [
         {
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\nleft(datetime,16) as 'datetime',\nifnull(PD_switch_send_raw_protos,'no_data') as 'sendRawProto',\nifnull(PD_switch_popup_last_sent,'no_data') as 'popLastSend',\nifnull(PD_full_daemon,'no_data') as 'fullDaemon',\nifnull(PD_switch_enable_mock_location_patch,'no_data') as 'en_MockLoc',\nifnull(PD_default_mappging_mode,'no_data') as 'defMapMode',\nifnull(PD_switch_setenforce,'no_data') as 'setEnforce',\nifnull(PD_disable_pogo_freeze_detection,'no_data') as 'dis_PogoFreeze',\ncount(origin) as '#devices'\nfrom ATVdetails\n\nWHERE\ndatetime = '$datetime'\n\nGROUP BY PD_switch_send_raw_protos, PD_switch_popup_last_sent, PD_full_daemon, PD_switch_enable_mock_location_patch, PD_default_mappging_mode, PD_switch_setenforce, PD_disable_pogo_freeze_detection",
+          "rawSql": "SELECT\nleft(datetime,16) as 'datetime',\nifnull(switch_send_raw_protos,'no_data') as 'sendRawProto',\nifnull(switch_popup_last_sent,'no_data') as 'popLastSend',\nifnull(full_daemon,'no_data') as 'fullDaemon',\nifnull(switch_enable_mock_location_patch,'no_data') as 'en_MockLoc',\nifnull(default_mappging_mode,'no_data') as 'defMapMode',\nifnull(switch_setenforce,'no_data') as 'setEnforce',\nifnull(disable_pogo_freeze_detection,'no_data') as 'dis_PogoFreeze',\ncount(origin) as '#devices'\nfrom ATVpd\n\nWHERE\ndatetime = '$datetime'\n\nGROUP BY switch_send_raw_protos, switch_popup_last_sent, full_daemon, switch_enable_mock_location_patch, default_mappging_mode, switch_setenforce, disable_pogo_freeze_detection",
           "refId": "A",
           "select": [
             [
@@ -1495,6 +2134,30 @@
                 "value": 85
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "rebootminutes"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 112
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "deviceid"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 73
+              }
+            ]
           }
         ]
       },
@@ -1502,26 +2165,26 @@
         "h": 6,
         "w": 24,
         "x": 0,
-        "y": 30
+        "y": 48
       },
       "id": 25,
       "options": {
         "showHeader": true,
         "sortBy": [
           {
-            "desc": true,
-            "displayName": "vmapper"
+            "desc": false,
+            "displayName": "destination"
           }
         ]
       },
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "8.1.1",
       "targets": [
         {
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\nleft(datetime,16) as 'datetime',\nifnull(vmapper,'no_data') as 'vmapper',\nifnull(VM_injector,'no_data') as 'injector',\nifnull(VM_script,'no_data') as 'script',\nifnull(VM_daemon,'no_data') as 'daemon',\nifnull(VM_bootdelay,'no_data') as 'bootdelay',\nifnull(VM_gzip,'no_data') as 'gzip',\nifnull(VM_betamode,'no_data') as 'betamode',\nifnull(VM_selinux,'no_data') as 'selinux',\nifnull(VM_authid,'no_data') as 'authid',\nifnull(VM_openlucky, 'no_data') as 'openLucky',\nifnull(VM_postdest, 'no_data') as 'destination',\ncount(VM_origin) as '#devices'\nfrom ATVdetails\n\nWHERE\ndatetime = '$datetime'\n\nGROUP BY vmapper,VM_injector,VM_script,VM_daemon,VM_bootdelay,VM_gzip,VM_betamode,VM_selinux,VM_authid,VM_postdest",
+          "rawSql": "SELECT\nleft(datetime,16) as 'datetime',\nifnull(injector,'no_data') as 'injector',\nifnull(daemon,'no_data') as 'daemon',\nifnull(bootdelay,'no_data') as 'bootdelay',\nifnull(gzip,'no_data') as 'gzip',\nifnull(betamode,'no_data') as 'betamode',\nifnull(selinux,'no_data') as 'selinux',\nifnull(authid,'no_data') as 'authid',\nifnull(openlucky, 'no_data') as 'openLucky',\nifnull(rebootminutes, 'no_data') as 'rebootminutes',\nifnull(postdest, 'no_data') as 'destination',\nifnull(deviceid, 'no_data') as 'deviceid',\ncount(origin) as '#devices'\nfrom ATVvm\n\nWHERE\ndatetime = '$datetime'\n\nGROUP BY injector,daemon,bootdelay,gzip,betamode,selinux,authid,postdest,deviceid,rebootminutes",
           "refId": "A",
           "select": [
             [
@@ -1546,579 +2209,6 @@
       "timeFrom": null,
       "timeShift": null,
       "title": "VMapper",
-      "type": "table"
-    },
-    {
-      "datasource": "${DS_POGODB}",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "align": null,
-            "displayMode": "auto",
-            "filterable": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "date"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 90
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "username"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 83
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "password"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 83
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "websocket_url"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 235
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "version"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 65
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "datetime"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 144
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 24,
-        "x": 0,
-        "y": 36
-      },
-      "id": 18,
-      "options": {
-        "showHeader": true,
-        "sortBy": []
-      },
-      "pluginVersion": "8.0.6",
-      "targets": [
-        {
-          "format": "table",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "SELECT\nleft(datetime,16) as 'datetime',\nifnull(rgc,'no_data') as 'version',\nifnull(RGC_auth_username,'no_data') as 'username',\nifnull(RGC_auth_password,'no_data') as 'password',\nifnull(RGC_websocket_uri,'no_data') as 'websocket_url',\ncount(origin) as '#devices'\nfrom ATVdetails\n\nWHERE\ndatetime = '$datetime'\n\nGROUP BY datetime, RGC_auth_username, RGC_auth_password, RGC_websocket_uri",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "timeColumn": "time",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "RemoteGpsController (1)",
-      "type": "table"
-    },
-    {
-      "datasource": "${DS_POGODB}",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "align": null,
-            "displayMode": "auto",
-            "filterable": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "boot_delay"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 86
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "mediaProj"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 82
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "suspMock"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 83
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "resAgps1"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 79
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "overwFused"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 94
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "enAuthHead"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 95
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "resetAgpsC"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 90
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "date      "
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 163
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "boot_Delay"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 93
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "bootDelay"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 85
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "date"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 95
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "en_AuthHead"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 106
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 24,
-        "x": 0,
-        "y": 42
-      },
-      "id": 19,
-      "options": {
-        "showHeader": true,
-        "sortBy": []
-      },
-      "pluginVersion": "8.0.6",
-      "targets": [
-        {
-          "format": "table",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "SELECT\nleft(datetime,16) as 'datetime',\nifnull(RGC_boot_delay,'no_data ') as 'bootDelay',\nifnull(RGC_mediaprojection_previously_started,'no_data') as 'mediaProj',\nifnull(RGC_suspended_mocking,'no_data ') as 'suspMock',\nifnull(RGC_overwrite_fused,'no_data ') as 'overwFused',\nifnull(RGC_switch_enable_auth_header,'no_data') as 'en_AuthHead',\nifnull(RGC_reset_agps_once,'no_data ') as 'resAgps1',\nifnull(RGC_reset_agps_continuously,'no_data') as 'resetAgpsC',\ncount(origin) as '#devices'\nfrom ATVdetails\n\nWHERE\ndatetime = '$datetime'\n\nGROUP BY datetime, RGC_boot_delay, RGC_mediaprojection_previously_started, RGC_suspended_mocking, RGC_reset_agps_once, RGC_overwrite_fused, RGC_switch_enable_auth_header, RGC_reset_agps_continuously",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "timeColumn": "time",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "RemoteGpsController (2)",
-      "type": "table"
-    },
-    {
-      "datasource": "${DS_POGODB}",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "align": null,
-            "displayMode": "auto",
-            "filterable": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "resetGplay"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 83
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "bootStart"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 81
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "useMock"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 74
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "overOomadj"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 90
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "locRepRun"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 90
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "stopLocProv"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 97
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "autoService"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 92
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "date"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 87
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "autostartService"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 125
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "useMockLoc"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 97
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "#devices"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 691
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 24,
-        "x": 0,
-        "y": 48
-      },
-      "id": 20,
-      "options": {
-        "showHeader": true,
-        "sortBy": []
-      },
-      "pluginVersion": "8.0.6",
-      "targets": [
-        {
-          "format": "table",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "SELECT\nleft(datetime,16) as 'datetime',\nifnull(RGC_reset_google_play_services,'no_data') as 'resetGplay',\nifnull(RGC_boot_startup,'no_data') as 'bootStart',\nifnull(RGC_use_mock_location,'no_data') as 'useMockLoc',\nifnull(RGC_oom_adj_override,'no_data') as 'overOomadj',\nifnull(RGC_location_reporter_service_running,'no_data') as 'locRepRun',\nifnull(RGC_stop_location_provider_service,'no_data') as 'stopLocProv',\nifnull(RGC_autostart_services,'no_data') as 'autostartService',\ncount(origin) as '#devices'\nfrom ATVdetails\n\nWHERE\ndatetime = '$datetime'\n\nGROUP BY datetime, RGC_reset_google_play_services, RGC_boot_startup, RGC_use_mock_location, RGC_oom_adj_override, RGC_location_reporter_service_running, RGC_stop_location_provider_service, RGC_autostart_services",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "timeColumn": "time",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "RemoteGpsController (3)",
       "type": "table"
     },
     {
@@ -2198,14 +2288,14 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "8.1.1",
       "targets": [
         {
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\nleft(datetime,16) as 'datetime',\nmin(temperature) as 'minTemp',\navg(temperature) as 'avgTemp',\nmax(temperature) as 'maxTemp'\nfrom ATVdetails\n\nWHERE\ndatetime = '$datetime'\n\nGROUP BY datetime\n",
+          "rawSql": "SELECT\nleft(datetime,16) as 'datetime',\nmin(temperature) as 'minTemp',\navg(temperature) as 'avgTemp',\nmax(temperature) as 'maxTemp'\nfrom ATVgeneral\n\nWHERE\ndatetime = '$datetime'\n\nGROUP BY datetime\n",
           "refId": "A",
           "select": [
             [
@@ -2319,14 +2409,14 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "8.1.1",
       "targets": [
         {
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\nOrigin,\nTemperature\nfrom ATVdetails\n\nWHERE\ndatetime = '$datetime'\n\norder by temperature DESC\nlimit 5\n",
+          "rawSql": "SELECT\nOrigin,\nTemperature\nfrom ATVgeneral\n\nWHERE\ndatetime = '$datetime'\n\norder by temperature DESC\nlimit 5\n",
           "refId": "A",
           "select": [
             [
@@ -2440,14 +2530,14 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "8.1.1",
       "targets": [
         {
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\nOrigin,\nTemperature\nfrom ATVdetails\n\nWHERE\ndatetime = '$datetime' and\ntemperature <> \"\"\n\norder by temperature ASC\nlimit 5\n",
+          "rawSql": "SELECT\nOrigin,\nTemperature\nfrom ATVgeneral\n\nWHERE\ndatetime = '$datetime' and\ntemperature <> \"\"\n\norder by temperature ASC\nlimit 5\n",
           "refId": "A",
           "select": [
             [
@@ -2525,5 +2615,5 @@
   "timezone": "",
   "title": "10. ATVdetails",
   "uid": "YBmfNzFGz",
-  "version": 37
+  "version": 39
 }

@@ -501,6 +501,7 @@ if (( $statsDBversion < 13 ))
 then
   echo ""
   echo "Migrating ATVdetails to seperate tables"
+  echo ""
   if [ -z "$SQL_password" ]
     then
       mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB -e "INSERT IGNORE INTO ATVgeneral (datetime,origin,arch,rom,vm_script,mitm,pogo,rgc,pogodroid,vmapper,pogo_update,pd_update,vm_update,rgc_update,pingreboot,temperature,magisk,magisk_modules,MACw,MACe,ip,gmail) select datetime,origin,arch,rom,VM_script,mitm,pogo,rgc,pogodroid,vmapper,pogo_update,pd_update,VM_Autoupdate,rgc_update,pingreboot,temperature,magisk,magisk_modules,MACw,MACe,ip,gmail from ATVdetails;"
