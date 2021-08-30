@@ -21,6 +21,15 @@ if ((${DBversion/./} > 101)) ;
   exit
 fi
 
+# Check current stats db version
+echo ""
+if [ -z "$SQL_password" ]
+then
+  statsDBversion=$(mysql -h$DB_IP -P$DB_PORT -u$SQL_user $STATS_DB -sN -e "select version from version where version.key = 'stats'";)
+else
+  statsDBversion=$(mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB -sN -e "select version from version where version.key = 'stats'";)
+fi
+
 # grrrrrrrrrrr had to implement db version long time ago
 # check first install, does stats_worker even exist
 if [ -z "$SQL_password" ]
@@ -484,6 +493,26 @@ then
         hoursback="$(( hoursback - 1440 ))"
       done
     fi
+  fi
+fi
+
+# Migrate ATVdetails to seperate tables
+if (( $statsDBversion < 13 ))
+then
+  echo ""
+  echo "Migrating ATVdetails to seperate tables"
+  echo ""
+  if [ -z "$SQL_password" ]
+    then
+      mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB -e "INSERT IGNORE INTO ATVgeneral (datetime,origin,arch,rom,vm_script,mitm,pogo,rgc,pogodroid,vmapper,pogo_update,pd_update,vm_update,rgc_update,pingreboot,temperature,magisk,magisk_modules,MACw,MACe,ip,gmail) select datetime,origin,arch,rom,VM_script,mitm,pogo,rgc,pogodroid,vmapper,pogo_update,pd_update,VM_Autoupdate,rgc_update,pingreboot,temperature,magisk,magisk_modules,MACw,MACe,ip,gmail from ATVdetails;"
+      mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB -e "INSERT IGNORE INTO ATVpd (datetime,origin,auth_username,auth_password,user_login,auth_id,auth_token,post_destination,boot_delay,injection_delay,switch_disable_last_sent,intentional_stop,switch_send_protos,last_time_injected,switch_disable_external_communication,last_pid_injected,switch_enable_oomadj,switch_enable_auth_header,switch_send_raw_protos,switch_popup_last_sent,full_daemon,switch_enable_mock_location_patch,last_system_patch_timestamp,last_sys_inj,default_mappging_mode,switch_setenforce,post_destination_raw,session_id,libfilename,latest_version_known,disable_pogo_freeze_detection) SELECT datetime,origin,PD_auth_username,PD_auth_password,PD_user_login,PD_auth_id,PD_auth_token,PD_post_destination,PD_boot_delay,PD_injection_delay,PD_switch_disable_last_sent,PD_intentional_stop,PD_switch_send_protos,PD_last_time_injected,PD_switch_disable_external_communication,PD_last_pid_injected,PD_switch_enable_oomadj,PD_switch_enable_auth_header,PD_switch_send_raw_protos,PD_switch_popup_last_sent,PD_full_daemon,PD_switch_enable_mock_location_patch, PD_last_system_patch_timestamp,PD_last_sys_inj,PD_default_mappging_mode,PD_switch_setenforce,PD_post_destination_raw,PD_session_id,PD_libfilename,PD_latest_version_known,PD_disable_pogo_freeze_detection FROM ATVdetails;"
+      mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB -e "INSERT IGNORE INTO ATVrgc (datetime,origin,auth_username,auth_password,websocket_uri,boot_delay,mediaprojection_previously_started,suspended_mocking,reset_agps_once,overwrite_fused,switch_enable_auth_header,reset_agps_continuously,reset_google_play_services,last_location_longitude,last_location_altitude,last_location_latitude,boot_startup,use_mock_location,oom_adj_override,location_reporter_service_running,stop_location_provider_service,autostart_services) SELECT datetime,origin,RGC_auth_username,RGC_auth_password,RGC_websocket_uri,RGC_boot_delay,RGC_mediaprojection_previously_started,RGC_suspended_mocking,RGC_reset_agps_once,RGC_overwrite_fused,RGC_switch_enable_auth_header,RGC_reset_agps_continuously,RGC_reset_google_play_services,RGC_last_location_longitude,RGC_last_location_altitude,RGC_last_location_latitude,RGC_boot_startup,RGC_use_mock_location,RGC_oom_adj_override,RGC_location_reporter_service_running,RGC_stop_location_provider_service,RGC_autostart_services FROM ATVdetails;"
+      mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB -e "INSERT IGNORE INTO ATVvm (datetime,origin,bootdelay,gzip,betamode,patchedpid,selinux,daemon,authpassword,authuser,injector,authid,postdest,fridastarted,fridaver,openlucky) SELECT datetime,origin,VM_bootdelay,VM_gzip,VM_betamode,VM_patchedpid,VM_selinux,VM_daemon,VM_authpassword,VM_authuser,VM_injector,VM_authid,VM_postdest,VM_fridastarted,VM_fridaver,VM_openlucky FROM ATVdetails;"
+    else
+      mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB -e "INSERT IGNORE INTO ATVgeneral (datetime,origin,arch,rom,vm_script,mitm,pogo,rgc,pogodroid,vmapper,pogo_update,pd_update,vm_update,rgc_update,pingreboot,temperature,magisk,magisk_modules,MACw,MACe,ip,gmail) select datetime,origin,arch,rom,VM_script,mitm,pogo,rgc,pogodroid,vmapper,pogo_update,pd_update,VM_Autoupdate,rgc_update,pingreboot,temperature,magisk,magisk_modules,MACw,MACe,ip,gmail from ATVdetails;"
+      mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB -e "INSERT IGNORE INTO ATVpd (datetime,origin,auth_username,auth_password,user_login,auth_id,auth_token,post_destination,boot_delay,injection_delay,switch_disable_last_sent,intentional_stop,switch_send_protos,last_time_injected,switch_disable_external_communication,last_pid_injected,switch_enable_oomadj,switch_enable_auth_header,switch_send_raw_protos,switch_popup_last_sent,full_daemon,switch_enable_mock_location_patch,last_system_patch_timestamp,last_sys_inj,default_mappging_mode,switch_setenforce,post_destination_raw,session_id,libfilename,latest_version_known,disable_pogo_freeze_detection) SELECT datetime,origin,PD_auth_username,PD_auth_password,PD_user_login,PD_auth_id,PD_auth_token,PD_post_destination,PD_boot_delay,PD_injection_delay,PD_switch_disable_last_sent,PD_intentional_stop,PD_switch_send_protos,PD_last_time_injected,PD_switch_disable_external_communication,PD_last_pid_injected,PD_switch_enable_oomadj,PD_switch_enable_auth_header,PD_switch_send_raw_protos,PD_switch_popup_last_sent,PD_full_daemon,PD_switch_enable_mock_location_patch, PD_last_system_patch_timestamp,PD_last_sys_inj,PD_default_mappging_mode,PD_switch_setenforce,PD_post_destination_raw,PD_session_id,PD_libfilename,PD_latest_version_known,PD_disable_pogo_freeze_detection FROM ATVdetails;"
+      mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB -e "INSERT IGNORE INTO ATVrgc (datetime,origin,auth_username,auth_password,websocket_uri,boot_delay,mediaprojection_previously_started,suspended_mocking,reset_agps_once,overwrite_fused,switch_enable_auth_header,reset_agps_continuously,reset_google_play_services,last_location_longitude,last_location_altitude,last_location_latitude,boot_startup,use_mock_location,oom_adj_override,location_reporter_service_running,stop_location_provider_service,autostart_services) SELECT datetime,origin,RGC_auth_username,RGC_auth_password,RGC_websocket_uri,RGC_boot_delay,RGC_mediaprojection_previously_started,RGC_suspended_mocking,RGC_reset_agps_once,RGC_overwrite_fused,RGC_switch_enable_auth_header,RGC_reset_agps_continuously,RGC_reset_google_play_services,RGC_last_location_longitude,RGC_last_location_altitude,RGC_last_location_latitude,RGC_boot_startup,RGC_use_mock_location,RGC_oom_adj_override,RGC_location_reporter_service_running,RGC_stop_location_provider_service,RGC_autostart_services FROM ATVdetails;"
+      mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB -e "INSERT IGNORE INTO ATVvm (datetime,origin,bootdelay,gzip,betamode,patchedpid,selinux,daemon,authpassword,authuser,injector,authid,postdest,fridastarted,fridaver,openlucky) SELECT datetime,origin,VM_bootdelay,VM_gzip,VM_betamode,VM_patchedpid,VM_selinux,VM_daemon,VM_authpassword,VM_authuser,VM_injector,VM_authid,VM_postdest,VM_fridastarted,VM_fridaver,VM_openlucky FROM ATVdetails;"
   fi
 fi
 

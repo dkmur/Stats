@@ -14,7 +14,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "8.0.3"
+      "version": "8.1.1"
     },
     {
       "type": "panel",
@@ -38,6 +38,12 @@
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
         "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
         "type": "dashboard"
       }
     ]
@@ -46,7 +52,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1625090522164,
+  "iteration": 1630365000518,
   "links": [],
   "panels": [
     {
@@ -84,7 +90,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.0.3",
+      "pluginVersion": "8.1.1",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -169,7 +175,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\nb.arch,\n$__timeGroup(a.datetime,$__interval) as 'time',\nsum(a.LocOk)/sum(a.Tloc)*100 'Location success rate'\n-- sum(a.reb)/count(a.reb) as '#Reboots per device',\n-- sum(a.res)/count(a.res) as '#Restarts per device'\n-- (sum(a.res)+sum(a.reb))/count(a.Worker) as 'Avg #restart+reboot /device /h'\n\nFROM stats_worker a, ATVdetails b\n\nWHERE\n$__timeFilter(a.datetime) and\na.Worker COLLATE utf8mb4_unicode_ci = b.Origin and\ndate(a.Datetime) = b.datetime and\na.RPL = 60 and\ntime(a.datetime) not in ($Hours_excluded) and\nb.arch in ($architecture)\n-- a.Datetime >= curdate() -interval 7 day\nGROUP by b.arch, date(a.Datetime)\nORDER BY a.Datetime ASC\n\n",
+          "rawSql": "SELECT\nb.arch,\n$__timeGroup(a.datetime,$__interval) as 'time',\nsum(a.LocOk)/sum(a.Tloc)*100 'Location success rate'\n-- sum(a.reb)/count(a.reb) as '#Reboots per device',\n-- sum(a.res)/count(a.res) as '#Restarts per device'\n-- (sum(a.res)+sum(a.reb))/count(a.Worker) as 'Avg #restart+reboot /device /h'\n\nFROM stats_worker a, ATVgeneral b\n\nWHERE\n$__timeFilter(a.datetime) and\na.Worker COLLATE utf8mb4_unicode_ci = b.Origin and\ndate(a.Datetime) = b.datetime and\na.RPL = 60 and\ntime(a.datetime) not in ($Hours_excluded) and\nb.arch in ($architecture)\n-- a.Datetime >= curdate() -interval 7 day\nGROUP by b.arch, date(a.Datetime)\nORDER BY a.Datetime ASC\n\n",
           "refId": "A",
           "select": [
             [
@@ -269,7 +275,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.0.3",
+      "pluginVersion": "8.1.1",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -283,7 +289,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\nb.arch,\n$__timeGroup(a.datetime,$__interval) as 'time',\n-- sum(a.LocOk)/sum(a.Tloc)*100 'Location success rate',\n-- sum(a.reb)/count(a.reb) as '#Reboots per device',\n-- sum(a.res)/count(a.res) as '#Restarts per device'\n(sum(a.res)+sum(a.reb))/count(a.Worker) as 'Avg #restart+reboot /device /h'\n\nFROM stats_worker a, ATVdetails b\n\nWHERE\n$__timeFilter(a.datetime) and\na.Worker COLLATE utf8mb4_unicode_ci = b.Origin and\ndate(a.Datetime) = b.datetime and\na.RPL = 60 and\ntime(a.datetime) not in ($Hours_excluded) and\nb.arch in ($architecture)\n-- a.Datetime >= curdate() -interval 7 day\nGROUP by b.arch, date(a.Datetime)\nORDER BY a.Datetime ASC\n",
+          "rawSql": "SELECT\nb.arch,\n$__timeGroup(a.datetime,$__interval) as 'time',\n-- sum(a.LocOk)/sum(a.Tloc)*100 'Location success rate',\n-- sum(a.reb)/count(a.reb) as '#Reboots per device',\n-- sum(a.res)/count(a.res) as '#Restarts per device'\n(sum(a.res)+sum(a.reb))/count(a.Worker) as 'Avg #restart+reboot /device /h'\n\nFROM stats_worker a, ATVgeneral b\n\nWHERE\n$__timeFilter(a.datetime) and\na.Worker COLLATE utf8mb4_unicode_ci = b.Origin and\ndate(a.Datetime) = b.datetime and\na.RPL = 60 and\ntime(a.datetime) not in ($Hours_excluded) and\nb.arch in ($architecture)\n-- a.Datetime >= curdate() -interval 7 day\nGROUP by b.arch, date(a.Datetime)\nORDER BY a.Datetime ASC\n",
           "refId": "A",
           "select": [
             [
@@ -325,6 +331,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:2275",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -333,6 +340,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:2276",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -383,7 +391,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.0.3",
+      "pluginVersion": "8.1.1",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -397,7 +405,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\nb.arch,\n$__timeGroup(a.datetime,$__interval) as 'time',\n100*sum(a.TRPL)/sum(a.RPL) AS \"% raw data reports received\",\n100*(sum(a.rpl)-sum(missingProtoMinute))/sum(a.rpl) as '%time proto received'\n\nFROM stats_worker a, ATVdetails b\n\nWHERE\n$__timeFilter(a.datetime) and\na.Worker COLLATE utf8mb4_unicode_ci = b.Origin and\ndate(a.Datetime) = b.datetime and\na.RPL = 60 and\ntime(a.datetime) not in ($Hours_excluded) and\nb.arch in ($architecture)\n-- a.Datetime >= curdate() -interval 7 day\nGROUP by b.arch, date(a.Datetime)\nORDER BY a.Datetime ASC\n",
+          "rawSql": "SELECT\nb.arch,\n$__timeGroup(a.datetime,$__interval) as 'time',\n100*sum(a.TRPL)/sum(a.RPL) AS \"% raw data reports received\",\n100*(sum(a.rpl)-sum(missingProtoMinute))/sum(a.rpl) as '%time proto received'\n\nFROM stats_worker a, ATVgeneral b\n\nWHERE\n$__timeFilter(a.datetime) and\na.Worker COLLATE utf8mb4_unicode_ci = b.Origin and\ndate(a.Datetime) = b.datetime and\na.RPL = 60 and\ntime(a.datetime) not in ($Hours_excluded) and\nb.arch in ($architecture)\n-- a.Datetime >= curdate() -interval 7 day\nGROUP by b.arch, date(a.Datetime)\nORDER BY a.Datetime ASC\n",
           "refId": "A",
           "select": [
             [
@@ -499,7 +507,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.0.3",
+      "pluginVersion": "8.1.1",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -519,7 +527,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\nb.arch,\n$__timeGroup(a.datetime,$__interval) as 'time',\ncount(a.res) as '#devices'\n\nFROM stats_worker a, ATVdetails b\n\nWHERE\n$__timeFilter(a.datetime) and\na.Worker COLLATE utf8mb4_unicode_ci = b.Origin and\ndate(a.Datetime) = b.datetime and\na.RPL = 60 and\ntime(a.datetime) not in ($Hours_excluded) and\nb.arch in ($architecture)\n-- a.Datetime >= curdate() -interval 7 day\nGROUP by b.arch, a.Datetime\nORDER BY a.Datetime ASC",
+          "rawSql": "SELECT\nb.arch,\n$__timeGroup(a.datetime,$__interval) as 'time',\ncount(a.res) as '#devices'\n\nFROM stats_worker a, ATVgeneral b\n\nWHERE\n$__timeFilter(a.datetime) and\na.Worker COLLATE utf8mb4_unicode_ci = b.Origin and\ndate(a.Datetime) = b.datetime and\na.RPL = 60 and\ntime(a.datetime) not in ($Hours_excluded) and\nb.arch in ($architecture)\n-- a.Datetime >= curdate() -interval 7 day\nGROUP by b.arch, a.Datetime\nORDER BY a.Datetime ASC",
           "refId": "A",
           "select": [
             [
@@ -616,7 +624,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.0.3",
+      "pluginVersion": "8.1.1",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -762,11 +770,18 @@
           "yaxis": 2
         },
         {
+          "$$hashKey": "object:2466",
           "alias": "Avg #restart+reboot /device /h 0.211.3",
           "yaxis": 2
         },
         {
+          "$$hashKey": "object:2467",
           "alias": "Avg #restart+reboot /device /h 0.209.0",
+          "yaxis": 2
+        },
+        {
+          "$$hashKey": "object:2468",
+          "alias": "Avg #restart+reboot /device /h 0.213.0",
           "yaxis": 2
         }
       ],
@@ -779,7 +794,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\nb.pogo,\n$__timeGroup(a.datetime,$__interval) as 'time',\nsum(a.LocOk)/sum(a.Tloc)*100 'Location success rate',\n-- sum(a.reb)/count(a.reb) as '#Reboots per device',\n-- sum(a.res)/count(a.res) as '#Restarts per device'\n(sum(a.res)+sum(a.reb))/count(a.Worker) as 'Avg #restart+reboot /device /h'\n\nFROM stats_worker a, ATVdetails b\n\nWHERE\n$__timeFilter(a.datetime) and\na.Worker COLLATE utf8mb4_unicode_ci = b.Origin and\ndate(a.Datetime) = b.datetime and\na.RPL = 60 and\ntime(a.datetime) not in ($Hours_excluded) and\nb.pogo in ($pogo)\n-- a.Datetime >= curdate() -interval 7 day\nGROUP by b.pogo, date(a.Datetime)\nORDER BY a.Datetime ASC",
+          "rawSql": "SELECT\nb.pogo,\n$__timeGroup(a.datetime,$__interval) as 'time',\nsum(a.LocOk)/sum(a.Tloc)*100 'Location success rate',\n-- sum(a.reb)/count(a.reb) as '#Reboots per device',\n-- sum(a.res)/count(a.res) as '#Restarts per device'\n(sum(a.res)+sum(a.reb))/count(a.Worker) as 'Avg #restart+reboot /device /h'\n\nFROM stats_worker a, ATVgeneral b\n\nWHERE\n$__timeFilter(a.datetime) and\na.Worker COLLATE utf8mb4_unicode_ci = b.Origin and\ndate(a.Datetime) = b.datetime and\na.RPL = 60 and\ntime(a.datetime) not in ($Hours_excluded) and\nb.pogo in ($pogo)\n-- a.Datetime >= curdate() -interval 7 day\nGROUP by b.pogo, date(a.Datetime)\nORDER BY a.Datetime ASC",
           "refId": "A",
           "select": [
             [
@@ -876,7 +891,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.0.3",
+      "pluginVersion": "8.1.1",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -890,7 +905,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\nb.pogo,\n$__timeGroup(a.datetime,$__interval) as 'time',\ncount(a.res) as '#devices'\n\nFROM stats_worker a, ATVdetails b\n\nWHERE\n$__timeFilter(a.datetime) and\na.Worker COLLATE utf8mb4_unicode_ci = b.Origin and\ndate(a.Datetime) = b.datetime and\na.RPL = 60 and\ntime(a.datetime) not in ($Hours_excluded) and\nb.pogo in ($pogo)\n-- a.Datetime >= curdate() -interval 7 day\nGROUP by b.pogo, a.Datetime\nORDER BY a.Datetime ASC",
+          "rawSql": "SELECT\nb.pogo,\n$__timeGroup(a.datetime,$__interval) as 'time',\ncount(a.res) as '#devices'\n\nFROM stats_worker a, ATVgeneral b\n\nWHERE\n$__timeFilter(a.datetime) and\na.Worker COLLATE utf8mb4_unicode_ci = b.Origin and\ndate(a.Datetime) = b.datetime and\na.RPL = 60 and\ntime(a.datetime) not in ($Hours_excluded) and\nb.pogo in ($pogo)\n-- a.Datetime >= curdate() -interval 7 day\nGROUP by b.pogo, a.Datetime\nORDER BY a.Datetime ASC",
           "refId": "A",
           "select": [
             [
@@ -987,7 +1002,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.0.3",
+      "pluginVersion": "8.1.1",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1078,22 +1093,27 @@
           "yaxis": 2
         },
         {
+          "$$hashKey": "object:2777",
           "alias": "Avg #restart+reboot /device /h 30.0.2",
           "yaxis": 2
         },
         {
+          "$$hashKey": "object:2778",
           "alias": "Avg #restart+reboot /device /h 31.0.6",
           "yaxis": 2
         },
         {
+          "$$hashKey": "object:2779",
           "alias": "Avg #restart+reboot /device /h 30.0.6",
           "yaxis": 2
         },
         {
+          "$$hashKey": "object:2780",
           "alias": "Avg #restart+reboot /device /h 32.0.1",
           "yaxis": 2
         },
         {
+          "$$hashKey": "object:2781",
           "alias": "Avg #restart+reboot /device /h 31.0.3",
           "yaxis": 2
         }
@@ -1107,7 +1127,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\nb.pogodroid,\n$__timeGroup(a.datetime,$__interval) as 'time',\nsum(a.LocOk)/sum(a.Tloc)*100 'Location success rate',\n-- sum(a.reb)/count(a.reb) as '#Reboots per device',\n-- sum(a.res)/count(a.res) as '#Restarts per device'\n(sum(a.res)+sum(a.reb))/(count(a.Worker)) as 'Avg #restart+reboot /device /h'\n\nFROM stats_worker a, ATVdetails b\n\nWHERE\n$__timeFilter(a.datetime) and\na.Worker COLLATE utf8mb4_unicode_ci = b.Origin and\ndate(a.Datetime) = b.datetime and\na.RPL = 60 and\ntime(a.datetime) not in ($Hours_excluded) and\nb.pogodroid in ($pogodroid)\nGROUP by b.pogodroid, date(a.Datetime)\nORDER BY a.Datetime ASC",
+          "rawSql": "SELECT\nb.pogodroid,\n$__timeGroup(a.datetime,$__interval) as 'time',\nsum(a.LocOk)/sum(a.Tloc)*100 'Location success rate',\n-- sum(a.reb)/count(a.reb) as '#Reboots per device',\n-- sum(a.res)/count(a.res) as '#Restarts per device'\n(sum(a.res)+sum(a.reb))/(count(a.Worker)) as 'Avg #restart+reboot /device /h'\n\nFROM stats_worker a, ATVgeneral b\n\nWHERE\n$__timeFilter(a.datetime) and\na.Worker COLLATE utf8mb4_unicode_ci = b.Origin and\ndate(a.Datetime) = b.datetime and\na.RPL = 60 and\ntime(a.datetime) not in ($Hours_excluded) and\nb.pogodroid in ($pogodroid)\nGROUP by b.pogodroid, date(a.Datetime)\nORDER BY a.Datetime ASC",
           "refId": "A",
           "select": [
             [
@@ -1204,7 +1224,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.0.3",
+      "pluginVersion": "8.1.1",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1218,7 +1238,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\nb.pogodroid,\n$__timeGroup(a.datetime,$__interval) as 'time',\ncount(a.res) as '#devices'\n\nFROM stats_worker a, ATVdetails b\n\nWHERE\n$__timeFilter(a.datetime) and\na.Worker COLLATE utf8mb4_unicode_ci = b.Origin and\ndate(a.Datetime) = b.datetime and\na.RPL = 60 and\ntime(a.datetime) not in ($Hours_excluded) and\nb.pogodroid in ($pogodroid)\n-- a.Datetime >= curdate() -interval 7 day\nGROUP BY b.pogodroid, a.Datetime\nORDER BY a.Datetime ASC",
+          "rawSql": "SELECT\nb.pogodroid,\n$__timeGroup(a.datetime,$__interval) as 'time',\ncount(a.res) as '#devices'\n\nFROM stats_worker a, ATVgeneral b\n\nWHERE\n$__timeFilter(a.datetime) and\na.Worker COLLATE utf8mb4_unicode_ci = b.Origin and\ndate(a.Datetime) = b.datetime and\na.RPL = 60 and\ntime(a.datetime) not in ($Hours_excluded) and\nb.pogodroid in ($pogodroid)\n-- a.Datetime >= curdate() -interval 7 day\nGROUP BY b.pogodroid, a.Datetime\nORDER BY a.Datetime ASC",
           "refId": "A",
           "select": [
             [
@@ -1293,7 +1313,7 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_POGODB}",
-        "definition": "select arch from ATVdetails;",
+        "definition": "select arch from ATVgeneral;",
         "description": null,
         "error": null,
         "hide": 0,
@@ -1302,7 +1322,7 @@
         "multi": true,
         "name": "architecture",
         "options": [],
-        "query": "select arch from ATVdetails;",
+        "query": "select arch from ATVgeneral;",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -1316,7 +1336,7 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_POGODB}",
-        "definition": "select pogodroid from ATVdetails;",
+        "definition": "select pogodroid from ATVgeneral;",
         "description": null,
         "error": null,
         "hide": 0,
@@ -1325,7 +1345,7 @@
         "multi": true,
         "name": "pogodroid",
         "options": [],
-        "query": "select pogodroid from ATVdetails;",
+        "query": "select pogodroid from ATVgeneral;",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -1339,7 +1359,7 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_POGODB}",
-        "definition": "select pogo from ATVdetails;",
+        "definition": "select pogo from ATVgeneral;",
         "description": null,
         "error": null,
         "hide": 0,
@@ -1348,7 +1368,7 @@
         "multi": true,
         "name": "pogo",
         "options": [],
-        "query": "select pogo from ATVdetails;",
+        "query": "select pogo from ATVgeneral;",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -1404,5 +1424,5 @@
   "timezone": "",
   "title": "12. Stats combined with ATVdetails exclude hours",
   "uid": "L-mKZqdGb",
-  "version": 48
+  "version": 52
 }
