@@ -294,7 +294,6 @@ CREATE TABLE IF NOT EXISTS `ATVvm` (
   `bootdelay` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `gzip` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `betamode` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `patchedpid` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `selinux` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `daemon` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `authpassword` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,

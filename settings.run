@@ -497,7 +497,7 @@ then
 fi
 
 # Migrate ATVdetails to seperate tables
-if [ $statsDBversion < 13 ]
+if (( $statsDBversion < 13 ))
 then
   echo ""
   echo "Migrating ATVdetails to seperate tables"
