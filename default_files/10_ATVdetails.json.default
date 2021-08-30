@@ -52,7 +52,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1630356902238,
+  "iteration": 1630364661868,
   "links": [],
   "panels": [
     {
@@ -204,7 +204,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\nleft(datetime,16) as 'datetime', \nifnull(arch,'no_data') as 'Architecture',\nifnull(rom,'no_data') as 'Rom',\nifnull(vm_script,'no_data') as 'vmscript',\nif(mitm='','no_data',mitm) as 'mitm',\ncount(origin) as '#devices'\nfrom ATVgeneral\n\nWHERE\ndatetime = '$datetime'\n\nGROUP BY datetime, arch, rom,mitm\n",
+          "rawSql": "SELECT\nleft(datetime,16) as 'datetime', \nifnull(arch,'no_data') as 'Architecture',\nifnull(rom,'no_data') as 'madRom',\nifnull(vm_script,'no_data') as 'vmscript',\nif(mitm='','no_data',mitm) as 'mitm',\ncount(origin) as '#devices'\nfrom ATVgeneral\n\nWHERE\ndatetime = '$datetime'\n\nGROUP BY datetime, arch, rom,mitm\n",
           "refId": "A",
           "select": [
             [
@@ -2573,7 +2573,7 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_POGODB}",
-        "definition": "select left(datetime,19) from ATVdetails;",
+        "definition": "select left(datetime,19) from ATVgeneral;",
         "description": null,
         "error": null,
         "hide": 0,
@@ -2582,7 +2582,7 @@
         "multi": false,
         "name": "datetime",
         "options": [],
-        "query": "select left(datetime,19) from ATVdetails;",
+        "query": "select left(datetime,19) from ATVgeneral;",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -2615,5 +2615,5 @@
   "timezone": "",
   "title": "10. ATVdetails",
   "uid": "YBmfNzFGz",
-  "version": 39
+  "version": 40
 }

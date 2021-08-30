@@ -52,7 +52,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1630360984718,
+  "iteration": 1630365169877,
   "links": [],
   "panels": [
     {
@@ -354,7 +354,7 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_POGODB}",
-        "definition": "select left(datetime,19) from ATVdetails;",
+        "definition": "select left(datetime,19) from ATVgeneral;",
         "description": null,
         "error": null,
         "hide": 0,
@@ -363,7 +363,7 @@
         "multi": false,
         "name": "Date",
         "options": [],
-        "query": "select left(datetime,19) from ATVdetails;",
+        "query": "select left(datetime,19) from ATVgeneral;",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -383,5 +383,5 @@
   "timezone": "",
   "title": "13. Device overview",
   "uid": "RVgxODPGz",
-  "version": 32
+  "version": 33
 }
