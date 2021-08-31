@@ -12,6 +12,7 @@ from pogodb.pokemon_history
 
 where
 date(first_scanned) >= curdate() - interval XXA day and
+(seen_type = 'encounter' or seen_type = 'wild') and
 pokemon_id = XXB
 
 group by date(first_scanned)
