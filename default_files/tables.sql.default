@@ -457,7 +457,8 @@ ALTER TABLE `stats_worker`
 ADD COLUMN IF NOT EXISTS `locReports` int(11) DEFAULT NULL AFTER `WkSt`,
 ADD COLUMN IF NOT EXISTS `locationsMultiReport` int(11) DEFAULT NULL AFTER `locReports`;
 
-ALTER TABLE IF EXISTS ATVdetails
+-- ALTER TABLE IF EXISTS ATVdetails #requires mariadb 10.5
+ALTER TABLE ATVdetails
 CHANGE COLUMN IF EXISTS `session_id` `session_id` text,
 ADD COLUMN IF NOT EXISTS `MACw` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `magisk_modules`,
 ADD COLUMN IF NOT EXISTS `MACe` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `MACw`,
