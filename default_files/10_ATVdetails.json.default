@@ -14,7 +14,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "8.1.1"
+      "version": "8.1.2"
     },
     {
       "type": "datasource",
@@ -52,7 +52,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1630364661868,
+  "iteration": 1630668657668,
   "links": [],
   "panels": [
     {
@@ -182,6 +182,18 @@
                 "value": 78
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "madRom"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 85
+              }
+            ]
           }
         ]
       },
@@ -197,14 +209,14 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.1.1",
+      "pluginVersion": "8.1.2",
       "targets": [
         {
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\nleft(datetime,16) as 'datetime', \nifnull(arch,'no_data') as 'Architecture',\nifnull(rom,'no_data') as 'madRom',\nifnull(vm_script,'no_data') as 'vmscript',\nif(mitm='','no_data',mitm) as 'mitm',\ncount(origin) as '#devices'\nfrom ATVgeneral\n\nWHERE\ndatetime = '$datetime'\n\nGROUP BY datetime, arch, rom,mitm\n",
+          "rawSql": "SELECT\nleft(datetime,16) as 'datetime', \nifnull(arch,'no_data') as 'Architecture',\nifnull(rom,'no_data') as 'madRom',\nifnull(vm_script,'no_data') as 'vmscript',\nif(mitm='','no_data',mitm) as 'mitm',\ncount(origin) as '#devices'\nfrom ATVgeneral\n\nWHERE\ndatetime = '$datetime'\n\nGROUP BY datetime,arch,rom,vm_script,mitm\n",
           "refId": "A",
           "select": [
             [
@@ -344,7 +356,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.1.1",
+      "pluginVersion": "8.1.2",
       "targets": [
         {
           "format": "table",
@@ -491,14 +503,14 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.1.1",
+      "pluginVersion": "8.1.2",
       "targets": [
         {
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\nleft(datetime,16) as 'datetime',\nifnull(rgc,'no_data') as 'RGC',\nifnull(pogo,'no_data') as 'PoGo',\nifnull(pogodroid,'no_data') as 'PD',\nifnull(vmapper,'no_data') as 'VM',\ncount(origin) as '#devices'\nfrom ATVgeneral\n\nWHERE\ndatetime = '$datetime'\n\nGROUP BY datetime, pogo\n",
+          "rawSql": "SELECT\nleft(datetime,16) as 'datetime',\nifnull(rgc,'no_data') as 'RGC',\nifnull(pogo,'no_data') as 'PoGo',\nifnull(pogodroid,'no_data') as 'PD',\nifnull(vmapper,'no_data') as 'VM',\ncount(origin) as '#devices'\nfrom ATVgeneral\n\nWHERE\ndatetime = '$datetime'\n\nGROUP BY datetime,rgc,pogo,pogodroid,vmapper\n",
           "refId": "A",
           "select": [
             [
@@ -606,7 +618,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.1.1",
+      "pluginVersion": "8.1.2",
       "targets": [
         {
           "format": "table",
@@ -753,7 +765,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.1.1",
+      "pluginVersion": "8.1.2",
       "targets": [
         {
           "format": "table",
@@ -972,7 +984,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.1.1",
+      "pluginVersion": "8.1.2",
       "targets": [
         {
           "format": "table",
@@ -1179,7 +1191,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.1.1",
+      "pluginVersion": "8.1.2",
       "targets": [
         {
           "format": "table",
@@ -1359,7 +1371,7 @@
           }
         ]
       },
-      "pluginVersion": "8.1.1",
+      "pluginVersion": "8.1.2",
       "targets": [
         {
           "format": "table",
@@ -1626,7 +1638,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.1.1",
+      "pluginVersion": "8.1.2",
       "targets": [
         {
           "format": "table",
@@ -1821,7 +1833,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.1.1",
+      "pluginVersion": "8.1.2",
       "targets": [
         {
           "format": "table",
@@ -2177,14 +2189,14 @@
           }
         ]
       },
-      "pluginVersion": "8.1.1",
+      "pluginVersion": "8.1.2",
       "targets": [
         {
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\nleft(datetime,16) as 'datetime',\nifnull(injector,'no_data') as 'injector',\nifnull(daemon,'no_data') as 'daemon',\nifnull(bootdelay,'no_data') as 'bootdelay',\nifnull(gzip,'no_data') as 'gzip',\nifnull(betamode,'no_data') as 'betamode',\nifnull(selinux,'no_data') as 'selinux',\nifnull(authid,'no_data') as 'authid',\nifnull(openlucky, 'no_data') as 'openLucky',\nifnull(rebootminutes, 'no_data') as 'rebootminutes',\nifnull(postdest, 'no_data') as 'destination',\nifnull(deviceid, 'no_data') as 'deviceid',\ncount(origin) as '#devices'\nfrom ATVvm\n\nWHERE\ndatetime = '$datetime'\n\nGROUP BY injector,daemon,bootdelay,gzip,betamode,selinux,authid,postdest,deviceid,rebootminutes",
+          "rawSql": "SELECT\nleft(datetime,16) as 'datetime',\nifnull(injector,'no_data') as 'injector',\nifnull(daemon,'no_data') as 'daemon',\nifnull(bootdelay,'no_data') as 'bootdelay',\nifnull(gzip,'no_data') as 'gzip',\nifnull(betamode,'no_data') as 'betamode',\nifnull(selinux,'no_data') as 'selinux',\nifnull(authid,'no_data') as 'authid',\nifnull(openlucky, 'no_data') as 'openLucky',\nifnull(rebootminutes, 'no_data') as 'rebootminutes',\nifnull(postdest, 'no_data') as 'destination',\ncount(origin) as '#devices'\nfrom ATVvm\n\nWHERE\ndatetime = '$datetime'\n\nGROUP BY injector,daemon,bootdelay,gzip,betamode,selinux,authid,openlucky,rebootminutes,postdest,deviceid",
           "refId": "A",
           "select": [
             [
@@ -2288,7 +2300,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.1.1",
+      "pluginVersion": "8.1.2",
       "targets": [
         {
           "format": "table",
@@ -2409,7 +2421,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.1.1",
+      "pluginVersion": "8.1.2",
       "targets": [
         {
           "format": "table",
@@ -2530,7 +2542,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.1.1",
+      "pluginVersion": "8.1.2",
       "targets": [
         {
           "format": "table",
@@ -2615,5 +2627,5 @@
   "timezone": "",
   "title": "10. ATVdetails",
   "uid": "YBmfNzFGz",
-  "version": 40
+  "version": 43
 }
