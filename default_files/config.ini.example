@@ -94,7 +94,7 @@ monthly_mon_database=pogodb				# Database to be used for monthly pokemon backup 
 
 ## Pokestop / Quest cleanup ##
 stop_to_gym_remove=false				# Remove pokestops that became gym
-stop_no_quest_remove=false				# Remove pokestops that have no quest scanned for no_quest_days
+stop_no_quest_remove=false				# Remove pokestops that have not been updated and exist in trs_quest yet no quest scanned for no_quest_days
 no_quest_days=5						# Number of days of no quest scanned before deletion of pokestop
 recalc_quest_routes=false				# Weekly recalculation of quest routes
 quest_recalc_wait=60s					# Time in seconds to wait between quest route recalculations

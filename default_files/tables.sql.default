@@ -207,6 +207,7 @@ CREATE TABLE IF NOT EXISTS `ATVgeneral` (
   `arch` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `rom` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `vm_script` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `55vmapper` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `mitm` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `pogo` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `rgc` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -500,6 +501,10 @@ DROP COLUMN IF EXISTS `fridaver`,
 DROP COLUMN IF EXISTS `openlucky`
 ;
 
+ALTER TABLE ATVgeneral
+ADD COLUMN IF NOT EXISTS `55vmapper` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `vm_script`
+;
+
 ALTER TABLE pokemon_history
 ADD COLUMN IF NOT EXISTS `fort_id` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `first_scanned`,
 ADD COLUMN IF NOT EXISTS `cell_id` bigint(20) unsigned DEFAULT NULL AFTER `fort_id`,
@@ -550,4 +555,4 @@ ADD COLUMN IF NOT EXISTS `pogoNotOpen` INT DEFAULT NULL
 
 -- update version
 INSERT IGNORE INTO version values ('stats',2);
-UPDATE version set version = 14 where version.key = 'stats';
+UPDATE version set version = 15 where version.key = 'stats';

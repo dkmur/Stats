@@ -52,7 +52,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1630668657668,
+  "iteration": 1631020698033,
   "links": [],
   "panels": [
     {
@@ -139,7 +139,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 102
+                "value": 94
               }
             ]
           },
@@ -194,6 +194,30 @@
                 "value": 85
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "55vmapper"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 94
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "mitm"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 91
+              }
+            ]
           }
         ]
       },
@@ -216,7 +240,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\nleft(datetime,16) as 'datetime', \nifnull(arch,'no_data') as 'Architecture',\nifnull(rom,'no_data') as 'madRom',\nifnull(vm_script,'no_data') as 'vmscript',\nif(mitm='','no_data',mitm) as 'mitm',\ncount(origin) as '#devices'\nfrom ATVgeneral\n\nWHERE\ndatetime = '$datetime'\n\nGROUP BY datetime,arch,rom,vm_script,mitm\n",
+          "rawSql": "SELECT\nleft(datetime,16) as 'datetime', \nifnull(arch,'no_data') as 'Architecture',\nifnull(rom,'no_data') as 'madRom',\nifnull(vm_script,'no_data') as 'vmscript',\nifnull(55vmapper,'no_data') as '55vmapper',\nif(mitm='','no_data',mitm) as 'mitm',\ncount(origin) as '#devices'\nfrom ATVgeneral\n\nWHERE\ndatetime = '$datetime'\n\nGROUP BY datetime,arch,rom,vm_script,55vmapper,mitm\n",
           "refId": "A",
           "select": [
             [
@@ -363,7 +387,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\nleft(datetime,16) as 'datetime',\nifnull(pogo_update,'no_data ') as 'pogo_update',\nifnull(rgc_update,'no_data ') as 'rgc_update',\nifnull(pd_update,'no_data ') as 'pd_update',\nifnull(vm_update,'no_data ') as 'vm_update',\nifnull(pingreboot,'no_data ') as 'pingreboot', \ncount(origin) as 'devices'\nfrom ATVgeneral\n\nWHERE\ndatetime = '$datetime'\n\nGROUP BY datetime, pogo_update, pd_update, rgc_update, pingreboot",
+          "rawSql": "SELECT\nleft(datetime,16) as 'datetime',\nifnull(pogo_update,'no_data ') as 'pogo_update',\nifnull(rgc_update,'no_data ') as 'rgc_update',\nifnull(pd_update,'no_data ') as 'pd_update',\nifnull(vm_update,'no_data ') as 'vm_update',\nifnull(pingreboot,'no_data ') as 'pingreboot', \ncount(origin) as 'devices'\nfrom ATVgeneral\n\nWHERE\ndatetime = '$datetime'\n\nGROUP BY datetime, pogo_update, pd_update, rgc_update, vm_update, pingreboot",
           "refId": "A",
           "select": [
             [
@@ -2627,5 +2651,5 @@
   "timezone": "",
   "title": "10. ATVdetails",
   "uid": "YBmfNzFGz",
-  "version": 43
+  "version": 46
 }
