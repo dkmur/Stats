@@ -106,6 +106,10 @@ gym_not_scanned_days=9999				# delete gym if not scanned for X days
 mad_backup=true						# Daily backup MAD database to /MADbackup. Following tables are excluded: filestore_chunks/filestore_meta/pokemon/raid/weather/trs_status/trs_visited/trs_stats_detect/trs_stats_detect_mon_raw/trs_stats_detect_fort_raw/trs_stats_location/trs_stats_location_raw/trs_quest/trs_usage/trs_s2cells
 backup_delete_days=7					# number of days to keep a backup after which it is deleted 
 
+## Job executor ##
+job="ATV%20-%20Reboot"					# jobname fo job to be executed by manually starting script, located in cron_files (job_executor.sh)
+job_wait=60s                                            # Wait time between jobs
+
 ## Cleanup of tables ##
 
 # Stats table cleanup (stats_worker + stats_area) for different ReportPeriodLength in days
