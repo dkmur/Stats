@@ -107,7 +107,7 @@ processJobs(){
         VM_openlucky=$(grep -w RGC_websocket_origin=$origin $atvMAD_path/update_log.json | tail -1 | grep -o -P '(?<=VM_openlucky=).*?(?= )')
         VM_rebootminutes=$(grep -w RGC_websocket_origin=$origin $atvMAD_path/update_log.json | tail -1 | grep -o -P '(?<=VM_rebootminutes=).*?(?= )')
         VM_deviceid=$(grep -w RGC_websocket_origin=$origin $atvMAD_path/update_log.json | tail -1 | grep -o -P '(?<=VM_deviceid=).*?(?= )')
-        VM_55vmapper=$(grep -w RGC_websocket_origin=$origin $atvMAD_path/update_log.json | tail -1 | grep -o -P '(?<=55vmapper=).*?(?= )')
+        VM_55vmapper=$(grep -w RGC_websocket_origin=$origin $atvMAD_path/update_log.json | tail -1 | grep -o -P '(?<=55VMapper=).*?(?= )')
 
         if [ "$rgc" != '' ]; then
                 mysql $STATS_DB -u$SQL_user -p$SQL_password -h$DB_IP -P$DB_PORT -N -e "UPDATE ATVgeneral set arch = '$arch', rgc = '$rgc', mitm = '$mitm', pogodroid = '$pogodroid', vmapper = '$vmapper', pogo = '$pogo', rom = '$rom', magisk = '$Magisk', pogo_update = '$pogo_update', rgc_update = '$rgc_update', pd_update = '$pd_update', pingreboot = '$pingreboot', temperature = '$temperature', magisk_modules = '$Modules', MACw = '$MACw', MACe = '$MACe', ip = '$IP', gmail = '$Gmail', vm_script='$VM_script', vm_update='$VM_Autoupdate' WHERE origin = '$origin' and datetime = SEC_TO_TIME((TIME_TO_SEC(time(now())) DIV 3600) * 3600);"
