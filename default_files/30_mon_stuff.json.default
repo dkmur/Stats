@@ -14,12 +14,12 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "7.3.1"
+      "version": "8.1.3"
     },
     {
       "type": "panel",
       "id": "graph",
-      "name": "Graph",
+      "name": "Graph (old)",
       "version": ""
     },
     {
@@ -38,6 +38,12 @@
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
         "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
         "type": "dashboard"
       }
     ]
@@ -46,7 +52,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1607366897017,
+  "iteration": 1631259550561,
   "links": [],
   "panels": [
     {
@@ -55,12 +61,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_POGODB}",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -87,12 +87,13 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.1",
+      "pluginVersion": "8.1.3",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
       "seriesOverrides": [
         {
+          "$$hashKey": "object:1018",
           "alias": "%IV100",
           "yaxis": 2
         }
@@ -106,7 +107,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT a.datetime as 'time', sum(a.iv100) as '#iv100', 100*sum(iv100)/sum(Mons_all) as '%IV100'\nFROM stats_area a\nWHERE   $__timeFilter(a.datetime) and a.RPL = $RPL and a.Area in ($Area)\nGROUP BY a.datetime\n",
+          "rawSql": "SELECT $__timeGroup(a.Datetime,$__interval) as 'time', sum(a.iv100) as '#iv100', 100*sum(iv100)/sum(Mons_all) as '%IV100'\nFROM stats_area a\nWHERE   $__timeFilter(a.datetime) and a.RPL = $RPL and a.Area in ($Area) and Fence in ($Fence)\nGROUP BY a.datetime\n",
           "refId": "A",
           "select": [
             [
@@ -148,6 +149,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:747",
           "format": "short",
           "label": "# iv100",
           "logBase": 1,
@@ -156,6 +158,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:748",
           "format": "short",
           "label": "% iv100",
           "logBase": 1,
@@ -175,12 +178,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_POGODB}",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -207,16 +204,18 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.1",
+      "pluginVersion": "8.1.3",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
       "seriesOverrides": [
         {
+          "$$hashKey": "object:1086",
           "alias": "%IV100",
           "yaxis": 2
         },
         {
+          "$$hashKey": "object:1087",
           "alias": "%IV0",
           "yaxis": 2
         }
@@ -230,7 +229,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT a.datetime as 'time', sum(a.iv0) as '#iv0', 100*sum(iv0)/sum(Mons_all) as '%IV0'\nFROM stats_area a\nWHERE   $__timeFilter(a.datetime) and a.RPL = $RPL and a.Area in ($Area)\nGROUP BY a.datetime\n",
+          "rawSql": "SELECT $__timeGroup(a.Datetime,$__interval) as 'time', sum(a.iv0) as '#iv0', 100*sum(iv0)/sum(Mons_all) as '%IV0'\nFROM stats_area a\nWHERE   $__timeFilter(a.datetime) and a.RPL = $RPL and a.Area in ($Area) and Fence in ($Fence)\nGROUP BY a.datetime\n",
           "refId": "A",
           "select": [
             [
@@ -272,6 +271,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:1072",
           "format": "short",
           "label": "# iv0",
           "logBase": 1,
@@ -280,6 +280,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:1073",
           "format": "short",
           "label": "% iv0",
           "logBase": 1,
@@ -299,12 +300,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_POGODB}",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -331,16 +326,18 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.1",
+      "pluginVersion": "8.1.3",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
       "seriesOverrides": [
         {
+          "$$hashKey": "object:1161",
           "alias": "100*sum(b.shiny)/sum(a.Mons_all)",
           "yaxis": 2
         },
         {
+          "$$hashKey": "object:1162",
           "alias": "%shiny",
           "yaxis": 2
         }
@@ -354,7 +351,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT a.datetime as 'time', sum(b.shiny) as '#shiny', 100*sum(b.shiny)/sum(a.Mons_all) as '%shiny'\nFROM stats_area a, stats_worker b\nWHERE   $__timeFilter(a.datetime) and a.RPL = $RPL and a.Area in ($Area) and a.datetime = b.datetime and a.RPL = b.RPL\nGROUP BY a.datetime\n",
+          "rawSql": "SELECT $__timeGroup(a.Datetime,$__interval) as 'time', sum(b.shiny) as '#shiny', 100*sum(b.shiny)/sum(a.Mons_all) as '%shiny'\nFROM stats_area a, stats_worker b, Area c\nWHERE   $__timeFilter(a.datetime) and a.RPL = $RPL and a.Area in ($Area) and a.Fence in ($Fence) and a.datetime = b.datetime and a.RPL = b.RPL and c.area = a.area and c.origin = b.worker\nGROUP BY a.datetime\n",
           "refId": "A",
           "select": [
             [
@@ -396,6 +393,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:1250",
           "format": "short",
           "label": "#shiny",
           "logBase": 1,
@@ -404,6 +402,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:1251",
           "format": "short",
           "label": "%shiny",
           "logBase": 1,
@@ -423,12 +422,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_POGODB}",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -455,12 +448,13 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.1",
+      "pluginVersion": "8.1.3",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
       "seriesOverrides": [
         {
+          "$$hashKey": "object:1236",
           "alias": "#devices",
           "yaxis": 2
         }
@@ -474,7 +468,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT a.datetime as 'time', sum(a.Mons_all)/count(b.Worker) as '#Mons/device'\nFROM stats_area a, stats_worker b, Area c\nWHERE $__timeFilter(a.datetime) and a.datetime = b.datetime and a.RPL = $RPL and a.RPL = b.RPL and a.Area in ($Area) and a.Area = c.Area and b.Worker = c.Origin\nGROUP BY a.datetime\n",
+          "rawSql": "SELECT $__timeGroup(a.Datetime,$__interval) as 'time', sum(a.Mons_all)/count(b.Worker) as '#Mons/device'\nFROM stats_area a, stats_worker b, Area c\nWHERE $__timeFilter(a.datetime) and a.datetime = b.datetime and a.RPL = $RPL and a.RPL = b.RPL and a.Area in ($Area) and a.Fence in ($Fence) and a.Area = c.Area and b.Worker = c.Origin\nGROUP BY a.datetime\n",
           "refId": "A",
           "select": [
             [
@@ -516,6 +510,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:2823",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -524,6 +519,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:2824",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -539,7 +535,7 @@
     }
   ],
   "refresh": false,
-  "schemaVersion": 26,
+  "schemaVersion": 30,
   "style": "dark",
   "tags": [],
   "templating": {
@@ -548,7 +544,8 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_POGODB}",
-        "definition": "select RPL from stats_area;",
+        "definition": "select distinct(RPL) from stats_area;",
+        "description": null,
         "error": null,
         "hide": 0,
         "includeAll": false,
@@ -556,13 +553,12 @@
         "multi": false,
         "name": "RPL",
         "options": [],
-        "query": "select RPL from stats_area;",
+        "query": "select distinct(RPL) from stats_area;",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -571,7 +567,8 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_POGODB}",
-        "definition": "select substring_index(Area,'_',1) from stats_area;",
+        "definition": "select distinct(substring_index(Area,'_',1)) from stats_area;",
+        "description": null,
         "error": null,
         "hide": 0,
         "includeAll": true,
@@ -579,13 +576,35 @@
         "multi": false,
         "name": "Area",
         "options": [],
-        "query": "select substring_index(Area,'_',1) from stats_area;",
+        "query": "select distinct(substring_index(Area,'_',1)) from stats_area;",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_POGODB}",
+        "definition": "select distinct(Fence) from stats_area where Fence <> 'Unfenced';",
+        "description": null,
+        "error": null,
+        "hide": 0,
+        "includeAll": true,
+        "label": null,
+        "multi": true,
+        "name": "Fence",
+        "options": [],
+        "query": "select distinct(Fence) from stats_area where Fence <> 'Unfenced';",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -593,12 +612,12 @@
     ]
   },
   "time": {
-    "from": "now-30d",
+    "from": "now-24h",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "30. Mon stuff",
   "uid": "MXNPeYtMz",
-  "version": 12
+  "version": 17
 }
