@@ -14,7 +14,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "8.0.6"
+      "version": "8.1.2"
     },
     {
       "type": "panel",
@@ -38,6 +38,12 @@
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
         "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
         "type": "dashboard"
       }
     ]
@@ -46,7 +52,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1626548256564,
+  "iteration": 1631093301457,
   "links": [],
   "panels": [
     {
@@ -81,7 +87,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "8.1.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -198,7 +204,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "8.1.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -360,7 +366,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "8.1.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -493,13 +499,12 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "8.1.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
       "seriesOverrides": [
         {
-          "$$hashKey": "object:214",
           "alias": "Avgerage # device reboots per hour",
           "yaxis": 2
         }
@@ -562,7 +567,7 @@
           "label": "# restarts /h",
           "logBase": 1,
           "max": null,
-          "min": "0",
+          "min": null,
           "show": true
         },
         {
@@ -571,7 +576,7 @@
           "label": "#reboots /h",
           "logBase": 1,
           "max": null,
-          "min": "0",
+          "min": null,
           "show": true
         }
       ],
@@ -612,7 +617,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "8.1.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -725,7 +730,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "8.1.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -877,7 +882,7 @@
     ]
   },
   "timezone": "",
-  "title": "01. Stats KPIs",
+  "title": "01. Stats KPIs (ex nearby)",
   "uid": "jM5txJOMz",
-  "version": 24
+  "version": 25
 }

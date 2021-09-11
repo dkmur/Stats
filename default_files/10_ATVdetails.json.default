@@ -14,7 +14,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "8.1.2"
+      "version": "8.1.3"
     },
     {
       "type": "datasource",
@@ -52,7 +52,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1630668657668,
+  "iteration": 1631343315394,
   "links": [],
   "panels": [
     {
@@ -139,7 +139,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 102
+                "value": 94
               }
             ]
           },
@@ -194,6 +194,30 @@
                 "value": 85
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "55vmapper"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 94
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "mitm"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 91
+              }
+            ]
           }
         ]
       },
@@ -209,14 +233,14 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.1.2",
+      "pluginVersion": "8.1.3",
       "targets": [
         {
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\nleft(datetime,16) as 'datetime', \nifnull(arch,'no_data') as 'Architecture',\nifnull(rom,'no_data') as 'madRom',\nifnull(vm_script,'no_data') as 'vmscript',\nif(mitm='','no_data',mitm) as 'mitm',\ncount(origin) as '#devices'\nfrom ATVgeneral\n\nWHERE\ndatetime = '$datetime'\n\nGROUP BY datetime,arch,rom,vm_script,mitm\n",
+          "rawSql": "SELECT\nleft(datetime,16) as 'datetime', \nifnull(arch,'no_data') as 'Architecture',\nifnull(rom,'no_data') as 'madRom',\nifnull(vm_script,'no_data') as 'vmscript',\nifnull(55vmapper,'no_data') as '55vmapper',\nif(mitm='','no_data',mitm) as 'mitm',\ncount(origin) as '#devices'\nfrom ATVgeneral\n\nWHERE\ndatetime = '$datetime'\n\nGROUP BY datetime,arch,rom,vm_script,55vmapper,mitm\n",
           "refId": "A",
           "select": [
             [
@@ -356,14 +380,14 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.1.2",
+      "pluginVersion": "8.1.3",
       "targets": [
         {
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\nleft(datetime,16) as 'datetime',\nifnull(pogo_update,'no_data ') as 'pogo_update',\nifnull(rgc_update,'no_data ') as 'rgc_update',\nifnull(pd_update,'no_data ') as 'pd_update',\nifnull(vm_update,'no_data ') as 'vm_update',\nifnull(pingreboot,'no_data ') as 'pingreboot', \ncount(origin) as 'devices'\nfrom ATVgeneral\n\nWHERE\ndatetime = '$datetime'\n\nGROUP BY datetime, pogo_update, pd_update, rgc_update, pingreboot",
+          "rawSql": "SELECT\nleft(datetime,16) as 'datetime',\nifnull(pogo_update,'no_data ') as 'pogo_update',\nifnull(rgc_update,'no_data ') as 'rgc_update',\nifnull(pd_update,'no_data ') as 'pd_update',\nifnull(vm_update,'no_data ') as 'vm_update',\nifnull(pingreboot,'no_data ') as 'pingreboot', \ncount(origin) as 'devices'\nfrom ATVgeneral\n\nWHERE\ndatetime = '$datetime'\n\nGROUP BY datetime, pogo_update, pd_update, rgc_update, vm_update, pingreboot",
           "refId": "A",
           "select": [
             [
@@ -503,7 +527,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.1.2",
+      "pluginVersion": "8.1.3",
       "targets": [
         {
           "format": "table",
@@ -618,7 +642,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.1.2",
+      "pluginVersion": "8.1.3",
       "targets": [
         {
           "format": "table",
@@ -765,7 +789,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.1.2",
+      "pluginVersion": "8.1.3",
       "targets": [
         {
           "format": "table",
@@ -984,7 +1008,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.1.2",
+      "pluginVersion": "8.1.3",
       "targets": [
         {
           "format": "table",
@@ -1191,7 +1215,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.1.2",
+      "pluginVersion": "8.1.3",
       "targets": [
         {
           "format": "table",
@@ -1371,7 +1395,7 @@
           }
         ]
       },
-      "pluginVersion": "8.1.2",
+      "pluginVersion": "8.1.3",
       "targets": [
         {
           "format": "table",
@@ -1638,7 +1662,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.1.2",
+      "pluginVersion": "8.1.3",
       "targets": [
         {
           "format": "table",
@@ -1833,7 +1857,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.1.2",
+      "pluginVersion": "8.1.3",
       "targets": [
         {
           "format": "table",
@@ -2189,14 +2213,14 @@
           }
         ]
       },
-      "pluginVersion": "8.1.2",
+      "pluginVersion": "8.1.3",
       "targets": [
         {
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\nleft(datetime,16) as 'datetime',\nifnull(injector,'no_data') as 'injector',\nifnull(daemon,'no_data') as 'daemon',\nifnull(bootdelay,'no_data') as 'bootdelay',\nifnull(gzip,'no_data') as 'gzip',\nifnull(betamode,'no_data') as 'betamode',\nifnull(selinux,'no_data') as 'selinux',\nifnull(authid,'no_data') as 'authid',\nifnull(openlucky, 'no_data') as 'openLucky',\nifnull(rebootminutes, 'no_data') as 'rebootminutes',\nifnull(postdest, 'no_data') as 'destination',\ncount(origin) as '#devices'\nfrom ATVvm\n\nWHERE\ndatetime = '$datetime'\n\nGROUP BY injector,daemon,bootdelay,gzip,betamode,selinux,authid,openlucky,rebootminutes,postdest,deviceid",
+          "rawSql": "SELECT\nleft(datetime,16) as 'datetime',\nifnull(injector,'no_data') as 'injector',\nifnull(daemon,'no_data') as 'daemon',\nifnull(bootdelay,'no_data') as 'bootdelay',\nifnull(gzip,'no_data') as 'gzip',\nifnull(betamode,'no_data') as 'betamode',\nifnull(selinux,'no_data') as 'selinux',\nifnull(authid,'no_data') as 'authid',\nifnull(openlucky, 'no_data') as 'openLucky',\nifnull(rebootminutes, 'no_data') as 'rebootminutes',\nifnull(postdest, 'no_data') as 'destination',\ncount(origin) as '#devices'\nfrom ATVvm\n\nWHERE\ndatetime = '$datetime'\n\nGROUP BY injector,daemon,bootdelay,gzip,betamode,selinux,authid,openlucky,rebootminutes,postdest",
           "refId": "A",
           "select": [
             [
@@ -2300,7 +2324,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.1.2",
+      "pluginVersion": "8.1.3",
       "targets": [
         {
           "format": "table",
@@ -2421,7 +2445,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.1.2",
+      "pluginVersion": "8.1.3",
       "targets": [
         {
           "format": "table",
@@ -2542,7 +2566,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.1.2",
+      "pluginVersion": "8.1.3",
       "targets": [
         {
           "format": "table",
@@ -2627,5 +2651,5 @@
   "timezone": "",
   "title": "10. ATVdetails",
   "uid": "YBmfNzFGz",
-  "version": 43
+  "version": 47
 }

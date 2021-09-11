@@ -22,3 +22,11 @@ then
   mysqloptimize --skip-write-binlog -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $monthly_mon_database pokemon_history_$yearmonth
   fi
 fi
+
+# Monthly optimize Stats db
+if [ -z "$SQL_password" ]
+  then
+  mysqloptimize --skip-write-binlog -h$DB_IP -P$DB_PORT -u$SQL_user $STATS_DB
+  else
+  mysqloptimize --skip-write-binlog -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB
+fi

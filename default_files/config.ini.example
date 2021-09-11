@@ -94,7 +94,7 @@ monthly_mon_database=pogodb				# Database to be used for monthly pokemon backup 
 
 ## Pokestop / Quest cleanup ##
 stop_to_gym_remove=false				# Remove pokestops that became gym
-stop_no_quest_remove=false				# Remove pokestops that have no quest scanned for no_quest_days
+stop_no_quest_remove=false				# Remove pokestops that have not been updated and exist in trs_quest yet no quest scanned for no_quest_days
 no_quest_days=5						# Number of days of no quest scanned before deletion of pokestop
 recalc_quest_routes=false				# Weekly recalculation of quest routes
 quest_recalc_wait=60s					# Time in seconds to wait between quest route recalculations
@@ -105,6 +105,10 @@ gym_not_scanned_days=9999				# delete gym if not scanned for X days
 ## Backup MAD tables ##
 mad_backup=true						# Daily backup MAD database to /MADbackup. Following tables are excluded: filestore_chunks/filestore_meta/pokemon/raid/weather/trs_status/trs_visited/trs_stats_detect/trs_stats_detect_mon_raw/trs_stats_detect_fort_raw/trs_stats_location/trs_stats_location_raw/trs_quest/trs_usage/trs_s2cells
 backup_delete_days=7					# number of days to keep a backup after which it is deleted 
+
+## Job executor ##
+job="ATV%20-%20Reboot"					# jobname fo job to be executed by manually starting script, located in cron_files (job_executor.sh)
+job_wait=60s                                            # Wait time between jobs
 
 ## Cleanup of tables ##
 

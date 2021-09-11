@@ -14,7 +14,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "8.0.6"
+      "version": "8.1.2"
     },
     {
       "type": "panel",
@@ -38,6 +38,12 @@
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
         "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
         "type": "dashboard"
       }
     ]
@@ -46,7 +52,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1626731568332,
+  "iteration": 1631093188936,
   "links": [],
   "panels": [
     {
@@ -83,7 +89,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "8.1.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -262,7 +268,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "8.1.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -412,7 +418,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "8.1.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -530,7 +536,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "8.1.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -647,7 +653,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "8.1.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -771,7 +777,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "8.1.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -884,7 +890,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "8.1.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1004,7 +1010,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "8.1.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1174,7 +1180,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "8.1.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1323,7 +1329,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "8.1.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1436,7 +1442,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "8.1.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1547,7 +1553,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "8.1.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1734,7 +1740,7 @@
     ]
   },
   "timezone": "",
-  "title": "02. Stats network/area level",
+  "title": "02. Stats network/area level (ex nearby)",
   "uid": "KY-d_hOMz",
-  "version": 58
+  "version": 59
 }
