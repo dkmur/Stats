@@ -14,7 +14,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "8.1.2"
+      "version": "8.1.3"
     },
     {
       "type": "datasource",
@@ -52,7 +52,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1631020698033,
+  "iteration": 1631343315394,
   "links": [],
   "panels": [
     {
@@ -233,7 +233,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.1.2",
+      "pluginVersion": "8.1.3",
       "targets": [
         {
           "format": "table",
@@ -380,7 +380,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.1.2",
+      "pluginVersion": "8.1.3",
       "targets": [
         {
           "format": "table",
@@ -527,7 +527,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.1.2",
+      "pluginVersion": "8.1.3",
       "targets": [
         {
           "format": "table",
@@ -642,7 +642,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.1.2",
+      "pluginVersion": "8.1.3",
       "targets": [
         {
           "format": "table",
@@ -789,7 +789,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.1.2",
+      "pluginVersion": "8.1.3",
       "targets": [
         {
           "format": "table",
@@ -1008,7 +1008,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.1.2",
+      "pluginVersion": "8.1.3",
       "targets": [
         {
           "format": "table",
@@ -1215,7 +1215,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.1.2",
+      "pluginVersion": "8.1.3",
       "targets": [
         {
           "format": "table",
@@ -1395,7 +1395,7 @@
           }
         ]
       },
-      "pluginVersion": "8.1.2",
+      "pluginVersion": "8.1.3",
       "targets": [
         {
           "format": "table",
@@ -1662,7 +1662,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.1.2",
+      "pluginVersion": "8.1.3",
       "targets": [
         {
           "format": "table",
@@ -1857,7 +1857,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.1.2",
+      "pluginVersion": "8.1.3",
       "targets": [
         {
           "format": "table",
@@ -2213,14 +2213,14 @@
           }
         ]
       },
-      "pluginVersion": "8.1.2",
+      "pluginVersion": "8.1.3",
       "targets": [
         {
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\nleft(datetime,16) as 'datetime',\nifnull(injector,'no_data') as 'injector',\nifnull(daemon,'no_data') as 'daemon',\nifnull(bootdelay,'no_data') as 'bootdelay',\nifnull(gzip,'no_data') as 'gzip',\nifnull(betamode,'no_data') as 'betamode',\nifnull(selinux,'no_data') as 'selinux',\nifnull(authid,'no_data') as 'authid',\nifnull(openlucky, 'no_data') as 'openLucky',\nifnull(rebootminutes, 'no_data') as 'rebootminutes',\nifnull(postdest, 'no_data') as 'destination',\ncount(origin) as '#devices'\nfrom ATVvm\n\nWHERE\ndatetime = '$datetime'\n\nGROUP BY injector,daemon,bootdelay,gzip,betamode,selinux,authid,openlucky,rebootminutes,postdest,deviceid",
+          "rawSql": "SELECT\nleft(datetime,16) as 'datetime',\nifnull(injector,'no_data') as 'injector',\nifnull(daemon,'no_data') as 'daemon',\nifnull(bootdelay,'no_data') as 'bootdelay',\nifnull(gzip,'no_data') as 'gzip',\nifnull(betamode,'no_data') as 'betamode',\nifnull(selinux,'no_data') as 'selinux',\nifnull(authid,'no_data') as 'authid',\nifnull(openlucky, 'no_data') as 'openLucky',\nifnull(rebootminutes, 'no_data') as 'rebootminutes',\nifnull(postdest, 'no_data') as 'destination',\ncount(origin) as '#devices'\nfrom ATVvm\n\nWHERE\ndatetime = '$datetime'\n\nGROUP BY injector,daemon,bootdelay,gzip,betamode,selinux,authid,openlucky,rebootminutes,postdest",
           "refId": "A",
           "select": [
             [
@@ -2324,7 +2324,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.1.2",
+      "pluginVersion": "8.1.3",
       "targets": [
         {
           "format": "table",
@@ -2445,7 +2445,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.1.2",
+      "pluginVersion": "8.1.3",
       "targets": [
         {
           "format": "table",
@@ -2566,7 +2566,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.1.2",
+      "pluginVersion": "8.1.3",
       "targets": [
         {
           "format": "table",
@@ -2651,5 +2651,5 @@
   "timezone": "",
   "title": "10. ATVdetails",
   "uid": "YBmfNzFGz",
-  "version": 46
+  "version": 47
 }
