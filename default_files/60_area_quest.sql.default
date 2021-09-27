@@ -4,7 +4,6 @@ select @Datetime := concat(date(now() - interval 60 minute),' ', SEC_TO_TIME((TI
 
 
 INSERT INTO pogodb.stats_area_quest (Datetime,RPL, Area, Fence, stops, AR, nonAR)
-select
 @Datetime,
 '60',
 Area,

@@ -3,7 +3,6 @@
 select @Datetime := concat(date(curdate() - interval weekday(curdate()) + 7 day),' ','00:00:00');
 
 INSERT INTO pogodb.stats_area_quest (Datetime,RPL, Area, Fence, stops, AR, nonAR)
-select
 @Datetime,
 '10080',
 Area,

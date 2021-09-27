@@ -442,7 +442,7 @@ EOF
         )")
   rm -f $PATH_TO_STATS/areas/input_quest
 
-# create area files
+# create quest area RPL 15 files
 #  rm -f $PATH_TO_STATS/cron_files/*.sql
 #  rm -f $PATH_TO_STATS/cron_files/*.default
   for area in "$PATH_TO_STATS"areas/*.quest
@@ -455,14 +455,6 @@ EOF
     sed -i "s/Alphen/$AREA_NAME/g" $PATH_TO_STATS/cron_files/15_"$AREANAME"_"$FENCENAME"_area_quest.sql
     sed -i "s/Fency/$FENCE_NAME/g" $PATH_TO_STATS/cron_files/15_"$AREANAME"_"$FENCENAME"_area_quest.sql
     sed -i "s/FENCE_COORDS/$POLYGON/g" $PATH_TO_STATS/cron_files/15_"$AREANAME"_"$FENCENAME"_area_quest.sql
-    cp $PATH_TO_STATS/default_files/60_area_quest.sql.default $PATH_TO_STATS/cron_files/60_"$AREANAME"_"$FENCENAME"_area_quest.sql
-    sed -i "s/Alphen/$AREA_NAME/g" $PATH_TO_STATS/cron_files/60_"$AREANAME"_"$FENCENAME"_area_quest.sql
-    sed -i "s/Fency/$FENCE_NAME/g" $PATH_TO_STATS/cron_files/60_"$AREANAME"_"$FENCENAME"_area_quest.sql
-    sed -i "s/FENCE_COORDS/$POLYGON/g" $PATH_TO_STATS/cron_files/60_"$AREANAME"_"$FENCENAME"_area_quest.sql
-    cp $PATH_TO_STATS/default_files/1440_area_quest.sql.default $PATH_TO_STATS/cron_files/1440_"$AREANAME"_"$FENCENAME"_area_quest.sql
-    sed -i "s/Alphen/$AREA_NAME/g" $PATH_TO_STATS/cron_files/1440_"$AREANAME"_"$FENCENAME"_area_quest.sql
-    sed -i "s/Fency/$FENCE_NAME/g" $PATH_TO_STATS/cron_files/1440_"$AREANAME"_"$FENCENAME"_area_quest.sql
-    sed -i "s/FENCE_COORDS/$POLYGON/g" $PATH_TO_STATS/cron_files/1440_"$AREANAME"_"$FENCENAME"_area_quest.sql
   done
 fi
 
@@ -477,6 +469,8 @@ fi
 echo "Create remaining cron files"
 echo ""
 cp $PATH_TO_STATS/default_files/10080_area.sql.default $PATH_TO_STATS/cron_files/10080_area.sql
+cp $PATH_TO_STATS/default_files/60_area_quest.sql.default $PATH_TO_STATS/cron_files/60_area_quest.sql
+cp $PATH_TO_STATS/default_files/1440_area_quest.sql.default $PATH_TO_STATS/cron_files/1440_area_quest.sql
 cp $PATH_TO_STATS/default_files/10080_area_quest.sql.default $PATH_TO_STATS/cron_files/10080_area_quest.sql
 cp $PATH_TO_STATS/default_files/15_worker.sql.default $PATH_TO_STATS/cron_files/15_worker.sql
 cp $PATH_TO_STATS/default_files/60_worker.sql.default $PATH_TO_STATS/cron_files/60_worker.sql
