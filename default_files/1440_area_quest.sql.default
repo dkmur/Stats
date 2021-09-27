@@ -2,7 +2,7 @@
 
 select @Datetime := concat(date(now() - interval 1440 minute),' ', SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 1440 minute)) DIV 86400) * 86400));
 
-INSERT INTO pogodb.stats_area_quest (Datetime,RPL, Worker, Area, Fence, stops, AR, nonAR)
+INSERT INTO pogodb.stats_area_quest (Datetime,RPL, Area, Fence, stops, AR, nonAR)
 select
 @Datetime,
 '1440',

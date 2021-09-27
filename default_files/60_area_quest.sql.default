@@ -3,7 +3,7 @@
 select @Datetime := concat(date(now() - interval 60 minute),' ', SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 60 minute)) DIV 3600) * 3600));
 
 
-INSERT INTO pogodb.stats_area_quest (Datetime,RPL, Worker, Area, Fence, stops, AR, nonAR)
+INSERT INTO pogodb.stats_area_quest (Datetime,RPL, Area, Fence, stops, AR, nonAR)
 select
 @Datetime,
 '60',
