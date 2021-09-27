@@ -279,14 +279,14 @@ then
   echo ""
 fi
 
-# Create area files based on MAD fences
+# Create mon_mitm area files based on MAD fences
 if [[ "$FENCE" == "MAD" ]]
 then
-  echo "Creating MAD fence config and area files"
+  echo "Creating MAD mon_mitm fence config and area files"
   echo ""
   rm -f $PATH_TO_STATS/areas/*.mad
 
-# get MAD fence data
+# get MAD mon_mitm fence data
   if [ -z "$SQL_password" ]
   then
         query(){
@@ -336,7 +336,7 @@ EOF
         )")
   rm -f $PATH_TO_STATS/areas/input
 
-# create area files
+# create mon_mitm area files
   rm -f $PATH_TO_STATS/cron_files/*.sql
   rm -f $PATH_TO_STATS/cron_files/*.default
   for area in "$PATH_TO_STATS"areas/*.mad
@@ -360,7 +360,7 @@ EOF
   done
 fi
 
-# Add area files for unfenced data
+# Add mon_mitm area files for unfenced data
 echo ""
 echo "Adding area unfenced"
 echo ""
@@ -385,9 +385,99 @@ then
   fi
 fi
 
-echo "Creating cron files"
+# Create pokestop area files based on MAD fences
+if [[ "$FENCE" == "MAD" ]]
+then
+  echo "Creating MAD pokestop fence config and area files"
+  echo ""
+  rm -f $PATH_TO_STATS/areas/*.quest
+
+# get MAD pokestop fence data
+  if [ -z "$SQL_password" ]
+  then
+        query(){
+        mysql -NB -h$DB_IP -P$DB_PORT -u$SQL_user $MAD_DB -e "$1;"
+        }
+  else
+        query(){
+        mysql -NB -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $MAD_DB -e "$1;"
+        }
+  fi
+        while read -r geofence_id name;
+        do
+
+        query "SELECT LEFT(fence_data,length(fence_data)-1) from settings_geofence where geofence_id = $geofence_id;" | sed 's/\[\"\[/[/g' | sed 's/",/\n/g' | sed 's/"//g' | sed 's/^ //g' | sed 's/\[/§\[/g' > $PATH_TO_STATS/areas/input_quest
+
+
+                IFS=§;
+                for i in `cat $PATH_TO_STATS/areas/input_quest`;
+                do
+                        shopt -s lastpipe
+                        echo $i | while read -r line;
+                                do
+                                        if [[ $line == *"["* ]] || [[ $line == *"]"* ]]; then
+                                                coord=1
+                                                fence=$(echo -n ${line} | sed 's/ /_/g' | tr -d "]" | tr -d "[")
+                                                exec > $PATH_TO_STATS/areas/$fence.quest
+                                                echo AREA_NAME=\"$name\"
+                                                echo -n FENCE_NAME=\"
+                                                echo -n "$line" | tr -d "]" | tr -d "["
+                                                echo \"
+                                        elif [ ! -z "$line" ]; then
+                                                if [[ $coord == 1 ]]; then
+                                                echo -n POLYGON=\"
+                                                fi
+                                        echo -n $line | sed s/"]"/\n/ | sed s/,/' '/g
+                                        echo -n ", "
+                                        let "coord+=1"
+                                        fi
+                                done
+                        echo -n $i | tail +2 | head -1 | sed s/,/' '/g | sed s/$/\"/g
+                done | sed s/"(,"/"("/g | sed s/", ,"/,/g
+                unset IFS
+
+        done < <(query "$(cat << EOF
+        select geofence_id, name from settings_geofence where geofence_id in (select geofence_included from settings_area_pokestops where level = 0);
+EOF
+        )")
+  rm -f $PATH_TO_STATS/areas/input_quest
+
+# create area files
+#  rm -f $PATH_TO_STATS/cron_files/*.sql
+#  rm -f $PATH_TO_STATS/cron_files/*.default
+  for area in "$PATH_TO_STATS"areas/*.quest
+  do
+    echo "$area"
+    source $area
+    FENCENAME=$(echo $FENCE_NAME | sed s/' '/_/g)
+    AREANAME=$(echo $AREA_NAME | sed s/' '/_/g)
+    cp $PATH_TO_STATS/default_files/15_area_quest.sql.default $PATH_TO_STATS/cron_files/15_"$AREANAME"_"$FENCENAME"_area_quest.sql
+    sed -i "s/Alphen/$AREA_NAME/g" $PATH_TO_STATS/cron_files/15_"$AREANAME"_"$FENCENAME"_area_quest.sql
+    sed -i "s/Fency/$FENCE_NAME/g" $PATH_TO_STATS/cron_files/15_"$AREANAME"_"$FENCENAME"_area_quest.sql
+    sed -i "s/FENCE_COORDS/$POLYGON/g" $PATH_TO_STATS/cron_files/15_"$AREANAME"_"$FENCENAME"_area_quest.sql
+    cp $PATH_TO_STATS/default_files/60_area_quest.sql.default $PATH_TO_STATS/cron_files/60_"$AREANAME"_"$FENCENAME"_area_quest.sql
+    sed -i "s/Alphen/$AREA_NAME/g" $PATH_TO_STATS/cron_files/60_"$AREANAME"_"$FENCENAME"_area_quest.sql
+    sed -i "s/Fency/$FENCE_NAME/g" $PATH_TO_STATS/cron_files/60_"$AREANAME"_"$FENCENAME"_area_quest.sql
+    sed -i "s/FENCE_COORDS/$POLYGON/g" $PATH_TO_STATS/cron_files/60_"$AREANAME"_"$FENCENAME"_area_quest.sql
+    cp $PATH_TO_STATS/default_files/1440_area_quest.sql.default $PATH_TO_STATS/cron_files/1440_"$AREANAME"_"$FENCENAME"_area_quest.sql
+    sed -i "s/Alphen/$AREA_NAME/g" $PATH_TO_STATS/cron_files/1440_"$AREANAME"_"$FENCENAME"_area_quest.sql
+    sed -i "s/Fency/$FENCE_NAME/g" $PATH_TO_STATS/cron_files/1440_"$AREANAME"_"$FENCENAME"_area_quest.sql
+    sed -i "s/FENCE_COORDS/$POLYGON/g" $PATH_TO_STATS/cron_files/1440_"$AREANAME"_"$FENCENAME"_area_quest.sql
+  done
+fi
+
+#adjust for scanner type
+if [ -z ${vmad+x} ]
+then
+  sed -i "s/-- yy //g" $PATH_TO_STATS/cron_files/*_area_quest.sql
+else
+  sed -i "s/-- xx //g" $PATH_TO_STATS/cron_files/*_area_quest.sql
+fi
+
+echo "Create remaining cron files"
 echo ""
 cp $PATH_TO_STATS/default_files/10080_area.sql.default $PATH_TO_STATS/cron_files/10080_area.sql
+cp $PATH_TO_STATS/default_files/10080_area_quest.sql.default $PATH_TO_STATS/cron_files/10080_area_quest.sql
 cp $PATH_TO_STATS/default_files/15_worker.sql.default $PATH_TO_STATS/cron_files/15_worker.sql
 cp $PATH_TO_STATS/default_files/60_worker.sql.default $PATH_TO_STATS/cron_files/60_worker.sql
 cp $PATH_TO_STATS/default_files/1440_worker.sql.default $PATH_TO_STATS/cron_files/1440_worker.sql
