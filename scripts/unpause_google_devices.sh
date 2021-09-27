@@ -29,7 +29,7 @@ echo "Unpausing $origin and restarting pogo"
 echo ""
 curl --silent --output /dev/null --show-error --fail -u $MADmin_user:$MADmin_pass "$MADmin_url/api/device/$deviceid" -H "Content-Type: application/json-rpc" --data-binary '{"call":"device_state","args":{"active":1}}'
 sleep 2s
-curl --silent --output /dev/null --show-error --fail -u $MADmin_user:$MADmin_pass '$MADmin_url/quit_pogo?origin=$origin&adb=False&restart=1'
+curl --silent --output /dev/null --show-error --fail -u $MADmin_user:$MADmin_pass "$MADmin_url/quit_pogo?origin=$origin&adb=False&restart=1"
 counter=$((counter+1))
 sleep 3s
 
