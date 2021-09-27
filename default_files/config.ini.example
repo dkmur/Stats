@@ -106,10 +106,6 @@ gym_not_scanned_days=9999				# delete gym if not scanned for X days
 mad_backup=true						# Daily backup MAD database to /MADbackup. Following tables are excluded: filestore_chunks/filestore_meta/pokemon/raid/weather/trs_status/trs_visited/trs_stats_detect/trs_stats_detect_mon_raw/trs_stats_detect_fort_raw/trs_stats_location/trs_stats_location_raw/trs_quest/trs_usage/trs_s2cells
 backup_delete_days=7					# number of days to keep a backup after which it is deleted 
 
-## Job executor ##
-job="ATV%20-%20Reboot"					# jobname fo job to be executed by manually starting script, located in cron_files (job_executor.sh)
-job_wait=60s                                            # Wait time between jobs
-
 ## Cleanup of tables ##
 
 # Stats table cleanup (stats_worker + stats_area) for different ReportPeriodLength in days
@@ -129,9 +125,22 @@ log_worker1440=9999
 log_worker10080=9999
 
 # MAD tables cleanup (true or false) #
-pokemon=false						# delete data from table pokemon + trs_stats_detect_seen_type older then 1 hour
-trs_stats_detect_raw=false                              # delete data from table trs_stats_detect_raw older then 1 hour
-trs_stats_location_raw=false                            # delete data from table trs_stats_location_raw  older then 1 hour
-trs_stats_detect=false					# delete yesterdays data from table trs_stats_detect
-trs_stats_location=false				# delete yesterdays data from table trs_stats_location
-trs_usage=false						# delete data older then 30 days
+pokemon=true						# delete data from table pokemon + trs_stats_detect_seen_type older then 1 hour
+trs_stats_detect_raw=true                               # delete data from table trs_stats_detect_raw older then 1 hour
+trs_stats_location_raw=true                             # delete data from table trs_stats_location_raw  older then 1 hour
+trs_stats_detect=true					# delete yesterdays data from table trs_stats_detect
+trs_stats_location=true					# delete yesterdays data from table trs_stats_location
+trs_usage=true						# delete data older then 30 days
+
+## Setting for scripts located in Stats/scripts, should you ever use them ##
+# Job executors #
+job="ATV%20-%20Reboot"                                  # jobname fo job to be executed by manually starting script, located in cron_files (job_executor.sh)
+job_wait=60s                                            # Wait time between jobs
+# Pausing google or ptc "noproto" #
+no_proto_minutes=30					# #minutes required of no proto received before pausing device
+# Unpause google devices #
+batch_wait_google=10m					# time to sleep between activating batches of devices
+batch_size_google=20					# #devices to activate per batch
+# Unpause ptc devices #
+batch_wait_ptc=10m					# time to sleep between activating batches of devices
+batch_size_ptc=10					# #devices to activate per batch

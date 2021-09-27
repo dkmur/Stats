@@ -5,8 +5,8 @@ CREATE PROCEDURE pogodb.mon_history_temp_cleanup()
   DECLARE RowCount INT;
   SET RowCount = (SELECT count(first_scanned) FROM pogodb.pokemon_history_temp WHERE first_scanned < CURDATE());
    WHILE RowCount > 0 DO
-   DELETE FROM pogodb.pokemon_history_temp WHERE first_scanned < CURDATE() LIMIT 25000;
-   SET RowCount = RowCount - 25000;
+   DELETE FROM pogodb.pokemon_history_temp WHERE first_scanned < CURDATE() LIMIT 15000;
+   SET RowCount = RowCount - 15000;
    SELECT SLEEP(1);
    END WHILE;
  END;  
@@ -20,8 +20,8 @@ CREATE PROCEDURE rmdb.pokemon_cleanup()
   DECLARE RowCount INT;
   SET RowCount = (SELECT count(last_modified) FROM rmdb.pokemon WHERE CONVERT_TZ(last_modified, '+00:00', @@global.time_zone) < now() - interval 1 hour);
    WHILE RowCount > 0 DO
-   DELETE FROM rmdb.pokemon WHERE CONVERT_TZ(last_modified, '+00:00', @@global.time_zone) < now() - interval 1 hour LIMIT 25000;
-   SET RowCount = RowCount - 25000;
+   DELETE FROM rmdb.pokemon WHERE CONVERT_TZ(last_modified, '+00:00', @@global.time_zone) < now() - interval 1 hour LIMIT 15000;
+   SET RowCount = RowCount - 15000;
    SELECT SLEEP(1);
    END WHILE;
  END;  
@@ -35,10 +35,25 @@ CREATE PROCEDURE rmdb.detect_seen_cleanup()
   DECLARE RowCount INT;
   SET RowCount = (SELECT count(encounter_id) FROM rmdb.trs_stats_detect_seen_type WHERE encounter_id not in (SELECT encounter_id FROM rmdb.pokemon));
    WHILE RowCount > 0 DO
-   DELETE FROM rmdb.trs_stats_detect_seen_type WHERE encounter_id not in (SELECT encounter_id FROM rmdb.pokemon);
-   SET RowCount = RowCount - 25000;
+   DELETE FROM rmdb.trs_stats_detect_seen_type WHERE encounter_id not in (SELECT encounter_id FROM rmdb.pokemon) LIMIT 15000;
+   SET RowCount = RowCount - 15000;
    SELECT SLEEP(1);
    END WHILE;
  END;  
+//
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS pogodb.move_mon_to_history;
+DELIMITER //
+CREATE PROCEDURE pogodb.move_mon_to_history()
+ BEGIN
+  DECLARE RowCount INT;
+  SET RowCount = (SELECT count(first_scanned) FROM pogodb.pokemon_history_temp WHERE first_scanned < CURDATE());
+   WHILE RowCount > 0 DO
+   INSERT IGNORE INTO pogodb.pokemon_history select * FROM pogodb.pokemon_history_temp WHERE first_scanned < curdate() LIMIT 15000;
+   SET RowCount = RowCount - 15000;
+   SELECT SLEEP(1);
+   END WHILE;
+ END;
 //
 DELIMITER ;

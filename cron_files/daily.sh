@@ -8,9 +8,9 @@ if "$mon_backup"
 then
   if [ -z "$SQL_password" ]
   then
-  mysql -h$DB_IP -P$DB_PORT -u$SQL_user $STATS_DB -e "SET SESSION tx_isolation = 'READ-UNCOMMITTED'; insert ignore into pokemon_history select * from pokemon_history_temp where first_scanned < curdate();"
+  mysql -h$DB_IP -P$DB_PORT -u$SQL_user $STATS_DB -e "SET SESSION tx_isolation = 'READ-UNCOMMITTED'; CALL move_mon_to_history();"
   else
-  mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB -e "SET SESSION tx_isolation = 'READ-UNCOMMITTED'; insert ignore into pokemon_history select * from pokemon_history_temp where first_scanned < curdate();"
+  mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB -e "SET SESSION tx_isolation = 'READ-UNCOMMITTED'; CALL move_mon_to_history();"
   fi
 fi
 
