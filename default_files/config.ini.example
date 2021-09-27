@@ -139,8 +139,8 @@ job_wait=60s                                            # Wait time between jobs
 # Pausing google or ptc "noproto" #
 no_proto_minutes=30					# #minutes required of no proto received before pausing device
 # Unpause google devices #
-batch_wait_google=10m					# #minutes to sleep between activating batches of devices
+batch_wait_google=10m					# time to sleep between activating batches of devices
 batch_size_google=20					# #devices to activate per batch
 # Unpause ptc devices #
-batch_wait_ptc=10m					# #minutes to sleep between activating batches of devices
+batch_wait_ptc=10m					# time to sleep between activating batches of devices
 batch_size_ptc=10					# #devices to activate per batch
