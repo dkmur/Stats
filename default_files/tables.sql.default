@@ -78,6 +78,8 @@ CREATE TABLE IF NOT EXISTS `stats_area_quest` (
   `stops` int(11) DEFAULT NULL,
   `AR` int(11) DEFAULT NULL,
   `nonAR` int(11) DEFAULT NULL,
+  `ARcum` int(11) DEFAULT NULL,
+  `nonARcum` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `stats_area_quest_Datetime` (`Datetime`),
   KEY `stats_area_quest_RPL` (`RPL`),
@@ -560,6 +562,11 @@ ADD COLUMN IF NOT EXISTS `numNeCl_En` int(6) DEFAULT NULL,
 ADD COLUMN IF NOT EXISTS `timeNeCl_En` int(6) DEFAULT NULL,
 MODIFY Spawnpoints int(6);
 
+ALTER TABLE `stats_area_quest`
+ADD COLUMN IF NOT EXISTS `ARcum` int(11) DEFAULT NULL,
+ADD COLUMN IF NOT EXISTS `nonARcum` int(11) DEFAULT NULL
+;
+
 
 ALTER TABLE `stats_worker`
 ADD COLUMN IF NOT EXISTS `locReports` int(11) DEFAULT NULL AFTER `WkSt`,
@@ -662,4 +669,4 @@ ADD COLUMN IF NOT EXISTS `pogoNotOpen` INT DEFAULT NULL
 
 -- update version
 INSERT IGNORE INTO version values ('stats',2);
-UPDATE version set version = 17 where version.key = 'stats';
+UPDATE version set version = 18 where version.key = 'stats';

@@ -3,7 +3,7 @@
 select @Datetime := concat(date(now() - interval 60 minute),' ', SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 60 minute)) DIV 3600) * 3600));
 
 
-INSERT IGNORE INTO pogodb.stats_area_quest (Datetime,RPL, Area, Fence, stops, AR, nonAR)
+INSERT IGNORE INTO pogodb.stats_area_quest (Datetime,RPL, Area, Fence, stops, AR, nonAR, ARcum, nonARcum)
 SELECT
 @Datetime,
 '60',
@@ -11,7 +11,9 @@ Area,
 Fence,
 max(stops),
 sum(AR),
-sum(nonAR)
+sum(nonAR),
+max(ARcum),
+max(nonARcum)
 
 from pogodb.stats_area_quest
 where Datetime like concat(left(@Datetime,13),'%') and RPL = 15

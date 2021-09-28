@@ -18,9 +18,14 @@ update pogodb.stats_area_quest
 set
 stops = (select count(pokestop_id) from rmdb.pokestop a where ST_CONTAINS(@Fence, point(a.latitude,a.longitude))),
 -- xx AR = (SELECT count(b.GUID) FROM rmdb.pokestop a, rmdb.trs_quest b WHERE a.pokestop_id = b.GUID and b.with_ar = 1 and from_unixtime(b.quest_timestamp) >=  @start and from_unixtime(b.quest_timestamp) <  @stop and ST_CONTAINS(@Fence, point(a.latitude,a.longitude))),
--- xx nonAR = (SELECT count(b.GUID) FROM rmdb.pokestop a, rmdb.trs_quest b WHERE a.pokestop_id = b.GUID and b.with_ar = 0 and from_unixtime(b.quest_timestamp) >=  @start and from_unixtime(b.quest_timestamp) <  @stop and ST_CONTAINS(@Fence, point(a.latitude,a.longitude)))
+-- xx nonAR = (SELECT count(b.GUID) FROM rmdb.pokestop a, rmdb.trs_quest b WHERE a.pokestop_id = b.GUID and b.with_ar = 0 and from_unixtime(b.quest_timestamp) >=  @start and from_unixtime(b.quest_timestamp) <  @stop and ST_CONTAINS(@Fence, point(a.latitude,a.longitude))),
+-- xx ARcum = (SELECT count(b.GUID) FROM rmdb.pokestop a, rmdb.trs_quest b WHERE a.pokestop_id = b.GUID and b.with_ar = 1 and date(from_unixtime(b.quest_timestamp)) =  date(@start) and from_unixtime(b.quest_timestamp) <  @stop and ST_CONTAINS(@Fence, point(a.latitude,a.longitude))),
+-- xx nonARcum = (SELECT count(b.GUID) FROM rmdb.pokestop a, rmdb.trs_quest b WHERE a.pokestop_id = b.GUID and b.with_ar = 0 and date(from_unixtime(b.quest_timestamp)) =  date(@start) and from_unixtime(b.quest_timestamp) <  @stop and ST_CONTAINS(@Fence, point(a.latitude,a.longitude)))
+
 -- yy AR = (SELECT count(b.GUID) FROM rmdb.pokestop a, rmdb.trs_quest b WHERE a.pokestop_id = b.GUID and from_unixtime(b.quest_timestamp) >=  @start and from_unixtime(b.quest_timestamp) <  @stop and ST_CONTAINS(@Fence, point(a.latitude,a.longitude))),
--- yy nonAR = 0
+-- yy nonAR = 0,
+-- yy ARcum = (SELECT count(b.GUID) FROM rmdb.pokestop a, rmdb.trs_quest b WHERE a.pokestop_id = b.GUID and date(from_unixtime(b.quest_timestamp)) =  date(@start) and from_unixtime(b.quest_timestamp) <  @stop and ST_CONTAINS(@Fence, point(a.latitude,a.longitude))),
+-- yy nonARcum = 0
 
 where
 pogodb.stats_area_quest.Area = @Area and
