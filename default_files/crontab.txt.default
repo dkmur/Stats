@@ -11,7 +11,7 @@
 21 0 * * 1 cat pathToStatscron_files/10080_area.sql | mysql userpass STATS_DB
 ## Area stats quest
 4-59/15 * * * * cat pathToStatscron_files/15_*_area_quest.sql | mysql userpass STATS_DB
-6 * * * * cat pathToStatscron_files/60_area_quest.sql | mysql userpass STATS_DB
+6 * * * * cat pathToStatscron_files/60_*_area_quest.sql | mysql userpass STATS_DB
 8 0 * * * cat pathToStatscron_files/1440_area_quest.sql | mysql userpass STATS_DB
 10 0 * * 1 cat pathToStatscron_files/10080_area_quest.sql | mysql userpass STATS_DB
 ## Worker stats

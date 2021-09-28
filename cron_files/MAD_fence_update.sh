@@ -141,8 +141,10 @@ EOF
         )")
   rm -f $PATH_TO_STATS/areas/input_quest
 
-# create quest area RPL 15 files
+# create quest area RPL 15+60 files
   rm -f $PATH_TO_STATS/cron_files/15*_area_quest.sql
+  rm -f $PATH_TO_STATS/cron_files/60*_area_quest.sql
+  rm -f $PATH_TO_STATS/cron_files/60_area_quest.sql
   for area in "$PATH_TO_STATS"areas/*.quest
   do
     echo "$area"
@@ -153,6 +155,10 @@ EOF
     sed -i "s/Alphen/$AREA_NAME/g" $PATH_TO_STATS/cron_files/15_"$AREANAME"_"$FENCENAME"_area_quest.sql
     sed -i "s/Fency/$FENCE_NAME/g" $PATH_TO_STATS/cron_files/15_"$AREANAME"_"$FENCENAME"_area_quest.sql
     sed -i "s/FENCE_COORDS/$POLYGON/g" $PATH_TO_STATS/cron_files/15_"$AREANAME"_"$FENCENAME"_area_quest.sql
+    cp $PATH_TO_STATS/default_files/60_area_quest.sql.default $PATH_TO_STATS/cron_files/60_"$AREANAME"_"$FENCENAME"_area_quest.sql
+    sed -i "s/Alphen/$AREA_NAME/g" $PATH_TO_STATS/cron_files/60_"$AREANAME"_"$FENCENAME"_area_quest.sql
+    sed -i "s/Fency/$FENCE_NAME/g" $PATH_TO_STATS/cron_files/60_"$AREANAME"_"$FENCENAME"_area_quest.sql
+    sed -i "s/FENCE_COORDS/$POLYGON/g" $PATH_TO_STATS/cron_files/60_"$AREANAME"_"$FENCENAME"_area_quest.sql
   done
 fi
 
