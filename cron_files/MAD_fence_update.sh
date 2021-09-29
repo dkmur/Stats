@@ -174,6 +174,8 @@ fi
 cp $PATH_TO_STATS/default_files/10080_area.sql.default $PATH_TO_STATS/cron_files/10080_area.sql
 sed -i "s/pogodb/$STATS_DB/g" $PATH_TO_STATS/cron_files/*_area.sql
 sed -i "s/rmdb/$MAD_DB/g" $PATH_TO_STATS/cron_files/*_area.sql
+sed -i "s/pogodb/$STATS_DB/g" $PATH_TO_STATS/cron_files/*_area_quest.sql
+sed -i "s/rmdb/$MAD_DB/g" $PATH_TO_STATS/cron_files/*_area_quest.sql
 
 # Add area files for unfenced data
 cp $PATH_TO_STATS/default_files/15_area_unfenced.sql.default $PATH_TO_STATS/cron_files/15_ZZZZZ_Unfenced_area.sql
