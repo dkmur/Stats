@@ -4,11 +4,16 @@
 7 1 * * * cd pathToStatscron_files && ./daily.sh
 20 1 * * 1 cd pathToStatscron_files && ./weekly.sh
 5 5 1 * * cd pathToStatscron_files && ./month.sh
-## Area stats
+## Area stats mon_mitm
 */15 * * * * cat pathToStatscron_files/15_*_area.sql | mysql userpass STATS_DB
 0 * * * * cat pathToStatscron_files/60_*_area.sql | mysql userpass STATS_DB
 6 0 * * * cat pathToStatscron_files/1440_*_area.sql | mysql userpass STATS_DB
 21 0 * * 1 cat pathToStatscron_files/10080_area.sql | mysql userpass STATS_DB
+## Area stats quest
+4-59/15 * * * * cat pathToStatscron_files/15_*_area_quest.sql | mysql userpass STATS_DB
+6 * * * * cat pathToStatscron_files/60_*_area_quest.sql | mysql userpass STATS_DB
+8 0 * * * cat pathToStatscron_files/1440_area_quest.sql | mysql userpass STATS_DB
+10 0 * * 1 cat pathToStatscron_files/10080_area_quest.sql | mysql userpass STATS_DB
 ## Worker stats
 */1 * * * * mysql userpass STATS_DB -e "UPDATE STATS_DB.stats_worker SET missingProtoMinute = missingProtoMinute + 1 WHERE Datetime = concat(date(now() - interval 0 minute),' ', (SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 0 minute)) DIV 900) * 900))) and Worker in (select b.name from MAD_DB.trs_status a, MAD_DB.settings_device b where a.device_id = b.device_id and lastProtoDateTime < now() - interval 1 minute);"
 2-59/15 * * * * cd pathToStatscron_files/ && mysql userpass < 15_worker.sql

@@ -67,7 +67,25 @@ CREATE TABLE IF NOT EXISTS `stats_area` (
   KEY `stats_area_RPL` (`RPL`),
   KEY `stats_area_Area` (`Area`),
   KEY `stats_area_Fence` (`Fence`)
-) ENGINE=InnoDB AUTO_INCREMENT=1256508 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `stats_area_quest` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `Datetime` datetime NOT NULL,
+  `RPL` smallint(6) NOT NULL,
+  `Area` varchar(40) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `Fence` varchar(40) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT `Area`,
+  `stops` int(11) DEFAULT NULL,
+  `AR` int(11) DEFAULT NULL,
+  `nonAR` int(11) DEFAULT NULL,
+  `ARcum` int(11) DEFAULT NULL,
+  `nonARcum` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `stats_area_quest_Datetime` (`Datetime`),
+  KEY `stats_area_quest_RPL` (`RPL`),
+  KEY `stats_area_quest_Area` (`Area`),
+  KEY `stats_area_quest_Fence` (`Fence`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `stats_worker` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -105,7 +123,7 @@ CREATE TABLE IF NOT EXISTS `stats_worker` (
   KEY `stats_worker_Datetime` (`Datetime`),
   KEY `stats_worker_Worker` (`Worker`),
   KEY `stats_worker_RPL` (`RPL`)
-) ENGINE=InnoDB AUTO_INCREMENT=7487972 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `pokemon_history` (
   `encounter_id` bigint(20) unsigned NOT NULL,
@@ -544,6 +562,11 @@ ADD COLUMN IF NOT EXISTS `numNeCl_En` int(6) DEFAULT NULL,
 ADD COLUMN IF NOT EXISTS `timeNeCl_En` int(6) DEFAULT NULL,
 MODIFY Spawnpoints int(6);
 
+ALTER TABLE `stats_area_quest`
+ADD COLUMN IF NOT EXISTS `ARcum` int(11) DEFAULT NULL,
+ADD COLUMN IF NOT EXISTS `nonARcum` int(11) DEFAULT NULL
+;
+
 
 ALTER TABLE `stats_worker`
 ADD COLUMN IF NOT EXISTS `locReports` int(11) DEFAULT NULL AFTER `WkSt`,
@@ -646,4 +669,4 @@ ADD COLUMN IF NOT EXISTS `pogoNotOpen` INT DEFAULT NULL
 
 -- update version
 INSERT IGNORE INTO version values ('stats',2);
-UPDATE version set version = 16 where version.key = 'stats';
+UPDATE version set version = 18 where version.key = 'stats';
