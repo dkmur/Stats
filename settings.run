@@ -47,6 +47,7 @@ fi
 if [ $first_install != "1" ]
   then
   echo "First install of Stats, proceeding"
+  statsDBversion=1
   echo ""
   else
   # Check current stats db version
