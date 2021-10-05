@@ -21,15 +21,6 @@ if ((${DBversion/./} > 101)) ;
   exit
 fi
 
-# Check current stats db version
-echo ""
-if [ -z "$SQL_password" ]
-then
-  statsDBversion=$(mysql -h$DB_IP -P$DB_PORT -u$SQL_user $STATS_DB -sN -e "select version from version where version.key = 'stats'";)
-else
-  statsDBversion=$(mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB -sN -e "select version from version where version.key = 'stats'";)
-fi
-
 # grrrrrrrrrrr had to implement db version long time ago
 # check first install, does stats_worker even exist
 if [ -z "$SQL_password" ]
@@ -58,6 +49,14 @@ if [ $first_install != "1" ]
   echo "First install of Stats, proceeding"
   echo ""
   else
+  # Check current stats db version
+  echo ""
+    if [ -z "$SQL_password" ]
+    then
+      statsDBversion=$(mysql -h$DB_IP -P$DB_PORT -u$SQL_user $STATS_DB -sN -e "select version from version where version.key = 'stats'";)
+    else
+      statsDBversion=$(mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB -sN -e "select version from version where version.key = 'stats'";)
+    fi
   echo "Not first install, checking old V1 table updates"
     if [[ $V1_check1 != "1" || $V1_check2 != "1" ]]
     then
