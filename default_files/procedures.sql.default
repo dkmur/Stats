@@ -48,9 +48,9 @@ DELIMITER //
 CREATE PROCEDURE pogodb.move_mon_to_history()
  BEGIN
   DECLARE RowCount INT;
-  SET RowCount = (SELECT count(first_scanned) FROM pogodb.pokemon_history_temp WHERE first_scanned < CURDATE());
+  SET RowCount = (SELECT count(first_scanned) FROM pogodb.pokemon_history_temp WHERE date(first_scanned) < CURDATE());
    WHILE RowCount > 0 DO
-   INSERT IGNORE INTO pogodb.pokemon_history select * FROM pogodb.pokemon_history_temp WHERE first_scanned < curdate() LIMIT 15000;
+   INSERT IGNORE INTO pogodb.pokemon_history select * FROM pogodb.pokemon_history_temp WHERE date(first_scanned) < curdate() LIMIT 15000;
    SET RowCount = RowCount - 15000;
    SELECT SLEEP(1);
    END WHILE;
