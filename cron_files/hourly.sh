@@ -27,10 +27,10 @@ if "$trs_stats_detect_raw"
 then
   if [ -z "$SQL_password" ]
   then
-  mysql -h$DB_IP -P$DB_PORT -u$SQL_user $MAD_DB -e "delete from trs_stats_detect_mon_raw where from_unixtime(timestamp_scan) < now() - interval 1 hour;"
+  mysql -h$DB_IP -P$DB_PORT -u$SQL_user $MAD_DB -e "SET SESSION tx_isolation = 'READ-UNCOMMITTED'; CALL trs_stats_detect_mon_raw_cleanup();"
   mysql -h$DB_IP -P$DB_PORT -u$SQL_user $MAD_DB -e "delete from trs_stats_detect_fort_raw where from_unixtime(timestamp_scan) < now() - interval 1 hour;"
   else
-  mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $MAD_DB -e "delete from trs_stats_detect_mon_raw where from_unixtime(timestamp_scan) < now() - interval 1 hour;"
+  mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $MAD_DB -e "SET SESSION tx_isolation = 'READ-UNCOMMITTED'; CALL trs_stats_detect_mon_raw_cleanup();"
   mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $MAD_DB -e "delete from trs_stats_detect_fort_raw where from_unixtime(timestamp_scan) < now() - interval 1 hour;"
   fi
 fi

@@ -56,21 +56,23 @@ DELIMITER //
 CREATE PROCEDURE rmdb.pokemon_cleanup()
  BEGIN
   DECLARE number INT;
-  DECLARE date_time DATETIME;
+  DECLARE start DATETIME;
+  DECLARE stop DATETIME;
   DECLARE RowCount INT;
   SET number = 1;
-  SET date_time = concat(date(now() - interval 2 hour),' ',concat(hour(now() - interval 2 hour),':05:00'));
+  SET start = concat(date(now() - interval 2 hour),' ', hour(now() - interval 2 hour), ':00:00');
+  SET stop = concat(date(now() - interval 2 hour),' ', hour(now() - interval 2 hour), ':05:00');
    WHILE number <= 12 DO
-   DELETE FROM rmdb.pokemon WHERE CONVERT_TZ(last_modified, '+00:00', @@global.time_zone) < date_time;
+   DELETE FROM rmdb.pokemon WHERE CONVERT_TZ(last_modified, '+00:00', @@global.time_zone) >= start and CONVERT_TZ(last_modified, '+00:00', @@global.time_zone) < stop;
    SET number = number + 1;
-   SET date_time = date_time + interval 5 MINUTE;
+   SET start = start + interval 5 minute;
+   SET stop = stop + interval 5 minute;
    SELECT SLEEP(1);
    END WHILE;
 -- cleanup old or missed data
-  SET RowCount = (SELECT count(last_modified) FROM rmdb.pokemon WHERE CONVERT_TZ(last_modified, '+00:00', @@global.time_zone) < date_time);
-  select RowCount;
+  SET RowCount = (SELECT count(last_modified) FROM rmdb.pokemon WHERE CONVERT_TZ(last_modified, '+00:00', @@global.time_zone) < stop);
    WHILE RowCount > 0 DO
-   DELETE FROM rmdb.pokemon WHERE CONVERT_TZ(last_modified, '+00:00', @@global.time_zone) < date_time LIMIT 10000;
+   DELETE FROM rmdb.pokemon WHERE CONVERT_TZ(last_modified, '+00:00', @@global.time_zone) < stop LIMIT 10000;
    SET RowCount = RowCount - 10000;
    SELECT SLEEP(1);
    END WHILE;
@@ -109,3 +111,33 @@ CREATE PROCEDURE rmdb.pokemon_display_cleanup()
  END;  
 //
 DELIMITER ;
+
+
+DROP PROCEDURE IF EXISTS rmdb.trs_stats_detect_mon_raw_cleanup;
+DELIMITER //
+CREATE PROCEDURE rmdb.trs_stats_detect_mon_raw_cleanup()
+ BEGIN
+  DECLARE number INT;
+  DECLARE start DATETIME;
+  DECLARE stop DATETIME;
+  DECLARE RowCount INT;
+  SET number = 1;
+  SET start = concat(date(now() - interval 2 hour),' ', hour(now() - interval 2 hour), ':00:00');
+  SET stop = concat(date(now() - interval 2 hour),' ', hour(now() - interval 2 hour), ':05:00');
+   WHILE number <= 12 DO
+   DELETE FROM rmdb.trs_stats_detect_mon_raw WHERE from_unixtime(timestamp_scan) >= start and from_unixtime(timestamp_scan) < stop;
+   SET number = number + 1;
+   SET start = start + interval 5 minute;
+   SET stop = stop + interval 5 minute;
+   SELECT SLEEP(1);
+   END WHILE;
+-- cleanup old or missed data
+  SET RowCount = (SELECT count(timestamp_scan) FROM rmdb.trs_stats_detect_mon_raw WHERE from_unixtime(timestamp_scan) < stop);
+   WHILE RowCount > 0 DO
+   DELETE FROM rmdb.trs_stats_detect_mon_raw WHERE from_unixtime(timestamp_scan) < stop LIMIT 10000;
+   SET RowCount = RowCount - 10000;
+   SELECT SLEEP(1);
+   END WHILE;
+ END;
+//
+DELIMITER ; 
