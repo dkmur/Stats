@@ -1,32 +1,85 @@
+DROP PROCEDURE IF EXISTS pogodb.move_mon_to_history;
+DELIMITER //
+CREATE PROCEDURE pogodb.move_mon_to_history()
+ BEGIN
+  DECLARE number INT;
+  DECLARE start DATETIME;
+  DECLARE stop DATETIME;
+  SET number = 1;
+  SET start = concat(date(now() - interval 1 day ),' 00:00:00');
+  SET stop = concat(date(now() - interval 1 day ),' 00:05:00');
+   WHILE number <= 288 DO
+   INSERT IGNORE INTO pogodb.pokemon_history select * FROM pogodb.pokemon_history_temp WHERE first_scanned >= start and first_scanned < stop;
+   SET number = number + 1;
+   SET start = start + interval 5 minute;
+   SET stop = stop + interval 5 minute;
+   SELECT SLEEP(1);
+   END WHILE;
+ END;
+//
+DELIMITER ;
+
+
 DROP PROCEDURE IF EXISTS pogodb.mon_history_temp_cleanup;
 DELIMITER //
 CREATE PROCEDURE pogodb.mon_history_temp_cleanup()
  BEGIN
+  DECLARE number INT;
+  DECLARE start DATETIME;
+  DECLARE stop DATETIME;
   DECLARE RowCount INT;
-  SET RowCount = (SELECT count(first_scanned) FROM pogodb.pokemon_history_temp WHERE first_scanned < CURDATE());
-   WHILE RowCount > 0 DO
-   DELETE FROM pogodb.pokemon_history_temp WHERE first_scanned < CURDATE() LIMIT 15000;
-   SET RowCount = RowCount - 15000;
+  SET number = 1;
+  SET start = concat(date(now() - interval 1 day ),' 00:00:00');
+  SET stop = concat(date(now() - interval 1 day ),' 00:05:00');
+   WHILE number <= 288 DO
+   DELETE FROM pogodb.pokemon_history_temp WHERE first_scanned >= start and first_scanned < stop;
+   SET number = number + 1;
+   SET start = start + interval 5 minute;
+   SET stop = stop + interval 5 minute;
    SELECT SLEEP(1);
    END WHILE;
- END;  
+-- cleanup old or missed data
+  SET RowCount = (SELECT count(first_scanned) FROM pogodb.pokemon_history_temp WHERE first_scanned < stop);
+   select RowCount;
+   WHILE RowCount > 0 DO
+   DELETE FROM pogodb.pokemon_history_temp WHERE first_scanned < stop LIMIT 10000;
+   SET RowCount = RowCount - 10000;
+   SELECT SLEEP(1);
+   END WHILE;
+ END;
 //
 DELIMITER ;
+
 
 DROP PROCEDURE IF EXISTS rmdb.pokemon_cleanup;
 DELIMITER //
 CREATE PROCEDURE rmdb.pokemon_cleanup()
  BEGIN
+  DECLARE number INT;
+  DECLARE start DATETIME;
+  DECLARE stop DATETIME;
   DECLARE RowCount INT;
-  SET RowCount = (SELECT count(last_modified) FROM rmdb.pokemon WHERE CONVERT_TZ(last_modified, '+00:00', @@global.time_zone) < now() - interval 1 hour);
-   WHILE RowCount > 0 DO
-   DELETE FROM rmdb.pokemon WHERE CONVERT_TZ(last_modified, '+00:00', @@global.time_zone) < now() - interval 1 hour LIMIT 15000;
-   SET RowCount = RowCount - 15000;
+  SET number = 1;
+  SET start = concat(date(now() - interval 2 hour),' ', hour(now() - interval 2 hour), ':00:00');
+  SET stop = concat(date(now() - interval 2 hour),' ', hour(now() - interval 2 hour), ':05:00');
+   WHILE number <= 12 DO
+   DELETE FROM rmdb.pokemon WHERE CONVERT_TZ(last_modified, '+00:00', @@global.time_zone) >= start and CONVERT_TZ(last_modified, '+00:00', @@global.time_zone) < stop;
+   SET number = number + 1;
+   SET start = start + interval 5 minute;
+   SET stop = stop + interval 5 minute;
    SELECT SLEEP(1);
    END WHILE;
- END;  
+-- cleanup old or missed data
+  SET RowCount = (SELECT count(last_modified) FROM rmdb.pokemon WHERE CONVERT_TZ(last_modified, '+00:00', @@global.time_zone) < stop);
+   WHILE RowCount > 0 DO
+   DELETE FROM rmdb.pokemon WHERE CONVERT_TZ(last_modified, '+00:00', @@global.time_zone) < stop LIMIT 10000;
+   SET RowCount = RowCount - 10000;
+   SELECT SLEEP(1);
+   END WHILE;
+ END;
 //
-DELIMITER ;
+DELIMITER ; 
+
 
 DROP PROCEDURE IF EXISTS rmdb.detect_seen_cleanup;
 DELIMITER //
@@ -35,25 +88,56 @@ CREATE PROCEDURE rmdb.detect_seen_cleanup()
   DECLARE RowCount INT;
   SET RowCount = (SELECT count(encounter_id) FROM rmdb.trs_stats_detect_seen_type WHERE encounter_id not in (SELECT encounter_id FROM rmdb.pokemon));
    WHILE RowCount > 0 DO
-   DELETE FROM rmdb.trs_stats_detect_seen_type WHERE encounter_id not in (SELECT encounter_id FROM rmdb.pokemon) LIMIT 15000;
-   SET RowCount = RowCount - 15000;
+   DELETE FROM rmdb.trs_stats_detect_seen_type WHERE encounter_id not in (SELECT encounter_id FROM rmdb.pokemon) LIMIT 10000;
+   SET RowCount = RowCount - 10000;
    SELECT SLEEP(1);
    END WHILE;
  END;  
 //
 DELIMITER ;
 
-DROP PROCEDURE IF EXISTS pogodb.move_mon_to_history;
+
+DROP PROCEDURE IF EXISTS rmdb.pokemon_display_cleanup;
 DELIMITER //
-CREATE PROCEDURE pogodb.move_mon_to_history()
+CREATE PROCEDURE rmdb.pokemon_display_cleanup()
  BEGIN
   DECLARE RowCount INT;
-  SET RowCount = (SELECT count(first_scanned) FROM pogodb.pokemon_history_temp WHERE date(first_scanned) < CURDATE());
+  SET RowCount = (SELECT count(encounter_id) FROM rmdb.pokemon_display WHERE encounter_id not in (SELECT encounter_id FROM rmdb.pokemon));
    WHILE RowCount > 0 DO
-   INSERT IGNORE INTO pogodb.pokemon_history select * FROM pogodb.pokemon_history_temp WHERE date(first_scanned) < curdate() LIMIT 15000;
-   SET RowCount = RowCount - 15000;
+   DELETE FROM rmdb.pokemon_display WHERE encounter_id not in (SELECT encounter_id FROM rmdb.pokemon) LIMIT 10000;
+   SET RowCount = RowCount - 10000;
+   SELECT SLEEP(1);
+   END WHILE;
+ END;  
+//
+DELIMITER ;
+
+
+DROP PROCEDURE IF EXISTS rmdb.trs_stats_detect_mon_raw_cleanup;
+DELIMITER //
+CREATE PROCEDURE rmdb.trs_stats_detect_mon_raw_cleanup()
+ BEGIN
+  DECLARE number INT;
+  DECLARE start DATETIME;
+  DECLARE stop DATETIME;
+  DECLARE RowCount INT;
+  SET number = 1;
+  SET start = concat(date(now() - interval 2 hour),' ', hour(now() - interval 2 hour), ':00:00');
+  SET stop = concat(date(now() - interval 2 hour),' ', hour(now() - interval 2 hour), ':05:00');
+   WHILE number <= 12 DO
+   DELETE FROM rmdb.trs_stats_detect_mon_raw WHERE from_unixtime(timestamp_scan) >= start and from_unixtime(timestamp_scan) < stop;
+   SET number = number + 1;
+   SET start = start + interval 5 minute;
+   SET stop = stop + interval 5 minute;
+   SELECT SLEEP(1);
+   END WHILE;
+-- cleanup old or missed data
+  SET RowCount = (SELECT count(timestamp_scan) FROM rmdb.trs_stats_detect_mon_raw WHERE from_unixtime(timestamp_scan) < stop);
+   WHILE RowCount > 0 DO
+   DELETE FROM rmdb.trs_stats_detect_mon_raw WHERE from_unixtime(timestamp_scan) < stop LIMIT 10000;
+   SET RowCount = RowCount - 10000;
    SELECT SLEEP(1);
    END WHILE;
  END;
 //
-DELIMITER ;
+DELIMITER ; 
