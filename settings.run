@@ -2,6 +2,11 @@
 
 source config.ini
 
+# Logging
+mkdir -p $PATH_TO_STATS/logs
+touch $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
+echo "`date '+%Y%m%d %H:%M:%S'` Setting.run executed" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
+
 # Check mariadb version
 echo ""
 if [ -z "$SQL_password" ]

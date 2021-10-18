@@ -3,6 +3,11 @@
 folder="$(cd ../ && pwd)"
 source $folder/config.ini
 
+# Logging
+mkdir -p $PATH_TO_STATS/logs
+touch $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
+echo "`date '+%Y%m%d %H:%M:%S'` Quest route recalculation started" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
+
 ## recalculate Quest routes for instance 1
 if [ -z "$MAD_instance_name_1" ]; then
         echo ""
@@ -137,3 +142,5 @@ else
         sleep $quest_recalc_wait
         done < <(query "select a.area_id from settings_area_pokestops a, settings_area b, madmin_instance c where a.area_id = b.area_id and b.instance_id = c.instance_id and a.route_calc_algorithm = 'route' and a.level = 0 and c.name = '$MAD_instance_name_5';")
 fi
+
+echo "`date '+%Y%m%d %H:%M:%S'` Quest route recalculation finished" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log

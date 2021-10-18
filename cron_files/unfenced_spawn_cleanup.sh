@@ -2,6 +2,11 @@
 folder="$(cd ../ && pwd)"
 source $folder/config.ini
 
+# Logging
+mkdir -p $PATH_TO_STATS/logs
+touch $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
+echo "`date '+%Y%m%d %H:%M:%S'` Cleanup of unfenced spawnpoints started" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
+
 outsidefence=$(./getMonmitmFences.sh)
 
 if [ -z "$SQL_password" ]
@@ -12,3 +17,5 @@ if [ -z "$SQL_password" ]
 fi
 
 rm $PATH_TO_STATS/monmitmfences.txt
+
+echo "`date '+%Y%m%d %H:%M:%S'` Cleanup of unfenced spawnpoints finished" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
