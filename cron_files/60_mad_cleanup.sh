@@ -20,7 +20,6 @@ fi
 echo "`date '+%Y%m%d %H:%M:%S'` Hourly append shiny Stats started" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
 query "$MAD_DB" "Create TEMPORARY TABLE $MAD_DB.tmp100 AS(select b.encounter_id, count(distinct(b.worker)) as is_shiny from $MAD_DB.trs_stats_detect_mon_raw b where b.is_shiny = 1 group by b.encounter_id); update $STATS_DB.pokemon_history_temp a, $MAD_DB.tmp100 b set a.is_shiny = b.is_shiny where  a.encounter_id = b.encounter_id; drop table $MAD_DB.tmp100;"
 echo "`date '+%Y%m%d %H:%M:%S'` Hourly append shiny Stats finished" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
-fi
 
 # cleanup table pokemon + trs_stats_detect_seen_type + pokemon_display
 if "$pokemon"
