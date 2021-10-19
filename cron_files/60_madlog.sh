@@ -7,6 +7,11 @@ process_date=$(date -d '1 hour ago' +%Y"-"%m"-"%d)
 process_hour=$(date -d '1 hour ago' +%Y"-"%m"-"%d" "%H":00:00")
 interval=$(date -d '1 hour ago' +%m"-"%d" "%H)
 
+# Logging
+mkdir -p $PATH_TO_STATS/logs
+touch $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
+echo "`date '+%Y%m%d %H:%M:%S'` Hourly MAD log processing started" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
+
 
 ## update db for instance 1
 if [ -z "$MAD_path_1" ]
@@ -464,4 +469,5 @@ else
 fi
 
 echo ""
+echo "`date '+%Y%m%d %H:%M:%S'` Hourly MAD log processing finished" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
 echo "All done!"

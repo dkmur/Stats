@@ -5,6 +5,11 @@ source $folder/config.ini
 
 process_hour=$(date -d '1 hour ago' +%Y"-"%m"-"%d" "%H":00:00")
 
+# Logging
+mkdir -p $PATH_TO_STATS/logs
+touch $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
+echo "`date '+%Y%m%d %H:%M:%S'` Hourly MAD log processing worker level started" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
+
 ## update db for instance 1
 if [ -z "$MAD_path_1" ]; then
         echo ""
@@ -346,4 +351,5 @@ else
         done < <(query "select origin FROM warning_worker where RPL = 60 and datetime = SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 60 minute)) DIV 3600) * 3600) and instance='$MAD_instance_name_5';")
 fi
 
+echo "`date '+%Y%m%d %H:%M:%S'` Hourly MAD log processing worker level finished" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
 echo "All done !!"

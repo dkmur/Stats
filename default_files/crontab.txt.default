@@ -1,22 +1,17 @@
 #### Stats #####
-## Cleanup and backup
-5 * * * * cd pathToStatscron_files && ./hourly.sh
-7 1 * * * cd pathToStatscron_files && ./daily.sh
-20 1 * * 1 cd pathToStatscron_files && ./weekly.sh
-5 5 1 * * cd pathToStatscron_files && ./month.sh
-## Area stats mon_mitm
-*/15 * * * * touch pathToStatslogs/log_$(date '+\%Y\%m').log && echo "`date '+\%Y\%m\%d \%H:\%M:\%S'` Stats rpl15 mon area processing started" >> pathToStatslogs/log_$(date '+\%Y\%m').log && cat pathToStatscron_files/15_*_area.sql | mysql userpass STATS_DB && echo "`date '+\%Y\%m\%d \%H:\%M:\%S'` Stats rpl15 mon area processing finished" >> pathToStatslogs/log_$(date '+\%Y\%m').log
-2 * * * * touch pathToStatslogs/log_$(date '+\%Y\%m').log && echo "`date '+\%Y\%m\%d \%H:\%M:\%S'` Stats rpl60 mon area processing started" >> pathToStatslogs/log_$(date '+\%Y\%m').log && cat pathToStatscron_files/60_*_area.sql | mysql userpass STATS_DB && echo "`date '+\%Y\%m\%d \%H:\%M:\%S'` Stats rpl60 mon area processing finished" >> pathToStatslogs/log_$(date '+\%Y\%m').log
-6 0 * * * echo "`date '+\%Y\%m\%d \%H:\%M:\%S'` Stats rpl1440 mon area processing started" >> pathToStatslogs/log_$(date '+\%Y\%m').log && cat pathToStatscron_files/1440_*_area.sql | mysql userpass STATS_DB && echo "`date '+\%Y\%m\%d \%H:\%M:\%S'` Stats rpl1440 mon area processing finished" >> pathToStatslogs/log_$(date '+\%Y\%m').log
-21 0 * * 1 echo "`date '+\%Y\%m\%d \%H:\%M:\%S'` Stats rpl10080 mon area processing started" >> pathToStatslogs/log_$(date '+\%Y\%m').log && cat pathToStatscron_files/10080_area.sql | mysql userpass STATS_DB && echo "`date '+\%Y\%m\%d \%H:\%M:\%S'` Stats rpl10080 mon area processing finished" >> pathToStatslogs/log_$(date '+\%Y\%m').log
-## Area stats quest
-4-59/15 * * * * echo "`date '+\%Y\%m\%d \%H:\%M:\%S'` Stats rpl15 quest area processing started" >> pathToStatslogs/log_$(date '+\%Y\%m').log && cat pathToStatscron_files/15_*_area_quest.sql | mysql userpass STATS_DB && echo "`date '+\%Y\%m\%d \%H:\%M:\%S'` Stats rpl15 quest area processing finished" >> pathToStatslogs/log_$(date '+\%Y\%m').log
-6 * * * * echo "`date '+\%Y\%m\%d \%H:\%M:\%S'` Stats rpl60 quest area processing started" >> pathToStatslogs/log_$(date '+\%Y\%m').log && cat pathToStatscron_files/60_*_area_quest.sql | mysql userpass STATS_DB && echo "`date '+\%Y\%m\%d \%H:\%M:\%S'` Stats rpl60 quest area processing finished" >> pathToStatslogs/log_$(date '+\%Y\%m').log
-8 0 * * * echo "`date '+\%Y\%m\%d \%H:\%M:\%S'` Stats rpl1440 quest area processing started" >> pathToStatslogs/log_$(date '+\%Y\%m').log && cat pathToStatscron_files/1440_area_quest.sql | mysql userpass STATS_DB && echo "`date '+\%Y\%m\%d \%H:\%M:\%S'` Stats rpl1440 quest area processing finished" >> pathToStatslogs/log_$(date '+\%Y\%m').log
-10 0 * * 1 echo "`date '+\%Y\%m\%d \%H:\%M:\%S'` Stats rpl10080 quest area processing started" >> pathToStatslogs/log_$(date '+\%Y\%m').log && cat pathToStatscron_files/10080_area_quest.sql | mysql userpass STATS_DB && echo "`date '+\%Y\%m\%d \%H:\%M:\%S'` Stats rpl10080 quest area processing finished" >> pathToStatslogs/log_$(date '+\%Y\%m').log
-## Worker stats
+## First hour of the day
+0 0 * * * cd pathToStatscron_files && ./15_stats.sh && ./60_stats.sh && ./1440_stats.sh
+15 0 * * * cd pathToStatscron_files && ./15_stats.sh && ./60_mad_cleanup.sh && ./60_madlog.sh && ./60_madlog_worker.sh
+30 0 * * * cd pathToStatscron_files && ./15_stats.sh && ./1440_remaining.sh
+45 0 * * * cd pathToStatscron_files && ./15_stats.sh
+52 0 * * * cd pathToStatscron_files && ./10080.sh
+## Second hour of the day
+0 1 * * * cd pathToStatscron_files && ./15_stats.sh && ./60_stats.sh && ./1440_remaining.sh
+15 1 * * * cd pathToStatscron_files && ./15_stats.sh
+22 1 * * * cd pathToStatscron_files && ./44640.sh
+30 1 * * * cd pathToStatscron_files && ./15_stats.sh
+45 1 * * * cd pathToStatscron_files && ./15_stats.sh
+## Remaining hours
+*/15 2-23 * * * cd pathToStatscron_files && ./15_stats.sh && ./60_stats.sh
+## Check proto received every minute
 */1 * * * * mysql userpass STATS_DB -e "UPDATE STATS_DB.stats_worker SET missingProtoMinute = missingProtoMinute + 1 WHERE Datetime = concat(date(now() - interval 0 minute),' ', (SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 0 minute)) DIV 900) * 900))) and Worker in (select b.name from MAD_DB.trs_status a, MAD_DB.settings_device b where a.device_id = b.device_id and lastProtoDateTime < now() - interval 1 minute);"
-2-59/15 * * * * echo "`date '+\%Y\%m\%d \%H:\%M:\%S'` Stats rpl15 worker processing started" >> pathToStatslogs/log_$(date '+\%Y\%m').log && cd pathToStatscron_files/ && mysql userpass < 15_worker.sql && echo "`date '+\%Y\%m\%d \%H:\%M:\%S'` Stats rpl15 worker processing finished" >> pathToStatslogs/log_$(date '+\%Y\%m').log
-4 * * * * echo "`date '+\%Y\%m\%d \%H:\%M:\%S'` Stats rpl60 worker processing started" >> pathToStatslogs/log_$(date '+\%Y\%m').log && cd pathToStatscron_files/ && mysql userpass < 60_worker.sql && echo "`date '+\%Y\%m\%d \%H:\%M:\%S'` Stats rpl60 worker processing finished" >> pathToStatslogs/log_$(date '+\%Y\%m').log
-7 0 * * * echo "`date '+\%Y\%m\%d \%H:\%M:\%S'` Stats rpl1440 worker processing started" >> pathToStatslogs/log_$(date '+\%Y\%m').log && cd pathToStatscron_files/ && mysql userpass < 1440_worker.sql && echo "`date '+\%Y\%m\%d \%H:\%M:\%S'` Stats rpl1440 worker processing finished" >> pathToStatslogs/log_$(date '+\%Y\%m').log
-9 0 * * 1 echo "`date '+\%Y\%m\%d \%H:\%M:\%S'` Stats rpl10080 worker processing started" >> pathToStatslogs/log_$(date '+\%Y\%m').log && cd pathToStatscron_files/ && mysql userpass < 10080_worker.sql && echo "`date '+\%Y\%m\%d \%H:\%M:\%S'` Stats rpl10080 worker processing finished" >> pathToStatslogs/log_$(date '+\%Y\%m').log

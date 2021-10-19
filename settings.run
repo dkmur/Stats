@@ -177,10 +177,10 @@ then
   if [[ "$MAD_FENCE_UPDATE_INTERVAL" == "day" ]]
   then
   sed -i "$ a \#\# Update MAD fences and devices" $PATH_TO_STATS/crontab.txt
-  sed -i "$ a 12 0 * * * cd pathToStatscron_files && ./MAD_fence_update.sh" $PATH_TO_STATS/crontab.txt
+  sed -i "$ a 55 0 * * * cd pathToStatscron_files && ./MAD_fence_update.sh" $PATH_TO_STATS/crontab.txt
   else
   sed -i "$ a \#\# Update MAD fences and devices" $PATH_TO_STATS/crontab.txt
-  sed -i "$ a 12 * * * * cd pathToStatscron_files && ./MAD_fence_update.sh" $PATH_TO_STATS/crontab.txt
+  sed -i "$ a 55 * * * * cd pathToStatscron_files && ./MAD_fence_update.sh" $PATH_TO_STATS/crontab.txt
   fi
 fi
 # Recalc quest routes
@@ -204,14 +204,14 @@ then
   echo "Enabling clean of all spawnpoints unseen or no endtime leaned for X days"
   echo ""
   sed -i "$ a \#\# Cleanup spawnpoints not seen or no entime learned for X days" $PATH_TO_STATS/crontab.txt
-  sed -i "$ a 19 23 * * * cd pathToStatscron_files/ && mysql userpass < all_spawn_cleanup.sql" $PATH_TO_STATS/crontab.txt
+  sed -i "$ a 20 23 * * * cd pathToStatscron_files/ && mysql userpass < all_spawn_cleanup.sql" $PATH_TO_STATS/crontab.txt
 fi
 if "$SPAWN_UNFENCED_CLEANUP"
 then
   echo "Enabling unfenced spawnpoint cleanup in cron"
   echo ""
   sed -i "$ a \#\# Cleaup unfenced spawnpoints" $PATH_TO_STATS/crontab.txt
-  sed -i "$ a 20 23 * * * cd pathToStatscron_files/ && ./unfenced_spawn_cleanup.sh" $PATH_TO_STATS/crontab.txt
+  sed -i "$ a 50 23 * * * cd pathToStatscron_files/ && ./unfenced_spawn_cleanup.sh" $PATH_TO_STATS/crontab.txt
 fi
 # get ATV details
 if "$atvdetails"
