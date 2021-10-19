@@ -15,7 +15,7 @@ interval=$(date -d '1 hour ago' +%m"-"%d" "%H)
 # Logging
 mkdir -p $PATH_TO_STATS/logs
 touch $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
-echo "`date '+%Y%m%d %H:%M:%S'` Hourly MAD log processing started" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
+echo "`date '+%Y%m%d %H:%M:%S'` Stats rpl60 MAD log processing started" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
 
 
 ## update db for instance 1
@@ -474,5 +474,5 @@ else
 fi
 
 echo ""
-echo "`date '+%Y%m%d %H:%M:%S'` Hourly MAD log processing finished" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
+echo "`date '+%Y%m%d %H:%M:%S'` Stats rpl60 MAD log processing finished" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
 echo "All done!"

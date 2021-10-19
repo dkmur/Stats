@@ -642,4 +642,5 @@ if "$monthly_mon_table"
 fi
 
 echo ''
+
 echo "All done"

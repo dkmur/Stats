@@ -108,15 +108,15 @@ echo "`date '+%Y%m%d %H:%M:%S'` Daily cleanup unseen gyms finished" >> $PATH_TO_
 # MAD log aggregation
 if "$madlog"
 then
-  echo "`date '+%Y%m%d %H:%M:%S'` Daily MAD log aggregation started" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
+  echo "`date '+%Y%m%d %H:%M:%S'` Stats rpl1440 MAD log aggregation started" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
   cat $PATH_TO_STATS/cron_files/madlog1440.sql | query
-  echo "`date '+%Y%m%d %H:%M:%S'` Daily MAD log aggregation finished" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
+  echo "`date '+%Y%m%d %H:%M:%S'` Stats rpl1440 MAD log aggregation finished" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
 fi
 
 # MAD log aggregation worker level
 if "$madlog_worker"
 then
-  echo "`date '+%Y%m%d %H:%M:%S'` Daily MAD log aggregation worker level started" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
+  echo "`date '+%Y%m%d %H:%M:%S'` Stats rpl1440 MAD log aggregation worker level started" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
   cat $PATH_TO_STATS/cron_files/madlog_worker1440.sql | query
-  echo "`date '+%Y%m%d %H:%M:%S'` Daily MAD log aggregation worker level finished" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
+  echo "`date '+%Y%m%d %H:%M:%S'` Stats rpl1440 MAD log aggregation worker level finished" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
 fi
