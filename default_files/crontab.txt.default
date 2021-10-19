@@ -1,17 +1,21 @@
 #### Stats #####
 ## First hour of the day
 0 0 * * * cd pathToStatscron_files && ./15_stats.sh && ./60_stats.sh && ./1440_stats.sh
-15 0 * * * cd pathToStatscron_files && ./15_stats.sh && ./60_mad_cleanup.sh && ./60_madlog.sh && ./60_madlog_worker.sh
+15 0 * * * cd pathToStatscron_files && ./15_stats.sh && ./60_madlog.sh && ./60_madlog_worker.sh && ./60_mad_cleanup.sh
 30 0 * * * cd pathToStatscron_files && ./15_stats.sh && ./1440_remaining.sh
 45 0 * * * cd pathToStatscron_files && ./15_stats.sh
 52 0 * * * cd pathToStatscron_files && ./10080.sh
 ## Second hour of the day
-0 1 * * * cd pathToStatscron_files && ./15_stats.sh && ./60_stats.sh && ./1440_remaining.sh
-15 1 * * * cd pathToStatscron_files && ./15_stats.sh
-22 1 * * * cd pathToStatscron_files && ./44640.sh
+0 1 * * * cd pathToStatscron_files && ./15_stats.sh && ./60_stats.sh && ./1440_pokemon_spawndef.sh
+15 1 * * * cd pathToStatscron_files && ./15_stats.sh && ./60_madlog.sh && ./60_madlog_worker.sh && ./60_mad_cleanup.sh
 30 1 * * * cd pathToStatscron_files && ./15_stats.sh
+35 1 * * * cd pathToStatscron_files && ./44640.sh
 45 1 * * * cd pathToStatscron_files && ./15_stats.sh
 ## Remaining hours
-*/15 2-23 * * * cd pathToStatscron_files && ./15_stats.sh && ./60_stats.sh
+0 2-23 * * * cd pathToStatscron_files && ./15_stats.sh && ./60_stats.sh
+15 2-23 * * * cd pathToStatscron_files && ./15_stats.sh && ./60_madlog.sh && ./60_madlog_worker.sh && ./60_mad_cleanup.sh
+30 2-23 * * * cd pathToStatscron_files && ./15_stats.sh
+45 2-23 * * * cd pathToStatscron_files && ./15_stats.sh
+
 ## Check proto received every minute
 */1 * * * * mysql userpass STATS_DB -e "UPDATE STATS_DB.stats_worker SET missingProtoMinute = missingProtoMinute + 1 WHERE Datetime = concat(date(now() - interval 0 minute),' ', (SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 0 minute)) DIV 900) * 900))) and Worker in (select b.name from MAD_DB.trs_status a, MAD_DB.settings_device b where a.device_id = b.device_id and lastProtoDateTime < now() - interval 1 minute);"

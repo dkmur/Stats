@@ -3,6 +3,11 @@
 folder="$(cd ../ && pwd)"
 source $folder/config.ini
 
+if ! "$madlog_worker"
+then
+  exit
+fi
+
 process_hour=$(date -d '1 hour ago' +%Y"-"%m"-"%d" "%H":00:00")
 
 # Logging

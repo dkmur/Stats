@@ -3,6 +3,11 @@
 folder="$(cd ../ && pwd)"
 source $folder/config.ini
 
+if ! "$madlog"
+then
+  exit
+fi
+
 process_date=$(date -d '1 hour ago' +%Y"-"%m"-"%d)
 process_hour=$(date -d '1 hour ago' +%Y"-"%m"-"%d" "%H":00:00")
 interval=$(date -d '1 hour ago' +%m"-"%d" "%H)
