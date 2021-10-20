@@ -13,7 +13,7 @@ process_hour=$(date -d '1 hour ago' +%Y"-"%m"-"%d" "%H":00:00")
 # Logging
 mkdir -p $PATH_TO_STATS/logs
 touch $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
-echo "`date '+%Y%m%d %H:%M:%S'` Stats rpl60 MAD log processing worker level started" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
+start=$(date '+%Y%m%d %H:%M:%S')
 
 ## update db for instance 1
 if [ -z "$MAD_path_1" ]; then
@@ -356,5 +356,7 @@ else
         done < <(query "select origin FROM warning_worker where RPL = 60 and datetime = SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 60 minute)) DIV 3600) * 3600) and instance='$MAD_instance_name_5';")
 fi
 
-echo "`date '+%Y%m%d %H:%M:%S'` Stats rpl60 MAD log processing worker level finished" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
+stop=$(date '+%Y%m%d %H:%M:%S')
+diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))/60)) $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))%60)))
+echo "[$start] [$stop] [$diff] Stats rpl60 MAD log processing worker level" >> $PATH_TO_STATS/logs/log_$(date '+\%Y\%m').log
 echo "All done !!"

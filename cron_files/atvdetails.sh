@@ -6,8 +6,7 @@ source $folder/config.ini
 # Logging
 mkdir -p $PATH_TO_STATS/logs
 touch $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
-echo "`date '+%Y%m%d %H:%M:%S'` ATVdetails started" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
-
+start=$(date '+%Y%m%d %H:%M:%S')
 
 deleteLog(){
 curl -u $atvMADmin_user:$atvMADmin_password "$atvMAD_url/delete_log"
@@ -249,5 +248,7 @@ else
 fi
 
 echo ""
-echo "`date '+%Y%m%d %H:%M:%S'` ATVdetails finished" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
+stop=$(date '+%Y%m%d %H:%M:%S')
+diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))/60)) $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))%60)))
+echo "[$start] [$stop] [$diff] ATVdetails processing" >> $PATH_TO_STATS/logs/log_$(date '+\%Y\%m').log
 echo "All done !"
