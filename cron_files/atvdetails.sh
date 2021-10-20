@@ -9,13 +9,13 @@ touch $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
 start=$(date '+%Y%m%d %H:%M:%S')
 
 deleteLog(){
-curl -u $atvMADmin_user:$atvMADmin_password "$atvMAD_url/delete_log"
+curl --fail --silent --show-error -u $atvMADmin_user:$atvMADmin_password "$atvMAD_url/delete_log"
 }
 
 runJobs(){
 cp $PATH_TO_STATS/default_files/ATVdetails.json $atvMAD_path/personal_commands/
-curl -u $atvMADmin_user:$atvMADmin_password "$atvMAD_url/reload_jobs"
-curl -u $atvMADmin_user:$atvMADmin_password "$atvMAD_url/install_file_all_devices?jobname=ATVdetails&type=jobType.CHAIN"
+curl --fail --silent --show-error -u $atvMADmin_user:$atvMADmin_password "$atvMAD_url/reload_jobs"
+curl --fail --silent --show-error -u $atvMADmin_user:$atvMADmin_password "$atvMAD_url/install_file_all_devices?jobname=ATVdetails&type=jobType.CHAIN"
 }
 
 query(){
