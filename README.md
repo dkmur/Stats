@@ -8,6 +8,7 @@ Available data:
 - locations handling (split between walk and teleport for #locations handled/success/failure/time required etc)  
 - detection stats (mons,iv,raid,quest on device level)  
 - mon stats (from table pokemon)  
+- quest stats  
 - restart / reboot data  
 - despawn time left  
 - spawnpoint statistics (added, known, last scanned etc)  
@@ -61,13 +62,15 @@ flush privileges;
 ### 3 Define areas and add devices
 Recommended way, making use of MAD mon_mitm fences.
 - fill out MAD instance and database details in ``config.ini``
-- in ``config.ini`` set ``FENCE=MAD``  
-- Advised to set all options for MAD table cleanup to true, way down in config.ini  
 - check any other settings in config.ini and set to your preference  
 - note: for really old setups, make sure your geofence names are not imported into db and have a name like ``configs/geofences/paris.txt`` as this will fuckup creation of stats cron files!! ``!blame banana``  
 - Execute ``./settings.run``, this will create required stats tables, triggers, sql queries , procedures and crontab file <br>
 - Edit crontab ``crontab -e`` and insert content of ``crontab.txt`` located in Stats home. <br>
-
+<br>
+**Make sure**<br>
+1 settings.run executed without errors<br>
+2 cron logging is done to /Stats/logs/, check it<br>
+<br>
 Adding devices:  
 - If each walker only contains 1 mon_mitm area, set MAD_DEVICE_INSERT=true in config.ini for automatic assignment.  
 - Else assign devices (MAD origins) to the created area's, table Area, manually, in mysql:<br>
@@ -86,7 +89,7 @@ Note 3: if MAD_DEVICE_INSERT=false, make sure to add new devices to ``table Area
 - Install Grafana, more details can be found at https://grafana.com/docs/grafana/latest/installation/debian/#install-from-apt-repository or if you prefer to use docker <https://hub.docker.com/r/grafana/grafana>
 - Create datasource on STATS_DB and MAD_DB
 - Add datasource names to config.ini
-- After executing settings.run, import the dashboards from /Stats/grafana by selecting ``+`` and then import (Templates 20 and 21 connect to MAD_DB dashboard, the rest to STATS_DB.
+- After executing settings.run, import the dashboards from /Stats/grafana by selecting ``+`` and then import (Templates 20 and 21 connect to MAD_DB dashboard, the rest to STATS_DB).
 
 
 ### 6 Updating
@@ -97,16 +100,10 @@ Steps to be taken to update Stats depend on changes made, to make sure that you 
 - check for changes in config.ini.default located in folder /default_files and adapt config.ini accordingly
 - execute ``./settings.run`` located in Stats root
 - replace crontab with content of crontab.txt located in Stats root  
-
+<br>
 **Grafana**
 remove template(s) (Dashboards - Manage , select templates and delete)
 import template(s) (as described in last step for initial import in section 4)
-
-
-### 7 Note
-
-- Not all information stored in tables stats_worker and stats_area is included in Stats menu options or Grafana, adapt as you see fit. <br>
-
 
 
 ## Meaning of Stats columns (tables stats_area and stats_worker)
