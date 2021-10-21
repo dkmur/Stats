@@ -66,10 +66,11 @@ Recommended way, making use of MAD mon_mitm fences.
 - note: for really old setups, make sure your geofence names are not imported into db and have a name like ``configs/geofences/paris.txt`` as this will fuckup creation of stats cron files!! ``!blame banana``  
 - Execute ``./settings.run``, this will create required stats tables, triggers, sql queries , procedures and crontab file <br>
 - Edit crontab ``crontab -e`` and insert content of ``crontab.txt`` located in Stats home. <br>
-<br>
-**Make sure**<br>
+  
+**Verify**  
 1 settings.run executed without errors<br>
 2 cron logging is done to /Stats/logs/, check it<br>
+<br>
 <br>
 Adding devices:  
 - If each walker only contains 1 mon_mitm area, set MAD_DEVICE_INSERT=true in config.ini for automatic assignment.  
@@ -117,33 +118,33 @@ import template(s) (as described in last step for initial import in section 4)
 **DBspawns** : from trs_spawn, number of spawnpoints within area  
 **DBspawns_event** : from trs_spawn and trs_event, number of spawnpoints within area that at start of period should be active according to trs_event  
 
-**Spawn60** spawndef=15 so 60 minute spawn (events do mess this number up, cleanup after event is needed)  
-**Spawn30** spawndef<>15 so most likely 30 minute spawn  
-**%timeleft** average % of despawn time left  
-**%5min** % of mons scanned within the first 5 minutes of spawntime  
+**Spawn60** : spawndef=15 so 60 minute spawn (events do mess this number up, cleanup after event is needed)  
+**Spawn30** : spawndef<>15 so most likely 30 minute spawn  
+**%timeleft** : average % of despawn time left  
+**%5min** : % of mons scanned within the first 5 minutes of spawntime  
 
-**Tmon** total mons scanned based on worker stats so not table pokemon  
-**Tloc** total locations (route position) scanned  
-**LocOk** number of correctly handled locations  
-**LocNok** as above but incorrectly handled  
-**LocFR** Location Failure Rate : % route positions incorrectly handled  
+**Tmon** : total mons scanned based on worker stats so not table pokemon  
+**Tloc** : total locations (route position) scanned  
+**LocOk** : number of correctly handled locations  
+**LocNok** : as above but incorrectly handled  
+**LocFR** : Location Failure Rate : % route positions incorrectly handled  
 
-**Tp** number of TelePorts when changing route position  
-**TpOk** successfull handled locations when teleporting  
-**TpNok** as above but unsuccessfull  
-**TpFr** TelePort Failure Rate  
-**TpT** Teleport Time : average time required after expiration of post_teleport_delay until gmo is received  
+**Tp** : number of TelePorts when changing route position  
+**TpOk** : successfull handled locations when teleporting  
+**TpNok** : as above but unsuccessfull  
+**TpFr** : TelePort Failure Rate  
+**TpT** : Teleport Time : average time required after expiration of post_teleport_delay until gmo is received  
 
-**Wk** Waking to next route position counter  
-**TkOk** successfull handled locations when walking  
-**TkNok** as above but unsuccessfull  
-**WkT** Walk Time : average time required after expiration of post_walk_delay until gmo is received  
-**WkFr** Walk Failure Rate  
+**Wk** : Waking to next route position counter  
+**TkOk** : successfull handled locations when walking  
+**TkNok** : as above but unsuccessfull  
+**WkT** : average time required after expiration of post_walk_delay until gmo is received  
+**WkFr** : Walk Failure Rate  
 
-**Res** number of pogo restarts  
-**Reb** number of device reboots  
+**Res** : number of pogo restarts  
+**Reb** : number of device reboots  
   
-**missingProtoMinute** every minute check lastProtoDateTime < now() - interval 1 minute and step the counter if true  
+**missingProtoMinute** : every minute check lastProtoDateTime < now() - interval 1 minute and step the counter if true  
 
 Or at least this is my understanding of them :)
 
