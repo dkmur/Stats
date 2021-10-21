@@ -3,6 +3,11 @@
 folder="$(cd ../ && pwd)"
 source $folder/config.ini
 
+# Logging
+mkdir -p $PATH_TO_STATS/logs
+touch $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
+start=$(date '+%Y%m%d %H:%M:%S')
+
 ## recalculate Quest routes for instance 1
 if [ -z "$MAD_instance_name_1" ]; then
         echo ""
@@ -137,3 +142,6 @@ else
         sleep $quest_recalc_wait
         done < <(query "select a.area_id from settings_area_pokestops a, settings_area b, madmin_instance c where a.area_id = b.area_id and b.instance_id = c.instance_id and a.route_calc_algorithm = 'route' and a.level = 0 and c.name = '$MAD_instance_name_5';")
 fi
+stop=$(date '+%Y%m%d %H:%M:%S')
+diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))/60)) $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))%60)))
+echo "[$start] [$stop] [$diff] Quest route recalculation" >> $PATH_TO_STATS/logs/log_$(date '+\%Y\%m').log

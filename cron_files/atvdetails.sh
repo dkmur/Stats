@@ -3,15 +3,19 @@
 folder="$(cd ../ && pwd)"
 source $folder/config.ini
 
+# Logging
+mkdir -p $PATH_TO_STATS/logs
+touch $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
+start=$(date '+%Y%m%d %H:%M:%S')
 
 deleteLog(){
-curl -u $atvMADmin_user:$atvMADmin_password "$atvMAD_url/delete_log"
+curl --fail --silent --show-error -u $atvMADmin_user:$atvMADmin_password "$atvMAD_url/delete_log"
 }
 
 runJobs(){
 cp $PATH_TO_STATS/default_files/ATVdetails.json $atvMAD_path/personal_commands/
-curl -u $atvMADmin_user:$atvMADmin_password "$atvMAD_url/reload_jobs"
-curl -u $atvMADmin_user:$atvMADmin_password "$atvMAD_url/install_file_all_devices?jobname=ATVdetails&type=jobType.CHAIN"
+curl --fail --silent --show-error -u $atvMADmin_user:$atvMADmin_password "$atvMAD_url/reload_jobs"
+curl --fail --silent --show-error -u $atvMADmin_user:$atvMADmin_password "$atvMAD_url/install_file_all_devices?jobname=ATVdetails&type=jobType.CHAIN"
 }
 
 query(){
@@ -244,4 +248,7 @@ else
 fi
 
 echo ""
+stop=$(date '+%Y%m%d %H:%M:%S')
+diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))/60)) $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))%60)))
+echo "[$start] [$stop] [$diff] ATVdetails processing" >> $PATH_TO_STATS/logs/log_$(date '+\%Y\%m').log
 echo "All done !"

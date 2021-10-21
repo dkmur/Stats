@@ -2,6 +2,11 @@
 
 source config.ini
 
+# Logging
+mkdir -p $PATH_TO_STATS/logs
+touch $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
+echo "[`date '+%Y%m%d %H:%M:%S'`] Setting.run executed" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
+
 # Check mariadb version
 echo ""
 if [ -z "$SQL_password" ]
@@ -172,10 +177,10 @@ then
   if [[ "$MAD_FENCE_UPDATE_INTERVAL" == "day" ]]
   then
   sed -i "$ a \#\# Update MAD fences and devices" $PATH_TO_STATS/crontab.txt
-  sed -i "$ a 12 0 * * * cd pathToStatscron_files && ./MAD_fence_update.sh" $PATH_TO_STATS/crontab.txt
+  sed -i "$ a 55 0 * * * cd pathToStatscron_files && ./MAD_fence_update.sh 2>>pathToStatslogs/log_\$(date '+\\\%Y\\\%m').log" $PATH_TO_STATS/crontab.txt
   else
   sed -i "$ a \#\# Update MAD fences and devices" $PATH_TO_STATS/crontab.txt
-  sed -i "$ a 12 * * * * cd pathToStatscron_files && ./MAD_fence_update.sh" $PATH_TO_STATS/crontab.txt
+  sed -i "$ a 55 * * * * cd pathToStatscron_files && ./MAD_fence_update.sh 2>>pathToStatslogs/log_\$(date '+\\\%Y\\\%m').log" $PATH_TO_STATS/crontab.txt
   fi
 fi
 # Recalc quest routes
@@ -185,28 +190,28 @@ then
   echo "Set recalculation of quest routes"
   echo ""
   sed -i "$ a \#\# Recalculate quest routes" $PATH_TO_STATS/crontab.txt
-  sed -i "$ a 20 0 * * 1 cd pathToStatscron_files && ./quest_recalc.sh" $PATH_TO_STATS/crontab.txt
+  sed -i "$ a 20 0 * * 1 cd pathToStatscron_files && ./quest_recalc.sh 2>>pathToStatslogs/log_\$(date '+\\\%Y\\\%m').log" $PATH_TO_STATS/crontab.txt
 fi
 if "$QUEST_SPAWN_CLEANUP"
 then
   echo "Enabling cleanup spawnponits discovered during questing hours in cron"
   echo ""
   sed -i "$ a \#\# Cleanup spawnpoints discovered during quest scan hours" $PATH_TO_STATS/crontab.txt
-  sed -i "$ a $QUEST_SPAWN_CLEAN_MIN $QUEST_SPAWN_CLEAN_HR * * * cd pathToStatscron_files/ && mysql userpass < quest_spawn_cleanup.sql" $PATH_TO_STATS/crontab.txt
+  sed -i "$ a $QUEST_SPAWN_CLEAN_MIN $QUEST_SPAWN_CLEAN_HR * * * cd pathToStatscron_files/ && mysql userpass < quest_spawn_cleanup.sql 2>>pathToStatslogs/log_\$(date '+\\\%Y\\\%m').log" $PATH_TO_STATS/crontab.txt
 fi
 if "$SPAWN_ALL_CLEANUP"
 then
   echo "Enabling clean of all spawnpoints unseen or no endtime leaned for X days"
   echo ""
   sed -i "$ a \#\# Cleanup spawnpoints not seen or no entime learned for X days" $PATH_TO_STATS/crontab.txt
-  sed -i "$ a 19 23 * * * cd pathToStatscron_files/ && mysql userpass < all_spawn_cleanup.sql" $PATH_TO_STATS/crontab.txt
+  sed -i "$ a 20 23 * * * cd pathToStatscron_files/ && mysql userpass < all_spawn_cleanup.sql 2>>pathToStatslogs/log_\$(date '+\\\%Y\\\%m').log" $PATH_TO_STATS/crontab.txt
 fi
 if "$SPAWN_UNFENCED_CLEANUP"
 then
   echo "Enabling unfenced spawnpoint cleanup in cron"
   echo ""
   sed -i "$ a \#\# Cleaup unfenced spawnpoints" $PATH_TO_STATS/crontab.txt
-  sed -i "$ a 20 23 * * * cd pathToStatscron_files/ && ./unfenced_spawn_cleanup.sh" $PATH_TO_STATS/crontab.txt
+  sed -i "$ a 50 23 * * * cd pathToStatscron_files/ && ./unfenced_spawn_cleanup.sh 2>>pathToStatslogs/log_\$(date '+\\\%Y\\\%m').log" $PATH_TO_STATS/crontab.txt
 fi
 # get ATV details
 if "$atvdetails"
@@ -214,7 +219,7 @@ then
   echo "Set daily download of ATV settings"
   echo ""
   sed -i "$ a \#\# ATV details" $PATH_TO_STATS/crontab.txt
-  sed -i "$ a 20 */$atvdetails_hours * * * cd pathToStatscron_files && ./atvdetails.sh" $PATH_TO_STATS/crontab.txt
+  sed -i "$ a 20 */$atvdetails_hours * * * cd pathToStatscron_files && ./atvdetails.sh 2>>pathToStatslogs/log_\$(date '+\\\%Y\\\%m').log" $PATH_TO_STATS/crontab.txt
 fi
 PATH_TO_STATS2=$(sed 's@/@\\/@g' <<< $PATH_TO_STATS)
 cd $PATH_TO_STATS && sed -i "s/pathToStats/$PATH_TO_STATS2/g" *.txt
@@ -367,8 +372,8 @@ echo ""
 cp $PATH_TO_STATS/default_files/15_area_unfenced.sql.default $PATH_TO_STATS/cron_files/15_ZZZZZ_Unfenced_area.sql
 cp $PATH_TO_STATS/default_files/60_area_unfenced.sql.default $PATH_TO_STATS/cron_files/60_ZZZZZ_Unfenced_area.sql
 cp $PATH_TO_STATS/default_files/1440_area_unfenced.sql.default $PATH_TO_STATS/cron_files/1440_ZZZZZ_Unfenced_area.sql
-sed -i "s/pogodb/$STATS_DB/g" $PATH_TO_STATS/cron_files/*_Unfenced_area.sql
-sed -i "s/rmdb/$MAD_DB/g" $PATH_TO_STATS/cron_files/*_Unfenced_area.sql
+# sed -i "s/pogodb/$STATS_DB/g" $PATH_TO_STATS/cron_files/*_Unfenced_area.sql
+# sed -i "s/rmdb/$MAD_DB/g" $PATH_TO_STATS/cron_files/*_Unfenced_area.sql
 
 # Fill table Area
 if [[ "$FENCE" == "MAD" ]] && [[ "$MAD_DEVICE_INSERT" == "true" ]]
@@ -637,4 +642,5 @@ if "$monthly_mon_table"
 fi
 
 echo ''
+
 echo "All done"
