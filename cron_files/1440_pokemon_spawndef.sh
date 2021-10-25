@@ -20,7 +20,7 @@ fi
 if "$SPAWNDEF15_CLEANUP"
 then
   start=$(date '+%Y%m%d %H:%M:%S')
-  query "$STATS_DB" "CREATE TEMPORARY TABLE $STATS_DB.tmp60 (INDEX (spawnpoint)) AS( SELECT spawnpoint_id as 'spawnpoint', count(spawnpoint_id) as 'times' FROM $STATS_DB.pokemon_history_temp WHERE first_scanned like concat(curdate() - interval 1 DAY,'%') and first_scanned >= concat(curdate() - interval 1 DAY,' ','$QUEST_END') and first_scanned > disappear_time - interval 30 minute GROUP BY spawnpoint_id); UPDATE $MAD_DB.trs_spawn SET spawndef = 240 WHERE spawnpoint in (select a.spawnpoint from $MAD_DB.trs_spawn a, $STATS_DB.tmp60 b where a.spawnpoint = b.spawnpoint and b.times >= $SPAWNDEF15_HOURS and a.spawndef = 15); DROP TABLE $STATS_DB.tmp60;"
+  query "$STATS_DB" "SET SESSION tx_isolation = 'READ-UNCOMMITTED'; CREATE TEMPORARY TABLE $STATS_DB.tmp60 (INDEX (spawnpoint)) AS(SELECT spawnpoint_id as 'spawnpoint', count(spawnpoint_id) as 'times' FROM $STATS_DB.pokemon_history_temp WHERE spawnpoint_id <> 0 and first_scanned < concat(curdate(),' 00:00:00') and first_scanned >= concat(curdate() - interval 1 DAY,' ','$QUEST_END') and first_scanned > disappear_time - interval 30 minute GROUP BY spawnpoint_id); UPDATE $MAD_DB.trs_spawn SET spawndef = 240 WHERE spawnpoint in (SELECT a.spawnpoint FROM $MAD_DB.trs_spawn a, $STATS_DB.tmp60 b WHERE a.spawnpoint = b.spawnpoint and b.times >= $SPAWNDEF15_HOURS and a.spawndef = 15); DROP TABLE $STATS_DB.tmp60;"
   stop=$(date '+%Y%m%d %H:%M:%S')
   diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))/60)) $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))%60)))
   echo "[$start] [$stop] [$diff] Daily spawndef 15 cleanup" >> $PATH_TO_STATS/logs/log_$(date '+\%Y\%m').log
