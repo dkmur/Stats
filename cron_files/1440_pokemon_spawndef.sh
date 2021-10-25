@@ -16,6 +16,18 @@ else
 fi
 }
 
+# reset spawndef 15
+if "$SPAWNDEF15_CLEANUP"
+then
+  start=$(date '+%Y%m%d %H:%M:%S')
+  query "$STATS_DB" "SET SESSION tx_isolation = 'READ-UNCOMMITTED'; CREATE TEMPORARY TABLE $STATS_DB.tmp60 (INDEX (spawnpoint)) AS(SELECT spawnpoint_id as 'spawnpoint', count(spawnpoint_id) as 'times' FROM $STATS_DB.pokemon_history_temp WHERE spawnpoint_id <> 0 and first_scanned < concat(curdate(),' 00:00:00') and first_scanned >= concat(curdate() - interval 1 DAY,' ','$QUEST_END') and first_scanned > disappear_time - interval 30 minute GROUP BY spawnpoint_id); UPDATE $MAD_DB.trs_spawn SET spawndef = 240 WHERE spawnpoint in (SELECT a.spawnpoint FROM $MAD_DB.trs_spawn a, $STATS_DB.tmp60 b WHERE a.spawnpoint = b.spawnpoint and b.times >= $SPAWNDEF15_HOURS and a.spawndef = 15); DROP TABLE $STATS_DB.tmp60;"
+  stop=$(date '+%Y%m%d %H:%M:%S')
+  diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))/60)) $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))%60)))
+  echo "[$start] [$stop] [$diff] Daily spawndef 15 cleanup" >> $PATH_TO_STATS/logs/log_$(date '+\%Y\%m').log
+fi
+
+sleep 10s
+
 # Add mons from pokemn_history_temp to pokemon_history
 if "$mon_backup"
 then
@@ -43,14 +55,4 @@ then
   stop=$(date '+%Y%m%d %H:%M:%S')
   diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))/60)) $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))%60)))
   echo "[$start] [$stop] [$diff] Daily cleanup pokemon_history" >> $PATH_TO_STATS/logs/log_$(date '+\%Y\%m').log
-fi
-
-# reset spawndef 15
-if "$SPAWNDEF15_CLEANUP"
-then
-  start=$(date '+%Y%m%d %H:%M:%S')
-  query "$STATS_DB" "CREATE TEMPORARY TABLE $STATS_DB.tmp60 (INDEX (spawnpoint)) AS( select b.spawnpoint_id as 'spawnpoint', count(b.spawnpoint_id) as 'times' from $MAD_DB.trs_spawn a, $STATS_DB.pokemon_history b where a.spawnpoint = b.spawnpoint_id and a.spawndef = 15 and b.first_scanned like concat(curdate() - interval 1 day,'%') and b.first_scanned >= concat(curdate() -interval 1 day,' ','$QUEST_END') and b.first_scanned > b.disappear_time - interval 30 minute group by spawnpoint_id); UPDATE $MAD_DB.trs_spawn SET spawndef = 240  WHERE spawnpoint in (select spawnpoint from $STATS_DB.tmp60 where times >= $SPAWNDEF15_HOURS); DROP TABLE $STATS_DB.tmp60;"
-  stop=$(date '+%Y%m%d %H:%M:%S')
-  diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))/60)) $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))%60)))
-  echo "[$start] [$stop] [$diff] Daily spwndef 15 cleanup" >> $PATH_TO_STATS/logs/log_$(date '+\%Y\%m').log
 fi

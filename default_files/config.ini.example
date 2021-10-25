@@ -44,8 +44,8 @@ MAD_path_5=
 
 ## Stats ##
 PATH_TO_STATS=/home/dkmur/temp/Stats/                   # do not forget the trailing /
-DEFINED_SCAN_AREAS='Amsterdam, London, Paris'		# only used for visualisation in Stats menu, not used for Grafana
-DEFAULT_AREA=London					# Default area to be used for Stats sql queries, not used for Grafana
+DEFINED_SCAN_AREAS='Amsterdam, London, Paris'		# only used for visualisation in old Stats menu, not needed for Grafana users
+DEFAULT_AREA=London					# Default area to be used for old Stats sql queries, not needed for Grafana users
 
 ## Stats fence creation ##
 FENCE=MAD						# options:MAD/box/world. MAD=use MAD (sub)fences, box=define lat/lon max/min per area yourself, world=like box but Stats will create one big fence covering everything
@@ -55,10 +55,10 @@ MAD_FENCE_UPDATE_INTERVAL=hour				# hour or day, interval for updating Stats on 
 ## ATV details ##
 atvdetails=true						# true/false: get cpu temperature, sw versions and RGC/PD settings from atv 
 atvdetails_hours=24					# execute download atvdetails every X hours, default 24 => daily
-job_wait=2m						# wait time for jobs to finish i.e. 2m or 300s
+job_wait=5m						# wait time for jobs to finish i.e. 2m or 300s
 
 ## MAD log processing ##
-madlog=false						# true/false: to process MAD logs hourly and store into DB. MAD logfiles need to contain instance name!!
+madlog=true						# true/false: to process MAD logs hourly and store into DB. MAD logfiles need to contain instance name!!
 madlog_worker=false					# true/false: to process logs on worker level as well
 
 ## Grafana ##
@@ -82,12 +82,12 @@ SPAWN_UNFENCED_CLEANUP=false				# spawnpoint backup to statsdb.spawn_unused and 
 SPAWN_UNFENCED_TIMES=3					# minimum number of times a spawnpoint OUTSIDE all monmitm fences has to be seen to keep it in trs_spawn else is will be backed up and removed 
 
 ## Cleaup spawndef 15
-SPAWNDEF15_CLEANUP=false				# daily reset incorrect hourly spawndefs. An hourly spawn must have been seen in first 30min period, based on yesterdays hourly data (after QUEST_END)
+SPAWNDEF15_CLEANUP=true					# daily reset incorrect hourly spawndefs. An hourly spawn must have been seen in first 30min period, based on yesterdays hourly data (after QUEST_END)
 SPAWNDEF15_HOURS=15					# number of hours spawnpoint has not been seen in first and second 30min period before resetting spawnpoint
 
 ## Pokemons scanned cleanup/backup ##
-mon_backup=false					# Store todays mons scanned to pokemon_history, required for SPAWNDEF15_CLEAUP!! Data is not needed for Stats anymore since it is already processed
-mon_cleanup=true					# Cleanup pokemon_history (mon_backup=true)
+mon_backup=false					# Store todays mons scanned to pokemon_history, data is not needed for Stats anymore since it is already processed
+mon_cleanup=false					# Cleanup pokemon_history (mon_backup=true)
 days_to_keep=14						# Number of days Pokemon data is stored into pokemon_history
 monthly_mon_table=false					# Create a new table each month where all scanned mons will be added. If set to true make sure mon_cleanup=false !!
 monthly_mon_database=pogodb				# Database to be used for monthly pokemon backup table, make sure to grant privileges to SQL_user
