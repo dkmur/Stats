@@ -99,7 +99,7 @@ fi
 if [[ "$FENCE" == "MAD" ]]
 then
 questareas=$(query "$MAD_DB" "select count(*) from settings_geofence where geofence_id in (select geofence_included from settings_area_pokestops where level = 0);")
-  if [ questareas = 0 ]
+  if [ $questareas = 0 ]
   then
   echo "no quest areas defined, skip processing"
   else
