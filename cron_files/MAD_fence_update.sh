@@ -3,6 +3,17 @@
 folder="$(cd ../ && pwd)"
 source $folder/config.ini
 
+if [ -z "$SQL_password" ]
+then
+  query(){
+  mysql -NB -h$DB_IP -P$DB_PORT -u$SQL_user $MAD_DB -e "$1;"
+  }
+else
+  query(){
+  mysql -NB -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $MAD_DB -e "$1;"
+  }
+fi
+
 # Logging
 mkdir -p $PATH_TO_STATS/logs
 touch $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
@@ -15,16 +26,6 @@ then
   rm -f $PATH_TO_STATS/areas/*.mad
 
 # get MAD mon_mitm fence data
-  if [ -z "$SQL_password" ]
-  then
-        query(){
-        mysql -NB -h$DB_IP -P$DB_PORT -u$SQL_user $MAD_DB -e "$1;"
-        }
-  else
-        query(){
-        mysql -NB -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $MAD_DB -e "$1;"
-        }
-  fi
         while read -r geofence_id name;
         do
 
@@ -97,22 +98,17 @@ fi
 # Create pokestop area files based on MAD fences
 if [[ "$FENCE" == "MAD" ]]
 then
-  start=$(date '+%Y%m%d %H:%M:%S')
-  echo "Creating MAD pokestop fence config and area files"
+questareas=$(query "$MAD_DB" "select count(*) from settings_geofence where geofence_id in (select geofence_included from settings_area_pokestops where level = 0);")
+  if [ questareas = 0 ]
+  then
+  echo "no quest areas defined, skip processing"
+  else
+  echo "$questareas Quest areas found, creating fencesfrom MADdb"
   echo ""
+  start=$(date '+%Y%m%d %H:%M:%S')
   rm -f $PATH_TO_STATS/areas/*.quest
 
 # get MAD pokestop fence data
-  if [ -z "$SQL_password" ]
-  then
-        query(){
-        mysql -NB -h$DB_IP -P$DB_PORT -u$SQL_user $MAD_DB -e "$1;"
-        }
-  else
-        query(){
-        mysql -NB -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $MAD_DB -e "$1;"
-        }
-  fi
         while read -r geofence_id name;
         do
 
@@ -175,14 +171,16 @@ EOF
 stop=$(date '+%Y%m%d %H:%M:%S')
 diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))/60)) $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))%60)))
 echo "[$start] [$stop] [$diff] Fence update quest areas" >> $PATH_TO_STATS/logs/log_$(date '+\%Y\%m').log
-fi
+
 
 #adjust for scanner type
-if [ -z ${vmad+x} ]
-then
-  sed -i "s/-- yy //g" $PATH_TO_STATS/cron_files/*_area_quest.sql
-else
-  sed -i "s/-- xx //g" $PATH_TO_STATS/cron_files/*_area_quest.sql
+    if [ -z ${vmad+x} ]
+    then
+      sed -i "s/-- yy //g" $PATH_TO_STATS/cron_files/*_area_quest.sql
+    else
+      sed -i "s/-- xx //g" $PATH_TO_STATS/cron_files/*_area_quest.sql
+    fi
+  fi
 fi
 
 # adjust databases

@@ -2,6 +2,17 @@
 
 source config.ini
 
+if [ -z "$SQL_password" ]
+then
+  query(){
+  mysql -NB -h$DB_IP -P$DB_PORT -u$SQL_user "S1" -e "$2;"
+  }
+else
+  query(){
+  mysql -NB -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password "$1" -e "$2;"
+  }
+fi
+
 # Logging
 mkdir -p $PATH_TO_STATS/logs
 touch $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
@@ -9,13 +20,7 @@ echo "[`date '+%Y%m%d %H:%M:%S'`] Setting.run executed" >> $PATH_TO_STATS/logs/l
 
 # Check mariadb version
 echo ""
-if [ -z "$SQL_password" ]
-then
-  DBversion=$(mysql -h$DB_IP -P$DB_PORT -u$SQL_user $MAD_DB -sN -e "SELECT left(version(),4)";)
-else
-  DBversion=$(mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $MAD_DB -sN -e "SELECT left(version(),4)";)
-fi
-
+DBversion=$(query "$MAD_DB" "SELECT left(version(),4)")
 if ((${DBversion/./} > 101)) ;
  then
   echo "MariaDB version check passed"
@@ -28,26 +33,13 @@ fi
 
 # grrrrrrrrrrr had to implement db version long time ago
 # check first install, does stats_worker even exist
-if [ -z "$SQL_password" ]
-  then
-  first_install=$(mysql $STATS_DB -h$DB_IP -P$DB_PORT -u$SQL_user -N -se "SELECT count(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '$STATS_DB' AND TABLE_NAME = 'stats_worker';")
-  else
-  first_install=$(mysql $STATS_DB -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password -N -se "SELECT count(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '$STATS_DB' AND TABLE_NAME = 'stats_worker';")
-fi
+first_install=$(query "$MAD_DB" "SELECT count(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '$STATS_DB' AND TABLE_NAME = 'stats_worker';")
+
 # Check collation on stats_worker
-if [ -z "$SQL_password" ]
-  then
-  V1_check1=$(mysql $STATS_DB -h$DB_IP -P$DB_PORT -u$SQL_user -N -se "SELECT count(*) FROM INFORMATION_SCHEMA.TABLES WHERE table_schema = '$STATS_DB' and table_name = 'stats_worker' and table_collation = 'utf8mb4_unicode_ci';")
-  else
-  V1_check1=$(mysql $STATS_DB -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password -N -se "SELECT count(*) FROM INFORMATION_SCHEMA.TABLES WHERE table_schema = '$STATS_DB' and table_name = 'stats_worker' and table_collation = 'utf8mb4_unicode_ci';")
-fi
+V1_check1=$(query "$STATS_DB" "SELECT count(*) FROM INFORMATION_SCHEMA.TABLES WHERE table_schema = '$STATS_DB' and table_name = 'stats_worker' and table_collation = 'utf8mb4_unicode_ci';")
+
 # Check if column Area exists in stats_worker
-if [ -z "$SQL_password" ]
-  then
-  V1_check2=$(mysql $STATS_DB -h$DB_IP -P$DB_PORT -u$SQL_user -N -se "SELECT count(*) FROM INFORMATION_SCHEMA.COLUMNS where table_schema = '$STATS_DB' and table_name = 'stats_worker' and column_name = 'Area';")
-  else
-  V1_check2=$(mysql $STATS_DB -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password -N -se "SELECT count(*) FROM INFORMATION_SCHEMA.COLUMNS where table_schema = '$STATS_DB' and table_name = 'stats_worker' and column_name = 'Area';")
-fi
+V1_check2=$(query "$STATS_DB" "SELECT count(*) FROM INFORMATION_SCHEMA.COLUMNS where table_schema = '$STATS_DB' and table_name = 'stats_worker' and column_name = 'Area';")
 
 if [ $first_install != "1" ]
   then
@@ -57,12 +49,7 @@ if [ $first_install != "1" ]
   else
   # Check current stats db version
   echo ""
-    if [ -z "$SQL_password" ]
-    then
-      statsDBversion=$(mysql -h$DB_IP -P$DB_PORT -u$SQL_user $STATS_DB -sN -e "select version from version where version.key = 'stats'";)
-    else
-      statsDBversion=$(mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB -sN -e "select version from version where version.key = 'stats'";)
-    fi
+  statsDBversion=$(query "$STATS_DB" "select version from version where version.key = 'stats';")
   echo "Not first install, checking old V1 table updates"
     if [[ $V1_check1 != "1" || $V1_check2 != "1" ]]
     then
@@ -87,18 +74,8 @@ fi
 
 
 #Check MAD collation, else 15_worker will fail
-if [ -z "$SQL_password" ]
-  then
-  table_check=$(mysql $MAD_DB -h$DB_IP -P$DB_PORT -u$SQL_user -se "SELECT TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME, TABLE_COLLATION FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '$MAD_DB' and ((TABLE_NAME = 'trs_stats_detect' or TABLE_NAME = 'trs_stats_location' or TABLE_NAME = 'trs_stats_location_raw'or TABLE_NAME = 'trs_status' or TABLE_NAME = 'trs_stats_detect_mon_raw') and TABLE_COLLATION <>'utf8mb4_unicode_ci');")
-  else
-  table_check=$(mysql $MAD_DB -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password -se "SELECT TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME, TABLE_COLLATION FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '$MAD_DB' and ((TABLE_NAME = 'trs_stats_detect' or TABLE_NAME = 'trs_stats_location' or TABLE_NAME = 'trs_stats_location_raw'or TABLE_NAME = 'trs_status' or TABLE_NAME = 'trs_stats_detect_mon_raw') and TABLE_COLLATION <>'utf8mb4_unicode_ci');")
-fi
-if [ -z "$SQL_password" ]
-  then
-  column_check=$(mysql $MAD_DB -h$DB_IP -P$DB_PORT -u$SQL_user -se "SELECT TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME, COLUMN_NAME, COLLATION_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '$MAD_DB' and ((TABLE_NAME = 'trs_stats_detect' or TABLE_NAME = 'trs_stats_location' or TABLE_NAME = 'trs_stats_location_raw'or TABLE_NAME = 'trs_status' or TABLE_NAME = 'trs_stats_detect_mon_raw') and COLLATION_NAME <> 'utf8mb4_unicode_ci');")
-  else
-  column_check=$(mysql $MAD_DB -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password -se "SELECT TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME, COLUMN_NAME, COLLATION_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '$MAD_DB' and ((TABLE_NAME = 'trs_stats_detect' or TABLE_NAME = 'trs_stats_location' or TABLE_NAME = 'trs_stats_location_raw'or TABLE_NAME = 'trs_status' or TABLE_NAME = 'trs_stats_detect_mon_raw') and COLLATION_NAME <> 'utf8mb4_unicode_ci');")
-fi
+table_check=$(query "$MAD_DB" "SELECT TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME, TABLE_COLLATION FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '$MAD_DB' and ((TABLE_NAME = 'trs_stats_detect' or TABLE_NAME = 'trs_stats_location' or TABLE_NAME = 'trs_stats_location_raw'or TABLE_NAME = 'trs_status' or TABLE_NAME = 'trs_stats_detect_mon_raw') and TABLE_COLLATION <>'utf8mb4_unicode_ci');")
+column_check=$(query "$MAD_DB" "SELECT TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME, COLUMN_NAME, COLLATION_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '$MAD_DB' and ((TABLE_NAME = 'trs_stats_detect' or TABLE_NAME = 'trs_stats_location' or TABLE_NAME = 'trs_stats_location_raw'or TABLE_NAME = 'trs_status' or TABLE_NAME = 'trs_stats_detect_mon_raw') and COLLATION_NAME <> 'utf8mb4_unicode_ci');")
 if [[ -z $table_check || -z $column_check ]];
   then
   echo 'MAD collation check passed'
@@ -106,18 +83,8 @@ if [[ -z $table_check || -z $column_check ]];
   else
   echo "ERROR: (some) MAD table/column collation set incorrect !!!"
   echo "Check https://github.com/Map-A-Droid/MAD/tree/master/scripts/SQL and adapt accordingly"
-  if [ -z "$SQL_password" ]
-    then
-    mysql $MAD_DB -h$DB_IP -P$DB_PORT -u$SQL_user -se "SELECT TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME, TABLE_COLLATION FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '$MAD_DB' and ((TABLE_NAME = 'trs_stats_detect' or TABLE_NAME = 'trs_stats_location' or TABLE_NAME = 'trs_stats_location_raw'or TABLE_NAME = 'trs_status' or TABLE_NAME = 'trs_stats_detect_mon_raw') and TABLE_COLLATION <>'utf8mb4_unicode_ci');"
-    else
-    mysql $MAD_DB -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password -se "SELECT TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME, TABLE_COLLATION FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '$MAD_DB' and ((TABLE_NAME = 'trs_stats_detect' or TABLE_NAME = 'trs_stats_location' or TABLE_NAME = 'trs_stats_location_raw'or TABLE_NAME = 'trs_status' or TABLE_NAME = 'trs_stats_detect_mon_raw') and TABLE_COLLATION <>'utf8mb4_unicode_ci');"
-  fi
-  if [ -z "$SQL_password" ]
-    then
-    mysql $MAD_DB -h$DB_IP -P$DB_PORT -u$SQL_user -se "SELECT TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME, COLUMN_NAME, COLLATION_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '$MAD_DB' and ((TABLE_NAME = 'trs_stats_detect' or TABLE_NAME = 'trs_stats_location' or TABLE_NAME = 'trs_stats_location_raw'or TABLE_NAME = 'trs_status' or TABLE_NAME = 'trs_stats_detect_mon_raw') and COLLATION_NAME <> 'utf8mb4_unicode_ci');"
-    else
-    mysql $MAD_DB -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password -se "SELECT TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME, COLUMN_NAME, COLLATION_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '$MAD_DB' and ((TABLE_NAME = 'trs_stats_detect' or TABLE_NAME = 'trs_stats_location' or TABLE_NAME = 'trs_stats_location_raw'or TABLE_NAME = 'trs_status' or TABLE_NAME = 'trs_stats_detect_mon_raw') and COLLATION_NAME <> 'utf8mb4_unicode_ci');"
-  fi
+  query "$MAD_DB" "SELECT TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME, TABLE_COLLATION FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '$MAD_DB' and ((TABLE_NAME = 'trs_stats_detect' or TABLE_NAME = 'trs_stats_location' or TABLE_NAME = 'trs_stats_location_raw'or TABLE_NAME = 'trs_status' or TABLE_NAME = 'trs_stats_detect_mon_raw') and TABLE_COLLATION <>'utf8mb4_unicode_ci');"
+  query "$MAD_DB" "SELECT TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME, COLUMN_NAME, COLLATION_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '$MAD_DB' and ((TABLE_NAME = 'trs_stats_detect' or TABLE_NAME = 'trs_stats_location' or TABLE_NAME = 'trs_stats_location_raw'or TABLE_NAME = 'trs_status' or TABLE_NAME = 'trs_stats_detect_mon_raw') and COLLATION_NAME <> 'utf8mb4_unicode_ci');"
   echo ""
   echo ""
   echo "SQL commands below will most likely fix this, but verify before running and execute settings.run afterwards to verify"
@@ -287,25 +254,16 @@ fi
 # Create mon_mitm area files based on MAD fences
 if [[ "$FENCE" == "MAD" ]]
 then
-  echo "Creating MAD mon_mitm fence config and area files"
+  monareas=$(query "$MAD_DB" "select count(*) from settings_geofence where geofence_id in (select geofence_included from settings_area_mon_mitm);")
+  echo "Creating $monareas MAD mon_mitm fence config and area files"
   echo ""
   rm -f $PATH_TO_STATS/areas/*.mad
 
 # get MAD mon_mitm fence data
-  if [ -z "$SQL_password" ]
-  then
-        query(){
-        mysql -NB -h$DB_IP -P$DB_PORT -u$SQL_user $MAD_DB -e "$1;"
-        }
-  else
-        query(){
-        mysql -NB -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $MAD_DB -e "$1;"
-        }
-  fi
         while read -r geofence_id name;
         do
 
-        query "SELECT LEFT(fence_data,length(fence_data)-1) from settings_geofence where geofence_id = $geofence_id;" | sed 's/\[\"\[/[/g' | sed 's/",/\n/g' | sed 's/"//g' | sed 's/^ //g' | sed 's/\[/§\[/g' > $PATH_TO_STATS/areas/input
+        query "$MAD_DB" "SELECT LEFT(fence_data,length(fence_data)-1) from settings_geofence where geofence_id = $geofence_id;" | sed 's/\[\"\[/[/g' | sed 's/",/\n/g' | sed 's/"//g' | sed 's/^ //g' | sed 's/\[/§\[/g' > $PATH_TO_STATS/areas/input
 
 
                 IFS=§;
@@ -335,7 +293,7 @@ then
                 done | sed s/"(,"/"("/g | sed s/", ,"/,/g
                 unset IFS
 
-        done < <(query "$(cat << EOF
+        done < <(query "$MAD_DB" "$(cat << EOF
         select geofence_id, name from settings_geofence where geofence_id in (select geofence_included from settings_area_mon_mitm);
 EOF
         )")
@@ -380,38 +338,27 @@ if [[ "$FENCE" == "MAD" ]] && [[ "$MAD_DEVICE_INSERT" == "true" ]]
 then
   echo "Adding devices and areas to table Area"
   echo ""
-  if [ -z "$SQL_password" ]
-  then
-  mysql -h$DB_IP -P$DB_PORT -u$SQL_user $STATS_DB -e "DELETE FROM $STATS_DB.Area;"
-  mysql -h$DB_IP -P$DB_PORT -u$SQL_user $STATS_DB -e "INSERT IGNORE INTO $STATS_DB.Area (Area,Origin) SELECT a.name, f.name FROM $MAD_DB.settings_geofence a, $MAD_DB.settings_area_mon_mitm b, $MAD_DB.settings_area c, $MAD_DB.settings_walkerarea d, $MAD_DB.settings_walker_to_walkerarea e, $MAD_DB.settings_device f WHERE a.geofence_id = b.geofence_included and b.area_id = c.area_id and b.area_id = d.area_id and d.walkerarea_id = e.walkerarea_id and e.walker_id = f.walker_id GROUP BY f.name, b.geofence_included;"
-  else
-  mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB -e "DELETE FROM $STATS_DB.Area;"
-  mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB -e "INSERT IGNORE INTO $STATS_DB.Area (Area,Origin) SELECT a.name, f.name FROM $MAD_DB.settings_geofence a, $MAD_DB.settings_area_mon_mitm b, $MAD_DB.settings_area c, $MAD_DB.settings_walkerarea d, $MAD_DB.settings_walker_to_walkerarea e, $MAD_DB.settings_device f WHERE a.geofence_id = b.geofence_included and b.area_id = c.area_id and b.area_id = d.area_id and d.walkerarea_id = e.walkerarea_id and e.walker_id = f.walker_id GROUP BY f.name, b.geofence_included;"
-  fi
+  query "$STATS_DB" "DELETE FROM $STATS_DB.Area;"
+  query "$STATS_DB" "INSERT IGNORE INTO $STATS_DB.Area (Area,Origin) SELECT a.name, f.name FROM $MAD_DB.settings_geofence a, $MAD_DB.settings_area_mon_mitm b, $MAD_DB.settings_area c, $MAD_DB.settings_walkerarea d, $MAD_DB.settings_walker_to_walkerarea e, $MAD_DB.settings_device f WHERE a.geofence_id = b.geofence_included and b.area_id = c.area_id and b.area_id = d.area_id and d.walkerarea_id = e.walkerarea_id and e.walker_id = f.walker_id GROUP BY f.name, b.geofence_included;"
 fi
 
 # Create pokestop area files based on MAD fences
 if [[ "$FENCE" == "MAD" ]]
 then
-  echo "Creating MAD pokestop fence config and area files"
+questareas=$(query "$MAD_DB" "select count(*) from settings_geofence where geofence_id in (select geofence_included from settings_area_pokestops where level = 0);")
+  if [ questareas = 0 ]
+  then
+  echo "no quest areas defined, skip processing"
+  else
+  echo "$questareas Quest areas found, creating fencesfrom MADdb"
   echo ""
   rm -f $PATH_TO_STATS/areas/*.quest
 
 # get MAD pokestop fence data
-  if [ -z "$SQL_password" ]
-  then
-        query(){
-        mysql -NB -h$DB_IP -P$DB_PORT -u$SQL_user $MAD_DB -e "$1;"
-        }
-  else
-        query(){
-        mysql -NB -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $MAD_DB -e "$1;"
-        }
-  fi
         while read -r geofence_id name;
         do
 
-        query "SELECT LEFT(fence_data,length(fence_data)-1) from settings_geofence where geofence_id = $geofence_id;" | sed 's/\[\"\[/[/g' | sed 's/",/\n/g' | sed 's/"//g' | sed 's/^ //g' | sed 's/\[/§\[/g' > $PATH_TO_STATS/areas/input_quest
+        query "$MAD_DB" "SELECT LEFT(fence_data,length(fence_data)-1) from settings_geofence where geofence_id = $geofence_id;" | sed 's/\[\"\[/[/g' | sed 's/",/\n/g' | sed 's/"//g' | sed 's/^ //g' | sed 's/\[/§\[/g' > $PATH_TO_STATS/areas/input_quest
 
 
                 IFS=§;
@@ -441,7 +388,7 @@ then
                 done | sed s/"(,"/"("/g | sed s/", ,"/,/g
                 unset IFS
 
-        done < <(query "$(cat << EOF
+        done < <(query "$MAD_DB" "$(cat << EOF
         select geofence_id, name from settings_geofence where geofence_id in (select geofence_included from settings_area_pokestops where level = 0);
 EOF
         )")
@@ -465,16 +412,18 @@ EOF
     sed -i "s/Fency/$FENCE_NAME/g" $PATH_TO_STATS/cron_files/60_"$AREANAME"_"$FENCENAME"_area_quest.sql
     sed -i "s/FENCE_COORDS/$POLYGON/g" $PATH_TO_STATS/cron_files/60_"$AREANAME"_"$FENCENAME"_area_quest.sql
   done
-fi
 
 #adjust for scanner type
-if [ -z ${vmad+x} ]
-then
-  sed -i "s/-- yy //g" $PATH_TO_STATS/cron_files/*_area_quest.sql
-else
-  sed -i "s/-- xx //g" $PATH_TO_STATS/cron_files/*_area_quest.sql
+    if [ -z ${vmad+x} ]
+    then
+      sed -i "s/-- yy //g" $PATH_TO_STATS/cron_files/*_area_quest.sql
+    else
+      sed -i "s/-- xx //g" $PATH_TO_STATS/cron_files/*_area_quest.sql
+    fi
+  fi
 fi
 
+echo ""
 echo "Create remaining cron files"
 echo ""
 cp $PATH_TO_STATS/default_files/10080_area.sql.default $PATH_TO_STATS/cron_files/10080_area.sql
@@ -600,18 +549,10 @@ if [ $first_install != "1" ]
     echo ""
     echo "Migrating ATVdetails to seperate tables"
     echo ""
-    if [ -z "$SQL_password" ]
-      then
-        mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB -e "INSERT IGNORE INTO ATVgeneral (datetime,origin,arch,rom,vm_script,mitm,pogo,rgc,pogodroid,vmapper,pogo_update,pd_update,vm_update,rgc_update,pingreboot,temperature,magisk,magisk_modules,MACw,MACe,ip,gmail) select datetime,origin,arch,rom,VM_script,mitm,pogo,rgc,pogodroid,vmapper,pogo_update,pd_update,VM_Autoupdate,rgc_update,pingreboot,temperature,magisk,magisk_modules,MACw,MACe,ip,gmail from ATVdetails;"
-        mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB -e "INSERT IGNORE INTO ATVpd (datetime,origin,auth_username,auth_password,user_login,auth_id,auth_token,post_destination,boot_delay,injection_delay,switch_disable_last_sent,intentional_stop,switch_send_protos,last_time_injected,switch_disable_external_communication,last_pid_injected,switch_enable_oomadj,switch_enable_auth_header,switch_send_raw_protos,switch_popup_last_sent,full_daemon,switch_enable_mock_location_patch,last_system_patch_timestamp,last_sys_inj,default_mappging_mode,switch_setenforce,post_destination_raw,session_id,libfilename,latest_version_known,disable_pogo_freeze_detection) SELECT datetime,origin,PD_auth_username,PD_auth_password,PD_user_login,PD_auth_id,PD_auth_token,PD_post_destination,PD_boot_delay,PD_injection_delay,PD_switch_disable_last_sent,PD_intentional_stop,PD_switch_send_protos,PD_last_time_injected,PD_switch_disable_external_communication,PD_last_pid_injected,PD_switch_enable_oomadj,PD_switch_enable_auth_header,PD_switch_send_raw_protos,PD_switch_popup_last_sent,PD_full_daemon,PD_switch_enable_mock_location_patch, PD_last_system_patch_timestamp,PD_last_sys_inj,PD_default_mappging_mode,PD_switch_setenforce,PD_post_destination_raw,PD_session_id,PD_libfilename,PD_latest_version_known,PD_disable_pogo_freeze_detection FROM ATVdetails;"
-        mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB -e "INSERT IGNORE INTO ATVrgc (datetime,origin,auth_username,auth_password,websocket_uri,boot_delay,mediaprojection_previously_started,suspended_mocking,reset_agps_once,overwrite_fused,switch_enable_auth_header,reset_agps_continuously,reset_google_play_services,last_location_longitude,last_location_altitude,last_location_latitude,boot_startup,use_mock_location,oom_adj_override,location_reporter_service_running,stop_location_provider_service,autostart_services) SELECT datetime,origin,RGC_auth_username,RGC_auth_password,RGC_websocket_uri,RGC_boot_delay,RGC_mediaprojection_previously_started,RGC_suspended_mocking,RGC_reset_agps_once,RGC_overwrite_fused,RGC_switch_enable_auth_header,RGC_reset_agps_continuously,RGC_reset_google_play_services,RGC_last_location_longitude,RGC_last_location_altitude,RGC_last_location_latitude,RGC_boot_startup,RGC_use_mock_location,RGC_oom_adj_override,RGC_location_reporter_service_running,RGC_stop_location_provider_service,RGC_autostart_services FROM ATVdetails;"
-        mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB -e "INSERT IGNORE INTO ATVvm (datetime,origin,bootdelay,gzip,betamode,patchedpid,selinux,daemon,authpassword,authuser,injector,authid,postdest,fridastarted,fridaver,openlucky) SELECT datetime,origin,VM_bootdelay,VM_gzip,VM_betamode,VM_patchedpid,VM_selinux,VM_daemon,VM_authpassword,VM_authuser,VM_injector,VM_authid,VM_postdest,VM_fridastarted,VM_fridaver,VM_openlucky FROM ATVdetails;"
-      else
-        mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB -e "INSERT IGNORE INTO ATVgeneral (datetime,origin,arch,rom,vm_script,mitm,pogo,rgc,pogodroid,vmapper,pogo_update,pd_update,vm_update,rgc_update,pingreboot,temperature,magisk,magisk_modules,MACw,MACe,ip,gmail) select datetime,origin,arch,rom,VM_script,mitm,pogo,rgc,pogodroid,vmapper,pogo_update,pd_update,VM_Autoupdate,rgc_update,pingreboot,temperature,magisk,magisk_modules,MACw,MACe,ip,gmail from ATVdetails;"
-        mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB -e "INSERT IGNORE INTO ATVpd (datetime,origin,auth_username,auth_password,user_login,auth_id,auth_token,post_destination,boot_delay,injection_delay,switch_disable_last_sent,intentional_stop,switch_send_protos,last_time_injected,switch_disable_external_communication,last_pid_injected,switch_enable_oomadj,switch_enable_auth_header,switch_send_raw_protos,switch_popup_last_sent,full_daemon,switch_enable_mock_location_patch,last_system_patch_timestamp,last_sys_inj,default_mappging_mode,switch_setenforce,post_destination_raw,session_id,libfilename,latest_version_known,disable_pogo_freeze_detection) SELECT datetime,origin,PD_auth_username,PD_auth_password,PD_user_login,PD_auth_id,PD_auth_token,PD_post_destination,PD_boot_delay,PD_injection_delay,PD_switch_disable_last_sent,PD_intentional_stop,PD_switch_send_protos,PD_last_time_injected,PD_switch_disable_external_communication,PD_last_pid_injected,PD_switch_enable_oomadj,PD_switch_enable_auth_header,PD_switch_send_raw_protos,PD_switch_popup_last_sent,PD_full_daemon,PD_switch_enable_mock_location_patch, PD_last_system_patch_timestamp,PD_last_sys_inj,PD_default_mappging_mode,PD_switch_setenforce,PD_post_destination_raw,PD_session_id,PD_libfilename,PD_latest_version_known,PD_disable_pogo_freeze_detection FROM ATVdetails;"
-        mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB -e "INSERT IGNORE INTO ATVrgc (datetime,origin,auth_username,auth_password,websocket_uri,boot_delay,mediaprojection_previously_started,suspended_mocking,reset_agps_once,overwrite_fused,switch_enable_auth_header,reset_agps_continuously,reset_google_play_services,last_location_longitude,last_location_altitude,last_location_latitude,boot_startup,use_mock_location,oom_adj_override,location_reporter_service_running,stop_location_provider_service,autostart_services) SELECT datetime,origin,RGC_auth_username,RGC_auth_password,RGC_websocket_uri,RGC_boot_delay,RGC_mediaprojection_previously_started,RGC_suspended_mocking,RGC_reset_agps_once,RGC_overwrite_fused,RGC_switch_enable_auth_header,RGC_reset_agps_continuously,RGC_reset_google_play_services,RGC_last_location_longitude,RGC_last_location_altitude,RGC_last_location_latitude,RGC_boot_startup,RGC_use_mock_location,RGC_oom_adj_override,RGC_location_reporter_service_running,RGC_stop_location_provider_service,RGC_autostart_services FROM ATVdetails;"
-        mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB -e "INSERT IGNORE INTO ATVvm (datetime,origin,bootdelay,gzip,betamode,patchedpid,selinux,daemon,authpassword,authuser,injector,authid,postdest,fridastarted,fridaver,openlucky) SELECT datetime,origin,VM_bootdelay,VM_gzip,VM_betamode,VM_patchedpid,VM_selinux,VM_daemon,VM_authpassword,VM_authuser,VM_injector,VM_authid,VM_postdest,VM_fridastarted,VM_fridaver,VM_openlucky FROM ATVdetails;"
-    fi
+    query "$STATS_DB" "INSERT IGNORE INTO ATVgeneral (datetime,origin,arch,rom,vm_script,mitm,pogo,rgc,pogodroid,vmapper,pogo_update,pd_update,vm_update,rgc_update,pingreboot,temperature,magisk,magisk_modules,MACw,MACe,ip,gmail) select datetime,origin,arch,rom,VM_script,mitm,pogo,rgc,pogodroid,vmapper,pogo_update,pd_update,VM_Autoupdate,rgc_update,pingreboot,temperature,magisk,magisk_modules,MACw,MACe,ip,gmail from ATVdetails;"
+    query "$STATS_DB" "INSERT IGNORE INTO ATVpd (datetime,origin,auth_username,auth_password,user_login,auth_id,auth_token,post_destination,boot_delay,injection_delay,switch_disable_last_sent,intentional_stop,switch_send_protos,last_time_injected,switch_disable_external_communication,last_pid_injected,switch_enable_oomadj,switch_enable_auth_header,switch_send_raw_protos,switch_popup_last_sent,full_daemon,switch_enable_mock_location_patch,last_system_patch_timestamp,last_sys_inj,default_mappging_mode,switch_setenforce,post_destination_raw,session_id,libfilename,latest_version_known,disable_pogo_freeze_detection) SELECT datetime,origin,PD_auth_username,PD_auth_password,PD_user_login,PD_auth_id,PD_auth_token,PD_post_destination,PD_boot_delay,PD_injection_delay,PD_switch_disable_last_sent,PD_intentional_stop,PD_switch_send_protos,PD_last_time_injected,PD_switch_disable_external_communication,PD_last_pid_injected,PD_switch_enable_oomadj,PD_switch_enable_auth_header,PD_switch_send_raw_protos,PD_switch_popup_last_sent,PD_full_daemon,PD_switch_enable_mock_location_patch, PD_last_system_patch_timestamp,PD_last_sys_inj,PD_default_mappging_mode,PD_switch_setenforce,PD_post_destination_raw,PD_session_id,PD_libfilename,PD_latest_version_known,PD_disable_pogo_freeze_detection FROM ATVdetails;"
+    query "$STATS_DB" "INSERT IGNORE INTO ATVrgc (datetime,origin,auth_username,auth_password,websocket_uri,boot_delay,mediaprojection_previously_started,suspended_mocking,reset_agps_once,overwrite_fused,switch_enable_auth_header,reset_agps_continuously,reset_google_play_services,last_location_longitude,last_location_altitude,last_location_latitude,boot_startup,use_mock_location,oom_adj_override,location_reporter_service_running,stop_location_provider_service,autostart_services) SELECT datetime,origin,RGC_auth_username,RGC_auth_password,RGC_websocket_uri,RGC_boot_delay,RGC_mediaprojection_previously_started,RGC_suspended_mocking,RGC_reset_agps_once,RGC_overwrite_fused,RGC_switch_enable_auth_header,RGC_reset_agps_continuously,RGC_reset_google_play_services,RGC_last_location_longitude,RGC_last_location_altitude,RGC_last_location_latitude,RGC_boot_startup,RGC_use_mock_location,RGC_oom_adj_override,RGC_location_reporter_service_running,RGC_stop_location_provider_service,RGC_autostart_services FROM ATVdetails;"
+    query "$STATS_DB" "INSERT IGNORE INTO ATVvm (datetime,origin,bootdelay,gzip,betamode,patchedpid,selinux,daemon,authpassword,authuser,injector,authid,postdest,fridastarted,fridaver,openlucky) SELECT datetime,origin,VM_bootdelay,VM_gzip,VM_betamode,VM_patchedpid,VM_selinux,VM_daemon,VM_authpassword,VM_authuser,VM_injector,VM_authid,VM_postdest,VM_fridastarted,VM_fridaver,VM_openlucky FROM ATVdetails;"
   fi
 fi
 
