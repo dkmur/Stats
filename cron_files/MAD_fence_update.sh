@@ -3,6 +3,17 @@
 folder="$(cd ../ && pwd)"
 source $folder/config.ini
 
+if [ -z "$SQL_password" ]
+then
+  query(){
+  mysql -NB -h$DB_IP -P$DB_PORT -u$SQL_user "$1" -e "$2;"
+  }
+else
+  query(){
+  mysql -NB -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password "$1" -e "$2;"
+  }
+fi
+
 # Logging
 mkdir -p $PATH_TO_STATS/logs
 touch $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
@@ -15,20 +26,10 @@ then
   rm -f $PATH_TO_STATS/areas/*.mad
 
 # get MAD mon_mitm fence data
-  if [ -z "$SQL_password" ]
-  then
-        query(){
-        mysql -NB -h$DB_IP -P$DB_PORT -u$SQL_user $MAD_DB -e "$1;"
-        }
-  else
-        query(){
-        mysql -NB -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $MAD_DB -e "$1;"
-        }
-  fi
         while read -r geofence_id name;
         do
 
-        query "SELECT LEFT(fence_data,length(fence_data)-1) from settings_geofence where geofence_id = $geofence_id;" | sed 's/\[\"\[/[/g' | sed 's/",/\n/g' | sed 's/"//g' | sed 's/^ //g' | sed 's/\[/§\[/g' > $PATH_TO_STATS/areas/input
+        query "$MAD_DB" "SELECT LEFT(fence_data,length(fence_data)-1) from settings_geofence where geofence_id = $geofence_id;" | sed 's/\[\"\[/[/g' | sed 's/",/\n/g' | sed 's/"//g' | sed 's/^ //g' | sed 's/\[/§\[/g' > $PATH_TO_STATS/areas/input
 
 
                 IFS=§;
@@ -58,7 +59,7 @@ then
                 done | sed s/"(,"/"("/g | sed s/", ,"/,/g
                 unset IFS
 
-        done < <(query "$(cat << EOF
+        done < <(query "$MAD_DB" "$(cat << EOF
         select geofence_id, name from settings_geofence where geofence_id in (select geofence_included from settings_area_mon_mitm);
 EOF
         )")
@@ -97,26 +98,21 @@ fi
 # Create pokestop area files based on MAD fences
 if [[ "$FENCE" == "MAD" ]]
 then
-  start=$(date '+%Y%m%d %H:%M:%S')
-  echo "Creating MAD pokestop fence config and area files"
+questareas=$(query "$MAD_DB" "select count(*) from settings_geofence where geofence_id in (select geofence_included from settings_area_pokestops where level = 0);")
+  if [ $questareas = 0 ]
+  then
+  echo "no quest areas defined, skip processing"
+  else
+  echo "$questareas Quest areas found, creating fencesfrom MADdb"
   echo ""
+  start=$(date '+%Y%m%d %H:%M:%S')
   rm -f $PATH_TO_STATS/areas/*.quest
 
 # get MAD pokestop fence data
-  if [ -z "$SQL_password" ]
-  then
-        query(){
-        mysql -NB -h$DB_IP -P$DB_PORT -u$SQL_user $MAD_DB -e "$1;"
-        }
-  else
-        query(){
-        mysql -NB -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $MAD_DB -e "$1;"
-        }
-  fi
         while read -r geofence_id name;
         do
 
-        query "SELECT LEFT(fence_data,length(fence_data)-1) from settings_geofence where geofence_id = $geofence_id;" | sed 's/\[\"\[/[/g' | sed 's/",/\n/g' | sed 's/"//g' | sed 's/^ //g' | sed 's/\[/§\[/g' > $PATH_TO_STATS/areas/input_quest
+        query "$MAD_DB" "SELECT LEFT(fence_data,length(fence_data)-1) from settings_geofence where geofence_id = $geofence_id;" | sed 's/\[\"\[/[/g' | sed 's/",/\n/g' | sed 's/"//g' | sed 's/^ //g' | sed 's/\[/§\[/g' > $PATH_TO_STATS/areas/input_quest
 
 
                 IFS=§;
@@ -146,7 +142,7 @@ then
                 done | sed s/"(,"/"("/g | sed s/", ,"/,/g
                 unset IFS
 
-        done < <(query "$(cat << EOF
+        done < <(query "$MAD_DB" "$(cat << EOF
         select geofence_id, name from settings_geofence where geofence_id in (select geofence_included from settings_area_pokestops where level = 0);
 EOF
         )")
@@ -175,14 +171,16 @@ EOF
 stop=$(date '+%Y%m%d %H:%M:%S')
 diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))/60)) $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))%60)))
 echo "[$start] [$stop] [$diff] Fence update quest areas" >> $PATH_TO_STATS/logs/log_$(date '+\%Y\%m').log
-fi
+
 
 #adjust for scanner type
-if [ -z ${vmad+x} ]
-then
-  sed -i "s/-- yy //g" $PATH_TO_STATS/cron_files/*_area_quest.sql
-else
-  sed -i "s/-- xx //g" $PATH_TO_STATS/cron_files/*_area_quest.sql
+    if [ -z ${vmad+x} ]
+    then
+      sed -i "s/-- yy //g" $PATH_TO_STATS/cron_files/*_area_quest.sql
+    else
+      sed -i "s/-- xx //g" $PATH_TO_STATS/cron_files/*_area_quest.sql
+    fi
+  fi
 fi
 
 # adjust databases
@@ -206,12 +204,12 @@ then
   echo "Append new devices and areas to table Area"
   if [ -z "$SQL_password" ]
   then
-    mysql -h$DB_IP -P$DB_PORT -u$SQL_user $STATS_DB -e "CREATE TEMPORARY TABLE $STATS_DB.device AS(SELECT a.name as 'Area', f.name as 'Origin' FROM $MAD_DB.settings_geofence a, $MAD_DB.settings_area_mon_mitm b, $MAD_DB.settings_walkerarea d, $MAD_DB.settings_walker_to_walkerarea e, $MAD_DB.settings_device f WHERE a.geofence_id = b.geofence_included and b.area_id = d.area_id and d.walkerarea_id = e.walkerarea_id and e.walker_id = f.walker_id GROUP BY f.name, b.geofence_included); UPDATE $STATS_DB.Area a LEFT JOIN $STATS_DB.device b ON a.Origin = b.Origin SET a.Area = b.Area; INSERT IGNORE INTO $STATS_DB.Area SELECT * from $STATS_DB.device; DROP TABLE $STATS_DB.device;"
+    query "$STATS_DB" "CREATE TEMPORARY TABLE $STATS_DB.device AS(SELECT a.name as 'Area', f.name as 'Origin' FROM $MAD_DB.settings_geofence a, $MAD_DB.settings_area_mon_mitm b, $MAD_DB.settings_walkerarea d, $MAD_DB.settings_walker_to_walkerarea e, $MAD_DB.settings_device f WHERE a.geofence_id = b.geofence_included and b.area_id = d.area_id and d.walkerarea_id = e.walkerarea_id and e.walker_id = f.walker_id GROUP BY f.name, b.geofence_included); UPDATE $STATS_DB.Area a LEFT JOIN $STATS_DB.device b ON a.Origin = b.Origin SET a.Area = b.Area; INSERT IGNORE INTO $STATS_DB.Area SELECT * from $STATS_DB.device; DROP TABLE $STATS_DB.device;"
     stop=$(date '+%Y%m%d %H:%M:%S')
     diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))/60)) $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))%60)))
     echo "[$start] [$stop] [$diff] Device update table Area" >> $PATH_TO_STATS/logs/log_$(date '+\%Y\%m').log
   else
-    mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB -e "CREATE TEMPORARY TABLE $STATS_DB.device AS(SELECT a.name as 'Area', f.name as 'Origin' FROM $MAD_DB.settings_geofence a, $MAD_DB.settings_area_mon_mitm b, $MAD_DB.settings_walkerarea d, $MAD_DB.settings_walker_to_walkerarea e, $MAD_DB.settings_device f WHERE a.geofence_id = b.geofence_included and b.area_id = d.area_id and d.walkerarea_id = e.walkerarea_id and e.walker_id = f.walker_id GROUP BY f.name, b.geofence_included); UPDATE $STATS_DB.Area a LEFT JOIN $STATS_DB.device b ON a.Origin = b.Origin SET a.Area = b.Area; INSERT IGNORE INTO $STATS_DB.Area SELECT * from $STATS_DB.device; DROP TABLE $STATS_DB.device;"
+    query "$STATS_DB" "CREATE TEMPORARY TABLE $STATS_DB.device AS(SELECT a.name as 'Area', f.name as 'Origin' FROM $MAD_DB.settings_geofence a, $MAD_DB.settings_area_mon_mitm b, $MAD_DB.settings_walkerarea d, $MAD_DB.settings_walker_to_walkerarea e, $MAD_DB.settings_device f WHERE a.geofence_id = b.geofence_included and b.area_id = d.area_id and d.walkerarea_id = e.walkerarea_id and e.walker_id = f.walker_id GROUP BY f.name, b.geofence_included); UPDATE $STATS_DB.Area a LEFT JOIN $STATS_DB.device b ON a.Origin = b.Origin SET a.Area = b.Area; INSERT IGNORE INTO $STATS_DB.Area SELECT * from $STATS_DB.device; DROP TABLE $STATS_DB.device;"
     stop=$(date '+%Y%m%d %H:%M:%S')
     diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))/60)) $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))%60)))
     echo "[$start] [$stop] [$diff] Device update table Area" >> $PATH_TO_STATS/logs/log_$(date '+\%Y\%m').log
