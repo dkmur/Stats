@@ -21,7 +21,7 @@ start=$(date '+%Y%m%d %H:%M:%S')
 query "$MAD_DB" "Create TEMPORARY TABLE $MAD_DB.tmp100 AS(select b.encounter_id, count(distinct(b.worker)) as is_shiny from $MAD_DB.trs_stats_detect_mon_raw b where b.is_shiny = 1 group by b.encounter_id); update $STATS_DB.pokemon_history_temp a, $MAD_DB.tmp100 b set a.is_shiny = b.is_shiny where  a.encounter_id = b.encounter_id; drop table $MAD_DB.tmp100;"
 stop=$(date '+%Y%m%d %H:%M:%S')
 diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))/60)) $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))%60)))
-echo "[$start] [$stop] [$diff] Hourly append shiny Stats" >> $PATH_TO_STATS/logs/log_$(date '+\%Y\%m').log
+echo "[$start] [$stop] [$diff] Hourly append shiny Stats" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
 
 # cleanup table pokemon + trs_stats_detect_seen_type + pokemon_display
 if "$pokemon"
@@ -30,7 +30,7 @@ then
   query "$MAD_DB" "SET SESSION tx_isolation = 'READ-UNCOMMITTED'; CALL pokemon_cleanup(); CALL detect_seen_cleanup(); CALL pokemon_display_cleanup();"
   stop=$(date '+%Y%m%d %H:%M:%S')
   diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))/60)) $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))%60)))
-  echo "[$start] [$stop] [$diff] Hourly cleanup MAD tables pokemon, trs_stats_detect_seen_type and pokemon_display" >> $PATH_TO_STATS/logs/log_$(date '+\%Y\%m').log
+  echo "[$start] [$stop] [$diff] Hourly cleanup MAD tables pokemon, trs_stats_detect_seen_type and pokemon_display" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
 fi
 
 # cleanup table detect_raw
@@ -41,7 +41,7 @@ then
   query "$MAD_DB" "delete from trs_stats_detect_fort_raw where from_unixtime(timestamp_scan) < now() - interval 1 hour;"
   stop=$(date '+%Y%m%d %H:%M:%S')
   diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))/60)) $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))%60)))
-  echo "[$start] [$stop] [$diff] Hourly cleanup MAD table trs_stats_detect_mon_raw" >> $PATH_TO_STATS/logs/log_$(date '+\%Y\%m').log
+  echo "[$start] [$stop] [$diff] Hourly cleanup MAD table trs_stats_detect_mon_raw" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
 fi
 
 # cleanup table location_raw
@@ -51,5 +51,5 @@ then
   query "$MAD_DB" "delete from trs_stats_location_raw where from_unixtime(period) < now() - interval 1 hour;"
   stop=$(date '+%Y%m%d %H:%M:%S')
   diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))/60)) $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))%60)))
-  echo "[$start] [$stop] [$diff] Hourly cleanup MAD table trs_stats_location_raw" >> $PATH_TO_STATS/logs/log_$(date '+\%Y\%m').log
+  echo "[$start] [$stop] [$diff] Hourly cleanup MAD table trs_stats_location_raw" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
 fi
