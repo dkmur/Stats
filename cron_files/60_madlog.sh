@@ -475,5 +475,5 @@ fi
 echo ""
 stop=$(date '+%Y%m%d %H:%M:%S')
 diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))/60)) $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))%60)))
-echo "[$start] [$stop] [$diff] Stats rpl60 MAD log processing" >> $PATH_TO_STATS/logs/log_$(date '+\%Y\%m').log
+echo "[$start] [$stop] [$diff] Stats rpl60 MAD log processing" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
 echo "All done!"

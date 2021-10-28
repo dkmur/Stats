@@ -91,7 +91,7 @@ EOF
 
   stop=$(date '+%Y%m%d %H:%M:%S')
   diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))/60)) $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))%60)))
-  echo "[$start] [$stop] [$diff] Fence update pokemon areas" >> $PATH_TO_STATS/logs/log_$(date '+\%Y\%m').log
+  echo "[$start] [$stop] [$diff] Fence update pokemon areas" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
 fi
 
 
@@ -170,7 +170,7 @@ EOF
 
 stop=$(date '+%Y%m%d %H:%M:%S')
 diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))/60)) $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))%60)))
-echo "[$start] [$stop] [$diff] Fence update quest areas" >> $PATH_TO_STATS/logs/log_$(date '+\%Y\%m').log
+echo "[$start] [$stop] [$diff] Fence update quest areas" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
 
 
 #adjust for scanner type
@@ -207,11 +207,11 @@ then
     query "$STATS_DB" "CREATE TEMPORARY TABLE $STATS_DB.device AS(SELECT a.name as 'Area', f.name as 'Origin' FROM $MAD_DB.settings_geofence a, $MAD_DB.settings_area_mon_mitm b, $MAD_DB.settings_walkerarea d, $MAD_DB.settings_walker_to_walkerarea e, $MAD_DB.settings_device f WHERE a.geofence_id = b.geofence_included and b.area_id = d.area_id and d.walkerarea_id = e.walkerarea_id and e.walker_id = f.walker_id GROUP BY f.name, b.geofence_included); UPDATE $STATS_DB.Area a LEFT JOIN $STATS_DB.device b ON a.Origin = b.Origin SET a.Area = b.Area; INSERT IGNORE INTO $STATS_DB.Area SELECT * from $STATS_DB.device; DROP TABLE $STATS_DB.device;"
     stop=$(date '+%Y%m%d %H:%M:%S')
     diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))/60)) $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))%60)))
-    echo "[$start] [$stop] [$diff] Device update table Area" >> $PATH_TO_STATS/logs/log_$(date '+\%Y\%m').log
+    echo "[$start] [$stop] [$diff] Device update table Area" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
   else
     query "$STATS_DB" "CREATE TEMPORARY TABLE $STATS_DB.device AS(SELECT a.name as 'Area', f.name as 'Origin' FROM $MAD_DB.settings_geofence a, $MAD_DB.settings_area_mon_mitm b, $MAD_DB.settings_walkerarea d, $MAD_DB.settings_walker_to_walkerarea e, $MAD_DB.settings_device f WHERE a.geofence_id = b.geofence_included and b.area_id = d.area_id and d.walkerarea_id = e.walkerarea_id and e.walker_id = f.walker_id GROUP BY f.name, b.geofence_included); UPDATE $STATS_DB.Area a LEFT JOIN $STATS_DB.device b ON a.Origin = b.Origin SET a.Area = b.Area; INSERT IGNORE INTO $STATS_DB.Area SELECT * from $STATS_DB.device; DROP TABLE $STATS_DB.device;"
     stop=$(date '+%Y%m%d %H:%M:%S')
     diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))/60)) $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))%60)))
-    echo "[$start] [$stop] [$diff] Device update table Area" >> $PATH_TO_STATS/logs/log_$(date '+\%Y\%m').log
+    echo "[$start] [$stop] [$diff] Device update table Area" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
   fi
 fi

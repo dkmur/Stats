@@ -21,7 +21,7 @@ then
     rm $PATH_TO_STATS/pokemon_history_structure.sql
     stop=$(date '+%Y%m%d %H:%M:%S')
     diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))/60)) $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))%60)))
-    echo "[$start] [$stop] [$diff] Monthly backup pokemon_history" >> $PATH_TO_STATS/logs/log_$(date '+\%Y\%m').log
+    echo "[$start] [$stop] [$diff] Monthly backup pokemon_history" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
   else
     mysqldump -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB --no-data pokemon_history > $PATH_TO_STATS\pokemon_history_structure.sql
     mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB -e "alter table $STATS_DB.pokemon_history RENAME $monthly_mon_database.pokemon_history_$yearmonth"
@@ -30,7 +30,7 @@ then
     mysqloptimize --skip-write-binlog -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $monthly_mon_database pokemon_history_$yearmonth
     stop=$(date '+%Y%m%d %H:%M:%S')
     diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))/60)) $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))%60)))
-    echo "[$start] [$stop] [$diff] Monthly backup pokemon_history" >> $PATH_TO_STATS/logs/log_$(date '+\%Y\%m').log
+    echo "[$start] [$stop] [$diff] Monthly backup pokemon_history" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
   fi
 fi
 
@@ -41,10 +41,10 @@ then
   mysqloptimize --skip-write-binlog -h$DB_IP -P$DB_PORT -u$SQL_user $STATS_DB
   stop=$(date '+%Y%m%d %H:%M:%S')
   diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))/60)) $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))%60)))
-  echo "[$start] [$stop] [$diff] Monthly StatsDB optimize" >> $PATH_TO_STATS/logs/log_$(date '+\%Y\%m').log
+  echo "[$start] [$stop] [$diff] Monthly StatsDB optimize" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
 else
   mysqloptimize --skip-write-binlog -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB
   stop=$(date '+%Y%m%d %H:%M:%S')
   diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))/60)) $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))%60)))
-  echo "[$start] [$stop] [$diff] Monthly StatsDB optimize" >> $PATH_TO_STATS/logs/log_$(date '+\%Y\%m').log
+  echo "[$start] [$stop] [$diff] Monthly StatsDB optimize" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
 fi
