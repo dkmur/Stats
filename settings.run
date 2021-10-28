@@ -566,13 +566,13 @@ if "$SPAWNDEF15_CLEANUP"
   fi
 fi
 # Make sure mon backup is enabled is set when using spawndef reset
-if "$SPAWNDEF15_CLEANUP"
-  then
-  if [[ $mon_backup = "false" ]]
-    then
-    echo "ERROR: mon_backup needs to be enabled in order to use hourly spawndef reset/cleanup"
-  fi
-fi
+#if "$SPAWNDEF15_CLEANUP"
+#  then
+#  if [[ $mon_backup = "false" ]]
+#    then
+#    echo "ERROR: mon_backup needs to be enabled in order to use hourly spawndef reset/cleanup"
+#  fi
+#fi
 # Make sure not to delete pokemon_history when mon_backup is enabled
 if "$monthly_mon_table"
   then
