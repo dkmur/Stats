@@ -69,7 +69,7 @@ DataSource_MAD=rmdb
 outage_report=false
 outage_interval=10					# Interval in minutes to check for device outage
 device_outage=10					# Missing proto minutes to include a device in report
-outage_webhook="https://discord.com/api/webhooks/..."	# Discord webhook for notifications
+outage_webhook=https://discord.com/api/webhooks/...	# Discord webhook for notifications
 
 ## backup of spawnpoints is done to statsdb.spawn_unused, in case you wish to restore them ##
 ## Make sure that all geofences have (sub)fence names store inside in between [] ##
