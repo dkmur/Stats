@@ -10,7 +10,7 @@ counter=0
 doit(){
 echo ""
 echo "Unpausing all Google devices on instance: $MAD_instance"
-echo "Per $batch_size with $batch_wait between batches"
+echo "Per $batch_size_google with $batch_wait_google between batches"
 echo ""
 
 while read -r line ;do
