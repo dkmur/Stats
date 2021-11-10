@@ -193,7 +193,7 @@ if "$outage_report"
 then
   echo "Adding device outage reporting"
   echo ""
-  sed \-i "$ a \#\# Device outage report" $PATH_TO_STATS/crontab.txt
+  sed -i "$ a \#\# Device outage report" $PATH_TO_STATS/crontab.txt
   sed -i "$ a */$outage_interval * * * * cd pathToStatsdefault_files && ./discord.sh --username \"Device status\" --color \"16711680\" --avatar \"https://www.iconsdb.com/icons/preview/red/exclamation-xxl.png\" --webhook-url \"outage_webhook\" --description \"$\(mysql userpass MAD_DB -N -e \"select rpad\(concat\('**',c.name,'** >'),18,'>'), concat\('**',if\(a.lastProtoDateTime='','Unknown',time_format\(a.lastProtoDateTime,'\\\%H:\\\%i')),'** <<< '), concat\('IP: ','**',e.ip,'**') from MAD_DB.trs_status a left join MAD_DB.settings_device c on a.device_id = c.device_id left join STATS_DB.ATVgeneral e on c.name = e.origin where \(a.lastProtoDateTime < now\() - interval device_outage minute or a.lastProtoDateTime = '') and date\(e.datetime) = curdate\() order by c.name;\" | jq -Rs . | cut -c 2- | rev | cut -c 2- | rev)\" 2>>pathToStatslogs/log_\$\(date '+\\\%Y\\\%m').log" $PATH_TO_STATS/crontab.txt
 fi
 PATH_TO_STATS2=$(sed 's@/@\\/@g' <<< $PATH_TO_STATS)
@@ -203,11 +203,11 @@ cd $PATH_TO_STATS && sed -i "s/MAD_DB/$MAD_DB/g" *.txt
 cd $PATH_TO_STATS && sed -i "s/device_outage/$device_outage/g" *.txt
 cd $PATH_TO_STATS && sed -i "s[outage_webhook[$outage_webhook[g" *.txt
 
-if [ \-z "$SQL_password" ]
+if [ -z "$SQL_password" ]
  then
-  sed \-i "s/userpass/-h$DB_IP -P$DB_PORT -u$SQL_user/g" $PATH_TO_STATS/crontab.txt
+  sed -i "s/userpass/-h$DB_IP -P$DB_PORT -u$SQL_user/g" $PATH_TO_STATS/crontab.txt
  else
-  sed \-i "s/userpass/-h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password/g" $PATH_TO_STATS/crontab.txt
+  sed -i "s/userpass/-h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password/g" $PATH_TO_STATS/crontab.txt
 fi
 
 # Create area world
