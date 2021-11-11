@@ -10,7 +10,9 @@ counter=0
 doit(){
 echo ""
 echo "Unpausing all PTC devices on instance: $MAD_instance"
-echo "Per $batch_size with $batch_wait between batches"
+echo "Per $batch_size_ptc with $batch_wait_ptc between batches"
+count=$(mysql -u$SQL_user -p$SQL_password -h$DB_IP -P$DB_PORT $MAD_DB -NB -e "select count(a.device_id) from settings_device a, madmin_instance b, trs_status c where a.logintype = 'ptc' and a.device_id = c.device_id and a.instance_id = b.instance_id and a.instance_id = c.instance_id and b.name = '$MAD_instance' and c.idle = 1;")
+echo "Number of PTC devices paused: $count"
 echo ""
 
 while read -r line ;do
@@ -28,12 +30,12 @@ fi
 echo "Unpausing $origin and restarting pogo"
 echo ""
 curl --silent --output /dev/null --show-error --fail -u $MADmin_user:$MADmin_pass "$MADmin_url/api/device/$deviceid" -H "Content-Type: application/json-rpc" --data-binary '{"call":"device_state","args":{"active":1}}'
-sleep 2s
+sleep 5s
 curl --silent --output /dev/null --show-error --fail -u $MADmin_user:$MADmin_pass "$MADmin_url/quit_pogo?origin=$origin&adb=False&restart=1"
 counter=$((counter+1))
-sleep 3s
+sleep 2s
 
-done < <(mysql -u$SQL_user -p$SQL_password -h$DB_IP -P$DB_PORT $MAD_DB -NB -e "select a.name, a.device_id from settings_device a, madmin_instance b where a.logintype = 'ptc' and a.instance_id = b.instance_id and b.name = '$MAD_instance';")
+done < <(mysql -u$SQL_user -p$SQL_password -h$DB_IP -P$DB_PORT $MAD_DB -NB -e "select a.name, a.device_id from settings_device a, madmin_instance b, trs_status c where a.logintype = 'ptc' and a.device_id = c.device_id and a.instance_id = b.instance_id and a.instance_id = c.instance_id and b.name = '$MAD_instance' and c.idle = 1;")
 }
 
 

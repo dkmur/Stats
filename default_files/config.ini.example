@@ -65,6 +65,12 @@ madlog_worker=false					# true/false: to process logs on worker level as well
 DataSource_stats=pogodb
 DataSource_MAD=rmdb
 
+## Device outage reporting
+outage_report=false
+outage_interval=10					# Interval in minutes to check for device outage
+device_outage=10					# Missing proto minutes to include a device in report
+outage_webhook=https://discord.com/api/webhooks/...	# Discord webhook for notifications
+
 ## backup of spawnpoints is done to statsdb.spawn_unused, in case you wish to restore them ##
 ## Make sure that all geofences have (sub)fence names store inside in between [] ##
 # daily backup/remove spawnpoints discovered during quest scan hours #
