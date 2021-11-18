@@ -516,7 +516,7 @@ then
         echo ""
         echo "Hourly data: processing now - $hoursback hours"
         echo ""
-        cp $PATH_TO_STATS/cron_files/madlog.sh $PATH_TO_STATS/cron_files/madlog.sh.tmp
+        cp $PATH_TO_STATS/cron_files/60_madlog.sh $PATH_TO_STATS/cron_files/madlog.sh.tmp
         sed -i "s/1 hour ago/$hoursback hour ago/g" $PATH_TO_STATS/cron_files/madlog.sh.tmp
         cd $PATH_TO_STATS/cron_files && ./madlog.sh.tmp
         rm $PATH_TO_STATS/cron_files/madlog.sh.tmp
