@@ -16,6 +16,15 @@ else
 fi
 }
 
+query2(){
+if [ -z "$SQL_password" ]
+then
+  mysql -NB -h$DB_IP -P$DB_PORT -u$SQL_user $STATS_DB $1
+else
+  mysql -NB -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB $1
+fi
+}
+
 # pokestop to gym remove
 if "$stop_to_gym_remove"
 then
@@ -133,7 +142,7 @@ echo "[$start] [$stop] [$diff] Daily cleanup unseen gyms" >> $PATH_TO_STATS/logs
 if "$madlog"
 then
   start=$(date '+%Y%m%d %H:%M:%S')
-  cat $PATH_TO_STATS/cron_files/madlog1440.sql | query
+  cat $PATH_TO_STATS/cron_files/madlog1440.sql | query2
   stop=$(date '+%Y%m%d %H:%M:%S')
   diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))/60)) $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))%60)))
   echo "[$start] [$stop] [$diff] Stats rpl1440 MAD log aggregation" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
@@ -143,7 +152,7 @@ fi
 if "$madlog_worker"
 then
   start=$(date '+%Y%m%d %H:%M:%S')
-  cat $PATH_TO_STATS/cron_files/madlog_worker1440.sql | query
+  cat $PATH_TO_STATS/cron_files/madlog_worker1440.sql | query2
   stop=$(date '+%Y%m%d %H:%M:%S')
   diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))/60)) $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))%60)))
   echo "[$start] [$stop] [$diff] Stats rpl1440 MAD log aggregation worker level" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
