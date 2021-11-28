@@ -14,7 +14,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "8.1.1"
+      "version": "8.2.4"
     },
     {
       "type": "datasource",
@@ -49,11 +49,13 @@
     ]
   },
   "editable": true,
+  "fiscalYearStartMonth": 0,
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1630365169877,
+  "iteration": 1638124548205,
   "links": [],
+  "liveNow": false,
   "panels": [
     {
       "datasource": "${DS_POGODB}",
@@ -271,7 +273,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 96
+                "value": 89
               }
             ]
           },
@@ -283,7 +285,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 111
+                "value": 131
               }
             ]
           },
@@ -312,14 +314,14 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.1.1",
+      "pluginVersion": "8.2.4",
       "targets": [
         {
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\na.Origin, b.name as 'instance',\nifnull(a.ip,'no_data') as 'ip',\nifnull(a.arch,'no_data') as 'arch',\nifnull(a.rom,'no_data') as 'rom',\nifnull(a.pogo,'no_data') as 'pogo',\nifnull(a.mitm,'no_data') as 'mitm',\nifnull(a.pogodroid,'no_data') as 'PD',\nifnull(a.vmapper,'no_data') as 'VM',\nifnull(a.rgc,'no_data ') as 'RGC',\nifnull(e.auth_id,'no_data') as 'PDdeviceID',\nifnull(f.deviceid,'no_data') as 'VMdeviceID',\nifnull(a.macE,'no_data') as 'macEth',\nifnull(a.macW,'no_data') as 'macWifi',\na.gmail\nFROM ATVgeneral a, rmdb.madmin_instance b, rmdb.trs_status c, rmdb.settings_device d, ATVpd e, ATVvm f\nWHERE a.datetime = '$Date' and e.datetime = '$Date' and f.datetime = '$Date' and a.Origin = e.Origin and a.Origin = f.Origin and a.Origin = d.name and c.device_id = d.device_id and c.instance_id = b.instance_id\nORDER BY a.Origin ASC\n",
+          "rawSql": "SELECT\na.Origin, b.name as 'instance',\nifnull(a.ip,'no_data') as 'ip',\nifnull(a.arch,'no_data') as 'arch',\nifnull(a.rom,'no_data') as 'rom',\nifnull(a.pogo,'no_data') as 'pogo',\nifnull(a.mitm,'no_data') as 'mitm',\nifnull(a.pogodroid,'no_data') as 'PD',\nifnull(a.vmapper,'no_data') as 'VM',\nifnull(a.rgc,'no_data ') as 'RGC',\nifnull(e.auth_id,'no_data') as 'PDdeviceID',\nifnull(f.deviceid,'no_data') as 'VMdeviceID',\nifnull(a.macE,'no_data') as 'macEth',\nifnull(a.macW,'no_data') as 'macWifi',\nifnull(a.hostname,'no_data') as 'hostname',\na.gmail\nFROM ATVgeneral a, rmdb.madmin_instance b, rmdb.trs_status c, rmdb.settings_device d, ATVpd e, ATVvm f\nWHERE a.datetime = '$Date' and e.datetime = '$Date' and f.datetime = '$Date' and a.Origin = e.Origin and a.Origin = f.Origin and a.Origin = d.name and c.device_id = d.device_id and c.instance_id = b.instance_id\nORDER BY a.Origin ASC\n",
           "refId": "A",
           "select": [
             [
@@ -345,7 +347,7 @@
       "type": "table"
     }
   ],
-  "schemaVersion": 30,
+  "schemaVersion": 32,
   "style": "dark",
   "tags": [],
   "templating": {
@@ -383,5 +385,5 @@
   "timezone": "",
   "title": "13. Device overview",
   "uid": "RVgxODPGz",
-  "version": 33
+  "version": 37
 }
