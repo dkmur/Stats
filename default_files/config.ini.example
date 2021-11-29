@@ -99,7 +99,7 @@ monthly_mon_table=false					# Create a new table each month where all scanned mo
 monthly_mon_database=pogodb				# Database to be used for monthly pokemon backup table, make sure to grant privileges to SQL_user
 
 ## Pokestop / Quest cleanup ##
-stop_to_gym_remove=false				# Remove pokestops that became gym
+stop_to_gym_remove=false				# Remove pokestops that became gym or vice versa
 stop_no_quest_remove=false				# Remove pokestops that have not been updated and exist in trs_quest yet no quest scanned for no_quest_days
 no_quest_days=5						# Number of days of no quest scanned before deletion of pokestop
 recalc_quest_routes=false				# Weekly recalculation of quest routes
