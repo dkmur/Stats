@@ -25,14 +25,14 @@ else
 fi
 }
 
-# pokestop to gym remove
+# pokestop to gym OR gym to pokestop remove
 if "$stop_to_gym_remove"
 then
   start=$(date '+%Y%m%d %H:%M:%S')
-  query "$MAD_DB" "delete from pokestop where pokestop_id in (select gym_id from gym);"
+  query "$MAD_DB" "delete a from gym a, pokestop b where a.gym_id=b.pokestop_id and a.last_scanned<b.last_updated; delete b from gym a, pokestop b where a.gym_id=b.pokestop_id and a.last_scanned>b.last_updated; delete from gymdetails where gym_id not in (select gym_id from gym);"
   stop=$(date '+%Y%m%d %H:%M:%S')
   diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))/60)) $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))%60)))
-  echo "[$start] [$stop] [$diff] Daily delete pokestop converted to gym cleanup" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
+  echo "[$start] [$stop] [$diff] Daily delete stop/gym conversion" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
 fi
 
 # remove pokestop without quest scanned for X days and unseen
