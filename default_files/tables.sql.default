@@ -314,6 +314,7 @@ CREATE TABLE IF NOT EXISTS `ATVgeneral` (
   `datetime` datetime NOT NULL,
   `origin` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `arch` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `productmodel` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `rom` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `vm_script` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `55vmapper` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -620,7 +621,8 @@ DROP COLUMN IF EXISTS `openlucky`
 
 ALTER TABLE ATVgeneral
 ADD COLUMN IF NOT EXISTS `55vmapper` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `vm_script`,
-ADD COLUMN IF NOT EXISTS `hostname` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `ip`
+ADD COLUMN IF NOT EXISTS `hostname` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `ip`,
+ADD COLUMN IF NOT EXISTS `productmodel` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `arch`
 ;
 
 ALTER TABLE ATVvm
@@ -678,4 +680,4 @@ ADD COLUMN IF NOT EXISTS `pogoNotOpen` INT DEFAULT NULL
 
 -- update version
 INSERT IGNORE INTO version values ('stats',2);
-UPDATE version set version = 20 where version.key = 'stats';
+UPDATE version set version = 21 where version.key = 'stats';
