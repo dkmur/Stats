@@ -237,7 +237,7 @@
                 }
               ]
             ],
-            "table": "ATVdetails",
+            "table": "ATVgeneral",
             "timeColumn": "datetime",
             "timeColumnType": "datetime",
             "where": [
@@ -331,13 +331,13 @@
             "type": "mysql",
             "uid": "${DS_POGODB}"
           },
-          "definition": "SELECT DISTINCT origin FROM ATVdetails ORDER BY origin ASC",
+          "definition": "SELECT DISTINCT origin FROM ATVgeneral ORDER BY origin ASC",
           "hide": 0,
           "includeAll": true,
           "multi": true,
           "name": "devices",
           "options": [],
-          "query": "SELECT DISTINCT origin FROM ATVdetails ORDER BY origin ASC",
+          "query": "SELECT DISTINCT origin FROM ATVgeneral ORDER BY origin ASC",
           "refresh": 1,
           "regex": "",
           "skipUrlSync": false,
