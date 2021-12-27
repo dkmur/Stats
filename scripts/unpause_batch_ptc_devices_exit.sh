@@ -19,9 +19,6 @@ while read -r line ;do
 origin=$(echo $line | awk '{print $1}')
 deviceid=$(echo $line | awk '{print $2}')
 
-counter=10
-batch_size_ptc=10
-
 # echo $counter
 if [[ $counter == $batch_size_ptc ]]; then
   echo "Batch size reached, waiting: $batch_wait_ptc"
