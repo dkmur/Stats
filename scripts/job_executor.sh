@@ -2,7 +2,7 @@
 
 if [ -z "$STY" ]; then exec screen -dm -S jobExecutor /bin/bash "$0"; fi
 
-folder="$(cd ../ && pwd)"
+folder=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && cd ../ && pwd )
 source $folder/config.ini
 
 ## run job for instance 1
