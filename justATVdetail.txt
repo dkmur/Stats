@@ -1,0 +1,11 @@
+
+Just want to run ATVdetails to get the data in and not full Stats, idiot :P, but here you go:
+
+1 git clone https://github.com/dkmur/Stats.git && cd Stats/ && cp default_files/config.ini.example config.ini
+2 create STATSdb, create sql user, grant access to STATSdb, flush privileges
+3 fill out config.ini sections Database settings + MADmin settings + Stats + ATV details + optionally Grafana
+4 execute justATVdetails.run
+5 copy content crontab.txt into cron (crontab -e)
+6 optionally install grafana and import templates 10, 13 and 15
+
+Just a quick writeup, more info on Stats wiki page.

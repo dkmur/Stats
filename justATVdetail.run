@@ -69,6 +69,22 @@ if [ -z "$SQL_password" ]
   sed -i "s/userpass/-h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password/g" $PATH_TO_STATS/crontab.txt
 fi
 
+echo "Creating grafana files"
+echo ""
+DS_STATS="${DataSource_stats^^}"
+DS_MAD="${DataSource_MAD^^}"
+mkdir -p $PATH_TO_STATS/grafana
+cd $PATH_TO_STATS/grafana/ && rm -f *.json && rm -f *.default
+cp $PATH_TO_STATS/default_files/10_ATVdetails.json.default $PATH_TO_STATS/grafana/10_ATVdetails.json
+cp $PATH_TO_STATS/default_files/13_device_overview.json.default $PATH_TO_STATS/grafana/13_device_overview.json
+cp $PATH_TO_STATS/default_files/15_device_temperature_overview.json.default $PATH_TO_STATS/grafana/15_device_temperature_overview.json
+cp $PATH_TO_STATS/default_files/20_mad_stuff.json.default $PATH_TO_STATS/grafana/20_mad_stuff.json
+cp $PATH_TO_STATS/default_files/21_mad_cpu_mem.json.default $PATH_TO_STATS/grafana/21_mad_cpu_mem.json
+cd $PATH_TO_STATS/grafana/ && sed -i "s/pogodb/$DataSource_stats/g" *.json
+cd $PATH_TO_STATS/grafana/ && sed -i "s/rmdb/$DataSource_MAD/g" *.json
+cd $PATH_TO_STATS/grafana/ && sed -i "s/POGODB/$DS_STATS/g" *.json
+cd $PATH_TO_STATS/grafana/ && sed -i "s/RMDB/$DS_MAD/g" *.json
+
 echo ''
 
 echo "All done"
