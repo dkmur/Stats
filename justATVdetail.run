@@ -1,0 +1,90 @@
+#!/bin/bash
+
+source config.ini
+
+if [ -z "$SQL_password" ]
+then
+  query(){
+  mysql -NB -h$DB_IP -P$DB_PORT -u$SQL_user "S1" -e "$2;"
+  }
+else
+  query(){
+  mysql -NB -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password "$1" -e "$2;"
+  }
+fi
+
+# Logging
+mkdir -p $PATH_TO_STATS/logs
+touch $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
+echo "[`date '+%Y%m%d %H:%M:%S'`] justATVdetails.run executed" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
+
+# Check mariadb version
+echo ""
+DBversion=$(query "$MAD_DB" "SELECT left(version(),4)")
+if ((${DBversion/./} > 101)) ;
+ then
+  echo "MariaDB version check passed"
+  echo ""
+ else
+  echo "Mariadb version should be 10.2 or higher !!!"
+  echo ""
+  exit
+fi
+
+echo "Create tables"
+echo ""
+cp $PATH_TO_STATS/default_files/tables.sql.default $PATH_TO_STATS/tables.sql
+cd $PATH_TO_STATS && sed -i "s/pogodb/$STATS_DB/g" *.sql
+cd $PATH_TO_STATS && sed -i "s/rmdb/$MAD_DB/g" *.sql
+if [ -z "$SQL_password" ]
+then
+  mysql -h$DB_IP -P$DB_PORT -u$SQL_user $STATS_DB < $PATH_TO_STATS/tables.sql
+else
+  mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB < $PATH_TO_STATS/tables.sql
+fi
+
+
+echo "Create crontab file"
+echo ""
+rm -f $PATH_TO_STATS/crontab.txt
+touch $PATH_TO_STATS/crontab.txt
+echo "#### STATS ####" >> $PATH_TO_STATS/crontab.txt
+
+# get ATV details
+if "$atvdetails"
+then
+  echo "Set daily download of ATV settings"
+  echo ""
+  sed -i "$ a \#\# ATV details" $PATH_TO_STATS/crontab.txt
+  sed -i "$ a 20 */$atvdetails_hours * * * cd pathToStatscron_files && ./atvdetails.sh 2>>pathToStatslogs/log_\$(date '+\\\%Y\\\%m').log" $PATH_TO_STATS/crontab.txt
+fi
+
+PATH_TO_STATS2=$(sed 's@/@\\/@g' <<< $PATH_TO_STATS)
+cd $PATH_TO_STATS && sed -i "s/pathToStats/$PATH_TO_STATS2/g" *.txt
+
+if [ -z "$SQL_password" ]
+ then
+  sed -i "s/userpass/-h$DB_IP -P$DB_PORT -u$SQL_user/g" $PATH_TO_STATS/crontab.txt
+ else
+  sed -i "s/userpass/-h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password/g" $PATH_TO_STATS/crontab.txt
+fi
+
+echo "Creating grafana files"
+echo ""
+DS_STATS="${DataSource_stats^^}"
+DS_MAD="${DataSource_MAD^^}"
+mkdir -p $PATH_TO_STATS/grafana
+cd $PATH_TO_STATS/grafana/ && rm -f *.json && rm -f *.default
+cp $PATH_TO_STATS/default_files/10_ATVdetails.json.default $PATH_TO_STATS/grafana/10_ATVdetails.json
+cp $PATH_TO_STATS/default_files/13_device_overview.json.default $PATH_TO_STATS/grafana/13_device_overview.json
+cp $PATH_TO_STATS/default_files/15_device_temperature_overview.json.default $PATH_TO_STATS/grafana/15_device_temperature_overview.json
+cp $PATH_TO_STATS/default_files/20_mad_stuff.json.default $PATH_TO_STATS/grafana/20_mad_stuff.json
+cp $PATH_TO_STATS/default_files/21_mad_cpu_mem.json.default $PATH_TO_STATS/grafana/21_mad_cpu_mem.json
+cd $PATH_TO_STATS/grafana/ && sed -i "s/pogodb/$DataSource_stats/g" *.json
+cd $PATH_TO_STATS/grafana/ && sed -i "s/rmdb/$DataSource_MAD/g" *.json
+cd $PATH_TO_STATS/grafana/ && sed -i "s/POGODB/$DS_STATS/g" *.json
+cd $PATH_TO_STATS/grafana/ && sed -i "s/RMDB/$DS_MAD/g" *.json
+
+echo ''
+
+echo "All done"
