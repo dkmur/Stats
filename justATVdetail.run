@@ -46,7 +46,10 @@ fi
 
 echo "Create crontab file"
 echo ""
+rm -f $PATH_TO_STATS/crontab.txt
 touch $PATH_TO_STATS/crontab.txt
+echo "#### STATS ####" >> $PATH_TO_STATS/crontab.txt
+
 # get ATV details
 if "$atvdetails"
 then
