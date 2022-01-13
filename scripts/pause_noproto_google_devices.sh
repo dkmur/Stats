@@ -18,7 +18,7 @@ echo ""
 curl --silent --output /dev/null --show-error --fail -u $MADmin_user:$MADmin_pass "$MADmin_url/api/device/$deviceid" -H "Content-Type: application/json-rpc" --data-binary '{"call":"device_state","args":{"active":0}}'
 sleep 2s
 
-done < <(mysql -u$SQL_user -p$SQL_password -h$DB_IP -P$DB_PORT $MAD_DB -NB -e "select a.name, a.device_id from settings_device a, madmin_instance b, trs_status c where a.device_id = c.device_id and c.lastProtoDateTime < now() - interval '$no_proto_minutes' minute and a.logintype = 'google' and a.instance_id = b.instance_id and b.name = '$MAD_instance' where c.idle <> 1;")
+done < <(mysql -u$SQL_user -p$SQL_password -h$DB_IP -P$DB_PORT $MAD_DB -NB -e "select a.name, a.device_id from settings_device a, madmin_instance b, trs_status c where a.device_id = c.device_id and c.lastProtoDateTime < now() - interval '$no_proto_minutes' minute and a.logintype = 'google' and a.instance_id = b.instance_id and b.name = '$MAD_instance' and c.idle <> 1;")
 }
 
 
