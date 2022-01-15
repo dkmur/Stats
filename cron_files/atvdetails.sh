@@ -182,7 +182,7 @@ else
         echo "Wait timer started, $job_wait"
         sleep $job_wait
         echo ""
-        echo "Start processing jobs instance 1"
+        echo "Start processing jobs instance 2"
         processJobs
 fi
 
