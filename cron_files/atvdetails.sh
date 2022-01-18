@@ -155,8 +155,8 @@ else
         runJobs
         echo "Starting jobs for instance 1"
         echo ""
-        echo "Wait timer started, $job_wait"
-        sleep $job_wait
+        echo "Wait timer started, $job_wait_atv"
+        sleep $job_wait_atv
         echo ""
         echo "Start processing jobs instance 1"
         processJobs
@@ -179,8 +179,8 @@ else
         echo "Starting jobs for instance 2"
         runJobs
         echo ""
-        echo "Wait timer started, $job_wait"
-        sleep $job_wait
+        echo "Wait timer started, $job_wait_atv"
+        sleep $job_wait_atv
         echo ""
         echo "Start processing jobs instance 2"
         processJobs
@@ -203,8 +203,8 @@ else
         echo "Starting jobs for instance 3"
         runJobs
         echo ""
-        echo "Wait timer started, $job_wait"
-        sleep $job_wait
+        echo "Wait timer started, $job_wait_atv"
+        sleep $job_wait_atv
         echo ""
         echo "Start processing jobs instance 3"
         processJobs
@@ -227,8 +227,8 @@ else
         echo "Starting jobs for instance 4"
         runJobs
         echo ""
-        echo "Wait timer started, $job_wait"
-        sleep $job_wait
+        echo "Wait timer started, $job_wait_atv"
+        sleep $job_wait_atv
         echo ""
         echo "Start processing jobs instance 4"
         processJobs
@@ -251,8 +251,8 @@ else
         echo "Starting jobs for instance 5"
         runJobs
         echo ""
-        echo "Wait timer started, $job_wait"
-        sleep $job_wait
+        echo "Wait timer started, $job_wait_atv"
+        sleep $job_wait_atv
         echo ""
         echo "Start processing jobs instance 5"
         processJobs

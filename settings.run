@@ -568,6 +568,15 @@ if [ $first_install != "1" ]
   fi
 fi
 
+# fix double job_wait in config.ini
+if [[ $(grep -w job_wait $PATH_TO_STATS/config.ini | wc -l) == 2 ]]
+then
+echo "some idiot put 2x job_wait in config.ini, changing the one from ATVdeails to job_wait_atv"
+echo ""
+sed -i '0,/job_wait/s//job_wait_atv/' $PATH_TO_STATS/config.ini
+fi
+
+
 ## Checks
 # Make sure QUEST_END is set when using spawndef reset
 if "$SPAWNDEF15_CLEANUP"
