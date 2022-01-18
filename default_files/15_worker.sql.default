@@ -9,7 +9,7 @@ select @Datetime_m15 := concat(date(now() - interval 30 minute),' ', (SEC_TO_TIM
 select @RPL := '15';
 
 -- allow MAD to insert data before we start processing
-select if(@datetime_p16 + interval 1 minute < now(), "proceed", (select sleep(60)));
+select if(@datetime_p16 + interval 1 minute < now(), "proceed", (select sleep(90)));
 
 -- table trs_stats_detect data
 
