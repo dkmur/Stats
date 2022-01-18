@@ -55,7 +55,7 @@ MAD_FENCE_UPDATE_INTERVAL=hour				# hour or day, interval for updating Stats on 
 ## ATV details ##
 atvdetails=true						# true/false: get cpu temperature, sw versions and RGC/PD settings from atv 
 atvdetails_hours=24					# execute download atvdetails every X hours, default 24 => daily
-job_wait=5m						# wait time for jobs to finish i.e. 2m or 300s
+job_wait_atv=5m						# wait time for jobs to finish i.e. 2m or 300s
 
 ## MAD log processing ##
 madlog=true						# true/false: to process MAD logs hourly and store into DB. MAD logfiles need to contain instance name!!

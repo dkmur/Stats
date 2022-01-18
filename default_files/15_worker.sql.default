@@ -8,6 +8,9 @@ select @Datetime_p26 := concat(date(now() + interval 15 minute),' ', (SEC_TO_TIM
 select @Datetime_m15 := concat(date(now() - interval 30 minute),' ', (SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 30 minute)) DIV 900) * 900)));
 select @RPL := '15';
 
+-- allow MAD to insert data before we start processing
+select if(@datetime_p16 + interval 1 minute < now(), "proceed", (select sleep(90)));
+
 -- table trs_stats_detect data
 
 Create TEMPORARY TABLE rmdb.tmp41
