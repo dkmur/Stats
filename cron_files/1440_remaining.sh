@@ -138,6 +138,26 @@ stop=$(date '+%Y%m%d %H:%M:%S')
 diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))/60)) $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))%60)))
 echo "[$start] [$stop] [$diff] Daily cleanup unseen gyms" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
 
+# vMAD table gympokemon cleanup
+if [ -z ${vmad+x} ]
+then
+start=$(date '+%Y%m%d %H:%M:%S')
+query "$MAD_DB" "delete from cev_gympokemon where last_seen < now() - interval $gympokemon day;"
+stop=$(date '+%Y%m%d %H:%M:%S')
+diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))/60)) $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))%60)))
+echo "[$start] [$stop] [$diff] Daily cleanup vMAD gympokemon" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
+fi
+
+# vMAD table trainer_pokemon cleanup
+if [ -z ${vmad+x} ]
+then
+start=$(date '+%Y%m%d %H:%M:%S')
+query "$MAD_DB" "delete from cev_trainer_pokemon where last_seen < now() - interval $trainer_pokemon day;"
+stop=$(date '+%Y%m%d %H:%M:%S')
+diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))/60)) $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))%60)))
+echo "[$start] [$stop] [$diff] Daily cleanup vMAD gympokemon" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
+fi
+
 # MAD log aggregation
 if "$madlog"
 then
