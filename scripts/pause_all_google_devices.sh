@@ -13,9 +13,11 @@ while read -r line ;do
 origin=$(echo $line | awk '{print $1}')
 deviceid=$(echo $line | awk '{print $2}')
 
-echo "Pausing $origin"
+echo "Pausing $origin and quit pogo"
 echo ""
 curl --silent --output /dev/null --show-error --fail -u $MADmin_user:$MADmin_pass "$MADmin_url/api/device/$deviceid" -H "Content-Type: application/json-rpc" --data-binary '{"call":"device_state","args":{"active":0}}'
+sleep 2s
+curl --silent --output /dev/null --show-error --fail -u $MADmin_user:$MADmin_pass "$MADmin_url/quit_pogo?origin=$origin"
 sleep 2s
 
 done < <(mysql -u$SQL_user -p$SQL_password -h$DB_IP -P$DB_PORT $MAD_DB -NB -e "select a.name, a.device_id from settings_device a, madmin_instance b, trs_status c where a.device_id = c.device_id and a.logintype = 'google' and a.instance_id = b.instance_id and b.name = '$MAD_instance' and c.idle <> 1;")
