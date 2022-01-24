@@ -150,3 +150,8 @@ batch_size_google=20					# #devices to activate per batch
 # Unpause ptc devices #
 batch_wait_ptc=10m					# time to sleep between activating batches of devices
 batch_size_ptc=10					# #devices to activate per batch
+
+# vMAD table cleanup/quest processing
+vmad=false						# only applicable for non pogodroid users
+gympokemon=30						# days to keep since last seen, 9999 to disable
+trainer_pokemon=30					# days to keep since last seen, 9999 to disable
