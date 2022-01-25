@@ -113,6 +113,7 @@ CREATE TABLE IF NOT EXISTS `stats_worker` (
   `WkNok` int(11) DEFAULT NULL,
   `WkFR` int(11) DEFAULT NULL,
   `WkSt` int(100) DEFAULT NULL,
+  `exReps` int(11) DEFAULT NULL,
   `Shiny` int(6) DEFAULT NULL,
   `Res` int(11) DEFAULT NULL,
   `Reb` int(11) DEFAULT NULL,
@@ -580,7 +581,8 @@ ADD COLUMN IF NOT EXISTS `nonARcum` int(11) DEFAULT NULL
 
 
 ALTER TABLE `stats_worker`
-ADD COLUMN IF NOT EXISTS `locReports` int(11) DEFAULT NULL AFTER `WkSt`,
+ADD COLUMN IF NOT EXISTS `exReps` int(11) DEFAULT NULL AFTER `WkSt`
+ADD COLUMN IF NOT EXISTS `locReports` int(11) DEFAULT NULL AFTER `exReps`,
 ADD COLUMN IF NOT EXISTS `locationsMultiReport` int(11) DEFAULT NULL AFTER `locReports`;
 
 -- ALTER TABLE IF EXISTS ATVdetails #requires mariadb 10.5
@@ -694,4 +696,4 @@ ADD COLUMN IF NOT EXISTS `pogoNotOpen` INT DEFAULT NULL
 
 -- update version
 INSERT IGNORE INTO version values ('stats',2);
-UPDATE version set version = 22 where version.key = 'stats';
+UPDATE version set version = 23 where version.key = 'stats';
