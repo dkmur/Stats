@@ -92,7 +92,7 @@ select
 worker,
 sum(timestampdiff(second,from_unixtime(fix_ts),from_unixtime(max_data_ts))) as TpSt
 from rmdb.locrawprep
-where transporttype = 0 and success = 1 
+where transporttype = 0 and success = 1 and fix_ts <> 0 and max_data_ts <> 0
 group by worker
 );
 
@@ -102,7 +102,7 @@ select
 worker,
 sum(timestampdiff(second,from_unixtime(fix_ts),from_unixtime(max_data_ts))) as WkSt
 from rmdb.locrawprep
-where transporttype = 1 and success = 1
+where transporttype = 1 and success = 1 and fix_ts <> 0 and max_data_ts <> 0
 group by worker
 );
 
