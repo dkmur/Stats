@@ -92,7 +92,7 @@ select
 worker,
 sum(timestampdiff(second,from_unixtime(fix_ts),from_unixtime(max_data_ts))) as TpSt
 from rmdb.locrawprep
-where transporttype = 0 and success = 1 
+where transporttype = 0 and success = 1 and fix_ts <> 0 and max_data_ts <> 0
 group by worker
 );
 
@@ -102,7 +102,17 @@ select
 worker,
 sum(timestampdiff(second,from_unixtime(fix_ts),from_unixtime(max_data_ts))) as WkSt
 from rmdb.locrawprep
-where transporttype = 1 and success = 1
+where transporttype = 1 and success = 1 and fix_ts <> 0 and max_data_ts <> 0
+group by worker
+);
+
+Create TEMPORARY TABLE rmdb.tmp52
+AS(
+select
+worker,
+count(worker) as exReps
+from rmdb.locrawprep
+where (transporttype = 1 or transporttype = 0) and success = 1 and (fix_ts = 0 or max_data_ts = 0)
 group by worker
 );
 
@@ -166,7 +176,8 @@ left join rmdb.tmp47 f on z.worker = f.worker COLLATE utf8mb4_unicode_ci
 left join rmdb.tmp48 g on z.worker = g.worker COLLATE utf8mb4_unicode_ci
 left join rmdb.tmp49 h on z.worker = h.worker COLLATE utf8mb4_unicode_ci
 left join rmdb.tmp51 i on z.worker = i.worker COLLATE utf8mb4_unicode_ci
-SET z.TRPL=b.TRPL, z.Tmon=b.Tmon, z.IVmon=b.IVmon, z.Mon=b.Mon, z.Quest=b.Quest, z.Raid=b.Raid, z.Tloc=c.Tloc, z.LocOk=c.LocOk, z.LocNok=c.LocNok, z.LocFR=c.LocFR, z.Tp=d.Tp, z.TpOk=d.TpOk, z.TpNok=d.TpNok, z.TpFR=d.TpFR, z.TpSt=f.TpSt, z.Wk=e.Wk, z.WkOk=e.WkOk, z.WkNok=e.WkNok, z.WkFR=e.WkFR, z.WkSt=g.WkSt, z.locReports=c.locReports, z.locationsMultiReport=i.locationsMultiReport, z.Shiny=h.Shiny, z.Res=a.Res, z.Reb=a.Reb, z.ResTot=a.ResTot, z.RebTot=a.RebTot
+left join rmdb.tmp52 j on z.worker = j.worker COLLATE utf8mb4_unicode_ci
+SET z.TRPL=b.TRPL, z.Tmon=b.Tmon, z.IVmon=b.IVmon, z.Mon=b.Mon, z.Quest=b.Quest, z.Raid=b.Raid, z.Tloc=c.Tloc, z.LocOk=c.LocOk, z.LocNok=c.LocNok, z.LocFR=c.LocFR, z.Tp=d.Tp, z.TpOk=d.TpOk, z.TpNok=d.TpNok, z.TpFR=d.TpFR, z.TpSt=f.TpSt, z.Wk=e.Wk, z.WkOk=e.WkOk, z.WkNok=e.WkNok, z.WkFR=e.WkFR, z.WkSt=g.WkSt, z.exReps=j.exReps, z.locReports=c.locReports, z.locationsMultiReport=i.locationsMultiReport, z.Shiny=h.Shiny, z.Res=a.Res, z.Reb=a.Reb, z.ResTot=a.ResTot, z.RebTot=a.RebTot
 WHERE
 z.Datetime = @Datetime
 ;
@@ -220,4 +231,5 @@ drop table rmdb.tmp48;
 drop table rmdb.tmp49;
 drop table rmdb.tmp50;
 drop table rmdb.tmp51;
-DROP TABLE rmdb.locrawprep;
+drop table rmdb.tmp52;
+drop table rmdb.locrawprep;
