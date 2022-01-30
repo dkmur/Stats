@@ -39,7 +39,7 @@ processJobs(){
         Modules=$(grep -w RGC_websocket_origin=$origin $atvMAD_path/update_log.json | tail -1 | grep -o -P '(?<=Modules=).*?(?= Gmail)')
         MACw=$(grep -w RGC_websocket_origin=$origin $atvMAD_path/update_log.json | tail -1 | grep -o -P '(?<=MACw=).*?(?= )')
         MACe=$(grep -w RGC_websocket_origin=$origin $atvMAD_path/update_log.json | tail -1 | grep -o -P '(?<=MACe=).*?(?= )')
-        IP=$(grep -w RGC_websocket_origin=$origin $atvMAD_path/update_log.json | tail -1 | grep -o -P '(?<=IP=).*?(?= )')
+        IP=$(grep -w RGC_websocket_origin=$origin $atvMAD_path/update_log.json | tail -1 | grep -o -P '(?<=devIP=).*?(?= )')
         exIP=$(grep -w RGC_websocket_origin=$origin $atvMAD_path/update_log.json | tail -1 | grep -o -P '(?<=exIP=).*?(?= )')
         hostname=$(grep -w RGC_websocket_origin=$origin $atvMAD_path/update_log.json | tail -1 | grep -o -P '(?<=hostname=).*?(?= )')
         Gmail=$(grep -w RGC_websocket_origin=$origin $atvMAD_path/update_log.json | tail -1 | grep -o -P '(?<=Gmail=).*?(?= )')
