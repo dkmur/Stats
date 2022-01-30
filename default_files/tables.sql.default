@@ -335,6 +335,7 @@ CREATE TABLE IF NOT EXISTS `ATVgeneral` (
   `MACw` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `MACe` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `ip` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ex_ip` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `hostname` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `gmail` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`datetime`,`origin`)
@@ -630,6 +631,7 @@ DROP COLUMN IF EXISTS `openlucky`
 ;
 
 ALTER TABLE ATVgeneral
+ADD COLUMN IF NOT EXISTS `ex_ip` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `ip`,
 ADD COLUMN IF NOT EXISTS `55vmapper` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `vm_script`,
 ADD COLUMN IF NOT EXISTS `hostname` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `ip`,
 ADD COLUMN IF NOT EXISTS `productmodel` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `arch`
@@ -697,4 +699,4 @@ ADD COLUMN IF NOT EXISTS `pogoNotOpen` INT DEFAULT NULL
 
 -- update version
 INSERT IGNORE INTO version values ('stats',2);
-UPDATE version set version = 23 where version.key = 'stats';
+UPDATE version set version = 24 where version.key = 'stats';
