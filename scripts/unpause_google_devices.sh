@@ -11,7 +11,7 @@ doit(){
 echo ""
 echo "Unpausing all Google devices on instance: $MAD_instance"
 echo "Per $batch_size_google with $batch_wait_google between batches"
-count=$(mysql -u$SQL_user -p$SQL_password -h$DB_IP -P$DB_PORT $MAD_DB -NB -e "select count(a.device_id) from settings_device a, madmin_instance b, trs_status c where a.logintype = 'google' and a.device_id = c.device_id and a.instance_id = b.instance_id and a.instance_id = c.instance_id and b.name = '$MAD_instance' and c.idle = 1;")
+count=$(mysql -u$SQL_user -p$SQL_password -h$DB_IP -P$DB_PORT $MAD_DB -NB -e "select count(a.device_id) from settings_device a, madmin_instance b, trs_status c where (a.logintype = 'google' or a.logintype is NULL) and a.device_id = c.device_id and a.instance_id = b.instance_id and a.instance_id = c.instance_id and b.name = '$MAD_instance' and c.idle = 1;")
 echo "Number of Google devices paused: $count"
 echo ""
 
@@ -35,7 +35,7 @@ curl --silent --output /dev/null --show-error --fail -u $MADmin_user:$MADmin_pas
 counter=$((counter+1))
 sleep 2s
 
-done < <(mysql -u$SQL_user -p$SQL_password -h$DB_IP -P$DB_PORT $MAD_DB -NB -e "select a.name, a.device_id from settings_device a, madmin_instance b, trs_status c where a.logintype = 'google' and a.device_id = c.device_id and a.instance_id = b.instance_id and a.instance_id = c.instance_id and b.name = '$MAD_instance' and c.idle = 1;")
+done < <(mysql -u$SQL_user -p$SQL_password -h$DB_IP -P$DB_PORT $MAD_DB -NB -e "select a.name, a.device_id from settings_device a, madmin_instance b, trs_status c where (a.logintype = 'google' or a.logintype is NULL) and a.device_id = c.device_id and a.instance_id = b.instance_id and a.instance_id = c.instance_id and b.name = '$MAD_instance' and c.idle = 1;")
 }
 
 
