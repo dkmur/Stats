@@ -559,6 +559,15 @@ CREATE TABLE IF NOT EXISTS `version` (
   PRIMARY KEY (`key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+CREATE TABLE IF NOT EXISTS `relay` (
+  `origin` varchar(50) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `port` int(6) NOT NULL,
+  `lastCycle` datetime NOT NULL DEFAULT current_timestamp(),
+  `totCycle` int(6) DEFAULT 0,
+  PRIMARY KEY (`origin`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 ALTER TABLE `spawn_unused`
 ADD COLUMN IF NOT EXISTS `eventid` int(11) NOT NULL DEFAULT 1 AFTER `calc_endminsec`;
 
@@ -697,6 +706,11 @@ ADD COLUMN IF NOT EXISTS `gpsError` INT DEFAULT NULL,
 ADD COLUMN IF NOT EXISTS `pogoNotOpen` INT DEFAULT NULL
 ;
 
+ALTER TABLE relay
+ADD COLUMN IF NOT EXISTS `lastCycle` datetime NOT NULL DEFAULT current_timestamp(),
+ADD COLUMN IF NOT EXISTS `totCycle` int(6) DEFAULT 0
+;
+
 -- update version
 INSERT IGNORE INTO version values ('stats',2);
-UPDATE version set version = 24 where version.key = 'stats';
+UPDATE version set version = 25 where version.key = 'stats';
