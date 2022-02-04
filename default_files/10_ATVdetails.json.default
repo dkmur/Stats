@@ -15,7 +15,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "8.3.3"
+      "version": "8.3.4"
     },
     {
       "type": "datasource",
@@ -53,7 +53,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1642246534515,
+  "iteration": 1644005137823,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -249,7 +249,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.3.3",
+      "pluginVersion": "8.3.4",
       "targets": [
         {
           "format": "table",
@@ -428,7 +428,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.3.3",
+      "pluginVersion": "8.3.4",
       "targets": [
         {
           "format": "table",
@@ -583,7 +583,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.3.3",
+      "pluginVersion": "8.3.4",
       "targets": [
         {
           "format": "table",
@@ -706,7 +706,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.3.3",
+      "pluginVersion": "8.3.4",
       "targets": [
         {
           "format": "table",
@@ -861,7 +861,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.3.3",
+      "pluginVersion": "8.3.4",
       "targets": [
         {
           "format": "table",
@@ -1067,6 +1067,18 @@
                 "value": 106
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "datetime"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 164
+              }
+            ]
           }
         ]
       },
@@ -1088,7 +1100,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.3.3",
+      "pluginVersion": "8.3.4",
       "targets": [
         {
           "format": "table",
@@ -1303,7 +1315,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.3.3",
+      "pluginVersion": "8.3.4",
       "targets": [
         {
           "format": "table",
@@ -1491,7 +1503,7 @@
           }
         ]
       },
-      "pluginVersion": "8.3.3",
+      "pluginVersion": "8.3.4",
       "targets": [
         {
           "format": "table",
@@ -1766,7 +1778,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.3.3",
+      "pluginVersion": "8.3.4",
       "targets": [
         {
           "format": "table",
@@ -1969,7 +1981,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.3.3",
+      "pluginVersion": "8.3.4",
       "targets": [
         {
           "format": "table",
@@ -2369,7 +2381,7 @@
           }
         ]
       },
-      "pluginVersion": "8.3.3",
+      "pluginVersion": "8.3.4",
       "targets": [
         {
           "datasource": {
@@ -2380,7 +2392,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\nleft(datetime,16) as 'datetime',\nifnull(daemon,'no_data') as 'daemon',\nifnull(injector,'no_data') as 'injector',\nifnull(newvhook,'no_data') as 'newvhook',\nifnull(postdest, 'no_data') as 'destination',\nifnull(rawpostdest, 'no_data') as 'raw_destination',\nifnull(websocketurl, 'no_data') as 'websocketurl',\nifnull(mockgps,'no_data') as 'mockgps',\ncount(origin) as '#devices'\nfrom ATVvm\n\nWHERE\ndatetime = '$datetime'\n\nGROUP BY daemon,injector,newvhook,destination,raw_destination,websocketurl,mockgps",
+          "rawSql": "SELECT\nleft(datetime,16) as 'datetime',\nifnull(daemon,'no_data') as 'daemon',\nifnull(injector,'no_data') as 'injector',\nifnull(newvhook,'no_data') as 'newvhook',\nifnull(postdest, 'no_data') as 'destination',\nifnull(rawpostdest, 'no_data') as 'raw_destination',\nifnull(websocketurl, 'no_data') as 'websocketurl',\nifnull(mockgps,'no_data') as 'mockgps',\nifnull(useApi,'no_data') as 'useApi',\ncount(origin) as '#devices'\nfrom ATVvm\n\nWHERE\ndatetime = '$datetime'\n\nGROUP BY daemon,injector,newvhook,destination,raw_destination,websocketurl,mockgps,useApi",
           "refId": "A",
           "select": [
             [
@@ -2624,7 +2636,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 47
+                "value": 74
               }
             ]
           },
@@ -2720,7 +2732,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 573
+                "value": 560
               }
             ]
           },
@@ -2768,7 +2780,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.3.3",
+      "pluginVersion": "8.3.4",
       "targets": [
         {
           "datasource": {
@@ -2891,7 +2903,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.3.3",
+      "pluginVersion": "8.3.4",
       "targets": [
         {
           "format": "table",
@@ -3022,7 +3034,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.3.3",
+      "pluginVersion": "8.3.4",
       "targets": [
         {
           "format": "table",
@@ -3153,7 +3165,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.3.3",
+      "pluginVersion": "8.3.4",
       "targets": [
         {
           "format": "table",
@@ -3238,6 +3250,6 @@
   "timezone": "",
   "title": "10. ATVdetails",
   "uid": "YBmfNzFGz",
-  "version": 57,
+  "version": 59,
   "weekStart": ""
 }

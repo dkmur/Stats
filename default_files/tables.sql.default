@@ -430,6 +430,7 @@ CREATE TABLE IF NOT EXISTS `ATVvm` (
   `litever` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `lat` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `lon` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `useApi` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`datetime`,`origin`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -655,7 +656,8 @@ ADD COLUMN IF NOT EXISTS `launcherver` varchar(40) COLLATE utf8mb4_unicode_ci DE
 ADD COLUMN IF NOT EXISTS `rawpostdest` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
 ADD COLUMN IF NOT EXISTS `litever` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
 ADD COLUMN IF NOT EXISTS `lat` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-ADD COLUMN IF NOT EXISTS `lon` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+ADD COLUMN IF NOT EXISTS `lon` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+ADD COLUMN IF NOT EXISTS `useApi` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ;
 
 ALTER TABLE pokemon_history
@@ -713,4 +715,4 @@ ADD COLUMN IF NOT EXISTS `totCycle` int(6) DEFAULT 0
 
 -- update version
 INSERT IGNORE INTO version values ('stats',2);
-UPDATE version set version = 25 where version.key = 'stats';
+UPDATE version set version = 26 where version.key = 'stats';
