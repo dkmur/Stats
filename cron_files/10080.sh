@@ -68,6 +68,17 @@ diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" 
 echo "[$start] [$stop] [$diff] Stats rpl10080 MAD log aggregation worker level" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
 fi
 
+# VM log aggregation
+if [[ $vmad == "true" && $vmlog == "true" ]]
+then
+start=$(date '+%Y%m%d %H:%M:%S')
+cat $PATH_TO_STATS/cron_files/10080_vmlog.sql | query
+stop=$(date '+%Y%m%d %H:%M:%S')
+diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))/60)) $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))%60)))
+echo "[$start] [$stop] [$diff] Stats rpl10080 VM log aggregation" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
+fi
+
+
 # optimize pokemon_history
 if "$mon_cleanup"
 then
