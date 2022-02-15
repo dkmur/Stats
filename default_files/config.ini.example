@@ -153,5 +153,6 @@ batch_size_ptc=10					# #devices to activate per batch
 
 # vMAD table cleanup/quest processing
 vmad=false						# only applicable for non pogodroid users
+vmlog=false                                             # process device vmconf and vmapper logs
 gympokemon=30						# days to keep since last seen, 9999 to disable
 trainer_pokemon=30					# days to keep since last seen, 9999 to disable

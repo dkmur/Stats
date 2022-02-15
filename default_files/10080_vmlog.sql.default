@@ -1,0 +1,23 @@
+-- Weekly aggregation of vm log data
+
+select @Datetime := concat(date(curdate() - interval weekday(curdate()) + 7 day),' ','00:00:00');
+
+INSERT INTO pogodb.vmlog (Datetime,Origin,RPL,instance,vmc_reboot,vm_patcher_restart,vm_pogo_restart,vm_crash_dialog,vm_injection,vm_consent,vm_ws_stop_pogo,vm_ws_start_pogo)
+select
+@Datetime,
+Origin,
+'10080',
+instance,
+sum(vmc_reboot),
+sum(vm_patcher_restart),
+sum(vm_pogo_restart),
+sum(vm_crash_dialog),
+sum(vm_injection),
+sum(vm_consent),
+sum(vm_ws_stop_pogo),
+sum(vm_ws_start_pogo)
+
+from pogodb.vmlog
+where Datetime >= date(curdate() - interval weekday(curdate()) + 7 day) and RPL = 1440
+group by Origin,instance
+;

@@ -569,6 +569,22 @@ CREATE TABLE IF NOT EXISTS `relay` (
   PRIMARY KEY (`origin`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+CREATE TABLE IF NOT EXISTS `vmlog` (
+  `datetime` datetime NOT NULL,
+  `Origin` varchar(50) NOT NULL,
+  `RPL` smallint(6) NOT NULL,
+  `instance` varchar(50) NOT NULL,
+  `vmc_reboot` INT DEFAULT NULL,
+  `vm_patcher_restart` INT DEFAULT NULL,
+  `vm_pogo_restart` INT DEFAULT NULL,
+  `vm_crash_dialog` INT DEFAULT NULL,
+  `vm_injection` INT DEFAULT NULL,
+  `vm_consent` INT DEFAULT NULL,
+  `vm_ws_stop_pogo` INT DEFAULT NULL,
+  `vm_ws_start_pogo` INT DEFAULT NULL,
+  PRIMARY KEY (`datetime`,`Origin`, `RPL`, `instance`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 ALTER TABLE `spawn_unused`
 ADD COLUMN IF NOT EXISTS `eventid` int(11) NOT NULL DEFAULT 1 AFTER `calc_endminsec`;
 
@@ -715,4 +731,4 @@ ADD COLUMN IF NOT EXISTS `totCycle` int(6) DEFAULT 0
 
 -- update version
 INSERT IGNORE INTO version values ('stats',2);
-UPDATE version set version = 26 where version.key = 'stats';
+UPDATE version set version = 27 where version.key = 'stats';

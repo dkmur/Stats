@@ -449,6 +449,7 @@ cp $PATH_TO_STATS/default_files/madlog1440.sql.default $PATH_TO_STATS/cron_files
 cp $PATH_TO_STATS/default_files/madlog10080.sql.default $PATH_TO_STATS/cron_files/madlog10080.sql
 cp $PATH_TO_STATS/default_files/madlog_worker1440.sql.default $PATH_TO_STATS/cron_files/madlog_worker1440.sql
 cp $PATH_TO_STATS/default_files/madlog_worker10080.sql.default $PATH_TO_STATS/cron_files/madlog_worker10080.sql
+cp $PATH_TO_STATS/default_files/10080_vmlog.sql.default $PATH_TO_STATS/cron_files/10080_vmlog.sql
 sed -i "s/pogodb/$STATS_DB/g" $PATH_TO_STATS/cron_files/*.sql
 sed -i "s/rmdb/$MAD_DB/g" $PATH_TO_STATS/cron_files/*.sql
 sed -i "s/RPL15/$RPL15/g" $PATH_TO_STATS/cron_files/*.sql
