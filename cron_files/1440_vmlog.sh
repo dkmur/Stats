@@ -50,10 +50,14 @@ vm_injection="$(grep $process_date_vm $folder/tmp/vmapper.log | grep 'Injection 
 vm_consent="$(grep $process_date_vm $folder/tmp/vmapper.log | grep 'consent dialog' | wc -l)"
 vm_ws_stop_pogo="$(grep $process_date_vm $folder/tmp/vmapper.log | grep 'WS: stopped app' | wc -l)"
 vm_ws_start_pogo="$(grep $process_date_vm $folder/tmp/vmapper.log | grep 'WS: started' | wc -l)"
-
+acc_level="$(grep 'VM_API_Bag: Level' $folder/logcat.txt | tail -n1 | awk '{ print $NF }')"
+acc_xp="$(grep 'VM_API_Bag: XP' $folder/logcat.txt | tail -n1 | awk '{ print $NF }')"
+acc_stop="$(grep 'VM_API_Bag: Stops spun' $folder/logcat.txt | tail -n1 | awk '{ print $NF }')"
+acc_mon="$(grep 'VM_API_Bag: Mons caught' $folder/logcat.txt | tail -n1 | awk '{ print $NF }')"
+acc_item="$(grep 'VM_API_Bag: Total item count' $folder/logcat.txt | tail -n1 | awk '{ print $NF }')"
 
 # update db
-query "$STATS_DB" "update vmlog set vmc_reboot='$vmc_reboot', vm_patcher_restart='$vm_patcher_restart', vm_pogo_restart='$vm_pogo_restart', vm_crash_dialog='$vm_crash_dialog', vm_injection='$vm_injection', vm_consent='$vm_consent', vm_ws_stop_pogo='$vm_ws_stop_pogo', vm_ws_start_pogo='$vm_ws_start_pogo' where Origin = '$origin' and datetime = concat(date(now() - interval 1440 minute),' ', SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 1440 minute)) DIV 86400) * 86400));"
+query "$STATS_DB" "update vmlog set vmc_reboot='$vmc_reboot', vm_patcher_restart='$vm_patcher_restart', vm_pogo_restart='$vm_pogo_restart', vm_crash_dialog='$vm_crash_dialog', vm_injection='$vm_injection', vm_consent='$vm_consent', vm_ws_stop_pogo='$vm_ws_stop_pogo', vm_ws_start_pogo='$vm_ws_start_pogo',acc_level='$acc_level', acc_xp='$acc_xp', acc_stop='$acc_stop',acc_mon='$acc_mon', acc_item='$acc_item'  where Origin = '$origin' and datetime = concat(date(now() - interval 1440 minute),' ', SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 1440 minute)) DIV 86400) * 86400));"
 
 done < <(query "$MAD_DB" "select a.name from settings_device a, madmin_instance b where a.instance_id = b.instance_id and b.name = '$MAD_instance';")
 }
