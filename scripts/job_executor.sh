@@ -105,5 +105,45 @@ else
         done < <(query "select a.name from settings_device a, madmin_instance b where a.instance_id = b.instance_id and b.name = '$MAD_instance_name_5';")
 fi
 
+## run job for instance 6
+if [ -z "$MAD_path_6" ]; then
+        echo ""
+        echo "No 6th instance defined"
+else
+        echo "Starting job for all devices on instance 6"
+        echo ""
+        query(){
+        mysql -u$SQL_user -p$SQL_password -NB -h$DB_IP -P$DB_PORT $MAD_DB -e "$1;"
+        }
+        while read -r name _ ;do
+        curl -u $MADmin_username_6:$MADmin_password_6 "$MAD_url_6/install_file?jobname=$job&origin=$name&adb=False&type=JobType.CHAIN"
+        echo ""
+        echo "Starting job for $name"
+        echo "wait timer started, $job_wait"
+        echo ""
+        sleep $job_wait
+        done < <(query "select a.name from settings_device a, madmin_instance b where a.instance_id = b.instance_id and b.name = '$MAD_instance_name_6';")
+fi
+
+## run job for instance 7
+if [ -z "$MAD_path_7" ]; then
+        echo ""
+        echo "No 7th instance defined"
+else
+        echo "Starting job for all devices on instance 7"
+        echo ""
+        query(){
+        mysql -u$SQL_user -p$SQL_password -NB -h$DB_IP -P$DB_PORT $MAD_DB -e "$1;"
+        }
+        while read -r name _ ;do
+        curl -u $MADmin_username_7:$MADmin_password_7 "$MAD_url_5/install_file?jobname=$job&origin=$name&adb=False&type=JobType.CHAIN"
+        echo ""
+        echo "Starting job for $name"
+        echo "wait timer started, $job_wait"
+        echo ""
+        sleep $job_wait
+        done < <(query "select a.name from settings_device a, madmin_instance b where a.instance_id = b.instance_id and b.name = '$MAD_instance_name_7';")
+fi
+
 echo ""
 echo "All done !!"

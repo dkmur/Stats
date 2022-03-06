@@ -42,6 +42,20 @@ MADmin_username_5=
 MADmin_password_5=
 MAD_path_5=
 
+# MAD instance 6, must be connected to same DB as instance 1
+MAD_instance_name_6=
+MAD_url_6=
+MADmin_username_6=
+MADmin_password_6=
+MAD_path_6=
+
+# MAD instance 7, must be connected to same DB as instance 1
+MAD_instance_name_7=
+MAD_url_7=
+MADmin_username_7=
+MADmin_password_7=
+MAD_path_7=
+
 ## Stats ##
 PATH_TO_STATS=/home/dkmur/temp/Stats/                   # do not forget the trailing /
 DEFINED_SCAN_AREAS='Amsterdam, London, Paris'		# only used for visualisation in old Stats menu, not needed for Grafana users

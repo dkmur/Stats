@@ -142,6 +142,61 @@ else
         sleep $quest_recalc_wait
         done < <(query "select a.area_id from settings_area_pokestops a, settings_area b, madmin_instance c where a.area_id = b.area_id and b.instance_id = c.instance_id and a.route_calc_algorithm = 'route' and a.level = 0 and c.name = '$MAD_instance_name_5';")
 fi
+
+## recalculate Quest routes for instance 6
+if [ -z "$MAD_instance_name_6" ]; then
+        echo ""
+        echo "No 5th MAD instance defined"
+else
+        echo ""
+        echo "Start recalculation Quest routes for instance 6"
+
+        if [ -z "$SQL_password" ]
+        then
+          query(){
+          mysql  -h$DB_IP -P$DB_PORT -u$SQL_user $MAD_DB -NB -e "$1;"
+          }
+        else
+          query(){
+          mysql  -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $MAD_DB -NB -e "$1;"
+          }
+        fi
+        while read -r area_id _ ;do
+        echo Recalculating area_id: $area_id
+        curl -s -u $MADmin_username_6:$MADmin_password_6 -H 'Content-Type: application/json-rpc' -d '{"call": "recalculate"}' $MAD_url_6/api/area/$area_id
+        echo Sleeping $quest_recalc_wait
+        echo ""
+        sleep $quest_recalc_wait
+        done < <(query "select a.area_id from settings_area_pokestops a, settings_area b, madmin_instance c where a.area_id = b.area_id and b.instance_id = c.instance_id and a.route_calc_algorithm = 'route' and a.level = 0 and c.name = '$MAD_instance_name_6';")
+fi
+
+## recalculate Quest routes for instance 7
+if [ -z "$MAD_instance_name_7" ]; then
+        echo ""
+        echo "No 7th MAD instance defined"
+else
+        echo ""
+        echo "Start recalculation Quest routes for instance 7"
+
+        if [ -z "$SQL_password" ]
+        then
+          query(){
+          mysql  -h$DB_IP -P$DB_PORT -u$SQL_user $MAD_DB -NB -e "$1;"
+          }
+        else
+          query(){
+          mysql  -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $MAD_DB -NB -e "$1;"
+          }
+        fi
+        while read -r area_id _ ;do
+        echo Recalculating area_id: $area_id
+        curl -s -u $MADmin_username_5:$MADmin_password_5 -H 'Content-Type: application/json-rpc' -d '{"call": "recalculate"}' $MAD_url_5/api/area/$area_id
+        echo Sleeping $quest_recalc_wait
+        echo ""
+        sleep $quest_recalc_wait
+        done < <(query "select a.area_id from settings_area_pokestops a, settings_area b, madmin_instance c where a.area_id = b.area_id and b.instance_id = c.instance_id and a.route_calc_algorithm = 'route' and a.level = 0 and c.name = '$MAD_instance_name_7';")
+fi
+
 stop=$(date '+%Y%m%d %H:%M:%S')
 diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))/60)) $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))%60)))
 echo "[$start] [$stop] [$diff] Quest route recalculation" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
