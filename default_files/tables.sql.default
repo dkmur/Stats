@@ -582,6 +582,11 @@ CREATE TABLE IF NOT EXISTS `vmlog` (
   `vm_consent` INT DEFAULT NULL,
   `vm_ws_stop_pogo` INT DEFAULT NULL,
   `vm_ws_start_pogo` INT DEFAULT NULL,
+  `acc_level` INT DEFAULT NULL,
+  `acc_xp` INT DEFAULT NULL,
+  `acc_stop` INT DEFAULT NULL,
+  `acc_mon` INT DEFAULT NULL,
+  `acc_item` INT DEFAULT NULL,
   PRIMARY KEY (`datetime`,`Origin`, `RPL`, `instance`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -729,6 +734,14 @@ ADD COLUMN IF NOT EXISTS `lastCycle` datetime NOT NULL DEFAULT current_timestamp
 ADD COLUMN IF NOT EXISTS `totCycle` int(6) DEFAULT 0
 ;
 
+ALTER TABLE vmlog 
+ADD COLUMN IF NOT EXISTS `acc_level` INT DEFAULT NULL,
+ADD COLUMN IF NOT EXISTS `acc_xp` INT DEFAULT NULL,
+ADD COLUMN IF NOT EXISTS `acc_stop` INT DEFAULT NULL,
+ADD COLUMN IF NOT EXISTS `acc_mon` INT DEFAULT NULL,
+ADD COLUMN IF NOT EXISTS `acc_item` INT DEFAULT NULL
+;
+
 -- update version
 INSERT IGNORE INTO version values ('stats',2);
-UPDATE version set version = 27 where version.key = 'stats';
+UPDATE version set version = 28 where version.key = 'stats';
