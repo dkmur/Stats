@@ -134,6 +134,30 @@ else
   doit
 fi
 
+## run job for instance 6
+if [ -z "$MAD_path_6" ]; then
+  echo ""
+  echo "No 6th instance defined"
+else
+  MAD_instance=$MAD_instance_name_6
+  MADmin_user=$MADmin_username_6
+  MADmin_pass=$MADmin_password_6
+  MADmin_url=$MAD_url_6
+  doit
+fi
+
+## run job for instance 7
+if [ -z "$MAD_path_7" ]; then
+  echo ""
+  echo "No 7th instance defined"
+else
+  MAD_instance=$MAD_instance_name_7
+  MADmin_user=$MADmin_username_7
+  MADmin_pass=$MADmin_password_7
+  MADmin_url=$MAD_url_7
+  doit
+fi
+
 echo ""
 stop=$(date '+%Y%m%d %H:%M:%S')
 diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))/60)) $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))%60)))

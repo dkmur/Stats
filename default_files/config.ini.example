@@ -42,6 +42,20 @@ MADmin_username_5=
 MADmin_password_5=
 MAD_path_5=
 
+# MAD instance 6, must be connected to same DB as instance 1
+MAD_instance_name_6=
+MAD_url_6=
+MADmin_username_6=
+MADmin_password_6=
+MAD_path_6=
+
+# MAD instance 7, must be connected to same DB as instance 1
+MAD_instance_name_7=
+MAD_url_7=
+MADmin_username_7=
+MADmin_password_7=
+MAD_path_7=
+
 ## Stats ##
 PATH_TO_STATS=/home/dkmur/temp/Stats/                   # do not forget the trailing /
 DEFINED_SCAN_AREAS='Amsterdam, London, Paris'		# only used for visualisation in old Stats menu, not needed for Grafana users
@@ -95,8 +109,10 @@ SPAWNDEF15_HOURS=15					# number of hours spawnpoint has not been seen in first 
 mon_backup=false					# Store todays mons scanned to pokemon_history, data is not needed for Stats anymore since it is already processed
 mon_cleanup=false					# Cleanup pokemon_history (mon_backup=true)
 days_to_keep=14						# Number of days Pokemon data is stored into pokemon_history
-monthly_mon_table=false					# Create a new table each month where all scanned mons will be added. If set to true make sure mon_cleanup=false !!
-monthly_mon_database=pogodb				# Database to be used for monthly pokemon backup table, make sure to grant privileges to SQL_user
+monthly_mon_table=false					# Create a new table each month where all scanned mons will be added from pokemon_history_temp. If set to true make sure mon_cleanup=false !!
+monthly_mon_database=pogodb				# Database to be used for monthly pokemon backup table, make sure to create it and grant privileges to SQL_user
+monthly_mon_file=false					# mysqldump and zip last months pokemon data and remove from database
+monthly_mon_folder=/home/whatever			# Folder to store zipped monthly mysqldump
 
 ## Pokestop / Quest cleanup ##
 stop_to_gym_remove=false				# Remove pokestops that became gym or vice versa

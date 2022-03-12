@@ -260,6 +260,54 @@ else
         processJobs
 fi
 
+## update db for instance 6
+if [ -z "$MAD_path_6" ]; then
+        echo ""
+        echo "No 6th instance defined"
+else
+        atvMAD_path=$MAD_path_6
+        atvMADmin_user=$MADmin_username_6
+        atvMADmin_password=$MADmin_password_6
+        atvMAD_url=$MAD_url_6
+        if [[ "$MAD_path_6" != "$MAD_path_1" ]]
+        then
+          deleteLog
+        fi
+        echo ""
+        echo "Starting jobs for instance 6"
+        runJobs
+        echo ""
+        echo "Wait timer started, $job_wait_atv"
+        sleep $job_wait_atv
+        echo ""
+        echo "Start processing jobs instance 6"
+        processJobs
+fi
+
+## update db for instance 7
+if [ -z "$MAD_path_7" ]; then
+        echo ""
+        echo "No 7th instance defined"
+else
+        atvMAD_path=$MAD_path_7
+        atvMADmin_user=$MADmin_username_7
+        atvMADmin_password=$MADmin_password_7
+        atvMAD_url=$MAD_url_7
+        if [[ "$MAD_path_7" != "$MAD_path_1" ]]
+        then
+          deleteLog
+        fi
+        echo ""
+        echo "Starting jobs for instance 7"
+        runJobs
+        echo ""
+        echo "Wait timer started, $job_wait_atv"
+        sleep $job_wait_atv
+        echo ""
+        echo "Start processing jobs instance 7"
+        processJobs
+fi
+
 echo ""
 stop=$(date '+%Y%m%d %H:%M:%S')
 diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))/60)) $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))%60)))
