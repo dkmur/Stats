@@ -578,9 +578,17 @@ CREATE TABLE IF NOT EXISTS `vmlog` (
   `vm_pogo_restart` INT DEFAULT NULL,
   `vm_crash_dialog` INT DEFAULT NULL,
   `vm_injection` INT DEFAULT NULL,
+  `vm_injectTimeout` INT DEFAULT NULL,
   `vm_consent` INT DEFAULT NULL,
   `vm_ws_stop_pogo` INT DEFAULT NULL,
   `vm_ws_start_pogo` INT DEFAULT NULL,
+  `vm_authStart` INT DEFAULT NULL,
+  `vm_authSuccess` INT DEFAULT NULL,
+  `vm_authFailed` INT DEFAULT NULL,
+  `vm_Gtoken` INT DEFAULT NULL,
+  `vm_Ptoken` INT DEFAULT NULL,
+  `vm_PtokenMaster` INT DEFAULT NULL,
+  `vm_died` INT DEFAULT NULL,
   `acc_level` INT DEFAULT NULL,
   `acc_xp` INT DEFAULT NULL,
   `acc_stop` INT DEFAULT NULL,
@@ -734,7 +742,15 @@ ADD COLUMN IF NOT EXISTS `lastCycle` datetime NOT NULL DEFAULT current_timestamp
 ADD COLUMN IF NOT EXISTS `totCycle` int(6) DEFAULT 0
 ;
 
-ALTER TABLE vmlog 
+ALTER TABLE vmlog
+ADD COLUMN IF NOT EXISTS `vm_injectTimeout` INT DEFAULT NULL AFTER `vm_injection`,
+ADD COLUMN IF NOT EXISTS `vm_authStart` INT DEFAULT NULL AFTER `vm_ws_start_pogo`,
+ADD COLUMN IF NOT EXISTS `vm_authSuccess` INT DEFAULT NULL AFTER `vm_authStart`,
+ADD COLUMN IF NOT EXISTS `vm_authFailed` INT DEFAULT NULL AFTER `vm_authSuccess`,
+ADD COLUMN IF NOT EXISTS `vm_Gtoken` INT DEFAULT NULL AFTER `vm_authFailed`,
+ADD COLUMN IF NOT EXISTS `vm_Ptoken` INT DEFAULT NULL AFTER `vm_Gtoken`,
+ADD COLUMN IF NOT EXISTS `vm_PtokenMaster` INT DEFAULT NULL AFTER `vm_Ptoken`,
+ADD COLUMN IF NOT EXISTS `vm_died` INT DEFAULT NULL AFTER `vm_PtokenMaster`,
 ADD COLUMN IF NOT EXISTS `acc_level` INT DEFAULT NULL,
 ADD COLUMN IF NOT EXISTS `acc_xp` INT DEFAULT NULL,
 ADD COLUMN IF NOT EXISTS `acc_stop` INT DEFAULT NULL,
