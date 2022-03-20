@@ -685,8 +685,8 @@ ADD COLUMN IF NOT EXISTS `rawpostdest` varchar(40) COLLATE utf8mb4_unicode_ci DE
 ADD COLUMN IF NOT EXISTS `litever` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
 ADD COLUMN IF NOT EXISTS `lat` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
 ADD COLUMN IF NOT EXISTS `lon` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-DROP COLUMN IF EXISTS `mockgps` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-DROP COLUMN IF EXISTS `useApi` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+DROP COLUMN IF EXISTS `mockgps`,
+DROP COLUMN IF EXISTS `useApi`
 ;
 
 ALTER TABLE pokemon_history
