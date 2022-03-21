@@ -15,7 +15,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "8.3.4"
+      "version": "8.4.3"
     },
     {
       "type": "datasource",
@@ -53,7 +53,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1644005137823,
+  "iteration": 1647853457288,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -249,7 +249,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.3.4",
+      "pluginVersion": "8.4.3",
       "targets": [
         {
           "format": "table",
@@ -428,7 +428,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.3.4",
+      "pluginVersion": "8.4.3",
       "targets": [
         {
           "format": "table",
@@ -583,7 +583,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.3.4",
+      "pluginVersion": "8.4.3",
       "targets": [
         {
           "format": "table",
@@ -706,7 +706,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.3.4",
+      "pluginVersion": "8.4.3",
       "targets": [
         {
           "format": "table",
@@ -861,7 +861,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.3.4",
+      "pluginVersion": "8.4.3",
       "targets": [
         {
           "format": "table",
@@ -1100,7 +1100,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.3.4",
+      "pluginVersion": "8.4.3",
       "targets": [
         {
           "format": "table",
@@ -1315,7 +1315,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.3.4",
+      "pluginVersion": "8.4.3",
       "targets": [
         {
           "format": "table",
@@ -1503,7 +1503,7 @@
           }
         ]
       },
-      "pluginVersion": "8.3.4",
+      "pluginVersion": "8.4.3",
       "targets": [
         {
           "format": "table",
@@ -1778,7 +1778,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.3.4",
+      "pluginVersion": "8.4.3",
       "targets": [
         {
           "format": "table",
@@ -1981,7 +1981,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.3.4",
+      "pluginVersion": "8.4.3",
       "targets": [
         {
           "format": "table",
@@ -2014,10 +2014,6 @@
       "type": "table"
     },
     {
-      "datasource": {
-        "type": "mysql",
-        "uid": "${DS_POGODB}"
-      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -2184,7 +2180,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 140
+                "value": 295
               }
             ]
           },
@@ -2374,14 +2370,9 @@
           "show": false
         },
         "showHeader": true,
-        "sortBy": [
-          {
-            "desc": false,
-            "displayName": "destination"
-          }
-        ]
+        "sortBy": []
       },
-      "pluginVersion": "8.3.4",
+      "pluginVersion": "8.4.3",
       "targets": [
         {
           "datasource": {
@@ -2392,7 +2383,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\nleft(datetime,16) as 'datetime',\nifnull(daemon,'no_data') as 'daemon',\nifnull(injector,'no_data') as 'injector',\nifnull(newvhook,'no_data') as 'newvhook',\nifnull(postdest, 'no_data') as 'destination',\nifnull(rawpostdest, 'no_data') as 'raw_destination',\nifnull(websocketurl, 'no_data') as 'websocketurl',\nifnull(mockgps,'no_data') as 'mockgps',\nifnull(useApi,'no_data') as 'useApi',\ncount(origin) as '#devices'\nfrom ATVvm\n\nWHERE\ndatetime = '$datetime'\n\nGROUP BY daemon,injector,newvhook,destination,raw_destination,websocketurl,mockgps,useApi",
+          "rawSql": "SELECT\nleft(datetime,16) as 'datetime',\nifnull(injector,'no_data') as 'injector',\nifnull(postdest, 'no_data') as 'destination',\nifnull(rawpostdest, 'no_data') as 'raw_destination',\nifnull(websocketurl, 'no_data') as 'websocketurl',\ncount(origin) as '#devices'\nfrom ATVvm\n\nWHERE\ndatetime = '$datetime'\n\nGROUP BY injector,destination,raw_destination,websocketurl",
           "refId": "A",
           "select": [
             [
@@ -2418,10 +2409,6 @@
       "type": "table"
     },
     {
-      "datasource": {
-        "type": "mysql",
-        "uid": "${DS_POGODB}"
-      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -2732,7 +2719,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 560
+                "value": 484
               }
             ]
           },
@@ -2744,7 +2731,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 125
+                "value": 116
               }
             ]
           },
@@ -2757,6 +2744,18 @@
               {
                 "id": "custom.width",
                 "value": 76
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "catchRare"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 89
               }
             ]
           }
@@ -2780,7 +2779,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.3.4",
+      "pluginVersion": "8.4.3",
       "targets": [
         {
           "datasource": {
@@ -2791,7 +2790,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\nleft(datetime,16) as 'datetime',\nifnull(litever,'no_data') as 'litever',\nifnull(bootdelay,'no_data') as 'bootdelay',\nifnull(gzip,'no_data') as 'gzip',\nifnull(betamode,'no_data') as 'betamode',\nifnull(selinux,'no_data') as 'selinux',\nifnull(authid,'no_data') as 'authid',\nifnull(openlucky, 'no_data') as 'openLucky',\nifnull(catchPokemon, 'no_data') as 'catchPokemon',\nifnull(rebootminutes, 'no_data') as 'rebootminutes',\ncount(origin) as '#devices'\nfrom ATVvm\n\nWHERE\ndatetime = '$datetime'\n\nGROUP BY litever,bootdelay,gzip,betamode,selinux,authid,openlucky,catchPokemon,rebootminutes",
+          "rawSql": "SELECT\nleft(datetime,16) as 'datetime',\nifnull(daemon,'no_data') as 'daemon',\nifnull(betamode,'no_data') as 'betamode',\nifnull(bootdelay,'no_data') as 'bootdelay',\nifnull(authid,'no_data') as 'authid',\nifnull(gzip,'no_data') as 'gzip',\nifnull(selinux,'no_data') as 'selinux',\nifnull(openlucky, 'no_data') as 'openLucky',\nifnull(catchPokemon, 'no_data') as 'catchPokemon',\nifnull(catchRare, 'no_data') as 'catchRare',\nifnull(rebootminutes, 'no_data') as 'rebootminutes',\ncount(origin) as '#devices'\nfrom ATVvm\n\nWHERE\ndatetime = '$datetime'\n\nGROUP BY daemon,betamode,bootdelay,authid,gzip,selinux,openlucky,catchPokemon,catchRare,rebootminutes",
           "refId": "A",
           "select": [
             [
@@ -2903,7 +2902,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.3.4",
+      "pluginVersion": "8.4.3",
       "targets": [
         {
           "format": "table",
@@ -3034,7 +3033,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.3.4",
+      "pluginVersion": "8.4.3",
       "targets": [
         {
           "format": "table",
@@ -3165,7 +3164,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.3.4",
+      "pluginVersion": "8.4.3",
       "targets": [
         {
           "format": "table",
@@ -3199,7 +3198,7 @@
     }
   ],
   "refresh": false,
-  "schemaVersion": 34,
+  "schemaVersion": 35,
   "style": "dark",
   "tags": [],
   "templating": {
@@ -3250,6 +3249,6 @@
   "timezone": "",
   "title": "10. ATVdetails",
   "uid": "YBmfNzFGz",
-  "version": 59,
+  "version": 5,
   "weekStart": ""
 }

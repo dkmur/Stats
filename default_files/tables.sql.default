@@ -424,12 +424,11 @@ CREATE TABLE IF NOT EXISTS `ATVvm` (
   `websocketurl` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `catchPokemon` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `catchRare` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `newvhook` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `launcherver` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `rawpostdest` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `litever` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `lat` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `lon` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `overlay` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`datetime`,`origin`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -685,8 +684,11 @@ ADD COLUMN IF NOT EXISTS `rawpostdest` varchar(40) COLLATE utf8mb4_unicode_ci DE
 ADD COLUMN IF NOT EXISTS `litever` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
 ADD COLUMN IF NOT EXISTS `lat` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
 ADD COLUMN IF NOT EXISTS `lon` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+ADD COLUMN IF NOT EXISTS `overlay` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
 DROP COLUMN IF EXISTS `mockgps`,
-DROP COLUMN IF EXISTS `useApi`
+DROP COLUMN IF EXISTS `useApi`,
+DROP COLUMN IF EXISTS `litever`,
+DROP COLUMN IF EXISTS `newvhook`
 ;
 
 ALTER TABLE pokemon_history
@@ -760,4 +762,4 @@ ADD COLUMN IF NOT EXISTS `acc_item` INT DEFAULT NULL
 
 -- update version
 INSERT IGNORE INTO version values ('stats',2);
-UPDATE version set version = 29 where version.key = 'stats';
+UPDATE version set version = 30 where version.key = 'stats';
