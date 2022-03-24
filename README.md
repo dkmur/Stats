@@ -46,6 +46,7 @@ Use it at you own risk, because bare in mind this was all done by an idiot!
 - Mariadb to be installed on server Stats is running on
 - mysql strict mode disabled (should be done already for MAD)
 - Make sure ``jq`` is installed else,  ``sudo apt-get install jq``<BR>
+- Make sure unzip is installed <BR>
 
 ### 2 Initial setup
 

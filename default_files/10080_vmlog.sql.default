@@ -2,7 +2,7 @@
 
 select @Datetime := concat(date(curdate() - interval weekday(curdate()) + 7 day),' ','00:00:00');
 
-INSERT INTO pogodb.vmlog (Datetime,Origin,RPL,instance,vmc_reboot,vm_patcher_restart,vm_pogo_restart,vm_crash_dialog,vm_injection,vm_consent,vm_ws_stop_pogo,vm_ws_start_pogo,acc_level,acc_xp,acc_stop,acc_mon,acc_item)
+INSERT INTO pogodb.vmlog (Datetime,Origin,RPL,instance,vmc_reboot,vm_patcher_restart,vm_pogo_restart,vm_crash_dialog,vm_injection,vm_injectTimeout,vm_consent,vm_ws_stop_pogo,vm_ws_start_pogo,vm_authStart,vm_authSuccess,vm_authFailed,vm_Gtoken,vm_Ptoken,vm_PtokenMaster,vm_died,acc_level,acc_xp,acc_stop,acc_mon,acc_item)
 select
 @Datetime,
 Origin,
@@ -13,9 +13,17 @@ sum(vm_patcher_restart),
 sum(vm_pogo_restart),
 sum(vm_crash_dialog),
 sum(vm_injection),
+sum(vm_injectTimeout),
 sum(vm_consent),
 sum(vm_ws_stop_pogo),
 sum(vm_ws_start_pogo),
+sum(vm_authStart),
+sum(vm_authSuccess),
+sum(vm_authFailed),
+sum(vm_Gtoken),
+sum(vm_Ptoken),
+sum(vm_PtokenMaster),
+sum(vm_died),
 max(acc_level),
 max(acc_xp),
 max(acc_stop),

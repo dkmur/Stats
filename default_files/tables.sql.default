@@ -422,15 +422,13 @@ CREATE TABLE IF NOT EXISTS `ATVvm` (
   `rebootminutes` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `deviceid` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `websocketurl` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `mockgps` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `catchPokemon` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `newvhook` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `catchRare` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `launcherver` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `rawpostdest` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `litever` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `lat` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `lon` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `useApi` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `overlay` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`datetime`,`origin`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -579,9 +577,17 @@ CREATE TABLE IF NOT EXISTS `vmlog` (
   `vm_pogo_restart` INT DEFAULT NULL,
   `vm_crash_dialog` INT DEFAULT NULL,
   `vm_injection` INT DEFAULT NULL,
+  `vm_injectTimeout` INT DEFAULT NULL,
   `vm_consent` INT DEFAULT NULL,
   `vm_ws_stop_pogo` INT DEFAULT NULL,
   `vm_ws_start_pogo` INT DEFAULT NULL,
+  `vm_authStart` INT DEFAULT NULL,
+  `vm_authSuccess` INT DEFAULT NULL,
+  `vm_authFailed` INT DEFAULT NULL,
+  `vm_Gtoken` INT DEFAULT NULL,
+  `vm_Ptoken` INT DEFAULT NULL,
+  `vm_PtokenMaster` INT DEFAULT NULL,
+  `vm_died` INT DEFAULT NULL,
   `acc_level` INT DEFAULT NULL,
   `acc_xp` INT DEFAULT NULL,
   `acc_stop` INT DEFAULT NULL,
@@ -670,15 +676,19 @@ ADD COLUMN IF NOT EXISTS `productmodel` varchar(40) COLLATE utf8mb4_unicode_ci D
 
 ALTER TABLE ATVvm
 ADD COLUMN IF NOT EXISTS `websocketurl` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-ADD COLUMN IF NOT EXISTS `mockgps` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
 ADD COLUMN IF NOT EXISTS `catchPokemon` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+ADD COLUMN IF NOT EXISTS `catchRare` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
 ADD COLUMN IF NOT EXISTS `newvhook` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
 ADD COLUMN IF NOT EXISTS `launcherver` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
 ADD COLUMN IF NOT EXISTS `rawpostdest` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
 ADD COLUMN IF NOT EXISTS `litever` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
 ADD COLUMN IF NOT EXISTS `lat` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
 ADD COLUMN IF NOT EXISTS `lon` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-ADD COLUMN IF NOT EXISTS `useApi` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+ADD COLUMN IF NOT EXISTS `overlay` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+DROP COLUMN IF EXISTS `mockgps`,
+DROP COLUMN IF EXISTS `useApi`,
+DROP COLUMN IF EXISTS `litever`,
+DROP COLUMN IF EXISTS `newvhook`
 ;
 
 ALTER TABLE pokemon_history
@@ -734,7 +744,15 @@ ADD COLUMN IF NOT EXISTS `lastCycle` datetime NOT NULL DEFAULT current_timestamp
 ADD COLUMN IF NOT EXISTS `totCycle` int(6) DEFAULT 0
 ;
 
-ALTER TABLE vmlog 
+ALTER TABLE vmlog
+ADD COLUMN IF NOT EXISTS `vm_injectTimeout` INT DEFAULT NULL AFTER `vm_injection`,
+ADD COLUMN IF NOT EXISTS `vm_authStart` INT DEFAULT NULL AFTER `vm_ws_start_pogo`,
+ADD COLUMN IF NOT EXISTS `vm_authSuccess` INT DEFAULT NULL AFTER `vm_authStart`,
+ADD COLUMN IF NOT EXISTS `vm_authFailed` INT DEFAULT NULL AFTER `vm_authSuccess`,
+ADD COLUMN IF NOT EXISTS `vm_Gtoken` INT DEFAULT NULL AFTER `vm_authFailed`,
+ADD COLUMN IF NOT EXISTS `vm_Ptoken` INT DEFAULT NULL AFTER `vm_Gtoken`,
+ADD COLUMN IF NOT EXISTS `vm_PtokenMaster` INT DEFAULT NULL AFTER `vm_Ptoken`,
+ADD COLUMN IF NOT EXISTS `vm_died` INT DEFAULT NULL AFTER `vm_PtokenMaster`,
 ADD COLUMN IF NOT EXISTS `acc_level` INT DEFAULT NULL,
 ADD COLUMN IF NOT EXISTS `acc_xp` INT DEFAULT NULL,
 ADD COLUMN IF NOT EXISTS `acc_stop` INT DEFAULT NULL,
@@ -744,4 +762,4 @@ ADD COLUMN IF NOT EXISTS `acc_item` INT DEFAULT NULL
 
 -- update version
 INSERT IGNORE INTO version values ('stats',2);
-UPDATE version set version = 28 where version.key = 'stats';
+UPDATE version set version = 30 where version.key = 'stats';

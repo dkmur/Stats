@@ -47,9 +47,17 @@ vm_patcher_restart="$(grep $process_date_vm $folder/tmp/vmapper.log | grep 'Patc
 vm_pogo_restart="$(grep $process_date_vm $folder/tmp/vmapper.log | grep 'Restarting game' | wc -l)"
 vm_crash_dialog="$(grep $process_date_vm $folder/tmp/vmapper.log | grep 'Found crash dialog' | wc -l)"
 vm_injection="$(grep $process_date_vm $folder/tmp/vmapper.log | grep 'Injection successful' | wc -l)"
+vm_injectTimeout="$(grep $process_date_vm $folder/tmp/vmapper.log | grep 'Injection timeout' | wc -l)"
 vm_consent="$(grep $process_date_vm $folder/tmp/vmapper.log | grep 'consent dialog' | wc -l)"
 vm_ws_stop_pogo="$(grep $process_date_vm $folder/tmp/vmapper.log | grep 'WS: stopped app' | wc -l)"
 vm_ws_start_pogo="$(grep $process_date_vm $folder/tmp/vmapper.log | grep 'WS: started' | wc -l)"
+vm_authStart="$(grep $process_date_vm $folder/tmp/vmapper.log | grep 'Starting authentication' | wc -l)"
+vm_authSuccess="$(grep $process_date_vm $folder/tmp/vmapper.log | grep 'Authentication was successful' | wc -l)"
+vm_authFailed="$(grep $process_date_vm $folder/tmp/vmapper.log | grep 'Login failed' | wc -l)"
+vm_Gtoken="$(grep $process_date_vm $folder/tmp/vmapper.log | grep 'New Google auth token is needed' | wc -l)"
+vm_Ptoken="$(grep $process_date_vm $folder/tmp/vmapper.log | grep 'New PTC auth token is needed' | wc -l)"
+vm_PtokenMaster="$(grep $process_date_vm $folder/tmp/vmapper.log | grep 'New PTC master token is needed' | wc -l)"
+vm_died="$(grep $process_date_vm $folder/tmp/vmapper.log | grep 'The service died. We will restart' | wc -l)"
 acc_level="$(grep 'VM_API_Bag: Level' $folder/tmp/logcat.txt | tail -n1 | awk '{ print $NF }')"
 acc_xp="$(grep 'VM_API_Bag: XP' $folder/tmp/logcat.txt | tail -n1 | awk '{ print $NF }')"
 acc_stop="$(grep 'VM_API_Bag: Stops spun' $folder/tmp/logcat.txt | tail -n1 | awk '{ print $NF }')"
@@ -57,7 +65,7 @@ acc_mon="$(grep 'VM_API_Bag: Mons caught' $folder/tmp/logcat.txt | tail -n1 | aw
 acc_item="$(grep 'VM_API_Bag: Total item count' $folder/tmp/logcat.txt | tail -n1 | awk '{ print $NF }')"
 
 # update db
-query "$STATS_DB" "update vmlog set vmc_reboot='$vmc_reboot', vm_patcher_restart='$vm_patcher_restart', vm_pogo_restart='$vm_pogo_restart', vm_crash_dialog='$vm_crash_dialog', vm_injection='$vm_injection', vm_consent='$vm_consent', vm_ws_stop_pogo='$vm_ws_stop_pogo', vm_ws_start_pogo='$vm_ws_start_pogo',acc_level='$acc_level', acc_xp='$acc_xp', acc_stop='$acc_stop',acc_mon='$acc_mon', acc_item='$acc_item'  where Origin = '$origin' and datetime = concat(date(now() - interval 1440 minute),' ', SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 1440 minute)) DIV 86400) * 86400));"
+query "$STATS_DB" "update vmlog set vmc_reboot='$vmc_reboot', vm_patcher_restart='$vm_patcher_restart', vm_pogo_restart='$vm_pogo_restart', vm_crash_dialog='$vm_crash_dialog', vm_injection='$vm_injection', vm_consent='$vm_consent', vm_ws_stop_pogo='$vm_ws_stop_pogo', vm_ws_start_pogo='$vm_ws_start_pogo',acc_level='$acc_level', acc_xp='$acc_xp', acc_stop='$acc_stop',acc_mon='$acc_mon', acc_item='$acc_item', vm_injectTimeout='$vm_injectTimeout', vm_authStart='$vm_authStart', vm_authSuccess='$vm_authSuccess', vm_authFailed='$vm_authFailed', vm_Gtoken='$vm_Gtoken', vm_Ptoken='$vm_Ptoken', vm_PtokenMaster='$vm_PtokenMaster', vm_died='$vm_died'  where Origin = '$origin' and datetime = concat(date(now() - interval 1440 minute),' ', SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 1440 minute)) DIV 86400) * 86400));"
 
 done < <(query "$MAD_DB" "select a.name from settings_device a, madmin_instance b where a.instance_id = b.instance_id and b.name = '$MAD_instance';")
 }
