@@ -113,6 +113,7 @@ monthly_mon_table=false					# Create a new table each month where all scanned mo
 monthly_mon_database=pogodb				# Database to be used for monthly pokemon backup table, make sure to create it and grant privileges to SQL_user
 monthly_mon_file=false					# mysqldump and zip last months pokemon data and remove from database
 monthly_mon_folder=/home/whatever			# Folder to store zipped monthly mysqldump
+weekly_backup=false					# based on the settings for monthly backup to table/file but weekly
 
 ## Pokestop / Quest cleanup ##
 stop_to_gym_remove=false				# Remove pokestops that became gym or vice versa
