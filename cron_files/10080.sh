@@ -118,7 +118,7 @@ then
     then
       start=$(date '+%Y%m%d %H:%M:%S')
       mysqldump -h$DB_IP -P$DB_PORT -u$SQL_user $monthly_mon_database pokemon_history_$yearweek > $monthly_mon_folder/pokemon_history_$yearweek.sql
-      tar -czvf $monthly_mon_folder/pokemon_history_$yearweek.sql $monthly_mon_folder/pokemon_history_$yearweek.tar.gz
+      tar -czvf $monthly_mon_folder/pokemon_history_$yearweek.tar.gz $monthly_mon_folder/pokemon_history_$yearweek.sql
       rm $monthly_mon_folder/pokemon_history_$yearweek.sql
       mysql -h$DB_IP -P$DB_PORT -u$SQL_user $monthly_mon_database -e "drop table pokemon_history_$yearweek"
       echo "[$start] [$stop] [$diff] Weekly backup pokemon_history dumped, zipped and removed" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
@@ -138,7 +138,7 @@ then
     then
       start=$(date '+%Y%m%d %H:%M:%S')
       mysqldump -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $monthly_mon_database pokemon_history_$yearweek > $monthly_mon_folder/pokemon_history_$yearweek.sql
-      tar -czvf $monthly_mon_folder/pokemon_history_$yearweek.sql $monthly_mon_folder/pokemon_history_$yearweek.tar.gz
+      tar -czvf $monthly_mon_folder/pokemon_history_$yearweek.tar.gz $monthly_mon_folder/pokemon_history_$yearweek.sql
       rm $monthly_mon_folder/pokemon_history_$yearweek.sql
       mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $monthly_mon_database -e "drop table pokemon_history_$yearweek"
       echo "[$start] [$stop] [$diff] Weekly backup pokemon_history dumped, zipped and removed" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
