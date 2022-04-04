@@ -96,3 +96,54 @@ then
     echo "[$start] [$stop] [$diff] Weekly StatsDB optimize pokemon_history" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
   fi
 fi
+
+
+# Weekly backup pokemon_history
+
+if $weekly_backup
+then
+  start=$(date '+%Y%m%d %H:%M:%S')
+  yearweek=$(date --date="yesterday" +"%Yw%U")
+  if [ -z "$SQL_password" ]
+  then
+    mysqldump -h$DB_IP -P$DB_PORT -u$SQL_user $STATS_DB --no-data pokemon_history > $PATH_TO_STATS\pokemon_history_structure.sql
+    mysql -h$DB_IP -P$DB_PORT -u$SQL_user $STATS_DB -e "alter table $STATS_DB.pokemon_history RENAME $monthly_mon_database.pokemon_history_$yearweek"
+    mysql -h$DB_IP -P$DB_PORT -u$SQL_user $STATS_DB < $PATH_TO_STATS\pokemon_history_structure.sql
+#    mysqloptimize --skip-write-binlog -h$DB_IP -P$DB_PORT -u$SQL_user $monthly_mon_database pokemon_history_$yearweek
+    rm $PATH_TO_STATS/pokemon_history_structure.sql
+    stop=$(date '+%Y%m%d %H:%M:%S')
+    diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))/60)) $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))%60)))
+    echo "[$start] [$stop] [$diff] Weekly backup pokemon_history" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
+    if "$monthly_mon_file"
+    then
+      start=$(date '+%Y%m%d %H:%M:%S')
+      mysqldump -h$DB_IP -P$DB_PORT -u$SQL_user $monthly_mon_database pokemon_history_$yearweek > $monthly_mon_folder/pokemon_history_$yearweek.sql
+      tar -czvf $monthly_mon_folder/pokemon_history_$yearweek.tar.gz $monthly_mon_folder/pokemon_history_$yearweek.sql
+      rm $monthly_mon_folder/pokemon_history_$yearweek.sql
+      mysql -h$DB_IP -P$DB_PORT -u$SQL_user $monthly_mon_database -e "drop table pokemon_history_$yearweek"
+      echo "[$start] [$stop] [$diff] Weekly backup pokemon_history dumped, zipped and removed" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
+    else
+      mysqloptimize --skip-write-binlog -h$DB_IP -P$DB_PORT -u$SQL_user $monthly_mon_database pokemon_history_$yearweek
+    fi
+  else
+    mysqldump -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB --no-data pokemon_history > $PATH_TO_STATS\pokemon_history_structure.sql
+    mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB -e "alter table $STATS_DB.pokemon_history RENAME $monthly_mon_database.pokemon_history_$yearweek"
+    mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB < $PATH_TO_STATS\pokemon_history_structure.sql
+    rm $PATH_TO_STATS/pokemon_history_structure.sql
+#    mysqloptimize --skip-write-binlog -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $monthly_mon_database pokemon_history_$yearweek
+    stop=$(date '+%Y%m%d %H:%M:%S')
+    diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))/60)) $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))%60)))
+    echo "[$start] [$stop] [$diff] Weekly backup pokemon_history" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
+    if "$monthly_mon_file"
+    then
+      start=$(date '+%Y%m%d %H:%M:%S')
+      mysqldump -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $monthly_mon_database pokemon_history_$yearweek > $monthly_mon_folder/pokemon_history_$yearweek.sql
+      tar -czvf $monthly_mon_folder/pokemon_history_$yearweek.tar.gz $monthly_mon_folder/pokemon_history_$yearweek.sql
+      rm $monthly_mon_folder/pokemon_history_$yearweek.sql
+      mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $monthly_mon_database -e "drop table pokemon_history_$yearweek"
+      echo "[$start] [$stop] [$diff] Weekly backup pokemon_history dumped, zipped and removed" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
+    else
+      mysqloptimize --skip-write-binlog -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $monthly_mon_database pokemon_history_$yearweek
+    fi
+  fi
+fi
