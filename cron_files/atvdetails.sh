@@ -134,12 +134,13 @@ processJobs(){
 }
 
 
-
-## update db for instance 1
-if [ -z "$MAD_path_1" ]; then
+if ! "$atvdetailsWH"
+then
+  ## update db for instance 1
+  if [ -z "$MAD_path_1" ]; then
         echo ""
         echo "No instance defined"
-else
+  else
         echo "Inserting origins into table"
         echo ""
 	mysql $STATS_DB -u$SQL_user -p$SQL_password -h$DB_IP -P$DB_PORT -N -e "insert ignore into ATVgeneral (datetime,origin) select SEC_TO_TIME((TIME_TO_SEC(time(now())) DIV 3600) * 3600), name from $MAD_DB.settings_device;"
@@ -160,13 +161,13 @@ else
         echo ""
         echo "Start processing jobs instance 1"
         processJobs
-fi
+  fi
 
-## update db for instance 2
-if [ -z "$MAD_path_2" ]; then
+  ## update db for instance 2
+  if [ -z "$MAD_path_2" ]; then
         echo ""
         echo "No 2nd instance defined"
-else
+  else
         atvMAD_path=$MAD_path_2
         atvMADmin_user=$MADmin_username_2
         atvMADmin_password=$MADmin_password_2
@@ -184,13 +185,13 @@ else
         echo ""
         echo "Start processing jobs instance 2"
         processJobs
-fi
+  fi
 
-## update db for instance 3
-if [ -z "$MAD_path_3" ]; then
+  ## update db for instance 3
+  if [ -z "$MAD_path_3" ]; then
         echo ""
         echo "No 3rd instance defined"
-else
+  else
         atvMAD_path=$MAD_path_3
         atvMADmin_user=$MADmin_username_3
         atvMADmin_password=$MADmin_password_3
@@ -208,13 +209,13 @@ else
         echo ""
         echo "Start processing jobs instance 3"
         processJobs
-fi
+  fi
 
-## update db for instance 4
-if [ -z "$MAD_path_4" ]; then
+  ## update db for instance 4
+  if [ -z "$MAD_path_4" ]; then
         echo ""
         echo "No 4th instance defined"
-else
+  else
         atvMAD_path=$MAD_path_4
         atvMADmin_user=$MADmin_username_4
         atvMADmin_password=$MADmin_password_4
@@ -232,13 +233,13 @@ else
         echo ""
         echo "Start processing jobs instance 4"
         processJobs
-fi
+  fi
 
-## update db for instance 5
-if [ -z "$MAD_path_5" ]; then
+  ## update db for instance 5
+  if [ -z "$MAD_path_5" ]; then
         echo ""
         echo "No 5th instance defined"
-else
+  else
         atvMAD_path=$MAD_path_5
         atvMADmin_user=$MADmin_username_5
         atvMADmin_password=$MADmin_password_5
@@ -256,13 +257,13 @@ else
         echo ""
         echo "Start processing jobs instance 5"
         processJobs
-fi
+  fi
 
-## update db for instance 6
-if [ -z "$MAD_path_6" ]; then
+  ## update db for instance 6
+  if [ -z "$MAD_path_6" ]; then
         echo ""
         echo "No 6th instance defined"
-else
+  else
         atvMAD_path=$MAD_path_6
         atvMADmin_user=$MADmin_username_6
         atvMADmin_password=$MADmin_password_6
@@ -280,13 +281,13 @@ else
         echo ""
         echo "Start processing jobs instance 6"
         processJobs
-fi
+  fi
 
-## update db for instance 7
-if [ -z "$MAD_path_7" ]; then
+  ## update db for instance 7
+  if [ -z "$MAD_path_7" ]; then
         echo ""
         echo "No 7th instance defined"
-else
+  else
         atvMAD_path=$MAD_path_7
         atvMADmin_user=$MADmin_username_7
         atvMADmin_password=$MADmin_password_7
@@ -304,6 +305,17 @@ else
         echo ""
         echo "Start processing jobs instance 7"
         processJobs
+  fi
+
+else
+  # copy from table ATVsummary
+  echo "Inserting origins into table"
+  echo ""
+  mysql $STATS_DB -u$SQL_user -p$SQL_password -h$DB_IP -P$DB_PORT -N -e "insert ignore into ATVgeneral (datetime,origin) select SEC_TO_TIME((TIME_TO_SEC(time(now())) DIV 3600) * 3600), name from $MAD_DB.settings_device;"
+  mysql $STATS_DB -u$SQL_user -p$SQL_password -h$DB_IP -P$DB_PORT -N -e "insert ignore into ATVvm (datetime,origin) select SEC_TO_TIME((TIME_TO_SEC(time(now())) DIV 3600) * 3600), name from $MAD_DB.settings_device;"
+
+## to be done, daily update ATVgeneral and ATVvm
+
 fi
 
 echo ""

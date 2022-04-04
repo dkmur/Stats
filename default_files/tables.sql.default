@@ -318,6 +318,7 @@ CREATE TABLE IF NOT EXISTS `ATVgeneral` (
   `productmodel` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `rom` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `vm_script` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `42vmapper` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `55vmapper` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `mitm` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `pogo` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -596,6 +597,52 @@ CREATE TABLE IF NOT EXISTS `vmlog` (
   PRIMARY KEY (`datetime`,`Origin`, `RPL`, `instance`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+CREATE TABLE IF NOT EXISTS ATVsummary (
+  `timestamp` datetime NOT NULL,
+  `origin` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `arch` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `productmodel` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `vm_script` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `42vmapper` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `55vmapper` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `pogo` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `vmapper` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `pogo_update` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `vm_update` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `temperature` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `magisk` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `magisk_modules` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `MACw` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `MACe` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ip` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ext_ip` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `bootdelay` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `gzip` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `betamode` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `selinux` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `daemon` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `authpassword` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `authuser` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `injector` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `authid` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `postdest` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `fridastarted` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `patchedpid` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `fridaver` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `openlucky` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `rebootminutes` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `deviceid` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `websocketurl` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `catchPokemon` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `catchRare` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `launcherver` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `rawpostdest` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `lat` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `lon` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `overlay` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`timestamp`,`origin`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 ALTER TABLE `spawn_unused`
 ADD COLUMN IF NOT EXISTS `eventid` int(11) NOT NULL DEFAULT 1 AFTER `calc_endminsec`;
 
@@ -669,7 +716,8 @@ DROP COLUMN IF EXISTS `openlucky`
 
 ALTER TABLE ATVgeneral
 ADD COLUMN IF NOT EXISTS `ex_ip` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `ip`,
-ADD COLUMN IF NOT EXISTS `55vmapper` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `vm_script`,
+ADD COLUMN IF NOT EXISTS `42vmapper` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `vm_script`,
+ADD COLUMN IF NOT EXISTS `55vmapper` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `42vmapper`,
 ADD COLUMN IF NOT EXISTS `hostname` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `ip`,
 ADD COLUMN IF NOT EXISTS `productmodel` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `arch`
 ;
@@ -762,4 +810,4 @@ ADD COLUMN IF NOT EXISTS `acc_item` INT DEFAULT NULL
 
 -- update version
 INSERT IGNORE INTO version values ('stats',2);
-UPDATE version set version = 30 where version.key = 'stats';
+UPDATE version set version = 31 where version.key = 'stats';

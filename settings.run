@@ -183,7 +183,7 @@ fi
 # get ATV details
 if "$atvdetails"
 then
-  echo "Set daily download of ATV settings"
+  echo "Set processing of ATVdetails"
   echo ""
   sed -i "$ a \#\# ATV details" $PATH_TO_STATS/crontab.txt
   sed -i "$ a 20 */$atvdetails_hours * * * cd pathToStatscron_files && ./atvdetails.sh 2>>pathToStatslogs/log_\$(date '+\\\%Y\\\%m').log" $PATH_TO_STATS/crontab.txt
