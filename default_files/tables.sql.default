@@ -337,6 +337,9 @@ CREATE TABLE IF NOT EXISTS `ATVgeneral` (
   `MACe` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `ip` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `ex_ip` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `diskSysPct` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `diskDataPct` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `numPogo` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `hostname` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `gmail` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`datetime`,`origin`)
@@ -616,6 +619,9 @@ CREATE TABLE IF NOT EXISTS ATVsummary (
   `MACe` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `ip` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `ext_ip` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `diskSysPct` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `diskDataPct` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `numPogo` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `bootdelay` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `gzip` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `betamode` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -641,6 +647,26 @@ CREATE TABLE IF NOT EXISTS ATVsummary (
   `lon` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `overlay` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`origin`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE `ATVstats` (
+  `timestamp` datetime NOT NULL,
+  `RPL` smallint(6) NOT NULL,
+  `origin` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `temp` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `memTot` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `memFree` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `memAv` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `memPogo` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `memVM` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `cpuSys` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `cpuUser` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `cpuL5` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `cpuL10` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `cpuLavg` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `cpuPogoPct` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `cpuVmPct` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+PRIMARY KEY (`origin`,`timestamp`,`RPL`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 ALTER TABLE `spawn_unused`
@@ -716,6 +742,9 @@ DROP COLUMN IF EXISTS `openlucky`
 
 ALTER TABLE ATVgeneral
 ADD COLUMN IF NOT EXISTS `ex_ip` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `ip`,
+ADD COLUMN IF NOT EXISTS `diskSysPct` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `ex_ip`,
+ADD COLUMN IF NOT EXISTS `diskDataPct` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `diskSysPct`,
+ADD COLUMN IF NOT EXISTS `numPogo` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `diskDataPct`
 ADD COLUMN IF NOT EXISTS `42vmapper` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `vm_script`,
 ADD COLUMN IF NOT EXISTS `55vmapper` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `42vmapper`,
 ADD COLUMN IF NOT EXISTS `hostname` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `ip`,
@@ -808,6 +837,12 @@ ADD COLUMN IF NOT EXISTS `acc_mon` INT DEFAULT NULL,
 ADD COLUMN IF NOT EXISTS `acc_item` INT DEFAULT NULL
 ;
 
+ALTER TABLE ATVsummary
+ADD COLUMN IF NOT EXISTS `diskSysPct` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `ext_ip`,
+ADD COLUMN IF NOT EXISTS `diskDataPct` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `diskSysPct`,
+ADD COLUMN IF NOT EXISTS `numPogo` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `diskDataPct`
+;
+
 -- update version
 INSERT IGNORE INTO version values ('stats',2);
-UPDATE version set version = 31 where version.key = 'stats';
+UPDATE version set version = 32 where version.key = 'stats';
