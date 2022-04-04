@@ -640,7 +640,7 @@ CREATE TABLE IF NOT EXISTS ATVsummary (
   `lat` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `lon` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `overlay` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`timestamp`,`origin`)
+  PRIMARY KEY (`origin`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 ALTER TABLE `spawn_unused`
