@@ -653,7 +653,7 @@ CREATE TABLE `ATVstats` (
   `timestamp` datetime NOT NULL,
   `RPL` smallint(6) NOT NULL,
   `origin` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `temp` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `temperature` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `memTot` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `memFree` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `memAv` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -843,6 +843,10 @@ ADD COLUMN IF NOT EXISTS `diskDataPct` varchar(40) COLLATE utf8mb4_unicode_ci DE
 ADD COLUMN IF NOT EXISTS `numPogo` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `diskDataPct`
 ;
 
+ALTER TABLE ATVstats
+CHANGE COLUMN IF EXISTS `temp` `temperature` DEFAULT NULL
+;
+
 -- update version
 INSERT IGNORE INTO version values ('stats',2);
-UPDATE version set version = 32 where version.key = 'stats';
+UPDATE version set version = 33 where version.key = 'stats';
