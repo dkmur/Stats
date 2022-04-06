@@ -744,7 +744,7 @@ ALTER TABLE ATVgeneral
 ADD COLUMN IF NOT EXISTS `ex_ip` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `ip`,
 ADD COLUMN IF NOT EXISTS `diskSysPct` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `ex_ip`,
 ADD COLUMN IF NOT EXISTS `diskDataPct` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `diskSysPct`,
-ADD COLUMN IF NOT EXISTS `numPogo` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `diskDataPct`
+ADD COLUMN IF NOT EXISTS `numPogo` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `diskDataPct`,
 ADD COLUMN IF NOT EXISTS `42vmapper` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `vm_script`,
 ADD COLUMN IF NOT EXISTS `55vmapper` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `42vmapper`,
 ADD COLUMN IF NOT EXISTS `hostname` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `ip`,
