@@ -666,6 +666,8 @@ CREATE TABLE IF NOT EXISTS `ATVstats` (
   `cpuLavg` float COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `cpuPogoPct` float COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `cpuVmPct` float COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `diskSysPct` int(11) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `diskDataPct` int(11) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
 PRIMARY KEY (`origin`,`timestamp`,`RPL`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -843,6 +845,11 @@ ADD COLUMN IF NOT EXISTS `diskDataPct` varchar(40) COLLATE utf8mb4_unicode_ci DE
 ADD COLUMN IF NOT EXISTS `numPogo` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `diskDataPct`
 ;
 
+ALTER TABLE ATVstats
+ADD COLUMN IF NOT EXISTS `diskSysPct` int(11) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+ADD COLUMN IF NOT EXISTS `diskDataPct` int(11) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+;
+
 -- update version
 INSERT IGNORE INTO version values ('stats',2);
-UPDATE version set version = 34 where version.key = 'stats';
+UPDATE version set version = 35 where version.key = 'stats';
