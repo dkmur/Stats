@@ -619,9 +619,9 @@ CREATE TABLE IF NOT EXISTS ATVsummary (
   `MACe` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `ip` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `ext_ip` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `diskSysPct` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `diskDataPct` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `numPogo` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `diskSysPct` int(11) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `diskDataPct` int(11) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `numPogo` int(11) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `bootdelay` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `gzip` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `betamode` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -650,22 +650,22 @@ CREATE TABLE IF NOT EXISTS ATVsummary (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `ATVstats` (
-  `timestamp` datetime NOT NULL,
+  `timestamp` timestamp NOT NULL,
   `RPL` smallint(6) NOT NULL,
   `origin` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `temperature` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `memTot` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `memFree` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `memAv` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `memPogo` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `memVM` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `cpuSys` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `cpuUser` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `cpuL5` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `cpuL10` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `cpuLavg` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `cpuPogoPct` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `cpuVmPct` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `temperature` int(11) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `memTot` int(11) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `memFree` int(11) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `memAv` int(11) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `memPogo` int(11) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `memVM` int(11) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `cpuSys` int(11) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `cpuUser` int(11) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `cpuL5` float COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `cpuL10` float COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `cpuLavg` float COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `cpuPogoPct` float COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `cpuVmPct` float COLLATE utf8mb4_unicode_ci DEFAULT NULL,
 PRIMARY KEY (`origin`,`timestamp`,`RPL`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -843,10 +843,6 @@ ADD COLUMN IF NOT EXISTS `diskDataPct` varchar(40) COLLATE utf8mb4_unicode_ci DE
 ADD COLUMN IF NOT EXISTS `numPogo` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `diskDataPct`
 ;
 
-ALTER TABLE ATVstats
-CHANGE COLUMN IF EXISTS `temp` `temperature` DEFAULT NULL
-;
-
 -- update version
 INSERT IGNORE INTO version values ('stats',2);
-UPDATE version set version = 33 where version.key = 'stats';
+UPDATE version set version = 34 where version.key = 'stats';
