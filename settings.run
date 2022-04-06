@@ -490,6 +490,9 @@ cp $PATH_TO_STATS/default_files/51_mad_log_warning.json.default $PATH_TO_STATS/g
 cp $PATH_TO_STATS/default_files/52_mad_log_worker_error.json.default $PATH_TO_STATS/grafana/52_mad_log_worker_error.json
 cp $PATH_TO_STATS/default_files/53_mad_log_worker_warning.json.default $PATH_TO_STATS/grafana/53_mad_log_worker_warning.json
 cp $PATH_TO_STATS/default_files/60_vm_log.json.default $PATH_TO_STATS/grafana/60_vm_log.json
+cp $PATH_TO_STATS/default_files/vm_10_ATVdetails.json.default $PATH_TO_STATS/grafana/vm_10_ATVdetails.json
+cp $PATH_TO_STATS/default_files/vm_13_device_overview.json.default $PATH_TO_STATS/grafana/vm_13_device_overview.json
+cp $PATH_TO_STATS/default_files/vm_16_atv_performance.json.default  $PATH_TO_STATS/grafana/vm_16_atv_performance.json
 cd $PATH_TO_STATS/grafana/ && sed -i "s/pogodb/$DataSource_stats/g" *.json
 cd $PATH_TO_STATS/grafana/ && sed -i "s/rmdb/$DataSource_MAD/g" *.json
 cd $PATH_TO_STATS/grafana/ && sed -i "s/POGODB/$DS_STATS/g" *.json
