@@ -53,12 +53,11 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1649272039991,
+  "iteration": 1649286637550,
   "links": [],
   "liveNow": false,
   "panels": [
     {
-      "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -66,7 +65,6 @@
         "y": 0
       },
       "id": 11,
-      "panels": [],
       "title": "CPU Stats",
       "type": "row"
     },
@@ -125,7 +123,7 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 23,
+        "w": 24,
         "x": 0,
         "y": 1
       },
@@ -137,9 +135,7 @@
             "mean"
           ],
           "displayMode": "table",
-          "placement": "right",
-          "sortBy": "Max",
-          "sortDesc": true
+          "placement": "right"
         },
         "tooltip": {
           "mode": "multi",
@@ -264,7 +260,7 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 23,
+        "w": 24,
         "x": 0,
         "y": 9
       },
@@ -276,9 +272,7 @@
             "mean"
           ],
           "displayMode": "table",
-          "placement": "right",
-          "sortBy": "Max",
-          "sortDesc": true
+          "placement": "right"
         },
         "tooltip": {
           "mode": "multi",
@@ -349,6 +343,10 @@
       "type": "timeseries"
     },
     {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${DS_POGODB}"
+      },
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -403,7 +401,7 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 23,
+        "w": 24,
         "x": 0,
         "y": 17
       },
@@ -415,9 +413,7 @@
             "mean"
           ],
           "displayMode": "table",
-          "placement": "right",
-          "sortBy": "Max",
-          "sortDesc": true
+          "placement": "right"
         },
         "tooltip": {
           "mode": "multi",
@@ -443,8 +439,8 @@
           ],
           "hide": false,
           "metricColumn": "cpuPogoPct",
-          "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(timestamp,$__interval,NULL),\n  cpuPogoPct AS metric,\n  origin AS \"origin\"\nFROM ATVstats\nWHERE\n  $__timeFilter(timestamp) AND\n  origin IN ($ATV) AND\n  RPL = $RPL\nGROUP BY 1,2\nORDER BY $__timeGroup(timestamp,$__interval,NULL)",
+          "rawQuery": false,
+          "rawSql": "SELECT\n  $__timeGroupAlias(timestamp,$__interval,NULL),\n  cpuPogoPct AS metric,\n  origin AS \"origin\"\nFROM ATVstats\nWHERE\n  $__timeFilter(timestamp) AND\n  origin IN ($ATV)\nGROUP BY 1,2\nORDER BY $__timeGroup(timestamp,$__interval,NULL)",
           "refId": "A",
           "select": [
             [
@@ -542,7 +538,7 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 23,
+        "w": 24,
         "x": 0,
         "y": 25
       },
@@ -554,9 +550,7 @@
             "mean"
           ],
           "displayMode": "table",
-          "placement": "right",
-          "sortBy": "Max",
-          "sortDesc": true
+          "placement": "right"
         },
         "tooltip": {
           "mode": "multi",
@@ -675,13 +669,13 @@
               }
             ]
           },
-          "unit": "none"
+          "unit": "percent"
         },
         "overrides": []
       },
       "gridPos": {
         "h": 8,
-        "w": 23,
+        "w": 24,
         "x": 0,
         "y": 33
       },
@@ -693,9 +687,7 @@
             "mean"
           ],
           "displayMode": "table",
-          "placement": "right",
-          "sortBy": "Max",
-          "sortDesc": true
+          "placement": "right"
         },
         "tooltip": {
           "mode": "multi",
@@ -814,13 +806,13 @@
               }
             ]
           },
-          "unit": "none"
+          "unit": "percent"
         },
         "overrides": []
       },
       "gridPos": {
         "h": 8,
-        "w": 23,
+        "w": 24,
         "x": 0,
         "y": 41
       },
@@ -832,9 +824,7 @@
             "mean"
           ],
           "displayMode": "table",
-          "placement": "right",
-          "sortBy": "Max",
-          "sortDesc": true
+          "placement": "right"
         },
         "tooltip": {
           "mode": "multi",
@@ -953,13 +943,13 @@
               }
             ]
           },
-          "unit": "none"
+          "unit": "percent"
         },
         "overrides": []
       },
       "gridPos": {
         "h": 8,
-        "w": 23,
+        "w": 24,
         "x": 0,
         "y": 49
       },
@@ -971,9 +961,7 @@
             "mean"
           ],
           "displayMode": "table",
-          "placement": "right",
-          "sortBy": "Max",
-          "sortDesc": true
+          "placement": "right"
         },
         "tooltip": {
           "mode": "multi",
@@ -1115,7 +1103,7 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 23,
+        "w": 24,
         "x": 0,
         "y": 58
       },
@@ -1127,9 +1115,7 @@
             "mean"
           ],
           "displayMode": "table",
-          "placement": "right",
-          "sortBy": "Max",
-          "sortDesc": true
+          "placement": "right"
         },
         "tooltip": {
           "mode": "multi",
@@ -1267,7 +1253,7 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 23,
+        "w": 24,
         "x": 0,
         "y": 67
       },
@@ -1279,9 +1265,7 @@
             "mean"
           ],
           "displayMode": "table",
-          "placement": "right",
-          "sortBy": "Max",
-          "sortDesc": false
+          "placement": "right"
         },
         "tooltip": {
           "mode": "multi",
@@ -1405,8 +1389,8 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 9,
-        "w": 23,
+        "h": 8,
+        "w": 24,
         "x": 0,
         "y": 75
       },
@@ -1418,9 +1402,7 @@
             "mean"
           ],
           "displayMode": "table",
-          "placement": "right",
-          "sortBy": "Max",
-          "sortDesc": true
+          "placement": "right"
         },
         "tooltip": {
           "mode": "multi",
@@ -1545,9 +1527,9 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 23,
+        "w": 24,
         "x": 0,
-        "y": 84
+        "y": 83
       },
       "id": 4,
       "options": {
@@ -1557,9 +1539,7 @@
             "mean"
           ],
           "displayMode": "table",
-          "placement": "right",
-          "sortBy": "Max",
-          "sortDesc": true
+          "placement": "right"
         },
         "tooltip": {
           "mode": "multi",
@@ -1628,6 +1608,284 @@
       ],
       "title": "MemUsage VM",
       "type": "timeseries"
+    },
+    {
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 91
+      },
+      "id": 19,
+      "options": {
+        "legend": {
+          "calcs": [
+            "max",
+            "mean"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "sortBy": "Max",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "8.4.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "${DS_POGODB}"
+          },
+          "format": "time_series",
+          "group": [
+            {
+              "params": [
+                "$__interval",
+                "NULL"
+              ],
+              "type": "time"
+            }
+          ],
+          "hide": false,
+          "metricColumn": "memVM",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  $__timeGroupAlias(timestamp,$__interval,NULL),\n  diskSysPct AS metric,\n  origin AS \"origin\"\nFROM ATVstats\nWHERE\n  $__timeFilter(timestamp) AND\n  origin IN ($ATV) AND\n  RPL = $RPL\nGROUP BY 1,2\nORDER BY $__timeGroup(timestamp,$__interval,NULL)",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "origin"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "origin"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "table": "ATVstats",
+          "timeColumn": "timestamp",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            },
+            {
+              "datatype": "varchar",
+              "name": "",
+              "params": [
+                "origin",
+                "IN",
+                "($ATV)"
+              ],
+              "type": "expression"
+            }
+          ]
+        }
+      ],
+      "title": "DiskUsage System %",
+      "type": "timeseries"
+    },
+    {
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 99
+      },
+      "id": 20,
+      "options": {
+        "legend": {
+          "calcs": [
+            "max",
+            "mean"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "sortBy": "Max",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "8.4.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "${DS_POGODB}"
+          },
+          "format": "time_series",
+          "group": [
+            {
+              "params": [
+                "$__interval",
+                "NULL"
+              ],
+              "type": "time"
+            }
+          ],
+          "hide": false,
+          "metricColumn": "memVM",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  $__timeGroupAlias(timestamp,$__interval,NULL),\n  diskDataPct AS metric,\n  origin AS \"origin\"\nFROM ATVstats\nWHERE\n  $__timeFilter(timestamp) AND\n  origin IN ($ATV) AND\n  RPL = $RPL\nGROUP BY 1,2\nORDER BY $__timeGroup(timestamp,$__interval,NULL)",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "origin"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "origin"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "table": "ATVstats",
+          "timeColumn": "timestamp",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            },
+            {
+              "datatype": "varchar",
+              "name": "",
+              "params": [
+                "origin",
+                "IN",
+                "($ATV)"
+              ],
+              "type": "expression"
+            }
+          ]
+        }
+      ],
+      "title": "DiskUsage Data %",
+      "type": "timeseries"
     }
   ],
   "schemaVersion": 35,
@@ -1657,30 +1915,33 @@
       },
       {
         "current": {},
-        "definition": "select RPL from ATVstats;",
+        "datasource": {
+          "type": "mysql",
+          "uid": "${DS_POGODB}"
+        },
+        "definition": "select distinct(RPL) from ATVstats;",
         "hide": 0,
         "includeAll": false,
-        "multi": false,
+        "multi": true,
         "name": "RPL",
         "options": [],
-        "query": "select RPL from ATVstats;",
+        "query": "select distinct(RPL) from ATVstats;",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
-        "sort": 3,
-        "type": "query",
-        "datasource": "${DS_POGODB}"
+        "sort": 1,
+        "type": "query"
       }
     ]
   },
   "time": {
-    "from": "now-3h",
+    "from": "now-12h",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "16. ATV Performance",
   "uid": "aAgD-kUnz",
-  "version": 8,
+  "version": 3,
   "weekStart": ""
 }
