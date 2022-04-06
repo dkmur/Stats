@@ -649,7 +649,7 @@ CREATE TABLE IF NOT EXISTS ATVsummary (
   PRIMARY KEY (`origin`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE `ATVstats` (
+CREATE TABLE IF NOT EXISTS `ATVstats` (
   `timestamp` timestamp NOT NULL,
   `RPL` smallint(6) NOT NULL,
   `origin` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
