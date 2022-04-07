@@ -134,12 +134,13 @@ processJobs(){
 }
 
 
-
-## update db for instance 1
-if [ -z "$MAD_path_1" ]; then
+if ! "$atvdetailsWH"
+then
+  ## update db for instance 1
+  if [ -z "$MAD_path_1" ]; then
         echo ""
         echo "No instance defined"
-else
+  else
         echo "Inserting origins into table"
         echo ""
 	mysql $STATS_DB -u$SQL_user -p$SQL_password -h$DB_IP -P$DB_PORT -N -e "insert ignore into ATVgeneral (datetime,origin) select SEC_TO_TIME((TIME_TO_SEC(time(now())) DIV 3600) * 3600), name from $MAD_DB.settings_device;"
@@ -160,13 +161,13 @@ else
         echo ""
         echo "Start processing jobs instance 1"
         processJobs
-fi
+  fi
 
-## update db for instance 2
-if [ -z "$MAD_path_2" ]; then
+  ## update db for instance 2
+  if [ -z "$MAD_path_2" ]; then
         echo ""
         echo "No 2nd instance defined"
-else
+  else
         atvMAD_path=$MAD_path_2
         atvMADmin_user=$MADmin_username_2
         atvMADmin_password=$MADmin_password_2
@@ -184,13 +185,13 @@ else
         echo ""
         echo "Start processing jobs instance 2"
         processJobs
-fi
+  fi
 
-## update db for instance 3
-if [ -z "$MAD_path_3" ]; then
+  ## update db for instance 3
+  if [ -z "$MAD_path_3" ]; then
         echo ""
         echo "No 3rd instance defined"
-else
+  else
         atvMAD_path=$MAD_path_3
         atvMADmin_user=$MADmin_username_3
         atvMADmin_password=$MADmin_password_3
@@ -208,13 +209,13 @@ else
         echo ""
         echo "Start processing jobs instance 3"
         processJobs
-fi
+  fi
 
-## update db for instance 4
-if [ -z "$MAD_path_4" ]; then
+  ## update db for instance 4
+  if [ -z "$MAD_path_4" ]; then
         echo ""
         echo "No 4th instance defined"
-else
+  else
         atvMAD_path=$MAD_path_4
         atvMADmin_user=$MADmin_username_4
         atvMADmin_password=$MADmin_password_4
@@ -232,13 +233,13 @@ else
         echo ""
         echo "Start processing jobs instance 4"
         processJobs
-fi
+  fi
 
-## update db for instance 5
-if [ -z "$MAD_path_5" ]; then
+  ## update db for instance 5
+  if [ -z "$MAD_path_5" ]; then
         echo ""
         echo "No 5th instance defined"
-else
+  else
         atvMAD_path=$MAD_path_5
         atvMADmin_user=$MADmin_username_5
         atvMADmin_password=$MADmin_password_5
@@ -256,13 +257,13 @@ else
         echo ""
         echo "Start processing jobs instance 5"
         processJobs
-fi
+  fi
 
-## update db for instance 6
-if [ -z "$MAD_path_6" ]; then
+  ## update db for instance 6
+  if [ -z "$MAD_path_6" ]; then
         echo ""
         echo "No 6th instance defined"
-else
+  else
         atvMAD_path=$MAD_path_6
         atvMADmin_user=$MADmin_username_6
         atvMADmin_password=$MADmin_password_6
@@ -280,13 +281,13 @@ else
         echo ""
         echo "Start processing jobs instance 6"
         processJobs
-fi
+  fi
 
-## update db for instance 7
-if [ -z "$MAD_path_7" ]; then
+  ## update db for instance 7
+  if [ -z "$MAD_path_7" ]; then
         echo ""
         echo "No 7th instance defined"
-else
+  else
         atvMAD_path=$MAD_path_7
         atvMADmin_user=$MADmin_username_7
         atvMADmin_password=$MADmin_password_7
@@ -304,6 +305,18 @@ else
         echo ""
         echo "Start processing jobs instance 7"
         processJobs
+  fi
+
+else
+  # copy from table ATVsummary
+  echo "Inserting origins into table"
+  echo ""
+  mysql $STATS_DB -u$SQL_user -p$SQL_password -h$DB_IP -P$DB_PORT -N -e "insert ignore into ATVgeneral (datetime,origin) select SEC_TO_TIME((TIME_TO_SEC(time(now())) DIV 3600) * 3600), name from $MAD_DB.settings_device;"
+  mysql $STATS_DB -u$SQL_user -p$SQL_password -h$DB_IP -P$DB_PORT -N -e "insert ignore into ATVvm (datetime,origin) select SEC_TO_TIME((TIME_TO_SEC(time(now())) DIV 3600) * 3600), name from $MAD_DB.settings_device;"
+  echo "Updating data"
+  echo ""
+  mysql $STATS_DB -u$SQL_user -p$SQL_password -h$DB_IP -P$DB_PORT -N -e "update ATVgeneral a join ATVsummary b on a.origin = b.origin set a.arch=b.arch, a.productmodel=b.productmodel, a.vm_script=b.vm_script, a.42vmapper=b.42vmapper, a.55vmapper=b.55vmapper, a.pogo=b.pogo,a.vmapper=b.vmapper, a.pogo_update=b.pogo_update, a.vm_update=b.vm_update, a.temperature=b.temperature, a.magisk=b.magisk, a.magisk_modules=b.magisk_modules, a.MACw=b.MACw, a.MACe=b.MACe, a.ip=b.ip, a.ex_ip=b.ext_ip, a.diskSysPct=b.diskSysPct, a.diskDataPct=b.diskDataPct, a.numPogo=b.numPogo where a.datetime = SEC_TO_TIME((TIME_TO_SEC(time(now())) DIV 3600) * 3600) and b.timestamp > now() - interval 6 hour;"
+  mysql $STATS_DB -u$SQL_user -p$SQL_password -h$DB_IP -P$DB_PORT -N -e "update ATVvm a join ATVsummary b on a.origin = b.origin set a.bootdelay=b.bootdelay, a.gzip=b.gzip, a.betamode=b.betamode, a.selinux=b.selinux, a.daemon=b.daemon, a.authpassword=b.authpassword, a.authuser=b.authuser, a.injector=b.injector, a.authid=b.authid, a.postdest=b.postdest, a.fridastarted=b.fridastarted, a.patchedpid=b.patchedpid, a.fridaver=b.fridaver, a.openlucky=b.openlucky, a.rebootminutes=b.rebootminutes, a.deviceid=b.deviceid, a.websocketurl=b.websocketurl, a.catchPokemon=b.catchPokemon, a.catchRare=b.catchRare, a.launcherver=b.launcherver, a.rawpostdest=b.rawpostdest, a.lat=b.lat, a.lon=b.lon, a.overlay=b.overlay where a.datetime = SEC_TO_TIME((TIME_TO_SEC(time(now())) DIV 3600) * 3600) and b.timestamp > now() - interval 6 hour;"
 fi
 
 echo ""

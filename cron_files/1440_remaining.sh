@@ -71,6 +71,13 @@ stop=$(date '+%Y%m%d %H:%M:%S')
 diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))/60)) $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))%60)))
 echo "[$start] [$stop] [$diff] Daily cleanup Stats madlog worker tables" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
 
+# cleanup of ATVstats table
+start=$(date '+%Y%m%d %H:%M:%S')
+query "$STATS_DB" "delete from ATVstats where (RPL < 1440 and timestamp < curdate() - interval $ATVstatsNON1440 day) or (RPL = 1440 and timestamp < curdate() - interval $ATVstats1440 day)"
+stop=$(date '+%Y%m%d %H:%M:%S')
+diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))/60)) $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))%60)))
+echo "[$start] [$stop] [$diff] Daily cleanup Stats ATVstats table" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
+
 # MAD cleanup trs_stats_detect
 if "$trs_stats_detect"
 then

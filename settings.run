@@ -183,7 +183,7 @@ fi
 # get ATV details
 if "$atvdetails"
 then
-  echo "Set daily download of ATV settings"
+  echo "Set processing of ATVdetails"
   echo ""
   sed -i "$ a \#\# ATV details" $PATH_TO_STATS/crontab.txt
   sed -i "$ a 20 */$atvdetails_hours * * * cd pathToStatscron_files && ./atvdetails.sh 2>>pathToStatslogs/log_\$(date '+\\\%Y\\\%m').log" $PATH_TO_STATS/crontab.txt
@@ -450,6 +450,7 @@ cp $PATH_TO_STATS/default_files/madlog10080.sql.default $PATH_TO_STATS/cron_file
 cp $PATH_TO_STATS/default_files/madlog_worker1440.sql.default $PATH_TO_STATS/cron_files/madlog_worker1440.sql
 cp $PATH_TO_STATS/default_files/madlog_worker10080.sql.default $PATH_TO_STATS/cron_files/madlog_worker10080.sql
 cp $PATH_TO_STATS/default_files/10080_vmlog.sql.default $PATH_TO_STATS/cron_files/10080_vmlog.sql
+cp $PATH_TO_STATS/default_files/1440_atvstats.sql.default $PATH_TO_STATS/cron_files/1440_atvstats.sql
 sed -i "s/pogodb/$STATS_DB/g" $PATH_TO_STATS/cron_files/*.sql
 sed -i "s/rmdb/$MAD_DB/g" $PATH_TO_STATS/cron_files/*.sql
 sed -i "s/RPL15/$RPL15/g" $PATH_TO_STATS/cron_files/*.sql
@@ -489,6 +490,9 @@ cp $PATH_TO_STATS/default_files/51_mad_log_warning.json.default $PATH_TO_STATS/g
 cp $PATH_TO_STATS/default_files/52_mad_log_worker_error.json.default $PATH_TO_STATS/grafana/52_mad_log_worker_error.json
 cp $PATH_TO_STATS/default_files/53_mad_log_worker_warning.json.default $PATH_TO_STATS/grafana/53_mad_log_worker_warning.json
 cp $PATH_TO_STATS/default_files/60_vm_log.json.default $PATH_TO_STATS/grafana/60_vm_log.json
+cp $PATH_TO_STATS/default_files/vm_10_ATVdetails.json.default $PATH_TO_STATS/grafana/vm_10_ATVdetails.json
+cp $PATH_TO_STATS/default_files/vm_13_device_overview.json.default $PATH_TO_STATS/grafana/vm_13_device_overview.json
+cp $PATH_TO_STATS/default_files/vm_16_atv_performance.json.default  $PATH_TO_STATS/grafana/vm_16_atv_performance.json
 cd $PATH_TO_STATS/grafana/ && sed -i "s/pogodb/$DataSource_stats/g" *.json
 cd $PATH_TO_STATS/grafana/ && sed -i "s/rmdb/$DataSource_MAD/g" *.json
 cd $PATH_TO_STATS/grafana/ && sed -i "s/POGODB/$DS_STATS/g" *.json

@@ -1,0 +1,30 @@
+-- Daily aggregation of ATVstats data
+
+-- Settings For 1440min data 
+select @Datetime := concat(date(now() - interval 1440 minute),' ', SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 1440 minute)) DIV 86400) * 86400));
+
+INSERT INTO pogodb.ATVstats (timestamp,RPL,origin,temperature,memTot,memFree,memAv,memPogo,memVM,cpuSys,cpuUser,cpuL5,cpuL10,cpuLavg,cpuPogoPct,cpuVmPct,diskSysPct,diskDataPct)
+select
+@Datetime,
+'1440',
+origin,
+max(temperature),
+max(memTot),
+max(memFree),
+max(memAv),
+max(memPogo),
+max(memVM),
+max(cpuSys),
+max(cpuUser),
+max(cpuL5),
+max(cpuL10),
+max(cpuLavg),
+max(cpuPogoPct),
+max(cpuVmPct),
+max(diskSysPct),
+max(diskDataPct)
+
+from pogodb.ATVstats
+where timestamp like concat(left(@Datetime,10),'%') and RPL < 1440
+group by origin
+;

@@ -168,8 +168,11 @@ batch_size_google=20					# #devices to activate per batch
 batch_wait_ptc=10m					# time to sleep between activating batches of devices
 batch_size_ptc=10					# #devices to activate per batch
 
-# vMAD table cleanup/quest processing
+# vMAD stuff
 vmad=false						# only applicable for non pogodroid users
 vmlog=false                                             # process device vmconf and vmapper logs
+atvdetailsWH=false					# no more jobs, use webhook for ATVdetails
+ATVstatsNON1440=14					# days to keep raw data in ATVstats, non RPL 1440
+ATVstats1440=9999                                       # days to keep data in ATVstats for RPL 1440
 gympokemon=30						# days to keep since last seen, 9999 to disable
 trainer_pokemon=30					# days to keep since last seen, 9999 to disable
