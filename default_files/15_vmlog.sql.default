@@ -1,0 +1,64 @@
+-- Settings
+
+select @Datetime := concat(date(now() - interval 15 minute),' ', SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 15 minute)) DIV 900) * 900));
+select @Datetime_m15 := concat(date(now() - interval 30 minute),' ', (SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 30 minute)) DIV 900) * 900)));
+select @RPL := '15';
+
+CREATE TEMPORARY TABLE rmdb.tmp41
+AS(
+SELECT origin,vmc_reboot_tot,vm_patcher_restart_tot,vm_pogo_restart_tot,vm_crash_dialog_tot,vm_injection_tot,vm_injectTimeout_tot,vm_consent_tot,vm_ws_stop_pogo_tot,vm_ws_start_pogo_tot,vm_authStart_tot,vm_authSuccess_tot,vm_authFailed_tot,vm_Gtoken_tot,vm_Ptoken_tot,vm_PtokenMaster_tot,vm_died_tot
+FROM vmlog
+WHERE Datetime = @Datetime_m15
+);
+
+INSERT IGNORE INTO pogodb.vmlog (datetime,Origin,RPL,instance,vmc_reboot,vm_patcher_restart,vm_pogo_restart,vm_crash_dialog,vm_injection,vm_injectTimeout,vm_consent,vm_ws_stop_pogo,vm_ws_start_pogo,vm_authStart,vm_authSuccess,vm_authFailed,vm_Gtoken,vm_Ptoken,vm_PtokenMaster,vm_died,vmc_reboot_tot,vm_patcher_restart_tot,vm_pogo_restart_tot,vm_crash_dialog_tot,vm_injection_tot,vm_injectTimeout_tot,vm_consent_tot,vm_ws_stop_pogo_tot,vm_ws_start_pogo_tot,vm_authStart_tot,vm_authSuccess_tot,vm_authFailed_tot,vm_Gtoken_tot,vm_Ptoken_tot,vm_PtokenMaster_tot,vm_died_tot)
+SELECT
+@Datetime,
+a.Origin,
+@RPL,
+c.name,
+IF(d.vmc_reboot-a.vmc_reboot_tot<0,0,d.vmc_reboot-a.vmc_reboot_tot),
+IF(d.vm_patcher_restart-a.vm_patcher_restart_tot<0,0,d.vm_patcher_restart-a.vm_patcher_restart_tot),
+IF(d.vm_pogo_restart-a.vm_pogo_restart_tot<0,0,d.vm_pogo_restart-a.vm_pogo_restart_tot),
+IF(d.vm_crash_dialog-a.vm_crash_dialog_tot<0,0,d.vm_crash_dialog-a.vm_crash_dialog_tot),
+IF(d.vm_injection-a.vm_injection_tot<0,0,d.vm_injection-a.vm_injection_tot),
+IF(d.vm_injectTimeout-a.vm_injectTimeout_tot<0,0,d.vm_injectTimeout-a.vm_injectTimeout_tot),
+IF(d.vm_consent-a.vm_consent_tot<0,0,d.vm_consent-a.vm_consent_tot),
+IF(d.vm_ws_stop_pogo-a.vm_ws_stop_pogo_tot<0,0,d.vm_ws_stop_pogo-a.vm_ws_stop_pogo_tot),
+IF(d.vm_ws_start_pogo-a.vm_ws_start_pogo_tot<0,0,d.vm_ws_start_pogo-a.vm_ws_start_pogo_tot),
+IF(d.vm_authStart-a.vm_authStart_tot<0,0,d.vm_authStart-a.vm_authStart_tot),
+IF(d.vm_authSuccess-a.vm_authSuccess_tot<0,0,d.vm_authSuccess-a.vm_authSuccess_tot),
+IF(d.vm_authFailed-a.vm_authFailed_tot<0,0,d.vm_authFailed-a.vm_authFailed_tot),
+IF(d.vm_Gtoken-a.vm_Gtoken_tot<0,0,d.vm_Gtoken-a.vm_Gtoken_tot),
+IF(d.vm_Ptoken-a.vm_Ptoken_tot<0,0,d.vm_Ptoken-a.vm_Ptoken_tot),
+IF(d.vm_PtokenMaster-a.vm_PtokenMaster_tot<0,0,d.vm_PtokenMaster-a.vm_PtokenMaster_tot),
+IF(d.vm_died-a.vm_died_tot<0,0,d.vm_died-a.vm_died_tot),
+d.vmc_reboot,
+d.vm_patcher_restart,
+d.vm_pogo_restart,
+d.vm_crash_dialog,
+d.vm_injection,
+d.vm_injectTimeout,
+d.vm_consent,
+d.vm_ws_stop_pogo,
+d.vm_ws_start_pogo,
+d.vm_authStart,
+d.vm_authSuccess,
+d.vm_authFailed,
+d.vm_Gtoken,
+d.vm_Ptoken,
+d.vm_PtokenMaster,
+d.vm_died
+
+FROM
+rmdb.tmp41 a
+rmdb.settings_device b,
+rmdb.madmin_instance c,
+pogodb.ATVvmlog d
+WHERE
+a.origin = b.name and
+a.origin = d.origin and
+b.instance_id = c.instance_id
+;
+
+DROP TEMPORARY TABLE rmdb.tmp41;
