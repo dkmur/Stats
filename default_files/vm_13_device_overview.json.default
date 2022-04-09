@@ -406,6 +406,54 @@
                 "value": 97
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "lastUpdate"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 240
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "42vm"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 76
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "55vm"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 72
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "wh"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 62
+              }
+            ]
           }
         ]
       },
@@ -443,7 +491,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\na.Origin,\nb.name as 'instance',\nifnull(a.ip,'no_data') as 'ip',\nifnull(a.arch,'no_data') as 'arch',\nifnull(a.productmodel,'no_data') as 'productmodel',\nifnull(a.pogo,'no_data') as 'pogo',\nifnull(a.vmapper,'no_data') as 'VM',\nvm_script,\n42vmapper,\n55vmapper,\ndiskSysPct,\ndiskDataPct,\nnumPogo\nFROM ATVsummary a, rmdb.madmin_instance b, rmdb.trs_status c, rmdb.settings_device d\nWHERE a.Origin = d.name and c.device_id = d.device_id and c.instance_id = b.instance_id\nORDER BY a.Origin ASC\n",
+          "rawSql": "SELECT\na.Origin,\nb.name as 'instance',\nifnull(a.ip,'no_data') as 'ip',\nifnull(a.arch,'no_data') as 'arch',\nifnull(a.productmodel,'no_data') as 'productmodel',\nifnull(a.pogo,'no_data') as 'pogo',\nifnull(a.vmapper,'no_data') as 'VM',\nvm_script,\n42vmapper as '42vm',\n55vmapper as '55vm',\nwhversion as 'wh',\ndiskSysPct,\ndiskDataPct,\nnumPogo,\ntimestamp as 'lastUpdate'\nFROM ATVsummary a, rmdb.madmin_instance b, rmdb.trs_status c, rmdb.settings_device d\nWHERE a.Origin = d.name and c.device_id = d.device_id and c.instance_id = b.instance_id\nORDER BY a.Origin ASC\n",
           "refId": "A",
           "select": [
             [
@@ -485,6 +533,6 @@
   "timezone": "",
   "title": "13. Device overview",
   "uid": "RVgxODPGz",
-  "version": 6,
+  "version": 8,
   "weekStart": ""
 }

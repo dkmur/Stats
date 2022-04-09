@@ -255,7 +255,43 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 114
+                "value": 108
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "42vm"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 57
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "55vm"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 56
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "wh"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 75
               }
             ]
           }
@@ -291,7 +327,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\nifnull(arch,'no_data') as 'Architecture',\nifnull(productmodel,'nodata') as 'Productmodel',\nifnull(vm_script,'no_data') as 'vmscript',\nifnull(42vmapper,'no_data') as '42vmapper',\nifnull(55vmapper,'no_data') as '55vmapper',\ncount(origin) as '#devices'\nfrom ATVsummary\n\nGROUP BY arch,productmodel,vm_script,42vmapper,55vmapper\n",
+          "rawSql": "SELECT\nifnull(arch,'no_data') as 'Architecture',\nifnull(productmodel,'nodata') as 'Productmodel',\nifnull(vm_script,'no_data') as 'vmscript',\nifnull(42vmapper,'no_data') as '42vm',\nifnull(55vmapper,'no_data') as '55vm',\nifnull(whversion,'no_data') as 'wh',\ncount(origin) as '#devices'\nfrom ATVsummary\n\nGROUP BY arch,productmodel,vm_script,42vmapper,55vmapper,whversion\n",
           "refId": "A",
           "select": [
             [
@@ -351,7 +387,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 118
+                "value": 98
               }
             ]
           },
@@ -399,7 +435,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 102
+                "value": 87
               }
             ]
           },
@@ -435,7 +471,19 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 217
+                "value": 158
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "wh_enabled"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 91
               }
             ]
           }
@@ -470,7 +518,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n-- left(timestamp,16) as 'timestamp',\nifnull(pogo_update,'no_data ') as 'pogo_update',\nifnull(vm_update,'no_data ') as 'vm_update',\ncount(origin) as 'devices'\nfrom ATVsummary\n\n\nGROUP BY pogo_update, vm_update",
+          "rawSql": "SELECT\n-- left(timestamp,16) as 'timestamp',\nifnull(pogo_update,'no_data ') as 'pogo_update',\nifnull(vm_update,'no_data ') as 'vm_update',\nifnull(wh_enabled,'no_data ') as 'wh_enabled',\ncount(origin) as 'devices'\nfrom ATVsummary\n\n\nGROUP BY pogo_update, vm_update",
           "refId": "A",
           "select": [
             [
@@ -2010,6 +2058,6 @@
   "timezone": "",
   "title": "10. ATVdetails",
   "uid": "YBmfNzFGz",
-  "version": 10,
+  "version": 12,
   "weekStart": ""
 }
