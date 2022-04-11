@@ -43,9 +43,19 @@ stop=$(date '+%Y%m%d %H:%M:%S')
 diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))/60)) $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))%60)))
 echo "[$start] [$stop] [$diff] Stats rpl1440 worker processing" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
 
-#rpl 1440 ATVstats
-start=$(date '+%Y%m%d %H:%M:%S')
-cat $PATH_TO_STATS/cron_files/1440_atvstats.sql | query
-stop=$(date '+%Y%m%d %H:%M:%S')
-diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))/60)) $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))%60)))
-echo "[$start] [$stop] [$diff] Stats rpl1440 ATVstats processing" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
+if [ ! -z $atvdetailsWH ] && $atvdetailsWH
+then
+  # rpl 1440 vmlog stats
+  start=$(date '+%Y%m%d %H:%M:%S')
+  cat $PATH_TO_STATS/cron_files/1440_vmlog.sql | query
+  stop=$(date '+%Y%m%d %H:%M:%S')
+  diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))/60)) $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))%60)))
+  echo "[$start] [$stop] [$diff] Stats rpl1440 vmlog processing" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
+
+  #rpl 1440 ATVstats
+  start=$(date '+%Y%m%d %H:%M:%S')
+  cat $PATH_TO_STATS/cron_files/1440_atvstats.sql | query
+  stop=$(date '+%Y%m%d %H:%M:%S')
+  diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))/60)) $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))%60)))
+  echo "[$start] [$stop] [$diff] Stats rpl1440 ATVstats processing" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
+fi

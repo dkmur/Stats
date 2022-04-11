@@ -3,7 +3,7 @@
 folder="$(cd ../ && pwd)"
 source $folder/config.ini
 
-if [[ $vmad != "true" ||  $vmlog != "true" ]]
+if [[ $vmad != "true" ||  $vmlog != "true" || $atvdetailsWH != "false" ]]
 then
   exit
 fi

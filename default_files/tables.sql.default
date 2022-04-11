@@ -613,7 +613,9 @@ CREATE TABLE IF NOT EXISTS `vmlog` (
   `vm_Ptoken_tot` INT DEFAULT NULL,
   `vm_PtokenMaster_tot` INT DEFAULT NULL,
   `vm_died_tot` INT DEFAULT NULL,
-  PRIMARY KEY (`datetime`,`Origin`, `RPL`, `instance`)
+  PRIMARY KEY (`datetime`,`Origin`, `RPL`, `instance`),
+  KEY `vmlog_Origin` (`Origin`),
+  KEY `vmlog_RPL` (`RPL`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS ATVsummary (
@@ -892,7 +894,9 @@ ADD COLUMN IF NOT EXISTS `vm_authFailed_tot` INT DEFAULT NULL,
 ADD COLUMN IF NOT EXISTS `vm_Gtoken_tot` INT DEFAULT NULL,
 ADD COLUMN IF NOT EXISTS `vm_Ptoken_tot` INT DEFAULT NULL,
 ADD COLUMN IF NOT EXISTS `vm_PtokenMaster_tot` INT DEFAULT NULL,
-ADD COLUMN IF NOT EXISTS `vm_died_tot` INT DEFAULT NULL
+ADD COLUMN IF NOT EXISTS `vm_died_tot` INT DEFAULT NULL,
+ADD KEY IF NOT EXISTS `vmlog_Origin` (`Origin`),
+ADD KEY IF NOT EXISTS `vmlog_RPL` (`RPL`) 
 ;
 
 ALTER TABLE ATVsummary
@@ -910,4 +914,4 @@ ADD COLUMN IF NOT EXISTS `diskDataPct` int(11) COLLATE utf8mb4_unicode_ci DEFAUL
 
 -- update version
 INSERT IGNORE INTO version values ('stats',2);
-UPDATE version set version = 36 where version.key = 'stats';
+UPDATE version set version = 37 where version.key = 'stats';
