@@ -498,6 +498,7 @@ cp $PATH_TO_STATS/default_files/vm_13_device_overview.json.default $PATH_TO_STAT
 cp $PATH_TO_STATS/default_files/vm_16_atv_performance.json.default $PATH_TO_STATS/grafana/vm_16_atv_performance.json
 cp $PATH_TO_STATS/default_files/vm_02_stats_network_area.json.default $PATH_TO_STATS/grafana/vm_02_stats_network_area.json
 cp $PATH_TO_STATS/default_files/vm_04_stats_worker.json.default $PATH_TO_STATS/grafana/vm_04_stats_worker.json
+cp $PATH_TO_STATS/default_files/vm_22_device_location.json.default $PATH_TO_STATS/grafana/vm_22_device_location.json
 cd $PATH_TO_STATS/grafana/ && sed -i "s/pogodb/$DataSource_stats/g" *.json
 cd $PATH_TO_STATS/grafana/ && sed -i "s/rmdb/$DataSource_MAD/g" *.json
 cd $PATH_TO_STATS/grafana/ && sed -i "s/POGODB/$DS_STATS/g" *.json
