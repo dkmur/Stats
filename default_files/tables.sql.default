@@ -597,7 +597,25 @@ CREATE TABLE IF NOT EXISTS `vmlog` (
   `acc_stop` INT DEFAULT NULL,
   `acc_mon` INT DEFAULT NULL,
   `acc_item` INT DEFAULT NULL,
-  PRIMARY KEY (`datetime`,`Origin`, `RPL`, `instance`)
+  `vmc_reboot_tot` INT DEFAULT NULL,
+  `vm_patcher_restart_tot` INT DEFAULT NULL,
+  `vm_pogo_restart_tot` INT DEFAULT NULL,
+  `vm_crash_dialog_tot` INT DEFAULT NULL,
+  `vm_injection_tot` INT DEFAULT NULL,
+  `vm_injectTimeout_tot` INT DEFAULT NULL,
+  `vm_consent_tot` INT DEFAULT NULL,
+  `vm_ws_stop_pogo_tot` INT DEFAULT NULL,
+  `vm_ws_start_pogo_tot` INT DEFAULT NULL,
+  `vm_authStart_tot` INT DEFAULT NULL,
+  `vm_authSuccess_tot` INT DEFAULT NULL,
+  `vm_authFailed_tot` INT DEFAULT NULL,
+  `vm_Gtoken_tot` INT DEFAULT NULL,
+  `vm_Ptoken_tot` INT DEFAULT NULL,
+  `vm_PtokenMaster_tot` INT DEFAULT NULL,
+  `vm_died_tot` INT DEFAULT NULL,
+  PRIMARY KEY (`datetime`,`Origin`, `RPL`, `instance`),
+  KEY `vmlog_Origin` (`Origin`),
+  KEY `vmlog_RPL` (`RPL`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS ATVsummary (
@@ -608,10 +626,12 @@ CREATE TABLE IF NOT EXISTS ATVsummary (
   `vm_script` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `42vmapper` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `55vmapper` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `whversion` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `pogo` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `vmapper` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `pogo_update` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `vm_update` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `wh_enabled` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `temperature` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `magisk` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `magisk_modules` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -669,6 +689,28 @@ CREATE TABLE IF NOT EXISTS `ATVstats` (
   `diskSysPct` int(11) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `diskDataPct` int(11) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
 PRIMARY KEY (`origin`,`timestamp`,`RPL`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `ATVvmlog` (
+  `timestamp` datetime NOT NULL,
+  `origin` varchar(50) NOT NULL,
+  `vmc_reboot` INT DEFAULT NULL,
+  `vm_patcher_restart` INT DEFAULT NULL,
+  `vm_pogo_restart` INT DEFAULT NULL,
+  `vm_crash_dialog` INT DEFAULT NULL,
+  `vm_injection` INT DEFAULT NULL,
+  `vm_injectTimeout` INT DEFAULT NULL,
+  `vm_consent` INT DEFAULT NULL,
+  `vm_ws_stop_pogo` INT DEFAULT NULL,
+  `vm_ws_start_pogo` INT DEFAULT NULL,
+  `vm_authStart` INT DEFAULT NULL,
+  `vm_authSuccess` INT DEFAULT NULL,
+  `vm_authFailed` INT DEFAULT NULL,
+  `vm_Gtoken` INT DEFAULT NULL,
+  `vm_Ptoken` INT DEFAULT NULL,
+  `vm_PtokenMaster` INT DEFAULT NULL,
+  `vm_died` INT DEFAULT NULL,
+  PRIMARY KEY (`origin`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 ALTER TABLE `spawn_unused`
@@ -836,10 +878,30 @@ ADD COLUMN IF NOT EXISTS `acc_level` INT DEFAULT NULL,
 ADD COLUMN IF NOT EXISTS `acc_xp` INT DEFAULT NULL,
 ADD COLUMN IF NOT EXISTS `acc_stop` INT DEFAULT NULL,
 ADD COLUMN IF NOT EXISTS `acc_mon` INT DEFAULT NULL,
-ADD COLUMN IF NOT EXISTS `acc_item` INT DEFAULT NULL
+ADD COLUMN IF NOT EXISTS `acc_item` INT DEFAULT NULL,
+ADD COLUMN IF NOT EXISTS `vmc_reboot_tot` INT DEFAULT NULL,
+ADD COLUMN IF NOT EXISTS `vm_patcher_restart_tot` INT DEFAULT NULL,
+ADD COLUMN IF NOT EXISTS `vm_pogo_restart_tot` INT DEFAULT NULL,
+ADD COLUMN IF NOT EXISTS `vm_crash_dialog_tot` INT DEFAULT NULL,
+ADD COLUMN IF NOT EXISTS `vm_injection_tot` INT DEFAULT NULL,
+ADD COLUMN IF NOT EXISTS `vm_injectTimeout_tot` INT DEFAULT NULL,
+ADD COLUMN IF NOT EXISTS `vm_consent_tot` INT DEFAULT NULL,
+ADD COLUMN IF NOT EXISTS `vm_ws_stop_pogo_tot` INT DEFAULT NULL,
+ADD COLUMN IF NOT EXISTS `vm_ws_start_pogo_tot` INT DEFAULT NULL,
+ADD COLUMN IF NOT EXISTS `vm_authStart_tot` INT DEFAULT NULL,
+ADD COLUMN IF NOT EXISTS `vm_authSuccess_tot` INT DEFAULT NULL,
+ADD COLUMN IF NOT EXISTS `vm_authFailed_tot` INT DEFAULT NULL,
+ADD COLUMN IF NOT EXISTS `vm_Gtoken_tot` INT DEFAULT NULL,
+ADD COLUMN IF NOT EXISTS `vm_Ptoken_tot` INT DEFAULT NULL,
+ADD COLUMN IF NOT EXISTS `vm_PtokenMaster_tot` INT DEFAULT NULL,
+ADD COLUMN IF NOT EXISTS `vm_died_tot` INT DEFAULT NULL,
+ADD KEY IF NOT EXISTS `vmlog_Origin` (`Origin`),
+ADD KEY IF NOT EXISTS `vmlog_RPL` (`RPL`) 
 ;
 
 ALTER TABLE ATVsummary
+ADD COLUMN IF NOT EXISTS `whversion` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `55vmapper`,
+ADD COLUMN IF NOT EXISTS `wh_enabled` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `vm_update`,
 ADD COLUMN IF NOT EXISTS `diskSysPct` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `ext_ip`,
 ADD COLUMN IF NOT EXISTS `diskDataPct` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `diskSysPct`,
 ADD COLUMN IF NOT EXISTS `numPogo` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `diskDataPct`
@@ -852,4 +914,4 @@ ADD COLUMN IF NOT EXISTS `diskDataPct` int(11) COLLATE utf8mb4_unicode_ci DEFAUL
 
 -- update version
 INSERT IGNORE INTO version values ('stats',2);
-UPDATE version set version = 35 where version.key = 'stats';
+UPDATE version set version = 37 where version.key = 'stats';

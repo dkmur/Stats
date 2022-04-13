@@ -37,6 +37,16 @@ stop=$(date '+%Y%m%d %H:%M:%S')
 diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))/60)) $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))%60)))
 echo "[$start] [$stop] [$diff] Stats rpl10080 worker aggregation" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
 
+if [ ! -z $atvdetailsWH ] && $atvdetailsWH
+then
+  # rpl 10080 vmlog stats
+  start=$(date '+%Y%m%d %H:%M:%S')
+  cat $PATH_TO_STATS/cron_files/10080_vmlog.sql | query
+  stop=$(date '+%Y%m%d %H:%M:%S')
+  diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))/60)) $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))%60)))
+  echo "[$start] [$stop] [$diff] Stats rpl10080 vmlog processing" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
+fi
+
 # optimize pokemon_history_temp, we stop doing this => useless as it will fill up anyway to its orgininal level
 #echo "`date '+%Y%m%d %H:%M:%S'` Weekly StatsDB optimize pokemon_history_temp started" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
 #if [ -z "$SQL_password" ]
