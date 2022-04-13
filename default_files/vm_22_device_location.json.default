@@ -92,7 +92,32 @@
             ]
           }
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "lastProto"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "s"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "temperature"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "celsius"
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 18,
@@ -120,7 +145,7 @@
               "showLegend": true,
               "style": {
                 "color": {
-                  "field": "protoSecond",
+                  "field": "lastProto",
                   "fixed": "dark-green"
                 },
                 "opacity": 0.4,
@@ -190,7 +215,7 @@
           "hide": false,
           "metricColumn": "walker",
           "rawQuery": true,
-          "rawSql": "select b.name as \"origin\", \nST_X(a.currentPos) as \"lat\", \nST_Y(a.currentPos) as \"lon\",\nTIMESTAMPDIFF(SECOND,a.lastProtoDateTime,now()) as \"protoSecond\",\n-- TIMESTAMPDIFF(HOUR,a.lastPogoRestart,now()) as \"wsRestartHour\",\n-- TIMESTAMPDIFF(HOUR,a.lastPogoReboot,now()) as \"wsRebootHour\",\nleft((select max(datetime) from pogodb.vmlog where origin = b.name and vmc_reboot > 0 and RPL = 15),16) as \"lastRebootInterval\",\nleft((select max(datetime) from pogodb.vmlog where origin = b.name and (vm_pogo_restart > 0 or vm_ws_start_pogo > 0) and RPL = 15),16) as \"lastRestartInterval\",\nleft(c.lastCycle,16) as \"lastPowerCycle\",\nd.ip as \"deviceIP\",\nd.pogo as \"pogo version\",\nd.vmapper as \"vmapper version\",\nd.42vmapper as \"42vmapper version\",\nd.55vmapper as \"55vmapper version\",\nd.vm_script as \"vmapper.sh version\",\nd.whversion as \"webhook version\",\nd.temperature as \"temperature\",\nd.arch as \"architecture\",\nd.productmodel as \"productModel\"\n\n\nfrom\nsettings_device b\nleft join trs_status a on a.device_id = b.device_id\nleft join pogodb.relay c on b.name = c.origin\nleft join pogodb.ATVsummary d on d.origin = b.name\n",
+          "rawSql": "select b.name as \"origin\", \nST_X(a.currentPos) as \"lat\", \nST_Y(a.currentPos) as \"lon\",\nTIMESTAMPDIFF(SECOND,a.lastProtoDateTime,now()) as \"lastProto\",\n-- TIMESTAMPDIFF(HOUR,a.lastPogoRestart,now()) as \"wsRestartHour\",\n-- TIMESTAMPDIFF(HOUR,a.lastPogoReboot,now()) as \"wsRebootHour\",\nleft((select max(datetime) from pogodb.vmlog where origin = b.name and vmc_reboot > 0 and RPL = 15),16) as \"lastRebootInterval\",\nleft((select max(datetime) from pogodb.vmlog where origin = b.name and (vm_pogo_restart > 0 or vm_ws_start_pogo > 0) and RPL = 15),16) as \"lastRestartInterval\",\nleft(c.lastCycle,16) as \"lastPowerCycle\",\nd.ip as \"deviceIP\",\nd.pogo as \"pogo version\",\nd.vmapper as \"vmapper version\",\nd.42vmapper as \"42vmapper version\",\nd.55vmapper as \"55vmapper version\",\nd.vm_script as \"vmapper.sh version\",\nd.whversion as \"webhook version\",\nd.temperature as \"temperature\",\nd.arch as \"architecture\",\nd.productmodel as \"productModel\"\n\n\nfrom\nsettings_device b\nleft join trs_status a on a.device_id = b.device_id\nleft join pogodb.relay c on b.name = c.origin\nleft join pogodb.ATVsummary d on d.origin = b.name\n",
           "refId": "B",
           "select": [
             [
@@ -252,7 +277,7 @@
   "timepicker": {},
   "timezone": "utc",
   "title": "22. Device Location",
-  "uid": "w3BsAxs7z",
-  "version": 20,
+  "uid": "w3BsAxs7a",
+  "version": 5,
   "weekStart": ""
 }
