@@ -495,6 +495,7 @@ cp $PATH_TO_STATS/default_files/53_mad_log_worker_warning.json.default $PATH_TO_
 cp $PATH_TO_STATS/default_files/60_vm_log.json.default $PATH_TO_STATS/grafana/60_vm_log.json
 cp $PATH_TO_STATS/default_files/vm_10_ATVdetails.json.default $PATH_TO_STATS/grafana/vm_10_ATVdetails.json
 cp $PATH_TO_STATS/default_files/vm_13_device_overview.json.default $PATH_TO_STATS/grafana/vm_13_device_overview.json
+cp $PATH_TO_STATS/default_files/vm_14_device_stability.json.default $PATH_TO_STATS/grafana/vm_14_device_stability.json
 cp $PATH_TO_STATS/default_files/vm_16_atv_performance.json.default $PATH_TO_STATS/grafana/vm_16_atv_performance.json
 cp $PATH_TO_STATS/default_files/vm_02_stats_network_area.json.default $PATH_TO_STATS/grafana/vm_02_stats_network_area.json
 cp $PATH_TO_STATS/default_files/vm_04_stats_worker.json.default $PATH_TO_STATS/grafana/vm_04_stats_worker.json
