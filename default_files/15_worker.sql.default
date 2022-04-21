@@ -161,7 +161,7 @@ worker,
 sum(is_shiny) as `Shiny`
 from rmdb.trs_stats_detect_mon_raw
 where
-from_unixtime(timestamp_scan) >= @Datetime_p1 and from_unixtime(timestamp_scan) < @Datetime_p16
+from_unixtime(timestamp_scan) >= @Datetime_p1 and from_unixtime(timestamp_scan) < @Datetime_p16 and is_shiny > 0
 group by worker
 );
 
@@ -177,7 +177,7 @@ left join rmdb.tmp48 g on z.worker = g.worker COLLATE utf8mb4_unicode_ci
 left join rmdb.tmp49 h on z.worker = h.worker COLLATE utf8mb4_unicode_ci
 left join rmdb.tmp51 i on z.worker = i.worker COLLATE utf8mb4_unicode_ci
 left join rmdb.tmp52 j on z.worker = j.worker COLLATE utf8mb4_unicode_ci
-SET z.TRPL=b.TRPL, z.Tmon=b.Tmon, z.IVmon=b.IVmon, z.Mon=b.Mon, z.Quest=b.Quest, z.Raid=b.Raid, z.Tloc=c.Tloc, z.LocOk=c.LocOk, z.LocNok=c.LocNok, z.LocFR=c.LocFR, z.Tp=d.Tp, z.TpOk=d.TpOk, z.TpNok=d.TpNok, z.TpFR=d.TpFR, z.TpSt=f.TpSt, z.Wk=e.Wk, z.WkOk=e.WkOk, z.WkNok=e.WkNok, z.WkFR=e.WkFR, z.WkSt=g.WkSt, z.exReps=j.exReps, z.locReports=c.locReports, z.locationsMultiReport=i.locationsMultiReport, z.Shiny=h.Shiny, z.Res=a.Res, z.Reb=a.Reb, z.ResTot=a.ResTot, z.RebTot=a.RebTot
+SET z.TRPL=b.TRPL, z.Tmon=b.Tmon, z.IVmon=b.IVmon, z.Mon=b.Mon, z.Quest=b.Quest, z.Raid=b.Raid, z.Tloc=c.Tloc, z.LocOk=c.LocOk, z.LocNok=c.LocNok, z.LocFR=c.LocFR, z.Tp=d.Tp, z.TpOk=d.TpOk, z.TpNok=d.TpNok, z.TpFR=d.TpFR, z.TpSt=f.TpSt, z.Wk=e.Wk, z.WkOk=e.WkOk, z.WkNok=e.WkNok, z.WkFR=e.WkFR, z.WkSt=g.WkSt, z.exReps=j.exReps, z.locReports=c.locReports, z.locationsMultiReport=i.locationsMultiReport, z.Shiny=ifnull(h.Shiny,0), z.Res=a.Res, z.Reb=a.Reb, z.ResTot=a.ResTot, z.RebTot=a.RebTot
 WHERE
 z.Datetime = @Datetime
 ;
