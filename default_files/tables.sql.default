@@ -719,7 +719,7 @@ CREATE TABLE `geofences` (
   `type` varchar(45) NOT NULL,
   `coords` POLYGON NOT NULL,
   `created` datetime NOT NULL DEFAULT now(),
-  PRIMARY KEY (`area`,`fence`)
+  PRIMARY KEY (`area`,`fence`,`type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 ALTER TABLE `spawn_unused`
