@@ -310,6 +310,7 @@ EOF
   rm -f $PATH_TO_STATS/areas/input
 
 # add fences to db
+query "$STATS_DB" "delete from geofences where type = 'mon'"
 for file in "$PATH_TO_STATS"areas/*.mad
 do
 #  echo "$file"
@@ -416,6 +417,7 @@ EOF
   rm -f $PATH_TO_STATS/areas/input_quest
 
 # add fences to db
+query "$STATS_DB" "delete from geofences where type = 'quest'"
 for file in "$PATH_TO_STATS"areas/*.quest
 do
 #  echo "$file"

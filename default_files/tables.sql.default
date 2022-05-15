@@ -713,7 +713,7 @@ CREATE TABLE IF NOT EXISTS `ATVvmlog` (
   PRIMARY KEY (`origin`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE `geofences` (
+CREATE TABLE IF NOT EXISTS `geofences` (
   `area` varchar(45) NOT NULL,
   `fence` varchar(45) NOT NULL,
   `type` varchar(45) NOT NULL,
