@@ -309,6 +309,17 @@ EOF
         )")
   rm -f $PATH_TO_STATS/areas/input
 
+# add fences to db
+for file in "$PATH_TO_STATS"areas/*.mad
+do
+#  echo "$file"
+  source $file
+  FENCENAME=$(echo $FENCE_NAME | sed s/' '/_/g)
+  AREANAME=$(echo $AREA_NAME | sed s/' '/_/g)
+  POLY="st_geomfromtext('POLYGON(( $POLYGON ))')"
+  query "$STATS_DB" "insert ignore into geofences (area,fence,type,coords) values ('$AREANAME', '$FENCENAME', 'mon', $POLY)"
+done
+
 # create mon_mitm area files
   rm -f $PATH_TO_STATS/cron_files/*.sql
   rm -f $PATH_TO_STATS/cron_files/*.default
@@ -403,6 +414,17 @@ questareas=$(query "$MAD_DB" "select count(*) from settings_geofence where geofe
 EOF
         )")
   rm -f $PATH_TO_STATS/areas/input_quest
+
+# add fences to db
+for file in "$PATH_TO_STATS"areas/*.mad
+do
+#  echo "$file"
+  source $file
+  FENCENAME=$(echo $FENCE_NAME | sed s/' '/_/g)
+  AREANAME=$(echo $AREA_NAME | sed s/' '/_/g)
+  POLY="st_geomfromtext('POLYGON(( $POLYGON ))')"
+  query "$STATS_DB" "insert ignore into geofences (area,fence,type,coords) values ('$AREANAME', '$FENCENAME', 'quest', $POLY)"
+done
 
 # create quest area RPL 15 files
 #  rm -f $PATH_TO_STATS/cron_files/*.sql
