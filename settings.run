@@ -416,7 +416,7 @@ EOF
   rm -f $PATH_TO_STATS/areas/input_quest
 
 # add fences to db
-for file in "$PATH_TO_STATS"areas/*.mad
+for file in "$PATH_TO_STATS"areas/*.quest
 do
 #  echo "$file"
   source $file

@@ -163,7 +163,7 @@ EOF
 
 # add fences to db
 query "$STATS_DB" "delete from geofences where type = 'quest'"
-for file in "$PATH_TO_STATS"areas/*.mad
+for file in "$PATH_TO_STATS"areas/*.quest
 do
 #  echo "$file"
   source $file
