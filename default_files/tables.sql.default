@@ -417,7 +417,7 @@ CREATE TABLE IF NOT EXISTS `ATVvm` (
   `authpassword` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `authuser` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `injector` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `authid` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `authid` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `postdest` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `fridastarted` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `patchedpid` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -650,7 +650,7 @@ CREATE TABLE IF NOT EXISTS ATVsummary (
   `authpassword` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `authuser` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `injector` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `authid` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `authid` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `postdest` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `fridastarted` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `patchedpid` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -811,6 +811,9 @@ DROP COLUMN IF EXISTS `useApi`,
 DROP COLUMN IF EXISTS `litever`,
 DROP COLUMN IF EXISTS `newvhook`
 ;
+ALTER TABLE ATVvm
+MODIFY COLUMN authid VARCHAR(100)
+;
 
 ALTER TABLE pokemon_history
 ADD COLUMN IF NOT EXISTS `fort_id` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `first_scanned`,
@@ -906,6 +909,9 @@ ADD COLUMN IF NOT EXISTS `diskSysPct` varchar(40) COLLATE utf8mb4_unicode_ci DEF
 ADD COLUMN IF NOT EXISTS `diskDataPct` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `diskSysPct`,
 ADD COLUMN IF NOT EXISTS `numPogo` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `diskDataPct`
 ;
+ALTER TABLE ATVsummary
+MODIFY COLUMN authid VARCHAR(100)
+;
 
 ALTER TABLE ATVstats
 ADD COLUMN IF NOT EXISTS `diskSysPct` int(11) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -914,4 +920,4 @@ ADD COLUMN IF NOT EXISTS `diskDataPct` int(11) COLLATE utf8mb4_unicode_ci DEFAUL
 
 -- update version
 INSERT IGNORE INTO version values ('stats',2);
-UPDATE version set version = 37 where version.key = 'stats';
+UPDATE version set version = 38 where version.key = 'stats';
