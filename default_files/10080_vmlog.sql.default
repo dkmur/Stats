@@ -5,7 +5,7 @@ INSERT IGNORE INTO pogodb.vmlog (datetime,Origin,RPL,instance,vmc_reboot,vm_patc
 SELECT
 @Datetime,
 Origin,
-'10080
+10080,
 max(instance),
 sum(vmc_reboot),
 sum(vm_patcher_restart),
