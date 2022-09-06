@@ -23,16 +23,7 @@ stop=$(date '+%Y%m%d %H:%M:%S')
 diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))/60)) $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))%60)))
 echo "[$start] [$stop] [$diff] Hourly append shiny Stats" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
 
-# cleanup table pokemon + trs_stats_detect_seen_type + pokemon_display
-if "$pokemon"
-then
-  start=$(date '+%Y%m%d %H:%M:%S')
-  query "$MAD_DB" "SET SESSION tx_isolation = 'READ-UNCOMMITTED'; CALL pokemon_cleanup(); CALL detect_seen_cleanup(); CALL pokemon_display_cleanup();"
-  stop=$(date '+%Y%m%d %H:%M:%S')
-  diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))/60)) $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))%60)))
-  echo "[$start] [$stop] [$diff] Hourly cleanup MAD tables pokemon, trs_stats_detect_seen_type and pokemon_display" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
-fi
-
+# cleanup table trs_stats_detect_seen_type + pokemon_display
 # cleanup table detect_raw
 if "$trs_stats_detect_raw"
 then

@@ -31,5 +31,8 @@
 45 2-23 * * * cd pathToStatscron_files && ./15_stats_area.sh 2>>pathToStatslogs/log_$(date '+\%Y\%m').log
 46 2-23 * * * cd pathToStatscron_files && ./15_stats_worker.sh 2>>pathToStatslogs/log_$(date '+\%Y\%m').log
 
+## Archive and cleanup table pokemon
+*/5 * * * * cd pathToStatscron_files && ./5.sh 2>>pathToStatslogs/log_$(date '+\%Y\%m').log
+
 ## Check proto received every minute
 */1 * * * * mysql userpass STATS_DB -e "UPDATE STATS_DB.stats_worker SET missingProtoMinute = missingProtoMinute + 1 WHERE Datetime = concat(date(now() - interval 0 minute),' ', (SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 0 minute)) DIV 900) * 900))) and Worker in (select b.name from MAD_DB.trs_status a, MAD_DB.settings_device b where a.device_id = b.device_id and lastProtoDateTime < now() - interval 1 minute);" 2>>pathToStatslogs/log_$(date '+\%Y\%m').log

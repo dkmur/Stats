@@ -51,52 +51,6 @@ CREATE PROCEDURE pogodb.mon_history_temp_cleanup()
 DELIMITER ;
 
 
-DROP PROCEDURE IF EXISTS rmdb.pokemon_cleanup;
-DELIMITER //
-CREATE PROCEDURE rmdb.pokemon_cleanup()
- BEGIN
-  DECLARE number INT;
-  DECLARE start DATETIME;
-  DECLARE stop DATETIME;
-  DECLARE RowCount INT;
-  SET number = 1;
-  SET start = concat(date(now() - interval 2 hour),' ', hour(now() - interval 2 hour), ':00:00');
-  SET stop = concat(date(now() - interval 2 hour),' ', hour(now() - interval 2 hour), ':05:00');
-   WHILE number <= 12 DO
-   DELETE FROM rmdb.pokemon WHERE CONVERT_TZ(last_modified, '+00:00', @@global.time_zone) >= start and CONVERT_TZ(last_modified, '+00:00', @@global.time_zone) < stop;
-   SET number = number + 1;
-   SET start = start + interval 5 minute;
-   SET stop = stop + interval 5 minute;
-   SELECT SLEEP(1);
-   END WHILE;
--- cleanup old or missed data
-  SET RowCount = (SELECT count(last_modified) FROM rmdb.pokemon WHERE CONVERT_TZ(last_modified, '+00:00', @@global.time_zone) < stop);
-   WHILE RowCount > 0 DO
-   DELETE FROM rmdb.pokemon WHERE CONVERT_TZ(last_modified, '+00:00', @@global.time_zone) < stop LIMIT 10000;
-   SET RowCount = RowCount - 10000;
-   SELECT SLEEP(1);
-   END WHILE;
- END;
-//
-DELIMITER ; 
-
-
-DROP PROCEDURE IF EXISTS rmdb.detect_seen_cleanup;
-DELIMITER //
-CREATE PROCEDURE rmdb.detect_seen_cleanup()
- BEGIN
-  DECLARE RowCount INT;
-  SET RowCount = (SELECT count(encounter_id) FROM rmdb.trs_stats_detect_seen_type WHERE encounter_id not in (SELECT encounter_id FROM rmdb.pokemon));
-   WHILE RowCount > 0 DO
-   DELETE FROM rmdb.trs_stats_detect_seen_type WHERE encounter_id not in (SELECT encounter_id FROM rmdb.pokemon) LIMIT 10000;
-   SET RowCount = RowCount - 10000;
-   SELECT SLEEP(1);
-   END WHILE;
- END;  
-//
-DELIMITER ;
-
-
 DROP PROCEDURE IF EXISTS rmdb.pokemon_display_cleanup;
 DELIMITER //
 CREATE PROCEDURE rmdb.pokemon_display_cleanup()
@@ -141,3 +95,33 @@ CREATE PROCEDURE rmdb.trs_stats_detect_mon_raw_cleanup()
  END;
 //
 DELIMITER ; 
+
+
+DROP PROCEDURE IF EXISTS rmdb.archiveAndCleanup;
+DELIMITER //
+create procedure rmdb.archiveAndCleanup()
+begin
+drop temporary table if exists old;
+
+create temporary table old engine = memory
+    as (select encounter_id from pokemon a, trs_spawn b where a.spawnpoint_id = b.spawnpoint and a.disappear_time < utc_timestamp() and b.calc_endminsec is not NULL 
+    UNION ALL select encounter_id from pokemon a, trs_spawn b where a.spawnpoint_id = b.spawnpoint and a.disappear_time < utc_timestamp() - interval 40 minute and b.calc_endminsec is NULL);
+
+insert ignore into pogodb.pokemon_history_temp (encounter_id,spawnpoint_id,pokemon_id,latitude,longitude,disappear_time,individual_attack,individual_defense,
+    individual_stamina,move_1,move_2,cp,cp_multiplier,weight,height,gender,form,costume,catch_prob_1,catch_prob_2,catch_prob_3,rating_attack,rating_defense,
+    weather_boosted_condition,last_modified,fort_id,cell_id,seen_type,encounter,wild,nearby_stop,nearby_cell,lure_encounter,lure_wild,point)
+select a.encounter_id,a.spawnpoint_id,a.pokemon_id,a.latitude,a.longitude,a.disappear_time,a.individual_attack,a.individual_defense,
+    a.individual_stamina,a.move_1,a.move_2,a.cp,a.cp_multiplier,a.weight,a.height,a.gender,a.form,a.costume,a.catch_prob_1,a.catch_prob_2,a.catch_prob_3,a.rating_attack,rating_defense,
+    a.weather_boosted_condition,a.last_modified,a.fort_id,a.cell_id,a.seen_type,b.encounter,b.wild,nearby_stop,b.nearby_cell,b.lure_encounter,b.lure_wild,point(a.latitude,a.longitude)
+from pokemon a	
+join old on old.encounter_id=a.encounter_id
+left join trs_stats_detect_seen_type b on b.encounter_id=a.encounter_id;
+
+delete pokemon from pokemon join old on old.encounter_id=pokemon.encounter_id;
+
+delete trs_stats_detect_seen_type from trs_stats_detect_seen_type join old on old.encounter_id=trs_stats_detect_seen_type.encounter_id;
+
+drop temporary table if exists old;
+end;
+//
+DELIMITER ;
