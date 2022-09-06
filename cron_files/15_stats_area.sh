@@ -18,20 +18,26 @@ touch $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
 
 # rpl 15 area stats
 start=$(date '+%Y%m%d %H:%M:%S')
-cat $PATH_TO_STATS/cron_files/15_*_area.sql | query
+query "CALL rpl15monarea();"
 stop=$(date '+%Y%m%d %H:%M:%S')
 diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))/60)) $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))%60)))
 echo "[$start] [$stop] [$diff] Stats rpl15 mon area processing" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
 
-# rpl 15 quest stats
-questareas=$(echo "select count(*) from $MAD_DB.settings_geofence where geofence_id in (select geofence_included from $MAD_DB.settings_area_pokestops where level = 0);" | query)
-if [ $questareas = 0 ]
-then
-echo "no quest areas defined, skip processing"
-else
+# rpl 15 spawnpoint stats
 start=$(date '+%Y%m%d %H:%M:%S')
-cat $PATH_TO_STATS/cron_files/15_*_area_quest.sql | query
+query "CALL rpl15spawnarea();"
+stop=$(date '+%Y%m%d %H:%M:%S')
+diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))/60)) $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))%60)))
+echo "[$start] [$stop] [$diff] Stats rpl15 spawnpoint area processing" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
+
+# rpl 15 quest stats
+start=$(date '+%Y%m%d %H:%M:%S')
+if [ -z ${vmad+x} ]
+then
+  query "CALL rpl15questarea_pd();"
+else
+  query "CALL rpl15questarea_vm();"
+fi
 stop=$(date '+%Y%m%d %H:%M:%S')
 diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))/60)) $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))%60)))
 echo "[$start] [$stop] [$diff] Stats rpl15 quest area processing" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
-fi

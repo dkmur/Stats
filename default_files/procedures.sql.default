@@ -110,9 +110,11 @@ create temporary table old engine = memory
 insert ignore into pogodb.pokemon_history_temp (encounter_id,spawnpoint_id,pokemon_id,latitude,longitude,disappear_time,individual_attack,individual_defense,
     individual_stamina,move_1,move_2,cp,cp_multiplier,weight,height,gender,form,costume,catch_prob_1,catch_prob_2,catch_prob_3,rating_attack,rating_defense,
     weather_boosted_condition,last_modified,fort_id,cell_id,seen_type,encounter,wild,nearby_stop,nearby_cell,lure_encounter,lure_wild,point)
-select a.encounter_id,a.spawnpoint_id,a.pokemon_id,a.latitude,a.longitude,a.disappear_time,a.individual_attack,a.individual_defense,
+select a.encounter_id,a.spawnpoint_id,a.pokemon_id,a.latitude,a.longitude,CONVERT_TZ(a.disappear_time, '+00:00', @@global.time_zone),a.individual_attack,a.individual_defense,
     a.individual_stamina,a.move_1,a.move_2,a.cp,a.cp_multiplier,a.weight,a.height,a.gender,a.form,a.costume,a.catch_prob_1,a.catch_prob_2,a.catch_prob_3,a.rating_attack,rating_defense,
-    a.weather_boosted_condition,a.last_modified,a.fort_id,a.cell_id,a.seen_type,b.encounter,b.wild,nearby_stop,b.nearby_cell,b.lure_encounter,b.lure_wild,point(a.latitude,a.longitude)
+    a.weather_boosted_condition,a.last_modified,a.fort_id,a.cell_id,a.seen_type,CONVERT_TZ(b.encounter, '+00:00', @@global.time_zone),CONVERT_TZ(b.wild, '+00:00', @@global.time_zone),
+    CONVERT_TZ(nearby_stop, '+00:00', @@global.time_zone),CONVERT_TZ(b.nearby_cell, '+00:00', @@global.time_zone),CONVERT_TZ(b.lure_encounter, '+00:00', @@global.time_zone),
+    CONVERT_TZ(b.lure_wild, '+00:00', @@global.time_zone),point(a.latitude,a.longitude)
 from pokemon a	
 join old on old.encounter_id=a.encounter_id
 left join trs_stats_detect_seen_type b on b.encounter_id=a.encounter_id;
@@ -123,5 +125,202 @@ delete trs_stats_detect_seen_type from trs_stats_detect_seen_type join old on ol
 
 drop temporary table if exists old;
 end;
+//
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS pogodb.rpl15monarea;
+DELIMITER //
+CREATE PROCEDURE pogodb.rpl15monarea()
+BEGIN
+
+-- set vars
+  SET @period = (select concat(date(now() - interval 75 minute),' ', SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 75 minute)) DIV 900) * 900)) );
+  SET @stop = (select concat(date(now() - interval 60 minute),' ', SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 60 minute)) DIV 900) * 900)) );
+
+-- get data
+DROP TEMPORARY TABLE IF EXISTS pogodb.monarea;
+CREATE TEMPORARY TABLE pogodb.monarea AS (
+  SELECT least(ifnull(encounter,wild),wild) as 'first_scanned',point,spawnpoint_id,individual_attack,individual_defense,individual_stamina,
+    is_shiny,encounter,wild,nearby_stop,nearby_cell
+  FROM pogodb.pokemon_history_temp
+  WHERE
+  least(ifnull(encounter,wild),wild) >= @period and
+  least(ifnull(encounter,wild),wild) < @stop);
+
+-- process fences
+  BEGIN
+    DECLARE area CURSOR FOR SELECT area,fence,polygon FROM pogodb.geofences where st is not NULL and type = 'mon';
+    FOR area_record IN area
+    DO
+		INSERT IGNORE INTO pogodb.stats_area (Datetime,RPL,Area,Fence,Spawnpoints,Mons_all,MonsIV,Iv100,Iv0,MinutesLeft,AvgMinutesLeft,
+		    numWi_En,timeWi_En,numNeSp_Wi,timeNeSp_Wi,numNeSp_En,timeNeSp_En,numNeCl_Wi,timeNeCl_Wi,numNeCl_En,timeNeCl_En)
+		SELECT
+		@period,
+		15,
+		area_record.area,
+		area_record.fence,
+		count(distinct(spawnpoint_id)),
+		count(spawnpoint_id),
+		count(case when individual_attack is not NULL then 1 end),
+		count(case when individual_attack = 15 and individual_defense = 15 and individual_stamina = 15 then 1 end),
+		count(case when individual_attack = 0 and individual_defense = 0 and individual_stamina = 0 then 1 end),
+		sum(timestampdiff(minute,first_scanned,disappear_time)),
+		round(avg(timestampdiff(minute,first_scanned,disappear_time))),
+		
+		count(case when encounter >= wild + interval 15 second then 1 end),
+		sum(case when encounter >= wild + interval 15 second then timestampdiff(second,wild,encounter)) end),
+		count(case when wild >= nearby_stop + interval 15 second then 1 end),
+		sum(case when wild >= nearby_stop + interval 15 second then timestampdiff(second,nearby_stop,wild)) end),		
+		count(case when encounter >= nearby_stop + interval 15 second then 1 end),
+		sum(case when encounter >= nearby_stop + interval 15 second then timestampdiff(second,nearby_stop,encounter)) end),
+		count(case when wild >= nearby_cell + interval 15 second then 1 end),
+		sum(case when wild >= nearby_cell + interval 15 second then timestampdiff(second,nearby_cell,wild)) end),		
+		count(case when encounter >= nearby_cell + interval 15 second then 1 end),
+		sum(case when encounter >= nearby_cell + interval 15 second then timestampdiff(second,nearby_cell,encounter)) end)
+		
+		from pogodb.monarea
+		where ST_CONTAINS(area_record.polygon, point);
+    END FOR;
+  END;
+
+DROP TEMPORARY TABLE pogodb.monarea;
+
+END
+//
+DELIMITER ;
+
+
+DROP PROCEDURE IF EXISTS pogodb.rpl15spawnarea;
+DELIMITER //
+CREATE PROCEDURE pogodb.rpl15spawnarea()
+BEGIN
+
+-- set vars
+  SET @period = (select concat(date(now() - interval 15 minute),' ', SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 15 minute)) DIV 900) * 900)) );
+  SET @stop = (select concat(date(now() - interval 0 minute),' ', SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 0 minute)) DIV 900) * 900)) );
+
+-- get data
+DROP TEMPORARY TABLE IF EXISTS pogodb.spawnarea;
+CREATE TEMPORARY TABLE pogodb.spawnarea AS (
+  SELECT point(latitude,longitude) as 'point', spawnpoint, calc_endminsec, last_non_scanned,spawndef,eventid
+  FROM rmdb.spawnpoint);
+
+-- process fences
+  BEGIN
+    DECLARE area CURSOR FOR SELECT area,fence,polygon FROM pogodb.geofences where polygon is not NULL and type = 'mon';
+    FOR area_record IN area
+    DO
+                INSERT IGNORE INTO pogodb.stats_spawnpoint (datetime,rpl,area,fence,spawnpoints,eventSpawns,verified,def15,not15,seen,1d,3d,5d,7d,14d)
+                SELECT
+                @period,
+                15,
+                area_record.area,
+                area_record.fence,
+				sum(case when eventid = 1 then 1 end),
+				sum(case when eventid <> 1 then 1 end),
+				sum(case when calc_endminsec is not NULL then 1 end),
+				sum(case when spawndef = 15 then 1 end),
+				sum(case when spawndef <> 15 then 1 end),
+				sum(case when date(last_non_scanned) = date(from_unixtime(@period)) then 1 end),
+				ifnull(sum(case when last_non_scanned < now() - interval 1 day then 1 end),0) as '1d',
+                ifnull(sum(case when last_non_scanned < now() - interval 3 day then 1 end),0) as '3d',
+                ifnull(sum(case when last_non_scanned < now() - interval 5 day then 1 end),0) as '5d',
+                ifnull(sum(case when last_non_scanned < now() - interval 7 day then 1 end),0) as '7d',
+                ifnull(sum(case when last_non_scanned < now() - interval 14 day then 1 end),0) as '14d'
+          
+                from pogodb.spawnarea
+                where ST_CONTAINS(area_record.polygon, point);
+    END FOR;
+  END;
+
+DROP TEMPORARY TABLE pogodb.spawnarea;
+
+END
+//
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS pogodb.rpl15questarea_vm;
+DELIMITER //
+CREATE PROCEDURE pogodb.rpl15questarea_vm()
+BEGIN
+
+-- set vars
+  SET @period = (select concat(date(now() - interval 15 minute),' ', SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 15 minute)) DIV 900) * 900)) );
+  SET @stop = (select concat(date(now() - interval 0 minute),' ', SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 0 minute)) DIV 900) * 900)) );
+  SET @perioddate = (select date(@period));
+-- get data
+DROP TEMPORARY TABLE IF EXISTS pogodb.questarea;
+CREATE TEMPORARY TABLE pogodb.questarea AS (
+  SELECT point(a.latitude,a.longitude) as 'point', from_unixtime(b.quest_timestamp) as 'time', b.with_ar
+  FROM rmdb.pokestop a, rmdb.trs_quest b
+  WHERE a.pokestop_id=b.GUID
+  );
+
+-- process fences
+  BEGIN
+    DECLARE area CURSOR FOR SELECT area,fence,polygon FROM pogodb.geofences where polygon is not NULL and type = 'quest';
+    FOR area_record IN area
+    DO
+		INSERT IGNORE INTO pogodb.stats_area_quest (datetime,rpl,area,fence,stops,AR,nonAR,ARcum,nonARcum)
+		SELECT
+		@period,
+		15,
+		area_record.area,
+		area_record.fence,
+		count(distinct(point)),
+		ifnull(sum(case when with_ar = 1 and time >= @period and time < @stop then 1 end),0),
+		ifnull(sum(case when with_ar = 0 and time >= @period and time < @stop then 1 end),0),
+		ifnull(sum(case when with_ar = 1 and time >= @perioddate and time < @stop then 1 end),0),
+		ifnull(sum(case when with_ar = 0 and time >= @perioddate and time < @stop then 1 end),0)
+		from pogodb.questarea
+		where ST_CONTAINS(area_record.polygon, point);
+    END FOR;
+  END;
+
+DROP TEMPORARY TABLE pogodb.questarea;
+
+END
+//
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS pogodb.rpl15questarea_pd;
+DELIMITER //
+CREATE PROCEDURE pogodb.rpl15questarea_pd()
+BEGIN
+
+-- set vars
+  SET @period = (select concat(date(now() - interval 15 minute),' ', SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 15 minute)) DIV 900) * 900)) );
+  SET @stop = (select concat(date(now() - interval 0 minute),' ', SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 0 minute)) DIV 900) * 900)) );
+  SET @perioddate = (select date(@period));
+-- get data
+DROP TEMPORARY TABLE IF EXISTS pogodb.questarea;
+CREATE TEMPORARY TABLE pogodb.questarea AS (
+  SELECT point(a.latitude,a.longitude) as 'point', from_unixtime(b.quest_timestamp) as 'time'
+  FROM rmdb.pokestop a, rmdb.trs_quest b
+  WHERE a.pokestop_id=b.GUID
+  );
+
+-- process fences
+  BEGIN
+    DECLARE area CURSOR FOR SELECT area,fence,polygon FROM pogodb.geofences where polygon is not NULL and type = 'quest';
+    FOR area_record IN area
+    DO
+		INSERT IGNORE INTO pogodb.stats_area_quest (datetime,rpl,area,fence,stops,AR,ARcum)
+		SELECT
+		@period,
+		15,
+		area_record.area,
+		area_record.fence,
+		count(distinct(point)),
+		ifnull(sum(case when time >= @period and time < @stop then 1 end),0),
+		ifnull(sum(case when time >= @perioddate and time < @stop then 1 end),0)
+		from pogodb.questarea
+		where ST_CONTAINS(area_record.polygon, point);
+    END FOR;
+  END;
+
+DROP TEMPORARY TABLE pogodb.questarea;
+
+END
 //
 DELIMITER ;
