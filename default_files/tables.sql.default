@@ -713,6 +713,14 @@ CREATE TABLE IF NOT EXISTS `ATVvmlog` (
   PRIMARY KEY (`origin`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+CREATE TABLE IF NOT EXISTS `geofences` (
+  `area` varchar(40) NOT NULL,
+  `fence` varchar(40) DEFAULT `Area`,
+  `type` enum('mon', 'quest'),
+  `polygon` polygon NOT NULL,
+  PRIMARY KEY (`area`,`fence`,`type`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 ALTER TABLE `spawn_unused`
 ADD COLUMN IF NOT EXISTS `eventid` int(11) NOT NULL DEFAULT 1 AFTER `calc_endminsec`;
 
@@ -920,4 +928,4 @@ ADD COLUMN IF NOT EXISTS `diskDataPct` int(11) COLLATE utf8mb4_unicode_ci DEFAUL
 
 -- update version
 INSERT IGNORE INTO version values ('stats',2);
-UPDATE version set version = 38 where version.key = 'stats';
+UPDATE version set version = 39 where version.key = 'stats';
