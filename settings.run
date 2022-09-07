@@ -351,6 +351,21 @@ if [ $first_install != "1" ]
   fi
 fi
 
+# Migrate spawnpoint data to seperate table
+if [ $first_install != "1" ]
+  then
+  echo "First install of Stats nothing to migrate, proceeding"
+  echo ""
+  else
+  if (( $statsDBversion < 39 ))
+    then
+    echo ""
+    echo "Migrating spawnpoint data to seperate table"
+    echo ""
+   query "$STATS_DB" "INSERT IGNORE INTO stats_area_spawnpoint (datetime,rpl,area,fence,spawnpoints,eventSpawns,verified,def15,not15,seen,1d,3d,7d) SELECT Datetime,RPL,Area,Fence,DBspawns,DBspawns_event,DBspawns-Spawn_NULL,Spawndef15,SpawndefNot15,Last_scanned_1d,Last_scanned_3d,Last_scanned_7dp FROM stats_area;"
+  fi
+fi
+
 # fix double job_wait in config.ini
 if [[ $(grep -w job_wait $PATH_TO_STATS/config.ini | wc -l) == 2 ]]
 then
@@ -373,14 +388,7 @@ if "$SPAWNDEF15_CLEANUP"
     echo "Warning: QUEST_END is set to default, make sure it matches your setup"
   fi
 fi
-# Make sure mon backup is enabled is set when using spawndef reset
-#if "$SPAWNDEF15_CLEANUP"
-#  then
-#  if [[ $mon_backup = "false" ]]
-#    then
-#    echo "ERROR: mon_backup needs to be enabled in order to use hourly spawndef reset/cleanup"
-#  fi
-#fi
+
 # Make sure not to delete pokemon_history when mon_backup is enabled
 if "$monthly_mon_table"
   then
