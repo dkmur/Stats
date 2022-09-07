@@ -72,9 +72,9 @@ DELIMITER //
 CREATE PROCEDURE rmdb.trs_stats_detect_mon_raw_cleanup()
  BEGIN
   DECLARE RowCount INT;
-  SET RowCount = (SELECT count(*) FROM rmdb.trs_stats_detect_mon_raw WHERE timestamp_scan < (unix_timestamp()-3600));
+  SET RowCount = (SELECT count(*) FROM rmdb.trs_stats_detect_mon_raw WHERE timestamp_scan < (unix_timestamp()-1200));
    WHILE RowCount > 0 DO
-   DELETE FROM rmdb.trs_stats_detect_mon_raw WHERE timestamp_scan < (unix_timestamp()-3600) LIMIT 10000;
+   DELETE FROM rmdb.trs_stats_detect_mon_raw WHERE timestamp_scan < (unix_timestamp()-1200) LIMIT 10000;
    SET RowCount = RowCount - 10000;
    SELECT SLEEP(1);
    END WHILE;

@@ -148,7 +148,7 @@ log_worker10080=9999
 
 # MAD tables cleanup (true or false) #
 trs_stats_detect_raw=true                               # delete data from table trs_stats_detect_raw older then 1 hour
-trs_stats_location_raw=true                             # delete data from table trs_stats_location_raw  older then 1 hour
+trs_stats_location_raw=true                             # delete data from table trs_stats_location_raw older then 20 minutes (doubt anyone every looked at the table)
 trs_stats_detect=true					# delete yesterdays data from table trs_stats_detect
 trs_stats_location=true					# delete yesterdays data from table trs_stats_location
 trs_usage=true						# delete data older then 30 days
