@@ -247,7 +247,7 @@ BEGIN
 -- get data
 DROP TEMPORARY TABLE IF EXISTS pogodb.questarea;
 CREATE TEMPORARY TABLE pogodb.questarea AS (
-  SELECT point(a.latitude,a.longitude) as 'point', from_unixtime(b.quest_timestamp) as 'time', b.with_ar
+  SELECT point(a.latitude,a.longitude) as 'point', a.pokestop_id, from_unixtime(b.quest_timestamp) as 'time', b.with_ar
   FROM rmdb.pokestop a, rmdb.trs_quest b
   WHERE a.pokestop_id=b.GUID
   );
@@ -263,7 +263,7 @@ CREATE TEMPORARY TABLE pogodb.questarea AS (
 		15,
 		area_record.area,
 		area_record.fence,
-		count(distinct(point)),
+		count(distinct(pokestop_id)),
 		ifnull(sum(case when with_ar = 1 and time >= @period and time < @stop then 1 end),0),
 		ifnull(sum(case when with_ar = 0 and time >= @period and time < @stop then 1 end),0),
 		ifnull(sum(case when with_ar = 1 and time >= @perioddate and time < @stop then 1 end),0),
@@ -291,7 +291,7 @@ BEGIN
 -- get data
 DROP TEMPORARY TABLE IF EXISTS pogodb.questarea;
 CREATE TEMPORARY TABLE pogodb.questarea AS (
-  SELECT point(a.latitude,a.longitude) as 'point', from_unixtime(b.quest_timestamp) as 'time'
+  SELECT point(a.latitude,a.longitude) as 'point', a.pokestop_id,  from_unixtime(b.quest_timestamp) as 'time'
   FROM rmdb.pokestop a, rmdb.trs_quest b
   WHERE a.pokestop_id=b.GUID
   );
@@ -307,7 +307,7 @@ CREATE TEMPORARY TABLE pogodb.questarea AS (
 		'15',
 		area_record.area,
 		area_record.fence,
-		count(distinct(point)),
+		count(distinct(pokestop_id)),
 		ifnull(sum(case when time >= @period and time < @stop then 1 end),0),
 		ifnull(sum(case when time >= @perioddate and time < @stop then 1 end),0)
 		from pogodb.questarea
