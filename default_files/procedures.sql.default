@@ -72,9 +72,9 @@ DELIMITER //
 CREATE PROCEDURE rmdb.trs_stats_detect_mon_raw_cleanup()
  BEGIN
   DECLARE RowCount INT;
-  SET RowCount = (SELECT count(*) FROM rmdb.trs_stats_detect_mon_raw WHERE from_unixtime(timestamp_scan) < now() - interval 2 hour);
+  SET RowCount = (SELECT count(*) FROM rmdb.trs_stats_detect_mon_raw WHERE timestamp_scan < (unix_timestamp()-3600));
    WHILE RowCount > 0 DO
-   DELETE FROM rmdb.trs_stats_detect_mon_raw WHERE from_unixtime(timestamp_scan) < now() - interval 2 hour LIMIT 10000;
+   DELETE FROM rmdb.trs_stats_detect_mon_raw WHERE timestamp_scan < (unix_timestamp()-3600) LIMIT 10000;
    SET RowCount = RowCount - 10000;
    SELECT SLEEP(1);
    END WHILE;
@@ -95,10 +95,10 @@ create temporary table old engine = memory
 
 insert ignore into pogodb.pokemon_history_temp (encounter_id,spawnpoint_id,pokemon_id,latitude,longitude,disappear_time,individual_attack,individual_defense,
     individual_stamina,move_1,move_2,cp,cp_multiplier,weight,height,gender,form,costume,catch_prob_1,catch_prob_2,catch_prob_3,rating_attack,rating_defense,
-    weather_boosted_condition,last_modified,fort_id,cell_id,seen_type,encounter,wild,nearby_stop,nearby_cell,lure_encounter,lure_wild,point)
+    weather_boosted_condition,last_modified,first_scanned,fort_id,cell_id,seen_type,encounter,wild,nearby_stop,nearby_cell,lure_encounter,lure_wild,point)
 select a.encounter_id,a.spawnpoint_id,a.pokemon_id,a.latitude,a.longitude,CONVERT_TZ(a.disappear_time, '+00:00', @@global.time_zone),a.individual_attack,a.individual_defense,
     a.individual_stamina,a.move_1,a.move_2,a.cp,a.cp_multiplier,a.weight,a.height,a.gender,a.form,a.costume,a.catch_prob_1,a.catch_prob_2,a.catch_prob_3,a.rating_attack,rating_defense,
-    a.weather_boosted_condition,a.last_modified,a.fort_id,a.cell_id,a.seen_type,CONVERT_TZ(b.encounter, '+00:00', @@global.time_zone),CONVERT_TZ(b.wild, '+00:00', @@global.time_zone),
+    a.weather_boosted_condition,a.last_modified,ifnull(least(ifnull(encounter,wild),wild),now()),a.fort_id,a.cell_id,a.seen_type,CONVERT_TZ(b.encounter, '+00:00', @@global.time_zone),CONVERT_TZ(b.wild, '+00:00', @@global.time_zone),
     CONVERT_TZ(nearby_stop, '+00:00', @@global.time_zone),CONVERT_TZ(b.nearby_cell, '+00:00', @@global.time_zone),CONVERT_TZ(b.lure_encounter, '+00:00', @@global.time_zone),
     CONVERT_TZ(b.lure_wild, '+00:00', @@global.time_zone),point(a.latitude,a.longitude)
 from pokemon a	
@@ -248,8 +248,8 @@ BEGIN
 DROP TEMPORARY TABLE IF EXISTS pogodb.questarea;
 CREATE TEMPORARY TABLE pogodb.questarea AS (
   SELECT point(a.latitude,a.longitude) as 'point', a.pokestop_id, from_unixtime(b.quest_timestamp) as 'time', b.with_ar
-  FROM rmdb.pokestop a, rmdb.trs_quest b
-  WHERE a.pokestop_id=b.GUID
+  FROM rmdb.pokestop a
+  LEFT JOIN  rmdb.trs_quest b ON a.pokestop_id=b.GUID
   );
 
 -- process fences
