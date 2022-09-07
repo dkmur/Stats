@@ -6,9 +6,9 @@ source $folder/config.ini
 query(){
 if [ -z "$SQL_password" ]
 then
-  mysql -NB -h$DB_IP -P$DB_PORT -u$SQL_user $STATS_DB $1
+  mysql -h$DB_IP -P$DB_PORT -u$SQL_user $STATS_DB -e "$1;"
 else
-  mysql -NB -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB $1
+  mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB -e "$1;"
 fi
 }
 

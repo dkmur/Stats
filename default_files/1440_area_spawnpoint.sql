@@ -3,7 +3,7 @@ select @period := concat(date(now() - interval 1440 minute),' ', SEC_TO_TIME((TI
 select @rpl := '1440';
 
 -- Process data
-insert ignore into stats_spawnpoint (datetime,rpl,area,fence,spawnpoints,eventSpawns,verified,def15,not15,seen,1d,3d,5d,7d,14d)
+insert ignore into stats_area_spawnpoint (datetime,rpl,area,fence,spawnpoints,eventSpawns,verified,def15,not15,seen,1d,3d,5d,7d,14d)
 select
 @period,
 @rpl,
@@ -21,7 +21,7 @@ min(5d),
 min(7d),
 min(14d)
 
-from stats_spawnpoint
+from stats_area_spawnpoint
 where datetime like concat(left(from_unixtime(@period),10),'%') and RPL = 60
 group by area,fence
 ;

@@ -209,6 +209,10 @@ fi
 # add mad fences and devices to db
 cd $PATH_TO_STATS/cron_files && ./MAD_fence_update.sh
 
+# cleanup old area queries
+rm -f $PATH_TO_STATS/cron_files/*_area.sql
+rm -f $PATH_TO_STATS/cron_files/*_area_quest.sql
+
 echo ""
 echo "Create remaining cron files"
 echo ""
@@ -362,7 +366,7 @@ if [ $first_install != "1" ]
     echo ""
     echo "Migrating spawnpoint data to seperate table"
     echo ""
-   query "$STATS_DB" "INSERT IGNORE INTO stats_area_spawnpoint (datetime,rpl,area,fence,spawnpoints,eventSpawns,verified,def15,not15,seen,1d,3d,7d) SELECT Datetime,RPL,Area,Fence,DBspawns,DBspawns_event,DBspawns-Spawn_NULL,Spawndef15,SpawndefNot15,Last_scanned_1d,Last_scanned_3d,Last_scanned_7dp FROM stats_area;"
+   query "$STATS_DB" "INSERT IGNORE INTO stats_area_spawnpoint (datetime,rpl,area,fence,spawnpoints,eventSpawns,verified,def15,not15,seen,1d,3d,7d) SELECT Datetime,RPL,Area,Fence,DBspawns,DBspawns_event,DBspawns_event-DBspawns,Spawndef15,SpawndefNot15,Last_scanned_today_acc,Last_scanned_1d,Last_scanned_3d,Last_scanned_7dp FROM stats_area;"
   fi
 fi
 

@@ -18,14 +18,21 @@ fi
 
 # rpl 10080 area stats
 start=$(date '+%Y%m%d %H:%M:%S')
-cat $PATH_TO_STATS/cron_files/10080_area.sql | query
+cat $PATH_TO_STATS/default_files/10080_area.sql | query
 stop=$(date '+%Y%m%d %H:%M:%S')
 diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))/60)) $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))%60)))
 echo "[$start] [$stop] [$diff] Stats rpl10080 mon area agggregation" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
 
+# rpl 10080 spawnpoint stats
+start=$(date '+%Y%m%d %H:%M:%S')
+cat $PATH_TO_STATS/default_files/10080_area_spawnpoint.sql | query
+stop=$(date '+%Y%m%d %H:%M:%S')
+diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))/60)) $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))%60)))
+echo "[$start] [$stop] [$diff] Stats rpl10080 spawnpoint area agggregation" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
+
 # rpl 10080 quest stats
 start=$(date '+%Y%m%d %H:%M:%S')
-cat $PATH_TO_STATS/cron_files/10080_area_quest.sql | query
+cat $PATH_TO_STATS/default_files/10080_area_quest.sql | query
 stop=$(date '+%Y%m%d %H:%M:%S')
 diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))/60)) $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))%60)))
 echo "[$start] [$stop] [$diff] Stats rpl10080 quest area aggregation" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log

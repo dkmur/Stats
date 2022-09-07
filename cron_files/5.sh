@@ -41,7 +41,7 @@ then
   query "$MAD_DB" "delete from trs_stats_detect_fort_raw where from_unixtime(timestamp_scan) < now() - interval 1 hour;"
   stop=$(date '+%Y%m%d %H:%M:%S')
   diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))/60)) $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))%60)))
-  echo "[$start] [$stop] [$diff] Hourly cleanup MAD table trs_stats_detect_mon_raw" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
+  echo "[$start] [$stop] [$diff] Table trs_stats_detect_mon_raw cleanup" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
 fi
 
 # cleanup table location_raw
@@ -51,5 +51,5 @@ then
   query "$MAD_DB" "delete from trs_stats_location_raw where from_unixtime(period) < now() - interval 1 hour;"
   stop=$(date '+%Y%m%d %H:%M:%S')
   diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))/60)) $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))%60)))
-  echo "[$start] [$stop] [$diff] Hourly cleanup MAD table trs_stats_location_raw" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
+  echo "[$start] [$stop] [$diff] Table trs_stats_location_raw cleanup" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
 fi
