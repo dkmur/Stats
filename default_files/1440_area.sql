@@ -1,10 +1,13 @@
--- Weekly aggregation of mon data
+-- Daily aggregation of mon data
+
+select @period := concat(date(now() - interval 1500 minute),' ', SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 1500 minute)) DIV 3600) * 3600));
+select @stop :=  concat(date(now() - interval 60 minute),' ', SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 60 minute)) DIV 3600) * 3600));
 
 
 INSERT INTO stats_area (Datetime,RPL, TRPL, Area, Fence, Spawnpoints,Mons_all, MonsIV, Iv100, Iv0, MinutesLeft, numWi_En,timeWi_En,numNeSp_Wi,timeNeSp_Wi,numNeSp_En,timeNeSp_En,numNeCl_Wi,timeNeCl_Wi,numNeCl_En,timeNeCl_En)
 SELECT
-concat(date(curdate() - interval weekday(curdate()) + 7 day),' ','00:00:00'),
-'10080', 
+@period,
+'1440', 
 sum(TRPL),
 Area,
 Fence,
@@ -28,7 +31,8 @@ sum(timeNeCl_En)
 from stats_area
 
 where
-date(Datetime) >=  date(curdate() - interval weekday(curdate()) + 7 day) and
-RPL = 1440
+Datetime >= @period and
+Datetime < @stop and
+RPL = 60
 group by Area,Fence
 ;

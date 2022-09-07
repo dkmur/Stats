@@ -152,11 +152,12 @@ CREATE TEMPORARY TABLE pogodb.monarea AS (
     DECLARE area CURSOR FOR SELECT area,fence,polygon FROM pogodb.geofences where st is not NULL and type = 'mon';
     FOR area_record IN area
     DO
-		INSERT IGNORE INTO pogodb.stats_area (Datetime,RPL,Area,Fence,Spawnpoints,Mons_all,MonsIV,Iv100,Iv0,MinutesLeft,AvgMinutesLeft,
+		INSERT IGNORE INTO pogodb.stats_area (Datetime,RPL,TRPL,Area,Fence,Spawnpoints,Mons_all,MonsIV,Iv100,Iv0,MinutesLeft,AvgMinutesLeft,
 		    numWi_En,timeWi_En,numNeSp_Wi,timeNeSp_Wi,numNeSp_En,timeNeSp_En,numNeCl_Wi,timeNeCl_Wi,numNeCl_En,timeNeCl_En)
 		SELECT
 		@period,
-		15,
+		'15',
+		'15',
 		area_record.area,
 		area_record.fence,
 		count(distinct(spawnpoint_id)),
@@ -213,16 +214,16 @@ CREATE TEMPORARY TABLE pogodb.spawnarea AS (
                 INSERT IGNORE INTO pogodb.stats_spawnpoint (datetime,rpl,area,fence,spawnpoints,eventSpawns,verified,def15,not15,seen,1d,3d,5d,7d,14d)
                 SELECT
                 @period,
-                15,
+                '15',
                 area_record.area,
                 area_record.fence,
-				sum(case when eventid = 1 then 1 end),
-				sum(case when eventid <> 1 then 1 end),
-				sum(case when calc_endminsec is not NULL then 1 end),
-				sum(case when spawndef = 15 then 1 end),
-				sum(case when spawndef <> 15 then 1 end),
-				sum(case when date(last_non_scanned) = date(from_unixtime(@period)) then 1 end),
-				ifnull(sum(case when last_non_scanned < now() - interval 1 day then 1 end),0) as '1d',
+                sum(case when eventid = 1 then 1 end),
+                sum(case when eventid <> 1 then 1 end),
+                sum(case when calc_endminsec is not NULL then 1 end),
+                sum(case when spawndef = 15 then 1 end),
+                sum(case when spawndef <> 15 then 1 end),
+                sum(case when date(last_non_scanned) = date(from_unixtime(@period)) then 1 end),
+                ifnull(sum(case when last_non_scanned < now() - interval 1 day then 1 end),0) as '1d',
                 ifnull(sum(case when last_non_scanned < now() - interval 3 day then 1 end),0) as '3d',
                 ifnull(sum(case when last_non_scanned < now() - interval 5 day then 1 end),0) as '5d',
                 ifnull(sum(case when last_non_scanned < now() - interval 7 day then 1 end),0) as '7d',
@@ -308,7 +309,7 @@ CREATE TEMPORARY TABLE pogodb.questarea AS (
 		INSERT IGNORE INTO pogodb.stats_area_quest (datetime,rpl,area,fence,stops,AR,ARcum)
 		SELECT
 		@period,
-		15,
+		'15',
 		area_record.area,
 		area_record.fence,
 		count(distinct(point)),

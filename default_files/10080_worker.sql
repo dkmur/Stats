@@ -4,7 +4,7 @@
 
 select @Datetime := concat(date(curdate() - interval weekday(curdate()) + 7 day),' ','00:00:00');
 
-INSERT INTO pogodb.stats_worker (Datetime,RPL, TRPL, Worker, Tmon, IVmon, Mon, Quest, Raid, Tloc,LocOk,LocNok,LocFR,Tp,TpOk,TpNok,TpFR,TpSt,Wk,WkOk,WkNok,WkFR,WkSt,Shiny,Res,Reb,ResTot,RebTot,missingProtoMinute)
+INSERT INTO stats_worker (Datetime,RPL, TRPL, Worker, Tmon, IVmon, Mon, Quest, Raid, Tloc,LocOk,LocNok,LocFR,Tp,TpOk,TpNok,TpFR,TpSt,Wk,WkOk,WkNok,WkFR,WkSt,Shiny,Res,Reb,ResTot,RebTot,missingProtoMinute)
 select
 @Datetime,
 '10080',
@@ -36,7 +36,7 @@ max(ResTot),
 max(RebTot),
 sum(missingProtoMinute)
 
-from pogodb.stats_worker
+from stats_worker
 where Datetime >= date(curdate() - interval weekday(curdate()) + 7 day) and RPL = 1440
 group by Worker
 ;

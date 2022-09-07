@@ -32,7 +32,7 @@ echo "[$start] [$stop] [$diff] Stats rpl10080 quest area aggregation" >> $PATH_T
 
 # rpl 10080 worker stats
 start=$(date '+%Y%m%d %H:%M:%S')
-cat $PATH_TO_STATS/cron_files/10080_worker.sql | query
+cat $PATH_TO_STATS/default_files/10080_worker.sql | query
 stop=$(date '+%Y%m%d %H:%M:%S')
 diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))/60)) $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))%60)))
 echo "[$start] [$stop] [$diff] Stats rpl10080 worker aggregation" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log

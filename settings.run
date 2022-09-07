@@ -135,19 +135,15 @@ cd $PATH_TO_STATS && rm -f -R sql_cron/
 cp $PATH_TO_STATS/default_files/crontab.txt.default $PATH_TO_STATS/crontab.txt
 cd $PATH_TO_STATS/cron_files && rm -f *.default
 # MAD fence update
-if [[ "$FENCE" == "MAD" ]]
 echo "Enabling MAD fence updates to Stats"
 echo ""
+if [[ "$MAD_FENCE_UPDATE_INTERVAL" == "day" ]]
 then
-  rm -f $PATH_TO_STATS/MAD_fence_update.sh
-  if [[ "$MAD_FENCE_UPDATE_INTERVAL" == "day" ]]
-  then
   sed -i "$ a \#\# Update MAD fences and devices" $PATH_TO_STATS/crontab.txt
   sed -i "$ a 55 0 * * * cd pathToStatscron_files && ./MAD_fence_update.sh 2>>pathToStatslogs/log_\$(date '+\\\%Y\\\%m').log" $PATH_TO_STATS/crontab.txt
-  else
+else
   sed -i "$ a \#\# Update MAD fences and devices" $PATH_TO_STATS/crontab.txt
   sed -i "$ a 55 * * * * cd pathToStatscron_files && ./MAD_fence_update.sh 2>>pathToStatslogs/log_\$(date '+\\\%Y\\\%m').log" $PATH_TO_STATS/crontab.txt
-  fi
 fi
 # Recalc quest routes
 if "$recalc_quest_routes"
@@ -216,13 +212,7 @@ cd $PATH_TO_STATS/cron_files && ./MAD_fence_update.sh
 echo ""
 echo "Create remaining cron files"
 echo ""
-cp $PATH_TO_STATS/default_files/10080_area.sql.default $PATH_TO_STATS/cron_files/10080_area.sql
-cp $PATH_TO_STATS/default_files/1440_area_quest.sql.default $PATH_TO_STATS/cron_files/1440_area_quest.sql
-cp $PATH_TO_STATS/default_files/10080_area_quest.sql.default $PATH_TO_STATS/cron_files/10080_area_quest.sql
 cp $PATH_TO_STATS/default_files/15_worker.sql.default $PATH_TO_STATS/cron_files/15_worker.sql
-cp $PATH_TO_STATS/default_files/60_worker.sql.default $PATH_TO_STATS/cron_files/60_worker.sql
-cp $PATH_TO_STATS/default_files/1440_worker.sql.default $PATH_TO_STATS/cron_files/1440_worker.sql
-cp $PATH_TO_STATS/default_files/10080_worker.sql.default $PATH_TO_STATS/cron_files/10080_worker.sql
 cp $PATH_TO_STATS/default_files/quest_spawn_cleanup.sql.default $PATH_TO_STATS/cron_files/quest_spawn_cleanup.sql
 cp $PATH_TO_STATS/default_files/all_spawn_cleanup.sql.default $PATH_TO_STATS/cron_files/all_spawn_cleanup.sql
 cp $PATH_TO_STATS/default_files/madlog1440.sql.default $PATH_TO_STATS/cron_files/madlog1440.sql

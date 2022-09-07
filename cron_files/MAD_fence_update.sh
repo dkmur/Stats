@@ -19,8 +19,6 @@ mkdir -p $PATH_TO_STATS/logs
 touch $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
 
 # Re-create MAD mon fences
-if [[ "$FENCE" == "MAD" ]]
-then
   start=$(date '+%Y%m%d %H:%M:%S')
   echo "Re-creating MAD mon fences"
   rm -f $PATH_TO_STATS/areas/*.mad
@@ -84,12 +82,9 @@ EOF
   stop=$(date '+%Y%m%d %H:%M:%S')
   diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))/60)) $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))%60)))
   echo "[$start] [$stop] [$diff] Fence update pokemon areas" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
-fi
 
 
 # Create pokestop area files based on MAD fences
-if [[ "$FENCE" == "MAD" ]]
-then
 questareas=$(query "$MAD_DB" "select count(*) from settings_geofence where geofence_id in (select geofence_included from settings_area_pokestops where level = 0);")
   if [ $questareas = 0 ]
   then
@@ -164,10 +159,9 @@ echo "[$start] [$stop] [$diff] Fence update quest areas" >> $PATH_TO_STATS/logs/
 
 
   fi
-fi
 
 # Append new devices to table Area
-if [[ "$FENCE" == "MAD" ]] && [[ "$MAD_DEVICE_INSERT" == "true" ]]
+if [[ "$MAD_DEVICE_INSERT" == "true" ]]
 then
   start=$(date '+%Y%m%d %H:%M:%S')
   echo "Append new devices and areas to table Area"
