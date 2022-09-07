@@ -841,7 +841,6 @@ ADD COLUMN IF NOT EXISTS `nearby_stop` datetime NULL DEFAULT NULL AFTER `wild`,
 ADD COLUMN IF NOT EXISTS `nearby_cell` datetime NULL DEFAULT NULL AFTER `nearby_stop`,
 ADD COLUMN IF NOT EXISTS `lure_encounter` datetime NULL DEFAULT NULL AFTER `nearby_cell`,
 ADD COLUMN IF NOT EXISTS `lure_wild` datetime NULL DEFAULT NULL AFTER `lure_encounter`,
-DROP COLUMN IF EXISTS `first_scanned`,
 ADD COLUMN IF NOT EXISTS `point` point,
 DROP KEY IF EXISTS `pokemon_history_frist_scanned`,
 DROP KEY IF EXISTS `pokemon_history_encounter`,
@@ -862,14 +861,13 @@ ADD COLUMN IF NOT EXISTS `nearby_stop` datetime NULL DEFAULT NULL AFTER `wild`,
 ADD COLUMN IF NOT EXISTS `nearby_cell` datetime NULL DEFAULT NULL AFTER `nearby_stop`,
 ADD COLUMN IF NOT EXISTS `lure_encounter` datetime NULL DEFAULT NULL AFTER `nearby_cell`,
 ADD COLUMN IF NOT EXISTS `lure_wild` datetime NULL DEFAULT NULL AFTER `lure_encounter`,
-DROP COLUMN IF EXISTS `first_scanned`,
 ADD COLUMN IF NOT EXISTS `point` point,
-DROP KEY IF EXISTS `pokemon_history_encounter`,
-DROP KEY IF EXISTS `pokemon_history_wild`,
-DROP KEY IF EXISTS `pokemon_history_spawnpoint_id`,
-DROP KEY IF EXISTS `pokemon_history_latitude`,
-DROP KEY IF EXISTS `pokemon_history_longitude`,
-DROP KEY IF EXISTS `pokemon_history_last_modified` 
+DROP KEY IF EXISTS `pokemon_history_temp_encounter`,
+DROP KEY IF EXISTS `pokemon_history_temp_wild`,
+DROP KEY IF EXISTS `pokemon_history_temp_spawnpoint_id`,
+DROP KEY IF EXISTS `pokemon_history_temp_latitude`,
+DROP KEY IF EXISTS `pokemon_history_temp_longitude`,
+DROP KEY IF EXISTS `pokemon_history_temp_last_modified` 
 ;
 
 ALTER TABLE error

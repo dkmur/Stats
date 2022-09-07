@@ -98,9 +98,9 @@ insert ignore into pogodb.pokemon_history_temp (encounter_id,spawnpoint_id,pokem
     weather_boosted_condition,last_modified,first_scanned,fort_id,cell_id,seen_type,encounter,wild,nearby_stop,nearby_cell,lure_encounter,lure_wild,point)
 select a.encounter_id,a.spawnpoint_id,a.pokemon_id,a.latitude,a.longitude,CONVERT_TZ(a.disappear_time, '+00:00', @@global.time_zone),a.individual_attack,a.individual_defense,
     a.individual_stamina,a.move_1,a.move_2,a.cp,a.cp_multiplier,a.weight,a.height,a.gender,a.form,a.costume,a.catch_prob_1,a.catch_prob_2,a.catch_prob_3,a.rating_attack,rating_defense,
-    a.weather_boosted_condition,a.last_modified,ifnull(least(ifnull(encounter,wild),wild),now()),a.fort_id,a.cell_id,a.seen_type,CONVERT_TZ(b.encounter, '+00:00', @@global.time_zone),CONVERT_TZ(b.wild, '+00:00', @@global.time_zone),
-    CONVERT_TZ(nearby_stop, '+00:00', @@global.time_zone),CONVERT_TZ(b.nearby_cell, '+00:00', @@global.time_zone),CONVERT_TZ(b.lure_encounter, '+00:00', @@global.time_zone),
-    CONVERT_TZ(b.lure_wild, '+00:00', @@global.time_zone),point(a.latitude,a.longitude)
+    a.weather_boosted_condition,CONVERT_TZ(a.last_modified, '+00:00', @@global.time_zone),ifnull(least(ifnull(encounter,wild),wild),now()),a.fort_id,a.cell_id,a.seen_type,
+    CONVERT_TZ(b.encounter, '+00:00', @@global.time_zone),CONVERT_TZ(b.wild, '+00:00', @@global.time_zone),CONVERT_TZ(nearby_stop, '+00:00', @@global.time_zone),
+    CONVERT_TZ(b.nearby_cell, '+00:00', @@global.time_zone),CONVERT_TZ(b.lure_encounter, '+00:00', @@global.time_zone),CONVERT_TZ(b.lure_wild, '+00:00', @@global.time_zone),point(a.latitude,a.longitude)
 from pokemon a	
 join old on old.encounter_id=a.encounter_id
 left join trs_stats_detect_seen_type b on b.encounter_id=a.encounter_id;
