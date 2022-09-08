@@ -37,8 +37,9 @@ echo "[$start] [$stop] [$diff] Archive and cleanup table pokemon" >> $PATH_TO_ST
 if "$trs_stats_detect_raw"
 then
   start=$(date '+%Y%m%d %H:%M:%S')
-  query "$MAD_DB" "SET SESSION tx_isolation = 'READ-UNCOMMITTED'; CALL trs_stats_detect_mon_raw_cleanup();"
-  query "$MAD_DB" "delete from trs_stats_detect_fort_raw where timestamp_scan < (unix_timestamp()-3600);"
+#  query "$MAD_DB" "SET SESSION tx_isolation = 'READ-UNCOMMITTED'; CALL trs_stats_detect_mon_raw_cleanup();"
+  query "$MAD_DB" "DELETE FROM trs_stats_detect_mon_raw WHERE timestamp_scan < (unix_timestamp()-1200);"
+  query "$MAD_DB" "delete from trs_stats_detect_fort_raw where timestamp_scan < (unix_timestamp()-1200);"
   stop=$(date '+%Y%m%d %H:%M:%S')
   diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))/60)) $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))%60)))
   echo "[$start] [$stop] [$diff] Table trs_stats_detect_mon_raw cleanup" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
@@ -48,7 +49,7 @@ fi
 if "$trs_stats_location_raw"
 then
   start=$(date '+%Y%m%d %H:%M:%S')
-  query "$MAD_DB" "delete from trs_stats_location_raw where period < (unix_timestamp()-3600);"
+  query "$MAD_DB" "delete from trs_stats_location_raw where period < (unix_timestamp()-1200);"
   stop=$(date '+%Y%m%d %H:%M:%S')
   diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))/60)) $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))%60)))
   echo "[$start] [$stop] [$diff] Table trs_stats_location_raw cleanup" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
