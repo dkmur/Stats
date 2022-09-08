@@ -242,38 +242,16 @@ sed -i "s/SPAWNDEF15_HOURS/$SPAWNDEF15_HOURS/g" $PATH_TO_STATS/cron_files/*.sql
 
 echo "Creating grafana files"
 echo ""
+# Create grafana templates
+echo "Creating grafana templates in $folder/grafana"
+mkdir -p $PATH_TO_STATS/grafana
+rm -f $PATH_TO_STATS/grafana
+cp $PATH_TO_STATS/default_files/*.json.default $PATH_TO_STATS/grafana
+for i in "$PATH_TO_STATS"/grafana/*.json.default ;do
+  mv $i ${i%%.default}
+done
 DS_STATS="${DataSource_stats^^}"
 DS_MAD="${DataSource_MAD^^}"
-mkdir -p $PATH_TO_STATS/grafana
-cd $PATH_TO_STATS/grafana/ && rm -f *.json && rm -f *.default
-cp $PATH_TO_STATS/default_files/01_stats_kpi.json.default $PATH_TO_STATS/grafana/01_stats_kpi.json
-cp $PATH_TO_STATS/default_files/02_stats_network_area.json.default $PATH_TO_STATS/grafana/02_stats_network_area.json
-cp $PATH_TO_STATS/default_files/03_stats_network_area_ex.json.default $PATH_TO_STATS/grafana/03_stats_network_area_ex.json
-cp $PATH_TO_STATS/default_files/04_stats_worker.json.default $PATH_TO_STATS/grafana/04_stats_worker.json
-cp $PATH_TO_STATS/default_files/05_stats_unfenced.json.default $PATH_TO_STATS/grafana/05_stats_unfenced.json
-cp $PATH_TO_STATS/default_files/06_nearby_fenced.json.default $PATH_TO_STATS/grafana/06_nearby_fenced.json
-cp $PATH_TO_STATS/default_files/07_stats_area_quest.json.default $PATH_TO_STATS/grafana/07_stats_area_quest.json
-cp $PATH_TO_STATS/default_files/10_ATVdetails.json.default $PATH_TO_STATS/grafana/10_ATVdetails.json
-cp $PATH_TO_STATS/default_files/11_stats_atvdetails_combined.json.default $PATH_TO_STATS/grafana/11_stats_atvdetails_combined.json
-cp $PATH_TO_STATS/default_files/12_stats_atvdetails_combined_ex.json.default $PATH_TO_STATS/grafana/12_stats_atvdetails_combined_ex.json
-cp $PATH_TO_STATS/default_files/13_device_overview.json.default $PATH_TO_STATS/grafana/13_device_overview.json
-cp $PATH_TO_STATS/default_files/14_device_stability.json.default $PATH_TO_STATS/grafana/14_device_stability.json
-cp $PATH_TO_STATS/default_files/15_device_temperature_overview.json.default $PATH_TO_STATS/grafana/15_device_temperature_overview.json
-cp $PATH_TO_STATS/default_files/20_mad_stuff.json.default $PATH_TO_STATS/grafana/20_mad_stuff.json
-cp $PATH_TO_STATS/default_files/21_mad_cpu_mem.json.default $PATH_TO_STATS/grafana/21_mad_cpu_mem.json
-cp $PATH_TO_STATS/default_files/30_mon_stuff.json.default $PATH_TO_STATS/grafana/30_mon_stuff.json
-cp $PATH_TO_STATS/default_files/50_mad_log_error.json.default $PATH_TO_STATS/grafana/50_mad_log_error.json
-cp $PATH_TO_STATS/default_files/51_mad_log_warning.json.default $PATH_TO_STATS/grafana/51_mad_log_warning.json
-cp $PATH_TO_STATS/default_files/52_mad_log_worker_error.json.default $PATH_TO_STATS/grafana/52_mad_log_worker_error.json
-cp $PATH_TO_STATS/default_files/53_mad_log_worker_warning.json.default $PATH_TO_STATS/grafana/53_mad_log_worker_warning.json
-cp $PATH_TO_STATS/default_files/60_vm_log.json.default $PATH_TO_STATS/grafana/60_vm_log.json
-cp $PATH_TO_STATS/default_files/vm_10_ATVdetails.json.default $PATH_TO_STATS/grafana/vm_10_ATVdetails.json
-cp $PATH_TO_STATS/default_files/vm_13_device_overview.json.default $PATH_TO_STATS/grafana/vm_13_device_overview.json
-cp $PATH_TO_STATS/default_files/vm_14_device_stability.json.default $PATH_TO_STATS/grafana/vm_14_device_stability.json
-cp $PATH_TO_STATS/default_files/vm_16_atv_performance.json.default $PATH_TO_STATS/grafana/vm_16_atv_performance.json
-cp $PATH_TO_STATS/default_files/vm_02_stats_network_area.json.default $PATH_TO_STATS/grafana/vm_02_stats_network_area.json
-cp $PATH_TO_STATS/default_files/vm_04_stats_worker.json.default $PATH_TO_STATS/grafana/vm_04_stats_worker.json
-cp $PATH_TO_STATS/default_files/vm_22_device_location.json.default $PATH_TO_STATS/grafana/vm_22_device_location.json
 cd $PATH_TO_STATS/grafana/ && sed -i "s/pogodb/$DataSource_stats/g" *.json
 cd $PATH_TO_STATS/grafana/ && sed -i "s/rmdb/$DataSource_MAD/g" *.json
 cd $PATH_TO_STATS/grafana/ && sed -i "s/POGODB/$DS_STATS/g" *.json
