@@ -1,23 +1,18 @@
 ##### Stats #####
 ## First hour of the day
-1 0 * * * cd pathToStatscron_files && ./logger.sh && ./15_stats_area.sh && ./15_stats_worker.sh && ./60_stats.sh 2>>pathToStatslogs/log_$(date '+\%Y\%m').log
-16 0 * * * cd pathToStatscron_files && ./15_stats_area.sh && ./15_stats_worker.sh && ./60_madlog.sh && ./60_madlog_worker.sh 2>>pathToStatslogs/log_$(date '+\%Y\%m').log
-31 0 * * * cd pathToStatscron_files && ./15_stats_area.sh && ./15_stats_worker.sh && ./1440_remaining.sh 2>>pathToStatslogs/log_$(date '+\%Y\%m').log
-46 0 * * * cd pathToStatscron_files && ./15_stats_area.sh && ./15_stats_worker.sh 2>>pathToStatslogs/log_$(date '+\%Y\%m').log
-52 0 * * 1 cd pathToStatscron_files && ./10080.sh 2>>pathToStatslogs/log_$(date '+\%Y\%m').log
+1 0 * * * cd pathToStatscron_files && ./logger.sh && ./15.sh && ./60_stats.sh 2>>pathToStatslogs/log_$(date '+\%Y\%m').log
+16 0 * * * cd pathToStatscron_files && ./15.sh && ./60_madlog.sh && ./60_madlog_worker.sh && ./1440_remaining.sh 2>>pathToStatslogs/log_$(date '+\%Y\%m').log
 
 ## Second hour of the day
-1 1 * * * cd pathToStatscron_files && ./15_stats_area.sh && ./15_stats_worker.sh && ./60_stats.sh && ./1440_stats.sh && ./1440_pokemon_spawndef.sh 2>>pathToStatslogs/log_$(date '+\%Y\%m').log
-16 1 * * * cd pathToStatscron_files && ./15_stats_area.sh && ./15_stats_worker.sh && ./60_madlog.sh && ./60_madlog_worker.sh 2>>pathToStatslogs/log_$(date '+\%Y\%m').log
-31 1 * * * cd pathToStatscron_files && ./15_stats_area.sh && ./15_stats_worker.sh 2>>pathToStatslogs/log_$(date '+\%Y\%m').log
-35 1 1 * * cd pathToStatscron_files && ./44640.sh 2>>pathToStatslogs/log_$(date '+\%Y\%m').log
-46 1 * * * cd pathToStatscron_files && ./15_stats_area.sh && ./15_stats_worker.sh 2>>pathToStatslogs/log_$(date '+\%Y\%m').log
+1 1 * * * cd pathToStatscron_files && ./15.sh && ./60_stats.sh && ./1440_stats.sh && ./1440_pokemon_spawndef.sh 2>>pathToStatslogs/log_$(date '+\%Y\%m').log
+36 1 * * 1 cd pathToStatscron_files && ./10080.sh 2>>pathToStatslogs/log_$(date '+\%Y\%m').log
+51 1 1 * * cd pathToStatscron_files && ./44640.sh 2>>pathToStatslogs/log_$(date '+\%Y\%m').log
 
-## Remaining hours
-1 2-23 * * * cd pathToStatscron_files && ./15_stats_area.sh && ./15_stats_worker.sh && ./60_stats.sh 2>>pathToStatslogs/log_$(date '+\%Y\%m').log
-16 2-23 * * * cd pathToStatscron_files && ./15_stats_area.sh && ./15_stats_worker.sh && ./60_madlog.sh && ./60_madlog_worker.sh 2>>pathToStatslogs/log_$(date '+\%Y\%m').log
-31 2-23 * * * cd pathToStatscron_files && ./15_stats_area.sh && ./15_stats_worker.sh 2>>pathToStatslogs/log_$(date '+\%Y\%m').log
-46 2-23 * * * cd pathToStatscron_files && ./15_stats_area.sh && ./15_stats_worker.sh 2>>pathToStatslogs/log_$(date '+\%Y\%m').log
+## Remaining periods
+1 2-23 * * * cd pathToStatscron_files && ./15.sh && ./60_stats.sh 2>>pathToStatslogs/log_$(date '+\%Y\%m').log
+16 1-23 * * * cd pathToStatscron_files && ./15.sh && ./60_madlog.sh && ./60_madlog_worker.sh 2>>pathToStatslogs/log_$(date '+\%Y\%m').log
+31 * * * * cd pathToStatscron_files && ./15.sh 2>>pathToStatslogs/log_$(date '+\%Y\%m').log
+46 * * * * cd pathToStatscron_files && ./15.sh 2>>pathToStatslogs/log_$(date '+\%Y\%m').log
 
 ## Archive and cleanup table pokemon, cleanup worker raws and append shiny
 */5 * * * * cd pathToStatscron_files && ./5.sh 2>>pathToStatslogs/log_$(date '+\%Y\%m').log
