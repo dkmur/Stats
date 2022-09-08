@@ -245,7 +245,7 @@ echo ""
 # Create grafana templates
 echo "Creating grafana templates in $folder/grafana"
 mkdir -p $PATH_TO_STATS/grafana
-rm -f $PATH_TO_STATS/grafana
+rm -f $PATH_TO_STATS/grafana/*
 cp $PATH_TO_STATS/default_files/*.json.default $PATH_TO_STATS/grafana
 for i in "$PATH_TO_STATS"/grafana/*.json.default ;do
   mv $i ${i%%.default}
