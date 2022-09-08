@@ -26,7 +26,7 @@ echo "[$start] [$stop] [$diff] Append shiny Stats" >> $PATH_TO_STATS/logs/log_$(
 
 # archive data and cleanup table pokemon
 start=$(date '+%Y%m%d %H:%M:%S')
-query "$MAD_DB" "CALL archiveAndCleanup();"
+query "$MAD_DB" "SET SESSION tx_isolation = 'READ-UNCOMMITTED';  CALL archiveAndCleanup();"
 stop=$(date '+%Y%m%d %H:%M:%S')
 diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))/60)) $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))%60)))
 echo "[$start] [$stop] [$diff] Archive and cleanup table pokemon" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
