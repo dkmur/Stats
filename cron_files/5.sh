@@ -32,7 +32,6 @@ diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" 
 echo "[$start] [$stop] [$diff] Archive and cleanup table pokemon" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
 
 
-# cleanup table trs_stats_detect_seen_type + pokemon_display
 # cleanup table detect_raw
 if "$trs_stats_detect_raw"
 then

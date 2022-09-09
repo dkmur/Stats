@@ -52,20 +52,6 @@ DELIMITER ;
 
 
 DROP PROCEDURE IF EXISTS rmdb.pokemon_display_cleanup;
-DELIMITER //
-CREATE PROCEDURE rmdb.pokemon_display_cleanup()
- BEGIN
-  DECLARE RowCount INT;
-  SET RowCount = (SELECT count(encounter_id) FROM rmdb.pokemon_display WHERE encounter_id not in (SELECT encounter_id FROM rmdb.pokemon));
-   WHILE RowCount > 0 DO
-   DELETE FROM rmdb.pokemon_display WHERE encounter_id not in (SELECT encounter_id FROM rmdb.pokemon) LIMIT 10000;
-   SET RowCount = RowCount - 10000;
-   SELECT SLEEP(1);
-   END WHILE;
- END;  
-//
-DELIMITER ;
-
 
 DROP PROCEDURE IF EXISTS rmdb.trs_stats_detect_mon_raw_cleanup;
 DELIMITER //
@@ -108,6 +94,8 @@ left join trs_stats_detect_seen_type b on b.encounter_id=a.encounter_id;
 delete pokemon from pokemon join old on old.encounter_id=pokemon.encounter_id;
 
 delete trs_stats_detect_seen_type from trs_stats_detect_seen_type join old on old.encounter_id=trs_stats_detect_seen_type.encounter_id;
+
+delete pokemon_display from pokemon_display join old on old.encounter_id=pokemon_display.encounter_id;
 
 drop temporary table if exists old;
 end;
