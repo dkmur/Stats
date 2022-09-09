@@ -76,8 +76,9 @@ begin
 drop temporary table if exists old;
 
 create temporary table old engine = memory
-    as (select encounter_id from pokemon a, trs_spawn b where a.spawnpoint_id = b.spawnpoint and a.disappear_time < utc_timestamp() and b.calc_endminsec is not NULL 
-    UNION ALL select encounter_id from pokemon a, trs_spawn b where a.spawnpoint_id = b.spawnpoint and a.disappear_time < utc_timestamp() - interval 40 minute and b.calc_endminsec is NULL);
+    as (select encounter_id from pokemon a, trs_spawn b where a.spawnpoint_id = b.spawnpoint and a.disappear_time < utc_timestamp() and b.calc_endminsec is not NULL
+    UNION ALL select encounter_id from pokemon a, trs_spawn b where a.spawnpoint_id = b.spawnpoint and a.disappear_time < utc_timestamp() - interval 40 minute and b.calc_endminsec is NULL
+    UNION ALL select encounter_id from pokemon a where a.spawnpoint_id = 0 and a.disappear_time < utc_timestamp() - interval 40 minute);
 
 insert ignore into pogodb.pokemon_history_temp (encounter_id,spawnpoint_id,pokemon_id,latitude,longitude,disappear_time,individual_attack,individual_defense,
     individual_stamina,move_1,move_2,cp,cp_multiplier,weight,height,gender,form,costume,catch_prob_1,catch_prob_2,catch_prob_3,rating_attack,rating_defense,
