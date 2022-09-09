@@ -126,7 +126,7 @@ CREATE TEMPORARY TABLE pogodb.monarea AS (
     DECLARE area CURSOR FOR SELECT area,fence,polygon FROM pogodb.geofences where polygon is not NULL and type = 'mon';
     FOR area_record IN area
     DO
-		INSERT IGNORE INTO pogodb.stats_area (Datetime,RPL,TRPL,Area,Fence,Spawnpoints,Mons_all,MonsIV,Iv100,Iv0,MinutesLeft,AvgMinutesLeft,
+		INSERT IGNORE INTO pogodb.stats_area (Datetime,RPL,TRPL,Area,Fence,Spawnpoints,Mons_all,MonsIV,Iv100,Iv0,MinutesLeft,
 		    numWi_En,timeWi_En,numNeSp_Wi,timeNeSp_Wi,numNeSp_En,timeNeSp_En,numNeCl_Wi,timeNeCl_Wi,numNeCl_En,timeNeCl_En)
 		SELECT
 		@period,
@@ -140,7 +140,6 @@ CREATE TEMPORARY TABLE pogodb.monarea AS (
 		count(case when individual_attack = 15 and individual_defense = 15 and individual_stamina = 15 then 1 end),
 		count(case when individual_attack = 0 and individual_defense = 0 and individual_stamina = 0 then 1 end),
 		sum(timestampdiff(minute,first_scanned,disappear_time)),
-		round(avg(timestampdiff(minute,first_scanned,disappear_time))),
 		
 		count(case when encounter >= wild + interval 15 second then 1 end),
 		sum(case when encounter >= wild + interval 15 second then timestampdiff(second,wild,encounter) end),
