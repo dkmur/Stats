@@ -44,7 +44,7 @@ Use it at you own risk, because bare in mind this was all done by an idiot!
 - Activation of (raw)stats in MAD config.ini (statistic,game_stats,game_stats_raw) and ``game_stats_save_time`` at default 300s
 - Mariadb 10.5
 - Mariadb to be installed on server Stats is running on
-- set max_heap_table_size in 50-server.cnf / my.cnf to 64M
+- set max_heap_table_size in 50-server.cnf / my.cnf to min. 64M
 - mysql strict mode disabled (should be done already for MAD)
 - Make sure ``jq`` is installed else,  ``sudo apt-get install jq``<BR>
 - Make sure unzip is installed <BR>
