@@ -1,70 +1,23 @@
 DROP PROCEDURE IF EXISTS pogodb.move_mon_to_history;
-DELIMITER //
-CREATE PROCEDURE pogodb.move_mon_to_history()
- BEGIN
-  DECLARE number INT;
-  DECLARE start DATETIME;
-  DECLARE stop DATETIME;
-  SET number = 1;
-  SET start = concat(date(now() - interval 1 day ),' 00:00:00');
-  SET stop = concat(date(now() - interval 1 day ),' 00:05:00');
-   WHILE number <= 288 DO
-   INSERT IGNORE INTO pogodb.pokemon_history select * FROM pogodb.pokemon_history_temp WHERE first_scanned >= start and first_scanned < stop;
-   SET number = number + 1;
-   SET start = start + interval 5 minute;
-   SET stop = stop + interval 5 minute;
-   SELECT SLEEP(1);
-   END WHILE;
- END;
-//
-DELIMITER ;
-
-
 DROP PROCEDURE IF EXISTS pogodb.mon_history_temp_cleanup;
-DELIMITER //
-CREATE PROCEDURE pogodb.mon_history_temp_cleanup()
- BEGIN
-  DECLARE number INT;
-  DECLARE start DATETIME;
-  DECLARE stop DATETIME;
-  DECLARE RowCount INT;
-  SET number = 1;
-  SET start = concat(date(now() - interval 1 day ),' 00:00:00');
-  SET stop = concat(date(now() - interval 1 day ),' 00:05:00');
-   WHILE number <= 288 DO
-   DELETE FROM pogodb.pokemon_history_temp WHERE first_scanned >= start and first_scanned < stop;
-   SET number = number + 1;
-   SET start = start + interval 5 minute;
-   SET stop = stop + interval 5 minute;
-   SELECT SLEEP(1);
-   END WHILE;
--- cleanup old or missed data
-  SET RowCount = (SELECT count(first_scanned) FROM pogodb.pokemon_history_temp WHERE first_scanned < stop);
-   select RowCount;
-   WHILE RowCount > 0 DO
-   DELETE FROM pogodb.pokemon_history_temp WHERE first_scanned < stop LIMIT 10000;
-   SET RowCount = RowCount - 10000;
-   SELECT SLEEP(1);
-   END WHILE;
- END;
-//
-DELIMITER ;
-
-
 DROP PROCEDURE IF EXISTS rmdb.pokemon_display_cleanup;
-
 DROP PROCEDURE IF EXISTS rmdb.trs_stats_detect_mon_raw_cleanup;
+
+DROP PROCEDURE IF EXISTS pogodb.mon_history_temp_backup_cleanup;
 DELIMITER //
-CREATE PROCEDURE rmdb.trs_stats_detect_mon_raw_cleanup()
- BEGIN
-  DECLARE RowCount INT;
-  SET RowCount = (SELECT count(*) FROM rmdb.trs_stats_detect_mon_raw WHERE timestamp_scan < (unix_timestamp()-1200));
-   WHILE RowCount > 0 DO
-   DELETE FROM rmdb.trs_stats_detect_mon_raw WHERE timestamp_scan < (unix_timestamp()-1200) LIMIT 10000;
-   SET RowCount = RowCount - 10000;
-   SELECT SLEEP(1);
-   END WHILE;
- END;  
+create procedure pogodb.mon_history_temp_backup_cleanup()
+begin
+drop temporary table if exists old;
+
+create temporary table old engine = memory
+    as (select encounter_id from pokemon_history_temp where first_scanned < now() - interval 1 day);
+	insert ignore into pokemon_history
+          (encounter_id,spawnpoint_id,pokemon_id,latitude,longitude,disappear_time,individual_attack,individual_defense,individual_stamina,move_1,move_2,cp,cp_multiplier,weight,height,gender,form,costume,catch_prob_1,catch_prob_2,catch_prob_3,rating_attack,rating_defense,weather_boosted_condition,last_modified,is_shiny,first_scanned,fort_id,cell_id,seen_type,encounter,wild,nearby_stop,nearby_cell,lure_encounter,lure_wild,point)
+          (select pokemon_history_temp.encounter_id,spawnpoint_id,pokemon_id,latitude,longitude,disappear_time,individual_attack,individual_defense,individual_stamina,move_1,move_2,cp,cp_multiplier,weight,height,gender,form,costume,catch_prob_1,catch_prob_2,catch_prob_3,rating_attack,rating_defense,weather_boosted_condition,last_modified,is_shiny,first_scanned,fort_id,cell_id,seen_type,encounter,wild,nearby_stop,nearby_cell,lure_encounter,lure_wild,point 
+           from pokemon_history_temp join old on old.encounter_id=pokemon_history_temp.encounter_id);
+	delete pokemon_history_temp from pokemon_history_temp join old on old.encounter_id=pokemon_history_temp.encounter_id;
+drop temporary table if exists old;
+end;
 //
 DELIMITER ;
 

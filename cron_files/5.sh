@@ -32,17 +32,45 @@ diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" 
 echo "[$start] [$stop] [$diff] Archive and cleanup table pokemon" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
 
 
+# backup pokemon_history_temp and cleanup
+if "$mon_backup"
+then
+  start=$(date '+%Y%m%d %H:%M:%S')
+  query "$STATS_DB" "SET SESSION tx_isolation = 'READ-UNCOMMITTED'; CALL mon_history_temp_backup_cleanup();"
+  stop=$(date '+%Y%m%d %H:%M:%S')
+  diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))/60)) $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))%60)))
+  echo "[$start] [$stop] [$diff] Backup and clean pokemon_history_temp" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
+else
+  start=$(date '+%Y%m%d %H:%M:%S')
+  query "$STATS_DB" "SET SESSION tx_isolation = 'READ-UNCOMMITTED'; delete from pokemon_history_temp where first_scanned < now() - interval 1 day;"
+  stop=$(date '+%Y%m%d %H:%M:%S')
+  diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))/60)) $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))%60)))
+  echo "[$start] [$stop] [$diff] Cleanup pokemon_history_temp" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
+fi
+
+
+# cleanup pokemon_history
+if "$mon_cleanup"
+then
+  start=$(date '+%Y%m%d %H:%M:%S')
+  query "$STATS_DB" "SET SESSION tx_isolation = 'READ-UNCOMMITTED'; delete from pokemon_history where first_scanned < curdate() - interval $days_to_keep day;"
+  stop=$(date '+%Y%m%d %H:%M:%S')
+  diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))/60)) $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))%60)))
+  echo "[$start] [$stop] [$diff] Cleanup pokemon_history" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
+fi
+
+
 # cleanup table detect_raw
 if "$trs_stats_detect_raw"
 then
   start=$(date '+%Y%m%d %H:%M:%S')
-#  query "$MAD_DB" "SET SESSION tx_isolation = 'READ-UNCOMMITTED'; CALL trs_stats_detect_mon_raw_cleanup();"
   query "$MAD_DB" "DELETE FROM trs_stats_detect_mon_raw WHERE timestamp_scan < (unix_timestamp()-1200);"
   query "$MAD_DB" "delete from trs_stats_detect_fort_raw where timestamp_scan < (unix_timestamp()-1200);"
   stop=$(date '+%Y%m%d %H:%M:%S')
   diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))/60)) $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))%60)))
   echo "[$start] [$stop] [$diff] Table trs_stats_detect_mon_raw cleanup" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
 fi
+
 
 # cleanup table location_raw
 if "$trs_stats_location_raw"
