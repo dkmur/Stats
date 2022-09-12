@@ -111,8 +111,7 @@ else
   mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB < $PATH_TO_STATS/tables.sql
 fi
 
-echo "Create triggers"
-echo ""
+# no more triggers, remove if exist
 if [ -z "$SQL_password" ]
 then
   mysql -h$DB_IP -P$DB_PORT -u$SQL_user $MAD_DB < $PATH_TO_STATS/triggers.sql
@@ -136,19 +135,15 @@ cd $PATH_TO_STATS && rm -f -R sql_cron/
 cp $PATH_TO_STATS/default_files/crontab.txt.default $PATH_TO_STATS/crontab.txt
 cd $PATH_TO_STATS/cron_files && rm -f *.default
 # MAD fence update
-if [[ "$FENCE" == "MAD" ]]
 echo "Enabling MAD fence updates to Stats"
 echo ""
+if [[ "$MAD_FENCE_UPDATE_INTERVAL" == "day" ]]
 then
-  rm -f $PATH_TO_STATS/MAD_fence_update.sh
-  if [[ "$MAD_FENCE_UPDATE_INTERVAL" == "day" ]]
-  then
   sed -i "$ a \#\# Update MAD fences and devices" $PATH_TO_STATS/crontab.txt
   sed -i "$ a 55 0 * * * cd pathToStatscron_files && ./MAD_fence_update.sh 2>>pathToStatslogs/log_\$(date '+\\\%Y\\\%m').log" $PATH_TO_STATS/crontab.txt
-  else
+else
   sed -i "$ a \#\# Update MAD fences and devices" $PATH_TO_STATS/crontab.txt
   sed -i "$ a 55 * * * * cd pathToStatscron_files && ./MAD_fence_update.sh 2>>pathToStatslogs/log_\$(date '+\\\%Y\\\%m').log" $PATH_TO_STATS/crontab.txt
-  fi
 fi
 # Recalc quest routes
 if "$recalc_quest_routes"
@@ -210,239 +205,18 @@ if [ -z "$SQL_password" ]
   sed -i "s/userpass/-h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password/g" $PATH_TO_STATS/crontab.txt
 fi
 
-# Create area world
-if [[ "$FENCE" == "world" ]]
-then
-  echo "Create world.ini and insert MAD origins into table Area"
-  cp $PATH_TO_STATS/areas/area.ini.example $PATH_TO_STATS/areas/world.ini
-  sed -i "s/Paris/World/g" $PATH_TO_STATS/areas/world.ini
-  sed -i "s/50.9876/90/g" $PATH_TO_STATS/areas/world.ini
-  sed -i "s/50.1234/-90/g" $PATH_TO_STATS/areas/world.ini
-  sed -i "s/4.1234/-180/g" $PATH_TO_STATS/areas/world.ini
-  sed -i "s/4.9876/180/g" $PATH_TO_STATS/areas/world.ini
-  if [ -z "$SQL_password" ]
-  then
-  mysql -h$DB_IP -P$DB_PORT -u$SQL_user $STATS_DB -e "insert ignore into $STATS_DB.Area (Origin) select name from $MAD_DB.settings_device;"
-  else
-  mysql -h$DB_IP -P$DB_PORT -u$SQL_user -p$SQL_password $STATS_DB -e "insert ignore into $STATS_DB.Area (Origin) select name from $MAD_DB.settings_device;"
-  fi
-  echo ""
-fi
 
-# Make sure area world does not exist anymore when using box or MAD
-if [[ "$FENCE" == "MAD" ]] || [[ "$FENCE" == "box" ]]
-then
-cd $PATH_TO_STATS/areas && rm -f world.ini
-fi
+# add mad fences and devices to db
+cd $PATH_TO_STATS/cron_files && ./MAD_fence_update.sh
 
-# Create Area files based on world or box (lat/lon max/min)
-if [[ "$FENCE" == "world" ]] || [[ "$FENCE" == "box" ]]
-then
-  echo "Creating area files based on created .ini files"
-  echo "!! If you set FENCE=box make sure to assign devices to areas !!"
-  cd $PATH_TO_STATS/cron_files && rm -f *.sql && rm -f *.default
-  for area in "$PATH_TO_STATS"areas/*.ini
-  do
-    echo "$area"
-    source $area
-    cp $PATH_TO_STATS/default_files/15_area.sql.default $PATH_TO_STATS/cron_files/15_"$AREA_NAME"_area.sql
-    sed -i "s/Alphen/$AREA_NAME/g" $PATH_TO_STATS/cron_files/15_"$AREA_NAME"_area.sql
-    sed -i "s/Fency/$AREA_NAME/g" $PATH_TO_STATS/cron_files/15_"$AREA_NAME"_area.sql
-    sed -i "s/FENCE_COORDS/$MIN_LAT $MAX_LON, $MAX_LAT $MAX_LON, $MAX_LAT $MIN_LON, $MIN_LAT $MIN_LON, $MIN_LAT $MAX_LON/g" $PATH_TO_STATS/cron_files/15_"$AREA_NAME"_area.sql
-    cp $PATH_TO_STATS/default_files/60_area.sql.default $PATH_TO_STATS/cron_files/60_"$AREA_NAME"_area.sql
-    sed -i "s/Alphen/$AREA_NAME/g" $PATH_TO_STATS/cron_files/60_"$AREA_NAME"_area.sql
-    sed -i "s/Fency/$AREA_NAME/g" $PATH_TO_STATS/cron_files/60_"$AREA_NAME"_area.sql
-    sed -i "s/FENCE_COORDS/$MIN_LAT $MAX_LON, $MAX_LAT $MAX_LON, $MAX_LAT $MIN_LON, $MIN_LAT $MIN_LON, $MIN_LAT $MAX_LON/g" $PATH_TO_STATS/cron_files/60_"$AREA_NAME"_area.sql
-    cp $PATH_TO_STATS/default_files/1440_area.sql.default $PATH_TO_STATS/cron_files/1440_"$AREA_NAME"_area.sql
-    sed -i "s/Alphen/$AREA_NAME/g" $PATH_TO_STATS/cron_files/1440_"$AREA_NAME"_area.sql
-    sed -i "s/Fency/$AREA_NAME/g" $PATH_TO_STATS/cron_files/1440_"$AREA_NAME"_area.sql
-    sed -i "s/FENCE_COORDS/$MIN_LAT $MAX_LON, $MAX_LAT $MAX_LON, $MAX_LAT $MIN_LON, $MIN_LAT $MIN_LON, $MIN_LAT $MAX_LON/g" $PATH_TO_STATS/cron_files/1440_"$AREA_NAME"_area.sql
-  done
-  echo ""
-fi
-
-# Create mon_mitm area files based on MAD fences
-if [[ "$FENCE" == "MAD" ]]
-then
-  monareas=$(query "$MAD_DB" "select count(*) from settings_geofence where geofence_id in (select geofence_included from settings_area_mon_mitm);")
-  echo "Creating $monareas MAD mon_mitm fence config and area files"
-  echo ""
-  rm -f $PATH_TO_STATS/areas/*.mad
-
-# get MAD mon_mitm fence data
-        while read -r geofence_id name;
-        do
-
-        query "$MAD_DB" "SELECT LEFT(fence_data,length(fence_data)-1) from settings_geofence where geofence_id = $geofence_id;" | sed 's/\[\"\[/[/g' | sed 's/",/\n/g' | sed 's/"//g' | sed 's/^ //g' | sed 's/\[/§\[/g' > $PATH_TO_STATS/areas/input
-
-
-                IFS=§;
-                for i in `cat $PATH_TO_STATS/areas/input`;
-                do
-                        shopt -s lastpipe
-                        echo $i | while read -r line;
-                                do
-                                        if [[ $line == *"["* ]] || [[ $line == *"]"* ]]; then
-                                                coord=1
-                                                fence=$(echo -n ${line} | sed 's/ /_/g' | tr -d "]" | tr -d "[")
-                                                exec > $PATH_TO_STATS/areas/$fence.mad
-                                                echo AREA_NAME=\"$name\"
-                                                echo -n FENCE_NAME=\"
-                                                echo -n "$line" | tr -d "]" | tr -d "["
-                                                echo \"
-                                        elif [ ! -z "$line" ]; then
-                                                if [[ $coord == 1 ]]; then
-                                                echo -n POLYGON=\"
-                                                fi
-                                        echo -n $line | sed s/"]"/\n/ | sed s/,/' '/g
-                                        echo -n ", "
-                                        let "coord+=1"
-                                        fi
-                                done
-                        echo -n $i | tail +2 | head -1 | sed s/,/' '/g | sed s/$/\"/g
-                done | sed s/"(,"/"("/g | sed s/", ,"/,/g
-                unset IFS
-
-        done < <(query "$MAD_DB" "$(cat << EOF
-        select geofence_id, name from settings_geofence where geofence_id in (select geofence_included from settings_area_mon_mitm);
-EOF
-        )")
-  rm -f $PATH_TO_STATS/areas/input
-
-# create mon_mitm area files
-  rm -f $PATH_TO_STATS/cron_files/*.sql
-  rm -f $PATH_TO_STATS/cron_files/*.default
-  for area in "$PATH_TO_STATS"areas/*.mad
-  do
-    echo "$area"
-    source $area
-    FENCENAME=$(echo $FENCE_NAME | sed s/' '/_/g)
-    AREANAME=$(echo $AREA_NAME | sed s/' '/_/g)
-    cp $PATH_TO_STATS/default_files/15_area.sql.default $PATH_TO_STATS/cron_files/15_"$AREANAME"_"$FENCENAME"_area.sql
-    sed -i "s/Alphen/$AREA_NAME/g" $PATH_TO_STATS/cron_files/15_"$AREANAME"_"$FENCENAME"_area.sql
-    sed -i "s/Fency/$FENCE_NAME/g" $PATH_TO_STATS/cron_files/15_"$AREANAME"_"$FENCENAME"_area.sql
-    sed -i "s/FENCE_COORDS/$POLYGON/g" $PATH_TO_STATS/cron_files/15_"$AREANAME"_"$FENCENAME"_area.sql
-    cp $PATH_TO_STATS/default_files/60_area.sql.default $PATH_TO_STATS/cron_files/60_"$AREANAME"_"$FENCENAME"_area.sql
-    sed -i "s/Alphen/$AREA_NAME/g" $PATH_TO_STATS/cron_files/60_"$AREANAME"_"$FENCENAME"_area.sql
-    sed -i "s/Fency/$FENCE_NAME/g" $PATH_TO_STATS/cron_files/60_"$AREANAME"_"$FENCENAME"_area.sql
-    sed -i "s/FENCE_COORDS/$POLYGON/g" $PATH_TO_STATS/cron_files/60_"$AREANAME"_"$FENCENAME"_area.sql
-    cp $PATH_TO_STATS/default_files/1440_area.sql.default $PATH_TO_STATS/cron_files/1440_"$AREANAME"_"$FENCENAME"_area.sql
-    sed -i "s/Alphen/$AREA_NAME/g" $PATH_TO_STATS/cron_files/1440_"$AREANAME"_"$FENCENAME"_area.sql
-    sed -i "s/Fency/$FENCE_NAME/g" $PATH_TO_STATS/cron_files/1440_"$AREANAME"_"$FENCENAME"_area.sql
-    sed -i "s/FENCE_COORDS/$POLYGON/g" $PATH_TO_STATS/cron_files/1440_"$AREANAME"_"$FENCENAME"_area.sql
-  done
-fi
-
-# Add mon_mitm area files for unfenced data
-echo ""
-echo "Adding area unfenced"
-echo ""
-cp $PATH_TO_STATS/default_files/15_area_unfenced.sql.default $PATH_TO_STATS/cron_files/15_ZZZZZ_Unfenced_area.sql
-cp $PATH_TO_STATS/default_files/60_area_unfenced.sql.default $PATH_TO_STATS/cron_files/60_ZZZZZ_Unfenced_area.sql
-cp $PATH_TO_STATS/default_files/1440_area_unfenced.sql.default $PATH_TO_STATS/cron_files/1440_ZZZZZ_Unfenced_area.sql
-# sed -i "s/pogodb/$STATS_DB/g" $PATH_TO_STATS/cron_files/*_Unfenced_area.sql
-# sed -i "s/rmdb/$MAD_DB/g" $PATH_TO_STATS/cron_files/*_Unfenced_area.sql
-
-# Fill table Area
-if [[ "$FENCE" == "MAD" ]] && [[ "$MAD_DEVICE_INSERT" == "true" ]]
-then
-  echo "Adding devices and areas to table Area"
-  echo ""
-  query "$STATS_DB" "DELETE FROM $STATS_DB.Area;"
-  query "$STATS_DB" "INSERT IGNORE INTO $STATS_DB.Area (Area,Origin) SELECT a.name, f.name FROM $MAD_DB.settings_geofence a, $MAD_DB.settings_area_mon_mitm b, $MAD_DB.settings_area c, $MAD_DB.settings_walkerarea d, $MAD_DB.settings_walker_to_walkerarea e, $MAD_DB.settings_device f WHERE a.geofence_id = b.geofence_included and b.area_id = c.area_id and b.area_id = d.area_id and d.walkerarea_id = e.walkerarea_id and e.walker_id = f.walker_id GROUP BY f.name, b.geofence_included;"
-fi
-
-# Create pokestop area files based on MAD fences
-if [[ "$FENCE" == "MAD" ]]
-then
-questareas=$(query "$MAD_DB" "select count(*) from settings_geofence where geofence_id in (select geofence_included from settings_area_pokestops where level = 0);")
-  if [ $questareas = 0 ]
-  then
-  echo "no quest areas defined, skip processing"
-  else
-  echo "$questareas Quest areas found, creating areas from MADdb"
-  echo ""
-  rm -f $PATH_TO_STATS/areas/*.quest
-
-# get MAD pokestop fence data
-        while read -r geofence_id name;
-        do
-
-        query "$MAD_DB" "SELECT LEFT(fence_data,length(fence_data)-1) from settings_geofence where geofence_id = $geofence_id;" | sed 's/\[\"\[/[/g' | sed 's/",/\n/g' | sed 's/"//g' | sed 's/^ //g' | sed 's/\[/§\[/g' > $PATH_TO_STATS/areas/input_quest
-
-
-                IFS=§;
-                for i in `cat $PATH_TO_STATS/areas/input_quest`;
-                do
-                        shopt -s lastpipe
-                        echo $i | while read -r line;
-                                do
-                                        if [[ $line == *"["* ]] || [[ $line == *"]"* ]]; then
-                                                coord=1
-                                                fence=$(echo -n ${line} | sed 's/ /_/g' | tr -d "]" | tr -d "[")
-                                                exec > $PATH_TO_STATS/areas/$fence.quest
-                                                echo AREA_NAME=\"$name\"
-                                                echo -n FENCE_NAME=\"
-                                                echo -n "$line" | tr -d "]" | tr -d "["
-                                                echo \"
-                                        elif [ ! -z "$line" ]; then
-                                                if [[ $coord == 1 ]]; then
-                                                echo -n POLYGON=\"
-                                                fi
-                                        echo -n $line | sed s/"]"/\n/ | sed s/,/' '/g
-                                        echo -n ", "
-                                        let "coord+=1"
-                                        fi
-                                done
-                        echo -n $i | tail +2 | head -1 | sed s/,/' '/g | sed s/$/\"/g
-                done | sed s/"(,"/"("/g | sed s/", ,"/,/g
-                unset IFS
-
-        done < <(query "$MAD_DB" "$(cat << EOF
-        select geofence_id, name from settings_geofence where geofence_id in (select geofence_included from settings_area_pokestops where level = 0);
-EOF
-        )")
-  rm -f $PATH_TO_STATS/areas/input_quest
-
-# create quest area RPL 15 files
-#  rm -f $PATH_TO_STATS/cron_files/*.sql
-#  rm -f $PATH_TO_STATS/cron_files/*.default
-  for area in "$PATH_TO_STATS"areas/*.quest
-  do
-    echo "$area"
-    source $area
-    FENCENAME=$(echo $FENCE_NAME | sed s/' '/_/g)
-    AREANAME=$(echo $AREA_NAME | sed s/' '/_/g)
-    cp $PATH_TO_STATS/default_files/15_area_quest.sql.default $PATH_TO_STATS/cron_files/15_"$AREANAME"_"$FENCENAME"_area_quest.sql
-    sed -i "s/Alphen/$AREA_NAME/g" $PATH_TO_STATS/cron_files/15_"$AREANAME"_"$FENCENAME"_area_quest.sql
-    sed -i "s/Fency/$FENCE_NAME/g" $PATH_TO_STATS/cron_files/15_"$AREANAME"_"$FENCENAME"_area_quest.sql
-    sed -i "s/FENCE_COORDS/$POLYGON/g" $PATH_TO_STATS/cron_files/15_"$AREANAME"_"$FENCENAME"_area_quest.sql
-    cp $PATH_TO_STATS/default_files/60_area_quest.sql.default $PATH_TO_STATS/cron_files/60_"$AREANAME"_"$FENCENAME"_area_quest.sql
-    sed -i "s/Alphen/$AREA_NAME/g" $PATH_TO_STATS/cron_files/60_"$AREANAME"_"$FENCENAME"_area_quest.sql
-    sed -i "s/Fency/$FENCE_NAME/g" $PATH_TO_STATS/cron_files/60_"$AREANAME"_"$FENCENAME"_area_quest.sql
-    sed -i "s/FENCE_COORDS/$POLYGON/g" $PATH_TO_STATS/cron_files/60_"$AREANAME"_"$FENCENAME"_area_quest.sql
-  done
-
-#adjust for scanner type
-    if [ -z ${vmad+x} ]
-    then
-      sed -i "s/-- yy //g" $PATH_TO_STATS/cron_files/*_area_quest.sql
-    else
-      sed -i "s/-- xx //g" $PATH_TO_STATS/cron_files/*_area_quest.sql
-    fi
-  fi
-fi
+# cleanup old area queries
+rm -f $PATH_TO_STATS/cron_files/*_area.sql
+rm -f $PATH_TO_STATS/cron_files/*_area_quest.sql
 
 echo ""
 echo "Create remaining cron files"
 echo ""
-cp $PATH_TO_STATS/default_files/10080_area.sql.default $PATH_TO_STATS/cron_files/10080_area.sql
-cp $PATH_TO_STATS/default_files/1440_area_quest.sql.default $PATH_TO_STATS/cron_files/1440_area_quest.sql
-cp $PATH_TO_STATS/default_files/10080_area_quest.sql.default $PATH_TO_STATS/cron_files/10080_area_quest.sql
 cp $PATH_TO_STATS/default_files/15_worker.sql.default $PATH_TO_STATS/cron_files/15_worker.sql
-cp $PATH_TO_STATS/default_files/60_worker.sql.default $PATH_TO_STATS/cron_files/60_worker.sql
-cp $PATH_TO_STATS/default_files/1440_worker.sql.default $PATH_TO_STATS/cron_files/1440_worker.sql
-cp $PATH_TO_STATS/default_files/10080_worker.sql.default $PATH_TO_STATS/cron_files/10080_worker.sql
 cp $PATH_TO_STATS/default_files/quest_spawn_cleanup.sql.default $PATH_TO_STATS/cron_files/quest_spawn_cleanup.sql
 cp $PATH_TO_STATS/default_files/all_spawn_cleanup.sql.default $PATH_TO_STATS/cron_files/all_spawn_cleanup.sql
 cp $PATH_TO_STATS/default_files/madlog1440.sql.default $PATH_TO_STATS/cron_files/madlog1440.sql
@@ -468,38 +242,16 @@ sed -i "s/SPAWNDEF15_HOURS/$SPAWNDEF15_HOURS/g" $PATH_TO_STATS/cron_files/*.sql
 
 echo "Creating grafana files"
 echo ""
+# Create grafana templates
+echo "Creating grafana templates in $folder/grafana"
+mkdir -p $PATH_TO_STATS/grafana
+rm -f $PATH_TO_STATS/grafana/*
+cp $PATH_TO_STATS/default_files/*.json.default $PATH_TO_STATS/grafana
+for i in "$PATH_TO_STATS"/grafana/*.json.default ;do
+  mv $i ${i%%.default}
+done
 DS_STATS="${DataSource_stats^^}"
 DS_MAD="${DataSource_MAD^^}"
-mkdir -p $PATH_TO_STATS/grafana
-cd $PATH_TO_STATS/grafana/ && rm -f *.json && rm -f *.default
-cp $PATH_TO_STATS/default_files/01_stats_kpi.json.default $PATH_TO_STATS/grafana/01_stats_kpi.json
-cp $PATH_TO_STATS/default_files/02_stats_network_area.json.default $PATH_TO_STATS/grafana/02_stats_network_area.json
-cp $PATH_TO_STATS/default_files/03_stats_network_area_ex.json.default $PATH_TO_STATS/grafana/03_stats_network_area_ex.json
-cp $PATH_TO_STATS/default_files/04_stats_worker.json.default $PATH_TO_STATS/grafana/04_stats_worker.json
-cp $PATH_TO_STATS/default_files/05_stats_unfenced.json.default $PATH_TO_STATS/grafana/05_stats_unfenced.json
-cp $PATH_TO_STATS/default_files/06_nearby_fenced.json.default $PATH_TO_STATS/grafana/06_nearby_fenced.json
-cp $PATH_TO_STATS/default_files/07_stats_area_quest.json.default $PATH_TO_STATS/grafana/07_stats_area_quest.json
-cp $PATH_TO_STATS/default_files/10_ATVdetails.json.default $PATH_TO_STATS/grafana/10_ATVdetails.json
-cp $PATH_TO_STATS/default_files/11_stats_atvdetails_combined.json.default $PATH_TO_STATS/grafana/11_stats_atvdetails_combined.json
-cp $PATH_TO_STATS/default_files/12_stats_atvdetails_combined_ex.json.default $PATH_TO_STATS/grafana/12_stats_atvdetails_combined_ex.json
-cp $PATH_TO_STATS/default_files/13_device_overview.json.default $PATH_TO_STATS/grafana/13_device_overview.json
-cp $PATH_TO_STATS/default_files/14_device_stability.json.default $PATH_TO_STATS/grafana/14_device_stability.json
-cp $PATH_TO_STATS/default_files/15_device_temperature_overview.json.default $PATH_TO_STATS/grafana/15_device_temperature_overview.json
-cp $PATH_TO_STATS/default_files/20_mad_stuff.json.default $PATH_TO_STATS/grafana/20_mad_stuff.json
-cp $PATH_TO_STATS/default_files/21_mad_cpu_mem.json.default $PATH_TO_STATS/grafana/21_mad_cpu_mem.json
-cp $PATH_TO_STATS/default_files/30_mon_stuff.json.default $PATH_TO_STATS/grafana/30_mon_stuff.json
-cp $PATH_TO_STATS/default_files/50_mad_log_error.json.default $PATH_TO_STATS/grafana/50_mad_log_error.json
-cp $PATH_TO_STATS/default_files/51_mad_log_warning.json.default $PATH_TO_STATS/grafana/51_mad_log_warning.json
-cp $PATH_TO_STATS/default_files/52_mad_log_worker_error.json.default $PATH_TO_STATS/grafana/52_mad_log_worker_error.json
-cp $PATH_TO_STATS/default_files/53_mad_log_worker_warning.json.default $PATH_TO_STATS/grafana/53_mad_log_worker_warning.json
-cp $PATH_TO_STATS/default_files/60_vm_log.json.default $PATH_TO_STATS/grafana/60_vm_log.json
-cp $PATH_TO_STATS/default_files/vm_10_ATVdetails.json.default $PATH_TO_STATS/grafana/vm_10_ATVdetails.json
-cp $PATH_TO_STATS/default_files/vm_13_device_overview.json.default $PATH_TO_STATS/grafana/vm_13_device_overview.json
-cp $PATH_TO_STATS/default_files/vm_14_device_stability.json.default $PATH_TO_STATS/grafana/vm_14_device_stability.json
-cp $PATH_TO_STATS/default_files/vm_16_atv_performance.json.default $PATH_TO_STATS/grafana/vm_16_atv_performance.json
-cp $PATH_TO_STATS/default_files/vm_02_stats_network_area.json.default $PATH_TO_STATS/grafana/vm_02_stats_network_area.json
-cp $PATH_TO_STATS/default_files/vm_04_stats_worker.json.default $PATH_TO_STATS/grafana/vm_04_stats_worker.json
-cp $PATH_TO_STATS/default_files/vm_22_device_location.json.default $PATH_TO_STATS/grafana/vm_22_device_location.json
 cd $PATH_TO_STATS/grafana/ && sed -i "s/pogodb/$DataSource_stats/g" *.json
 cd $PATH_TO_STATS/grafana/ && sed -i "s/rmdb/$DataSource_MAD/g" *.json
 cd $PATH_TO_STATS/grafana/ && sed -i "s/POGODB/$DS_STATS/g" *.json
@@ -581,6 +333,21 @@ if [ $first_install != "1" ]
   fi
 fi
 
+# Migrate spawnpoint data to seperate table
+if [ $first_install != "1" ]
+  then
+  echo "First install of Stats nothing to migrate, proceeding"
+  echo ""
+  else
+  if (( $statsDBversion < 39 ))
+    then
+    echo ""
+    echo "Migrating spawnpoint data to seperate table"
+    echo ""
+   query "$STATS_DB" "INSERT IGNORE INTO stats_area_spawnpoint (datetime,rpl,area,fence,spawnpoints,eventSpawns,verified,def15,not15,seen,1d,3d,7d) SELECT Datetime,RPL,Area,Fence,DBspawns,DBspawns_event-DBspawns,DBspawns-Spawn_NULL,Spawndef15,SpawndefNot15,Last_scanned_today_acc,Last_scanned_1d,Last_scanned_3d,Last_scanned_7dp FROM stats_area;"
+  fi
+fi
+
 # fix double job_wait in config.ini
 if [[ $(grep -w job_wait $PATH_TO_STATS/config.ini | wc -l) == 2 ]]
 then
@@ -603,14 +370,7 @@ if "$SPAWNDEF15_CLEANUP"
     echo "Warning: QUEST_END is set to default, make sure it matches your setup"
   fi
 fi
-# Make sure mon backup is enabled is set when using spawndef reset
-#if "$SPAWNDEF15_CLEANUP"
-#  then
-#  if [[ $mon_backup = "false" ]]
-#    then
-#    echo "ERROR: mon_backup needs to be enabled in order to use hourly spawndef reset/cleanup"
-#  fi
-#fi
+
 # Make sure not to delete pokemon_history when mon_backup is enabled
 if "$monthly_mon_table"
   then

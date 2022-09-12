@@ -22,7 +22,7 @@ where datetime >= date(curdate() - interval weekday(curdate()) + 7 day) and RPL 
 group by Origin, instance
 ;
 
-INSERT IGNORE INTO pogodb.warning (datetime,Origin,RPL,instance,warns,failedData,manyTimeOut,frozenScreen,wsTimeout,wsConnClosed,noInject,noPogoStart,failedScreenshot,noPTC,failedTopApp,pogoRestartFail,screenFailure,failedBoxClear,itemDelUnknown,noActiveArea,noMainScreen,noLocAccess,noStopProcess,failStopOpen,softban,questFull,foundGym,noWalkerConfig,noStop,failStopSpin,noLogin,failPostMove,inGameError,gpsError,pogoNotOpen)
+INSERT IGNORE INTO pogodb.warning_worker (datetime,Origin,RPL,instance,warns,failedData,manyTimeOut,frozenScreen,wsTimeout,wsConnClosed,noInject,noPogoStart,failedScreenshot,noPTC,failedTopApp,pogoRestartFail,screenFailure,failedBoxClear,itemDelUnknown,noActiveArea,noMainScreen,noLocAccess,noStopProcess,failStopOpen,softban,questFull,foundGym,noWalkerConfig,noStop,failStopSpin,noLogin,failPostMove,inGameError,gpsError,pogoNotOpen)
 select
 @Datetime,
 Origin,

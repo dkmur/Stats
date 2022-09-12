@@ -61,8 +61,7 @@ PATH_TO_STATS=/home/dkmur/temp/Stats/                   # do not forget the trai
 DEFINED_SCAN_AREAS='Amsterdam, London, Paris'		# only used for visualisation in old Stats menu, not needed for Grafana users
 DEFAULT_AREA=London					# Default area to be used for old Stats sql queries, not needed for Grafana users
 
-## Stats fence creation ##
-FENCE=MAD						# options:MAD/box/world. MAD=use MAD (sub)fences, box=define lat/lon max/min per area yourself, world=like box but Stats will create one big fence covering everything
+## Stats area device update ##
 MAD_DEVICE_INSERT=true					# auto fill table Area, linking devices to Areas(geofence name of mon_mitm), requires FENCE=MAD. Note: only works if each walker contain max 1 mon_mitm area.  
 MAD_FENCE_UPDATE_INTERVAL=hour				# hour or day, interval for updating Stats on MAD geofences, requires FENCE=MAD. New devices will be added at same interval in case MAD_DEVICE_INSERT=true.
 
@@ -148,9 +147,8 @@ log_worker1440=9999
 log_worker10080=9999
 
 # MAD tables cleanup (true or false) #
-pokemon=true						# delete data from table pokemon + trs_stats_detect_seen_type older then 1 hour
-trs_stats_detect_raw=true                               # delete data from table trs_stats_detect_raw older then 1 hour
-trs_stats_location_raw=true                             # delete data from table trs_stats_location_raw  older then 1 hour
+trs_stats_detect_raw=true                               # delete data from table trs_stats_detect_raw older then 20 minutes (doubt anyone every looked at the table)
+trs_stats_location_raw=true                             # delete data from table trs_stats_location_raw older then 20 minutes (doubt anyone every looked at the table)
 trs_stats_detect=true					# delete yesterdays data from table trs_stats_detect
 trs_stats_location=true					# delete yesterdays data from table trs_stats_location
 trs_usage=true						# delete data older then 30 days

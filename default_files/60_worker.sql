@@ -2,13 +2,13 @@
 
 -- Settings For 60min data 
 
-update pogodb.stats_worker set TpSt = 1 where TpSt > 1000 and RPL = 15;
-update pogodb.stats_worker set WkSt = 1 where WkSt > 1000 and RPL = 15;
+update stats_worker set TpSt = 1 where TpSt > 1000 and RPL = 15;
+update stats_worker set WkSt = 1 where WkSt > 1000 and RPL = 15;
 
 select @Datetime := concat(date(now() - interval 60 minute),' ', SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 60 minute)) DIV 3600) * 3600));
 
 
-INSERT INTO pogodb.stats_worker (Datetime,RPL, TRPL, Worker, Tmon, IVmon, Mon, Quest, Raid, Tloc,LocOk,LocNok,LocFR,Tp,TpOk,TpNok,TpFR,TpSt,Wk,WkOk,WkNok,WkFR,WkSt,locReports,locationsMultiReport,Shiny,Res,Reb,ResTot,RebTot,missingProtoMinute)
+INSERT INTO stats_worker (Datetime,RPL, TRPL, Worker, Tmon, IVmon, Mon, Quest, Raid, Tloc,LocOk,LocNok,LocFR,Tp,TpOk,TpNok,TpFR,TpSt,Wk,WkOk,WkNok,WkFR,WkSt,locReports,locationsMultiReport,Shiny,Res,Reb,ResTot,RebTot,missingProtoMinute)
 select
 @Datetime,
 '60',
@@ -42,7 +42,7 @@ max(ResTot),
 max(RebTot),
 sum(missingProtoMinute)
 
-from pogodb.stats_worker
+from stats_worker
 where Datetime like concat(left(@Datetime,13),'%') and RPL = 15
 group by Worker
 ;

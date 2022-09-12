@@ -1,143 +1,263 @@
 DROP PROCEDURE IF EXISTS pogodb.move_mon_to_history;
-DELIMITER //
-CREATE PROCEDURE pogodb.move_mon_to_history()
- BEGIN
-  DECLARE number INT;
-  DECLARE start DATETIME;
-  DECLARE stop DATETIME;
-  SET number = 1;
-  SET start = concat(date(now() - interval 1 day ),' 00:00:00');
-  SET stop = concat(date(now() - interval 1 day ),' 00:05:00');
-   WHILE number <= 288 DO
-   INSERT IGNORE INTO pogodb.pokemon_history select * FROM pogodb.pokemon_history_temp WHERE first_scanned >= start and first_scanned < stop;
-   SET number = number + 1;
-   SET start = start + interval 5 minute;
-   SET stop = stop + interval 5 minute;
-   SELECT SLEEP(1);
-   END WHILE;
- END;
-//
-DELIMITER ;
-
-
 DROP PROCEDURE IF EXISTS pogodb.mon_history_temp_cleanup;
-DELIMITER //
-CREATE PROCEDURE pogodb.mon_history_temp_cleanup()
- BEGIN
-  DECLARE number INT;
-  DECLARE start DATETIME;
-  DECLARE stop DATETIME;
-  DECLARE RowCount INT;
-  SET number = 1;
-  SET start = concat(date(now() - interval 1 day ),' 00:00:00');
-  SET stop = concat(date(now() - interval 1 day ),' 00:05:00');
-   WHILE number <= 288 DO
-   DELETE FROM pogodb.pokemon_history_temp WHERE first_scanned >= start and first_scanned < stop;
-   SET number = number + 1;
-   SET start = start + interval 5 minute;
-   SET stop = stop + interval 5 minute;
-   SELECT SLEEP(1);
-   END WHILE;
--- cleanup old or missed data
-  SET RowCount = (SELECT count(first_scanned) FROM pogodb.pokemon_history_temp WHERE first_scanned < stop);
-   select RowCount;
-   WHILE RowCount > 0 DO
-   DELETE FROM pogodb.pokemon_history_temp WHERE first_scanned < stop LIMIT 10000;
-   SET RowCount = RowCount - 10000;
-   SELECT SLEEP(1);
-   END WHILE;
- END;
-//
-DELIMITER ;
-
-
-DROP PROCEDURE IF EXISTS rmdb.pokemon_cleanup;
-DELIMITER //
-CREATE PROCEDURE rmdb.pokemon_cleanup()
- BEGIN
-  DECLARE number INT;
-  DECLARE start DATETIME;
-  DECLARE stop DATETIME;
-  DECLARE RowCount INT;
-  SET number = 1;
-  SET start = concat(date(now() - interval 2 hour),' ', hour(now() - interval 2 hour), ':00:00');
-  SET stop = concat(date(now() - interval 2 hour),' ', hour(now() - interval 2 hour), ':05:00');
-   WHILE number <= 12 DO
-   DELETE FROM rmdb.pokemon WHERE CONVERT_TZ(last_modified, '+00:00', @@global.time_zone) >= start and CONVERT_TZ(last_modified, '+00:00', @@global.time_zone) < stop;
-   SET number = number + 1;
-   SET start = start + interval 5 minute;
-   SET stop = stop + interval 5 minute;
-   SELECT SLEEP(1);
-   END WHILE;
--- cleanup old or missed data
-  SET RowCount = (SELECT count(last_modified) FROM rmdb.pokemon WHERE CONVERT_TZ(last_modified, '+00:00', @@global.time_zone) < stop);
-   WHILE RowCount > 0 DO
-   DELETE FROM rmdb.pokemon WHERE CONVERT_TZ(last_modified, '+00:00', @@global.time_zone) < stop LIMIT 10000;
-   SET RowCount = RowCount - 10000;
-   SELECT SLEEP(1);
-   END WHILE;
- END;
-//
-DELIMITER ; 
-
-
-DROP PROCEDURE IF EXISTS rmdb.detect_seen_cleanup;
-DELIMITER //
-CREATE PROCEDURE rmdb.detect_seen_cleanup()
- BEGIN
-  DECLARE RowCount INT;
-  SET RowCount = (SELECT count(encounter_id) FROM rmdb.trs_stats_detect_seen_type WHERE encounter_id not in (SELECT encounter_id FROM rmdb.pokemon));
-   WHILE RowCount > 0 DO
-   DELETE FROM rmdb.trs_stats_detect_seen_type WHERE encounter_id not in (SELECT encounter_id FROM rmdb.pokemon) LIMIT 10000;
-   SET RowCount = RowCount - 10000;
-   SELECT SLEEP(1);
-   END WHILE;
- END;  
-//
-DELIMITER ;
-
-
 DROP PROCEDURE IF EXISTS rmdb.pokemon_display_cleanup;
+DROP PROCEDURE IF EXISTS rmdb.trs_stats_detect_mon_raw_cleanup;
+
+DROP PROCEDURE IF EXISTS pogodb.mon_history_temp_backup_cleanup;
 DELIMITER //
-CREATE PROCEDURE rmdb.pokemon_display_cleanup()
- BEGIN
-  DECLARE RowCount INT;
-  SET RowCount = (SELECT count(encounter_id) FROM rmdb.pokemon_display WHERE encounter_id not in (SELECT encounter_id FROM rmdb.pokemon));
-   WHILE RowCount > 0 DO
-   DELETE FROM rmdb.pokemon_display WHERE encounter_id not in (SELECT encounter_id FROM rmdb.pokemon) LIMIT 10000;
-   SET RowCount = RowCount - 10000;
-   SELECT SLEEP(1);
-   END WHILE;
- END;  
+create procedure pogodb.mon_history_temp_backup_cleanup()
+begin
+drop temporary table if exists old;
+
+create temporary table old engine = memory
+    as (select encounter_id from pokemon_history_temp where first_scanned < now() - interval 1 day);
+	insert ignore into pokemon_history
+          (encounter_id,spawnpoint_id,pokemon_id,latitude,longitude,disappear_time,individual_attack,individual_defense,individual_stamina,move_1,move_2,cp,cp_multiplier,weight,height,gender,form,costume,catch_prob_1,catch_prob_2,catch_prob_3,rating_attack,rating_defense,weather_boosted_condition,last_modified,is_shiny,first_scanned,fort_id,cell_id,seen_type,encounter,wild,nearby_stop,nearby_cell,lure_encounter,lure_wild,point)
+          (select pokemon_history_temp.encounter_id,spawnpoint_id,pokemon_id,latitude,longitude,disappear_time,individual_attack,individual_defense,individual_stamina,move_1,move_2,cp,cp_multiplier,weight,height,gender,form,costume,catch_prob_1,catch_prob_2,catch_prob_3,rating_attack,rating_defense,weather_boosted_condition,last_modified,is_shiny,first_scanned,fort_id,cell_id,seen_type,encounter,wild,nearby_stop,nearby_cell,lure_encounter,lure_wild,point 
+           from pokemon_history_temp join old on old.encounter_id=pokemon_history_temp.encounter_id);
+	delete pokemon_history_temp from pokemon_history_temp join old on old.encounter_id=pokemon_history_temp.encounter_id;
+drop temporary table if exists old;
+end;
 //
 DELIMITER ;
 
 
-DROP PROCEDURE IF EXISTS rmdb.trs_stats_detect_mon_raw_cleanup;
+DROP PROCEDURE IF EXISTS rmdb.archiveAndCleanup;
 DELIMITER //
-CREATE PROCEDURE rmdb.trs_stats_detect_mon_raw_cleanup()
- BEGIN
-  DECLARE number INT;
-  DECLARE start DATETIME;
-  DECLARE stop DATETIME;
-  DECLARE RowCount INT;
-  SET number = 1;
-  SET start = concat(date(now() - interval 2 hour),' ', hour(now() - interval 2 hour), ':00:00');
-  SET stop = concat(date(now() - interval 2 hour),' ', hour(now() - interval 2 hour), ':05:00');
-   WHILE number <= 12 DO
-   DELETE FROM rmdb.trs_stats_detect_mon_raw WHERE from_unixtime(timestamp_scan) >= start and from_unixtime(timestamp_scan) < stop;
-   SET number = number + 1;
-   SET start = start + interval 5 minute;
-   SET stop = stop + interval 5 minute;
-   SELECT SLEEP(1);
-   END WHILE;
--- cleanup old or missed data
-  SET RowCount = (SELECT count(timestamp_scan) FROM rmdb.trs_stats_detect_mon_raw WHERE from_unixtime(timestamp_scan) < stop);
-   WHILE RowCount > 0 DO
-   DELETE FROM rmdb.trs_stats_detect_mon_raw WHERE from_unixtime(timestamp_scan) < stop LIMIT 10000;
-   SET RowCount = RowCount - 10000;
-   SELECT SLEEP(1);
-   END WHILE;
- END;
+create procedure rmdb.archiveAndCleanup()
+begin
+drop temporary table if exists old;
+
+create temporary table old engine = memory
+    as (select encounter_id from pokemon a, trs_spawn b where a.spawnpoint_id = b.spawnpoint and a.disappear_time < utc_timestamp() and b.calc_endminsec is not NULL
+    UNION ALL select encounter_id from pokemon a, trs_spawn b where a.spawnpoint_id = b.spawnpoint and a.disappear_time < utc_timestamp() - interval 40 minute and b.calc_endminsec is NULL
+    UNION ALL select encounter_id from pokemon a where a.spawnpoint_id = 0 and a.disappear_time < utc_timestamp() - interval 40 minute);
+
+insert ignore into pogodb.pokemon_history_temp (encounter_id,spawnpoint_id,pokemon_id,latitude,longitude,disappear_time,individual_attack,individual_defense,
+    individual_stamina,move_1,move_2,cp,cp_multiplier,weight,height,gender,form,costume,catch_prob_1,catch_prob_2,catch_prob_3,rating_attack,rating_defense,
+    weather_boosted_condition,last_modified,first_scanned,fort_id,cell_id,seen_type,encounter,wild,nearby_stop,nearby_cell,lure_encounter,lure_wild,point)
+select a.encounter_id,a.spawnpoint_id,a.pokemon_id,a.latitude,a.longitude,CONVERT_TZ(a.disappear_time, '+00:00', @@global.time_zone),a.individual_attack,a.individual_defense,
+    a.individual_stamina,a.move_1,a.move_2,a.cp,a.cp_multiplier,a.weight,a.height,a.gender,a.form,a.costume,a.catch_prob_1,a.catch_prob_2,a.catch_prob_3,a.rating_attack,rating_defense,
+    a.weather_boosted_condition,CONVERT_TZ(a.last_modified, '+00:00', @@global.time_zone),ifnull(least(ifnull(encounter,wild),wild),now()),a.fort_id,a.cell_id,a.seen_type,
+    CONVERT_TZ(b.encounter, '+00:00', @@global.time_zone),CONVERT_TZ(b.wild, '+00:00', @@global.time_zone),CONVERT_TZ(nearby_stop, '+00:00', @@global.time_zone),
+    CONVERT_TZ(b.nearby_cell, '+00:00', @@global.time_zone),CONVERT_TZ(b.lure_encounter, '+00:00', @@global.time_zone),CONVERT_TZ(b.lure_wild, '+00:00', @@global.time_zone),point(a.latitude,a.longitude)
+from pokemon a	
+join old on old.encounter_id=a.encounter_id
+left join trs_stats_detect_seen_type b on b.encounter_id=a.encounter_id;
+
+delete pokemon from pokemon join old on old.encounter_id=pokemon.encounter_id;
+
+delete trs_stats_detect_seen_type from trs_stats_detect_seen_type join old on old.encounter_id=trs_stats_detect_seen_type.encounter_id;
+
+delete pokemon_display from pokemon_display join old on old.encounter_id=pokemon_display.encounter_id;
+
+drop temporary table if exists old;
+end;
 //
-DELIMITER ; 
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS pogodb.rpl15monarea;
+DELIMITER //
+CREATE PROCEDURE pogodb.rpl15monarea()
+BEGIN
+
+-- set vars
+  SET @period = (select concat(date(now() - interval 75 minute),' ', SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 75 minute)) DIV 900) * 900)) );
+  SET @stop = (select concat(date(now() - interval 60 minute),' ', SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 60 minute)) DIV 900) * 900)) );
+
+-- get data
+DROP TEMPORARY TABLE IF EXISTS pogodb.monarea;
+CREATE TEMPORARY TABLE pogodb.monarea AS (
+  SELECT least(ifnull(encounter,wild),wild) as 'first_scanned',point,spawnpoint_id,disappear_time,individual_attack,individual_defense,individual_stamina,
+    is_shiny,encounter,wild,nearby_stop,nearby_cell
+  FROM pogodb.pokemon_history_temp
+  WHERE
+  least(ifnull(encounter,wild),wild) >= @period and
+  least(ifnull(encounter,wild),wild) < @stop);
+
+-- process fences
+  BEGIN
+    DECLARE area CURSOR FOR SELECT area,fence,polygon FROM pogodb.geofences where polygon is not NULL and type = 'mon';
+    FOR area_record IN area
+    DO
+		INSERT IGNORE INTO pogodb.stats_area (Datetime,RPL,TRPL,Area,Fence,Spawnpoints,Mons_all,MonsIV,Iv100,Iv0,MinutesLeft,
+		    numWi_En,timeWi_En,numNeSp_Wi,timeNeSp_Wi,numNeSp_En,timeNeSp_En,numNeCl_Wi,timeNeCl_Wi,numNeCl_En,timeNeCl_En)
+		SELECT
+		@period,
+		'15',
+		'15',
+		area_record.area,
+		area_record.fence,
+		count(distinct(spawnpoint_id)),
+		count(spawnpoint_id),
+		count(case when individual_attack is not NULL then 1 end),
+		count(case when individual_attack = 15 and individual_defense = 15 and individual_stamina = 15 then 1 end),
+		count(case when individual_attack = 0 and individual_defense = 0 and individual_stamina = 0 then 1 end),
+		sum(timestampdiff(minute,first_scanned,disappear_time)),
+		
+		count(case when encounter >= wild + interval 15 second then 1 end),
+		sum(case when encounter >= wild + interval 15 second then timestampdiff(second,wild,encounter) end),
+		count(case when wild >= nearby_stop + interval 15 second then 1 end),
+		sum(case when wild >= nearby_stop + interval 15 second then timestampdiff(second,nearby_stop,wild) end),		
+		count(case when encounter >= nearby_stop + interval 15 second then 1 end),
+		sum(case when encounter >= nearby_stop + interval 15 second then timestampdiff(second,nearby_stop,encounter) end),
+		count(case when wild >= nearby_cell + interval 15 second then 1 end),
+		sum(case when wild >= nearby_cell + interval 15 second then timestampdiff(second,nearby_cell,wild) end),		
+		count(case when encounter >= nearby_cell + interval 15 second then 1 end),
+		sum(case when encounter >= nearby_cell + interval 15 second then timestampdiff(second,nearby_cell,encounter) end)
+		
+		from pogodb.monarea
+		where ST_CONTAINS(area_record.polygon, point);
+    END FOR;
+  END;
+
+DROP TEMPORARY TABLE pogodb.monarea;
+
+END
+//
+DELIMITER ;
+
+
+DROP PROCEDURE IF EXISTS pogodb.rpl15spawnarea;
+DELIMITER //
+CREATE PROCEDURE pogodb.rpl15spawnarea()
+BEGIN
+
+-- set vars
+  SET @period = (select concat(date(now() - interval 15 minute),' ', SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 15 minute)) DIV 900) * 900)) );
+  SET @stop = (select concat(date(now() - interval 0 minute),' ', SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 0 minute)) DIV 900) * 900)) );
+
+-- get data
+DROP TEMPORARY TABLE IF EXISTS pogodb.spawnarea;
+CREATE TEMPORARY TABLE pogodb.spawnarea
+  (`point` point NOT NULL,
+   `spawnpoint` bigint(20) unsigned,
+   `calc_endminsec` varchar(5),
+   `last_non_scanned` datetime,
+   `spawndef` int(11),
+   `eventid` int(11),
+   SPATIAL INDEX(`point`)
+  )
+  AS (
+  SELECT point(latitude,longitude) as 'point', spawnpoint, calc_endminsec, last_non_scanned,spawndef,eventid
+  FROM rmdb.trs_spawn);
+
+-- process fences
+  BEGIN
+    DECLARE area CURSOR FOR SELECT area,fence,polygon FROM pogodb.geofences where polygon is not NULL and type = 'mon';
+    FOR area_record IN area
+    DO
+                INSERT IGNORE INTO pogodb.stats_area_spawnpoint (datetime,rpl,area,fence,spawnpoints,eventSpawns,verified,def15,not15,seen,1d,3d,5d,7d,14d)
+                SELECT
+                @period,
+                '15',
+                area_record.area,
+                area_record.fence,
+                sum(case when eventid = 1 then 1 end),
+                ifnull(sum(case when eventid <> 1 then 1 end),0),
+                sum(case when calc_endminsec is not NULL then 1 end),
+                sum(case when spawndef = 15 then 1 end),
+                sum(case when spawndef <> 15 then 1 end),
+                sum(case when date(last_non_scanned) = date(@period) then 1 end),
+                ifnull(sum(case when last_non_scanned < now() - interval 1 day then 1 end),0),
+                ifnull(sum(case when last_non_scanned < now() - interval 3 day then 1 end),0),
+                ifnull(sum(case when last_non_scanned < now() - interval 5 day then 1 end),0),
+                ifnull(sum(case when last_non_scanned < now() - interval 7 day then 1 end),0),
+                ifnull(sum(case when last_non_scanned < now() - interval 14 day then 1 end),0)
+          
+                from pogodb.spawnarea
+                where ST_CONTAINS(area_record.polygon, point);
+    END FOR;
+  END;
+
+DROP TEMPORARY TABLE pogodb.spawnarea;
+
+END
+//
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS pogodb.rpl15questarea_vm;
+DELIMITER //
+CREATE PROCEDURE pogodb.rpl15questarea_vm()
+BEGIN
+
+-- set vars
+  SET @period = (select concat(date(now() - interval 15 minute),' ', SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 15 minute)) DIV 900) * 900)) );
+  SET @stop = (select concat(date(now() - interval 0 minute),' ', SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 0 minute)) DIV 900) * 900)) );
+  SET @perioddate = (select date(@period));
+-- get data
+DROP TEMPORARY TABLE IF EXISTS pogodb.questarea;
+CREATE TEMPORARY TABLE pogodb.questarea AS (
+  SELECT point(a.latitude,a.longitude) as 'point', a.pokestop_id, from_unixtime(b.quest_timestamp) as 'time', b.with_ar
+  FROM rmdb.pokestop a
+  LEFT JOIN  rmdb.trs_quest b ON a.pokestop_id=b.GUID
+  );
+
+-- process fences
+  BEGIN
+    DECLARE area CURSOR FOR SELECT area,fence,polygon FROM pogodb.geofences where polygon is not NULL and type = 'quest';
+    FOR area_record IN area
+    DO
+		INSERT IGNORE INTO pogodb.stats_area_quest (datetime,rpl,area,fence,stops,AR,nonAR,ARcum,nonARcum)
+		SELECT
+		@period,
+		15,
+		area_record.area,
+		area_record.fence,
+		count(distinct(pokestop_id)),
+		ifnull(sum(case when with_ar = 1 and time >= @period and time < @stop then 1 end),0),
+		ifnull(sum(case when with_ar = 0 and time >= @period and time < @stop then 1 end),0),
+		ifnull(sum(case when with_ar = 1 and time >= @perioddate and time < @stop then 1 end),0),
+		ifnull(sum(case when with_ar = 0 and time >= @perioddate and time < @stop then 1 end),0)
+		from pogodb.questarea
+		where ST_CONTAINS(area_record.polygon, point);
+    END FOR;
+  END;
+
+DROP TEMPORARY TABLE pogodb.questarea;
+
+END
+//
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS pogodb.rpl15questarea_pd;
+DELIMITER //
+CREATE PROCEDURE pogodb.rpl15questarea_pd()
+BEGIN
+
+-- set vars
+  SET @period = (select concat(date(now() - interval 15 minute),' ', SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 15 minute)) DIV 900) * 900)) );
+  SET @stop = (select concat(date(now() - interval 0 minute),' ', SEC_TO_TIME((TIME_TO_SEC(time(now() - interval 0 minute)) DIV 900) * 900)) );
+  SET @perioddate = (select date(@period));
+-- get data
+DROP TEMPORARY TABLE IF EXISTS pogodb.questarea;
+CREATE TEMPORARY TABLE pogodb.questarea AS (
+  SELECT point(a.latitude,a.longitude) as 'point', a.pokestop_id,  from_unixtime(b.quest_timestamp) as 'time'
+  FROM rmdb.pokestop a, rmdb.trs_quest b
+  WHERE a.pokestop_id=b.GUID
+  );
+
+-- process fences
+  BEGIN
+    DECLARE area CURSOR FOR SELECT area,fence,polygon FROM pogodb.geofences where polygon is not NULL and type = 'quest';
+    FOR area_record IN area
+    DO
+		INSERT IGNORE INTO pogodb.stats_area_quest (datetime,rpl,area,fence,stops,AR,ARcum)
+		SELECT
+		@period,
+		'15',
+		area_record.area,
+		area_record.fence,
+		count(distinct(pokestop_id)),
+		ifnull(sum(case when time >= @period and time < @stop then 1 end),0),
+		ifnull(sum(case when time >= @perioddate and time < @stop then 1 end),0)
+		from pogodb.questarea
+		where ST_CONTAINS(area_record.polygon, point);
+    END FOR;
+  END;
+
+DROP TEMPORARY TABLE pogodb.questarea;
+
+END
+//
+DELIMITER ;

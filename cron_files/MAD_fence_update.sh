@@ -18,12 +18,13 @@ fi
 mkdir -p $PATH_TO_STATS/logs
 touch $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
 
-# Update MAD fences and re-create area files
-if [[ "$FENCE" == "MAD" ]]
-then
+# Re-create MAD mon fences
   start=$(date '+%Y%m%d %H:%M:%S')
-  echo "Re-creating MAD fence config and area files"
+  echo "Re-creating MAD mon fences"
   rm -f $PATH_TO_STATS/areas/*.mad
+
+# delete existing
+  query "$STATS_DB" "delete from geofences where type = 'mon'"
 
 # get MAD mon_mitm fence data
         while read -r geofence_id name;
@@ -60,53 +61,42 @@ then
                 unset IFS
 
         done < <(query "$MAD_DB" "$(cat << EOF
-        select geofence_id, name from settings_geofence where geofence_id in (select geofence_included from settings_area_mon_mitm);
+        select geofence_id, name from settings_geofence where geofence_id in (select a.geofence_included from settings_area_mon_mitm a, settings_area b where a.area_id=b.area_id);
 EOF
         )")
-  rm -f $PATH_TO_STATS/areas/input
 
-# recreate mon_mitm 15/60/1440 area files
-  rm -f $PATH_TO_STATS/cron_files/15*_area.sql
-  rm -f $PATH_TO_STATS/cron_files/60*_area.sql
-  rm -f $PATH_TO_STATS/cron_files/1440*_area.sql
-  for area in "$PATH_TO_STATS"areas/*.mad
+# process to db
+  for area in $PATH_TO_STATS/areas/*.mad
   do
-    echo "$area"
     source $area
     FENCENAME=$(echo $FENCE_NAME | sed s/' '/_/g)
     AREANAME=$(echo $AREA_NAME | sed s/' '/_/g)
-    cp $PATH_TO_STATS/default_files/15_area.sql.default $PATH_TO_STATS/cron_files/15_"$AREANAME"_"$FENCENAME"_area.sql
-    sed -i "s/Alphen/$AREA_NAME/g" $PATH_TO_STATS/cron_files/15_"$AREANAME"_"$FENCENAME"_area.sql
-    sed -i "s/Fency/$FENCE_NAME/g" $PATH_TO_STATS/cron_files/15_"$AREANAME"_"$FENCENAME"_area.sql
-    sed -i "s/FENCE_COORDS/$POLYGON/g" $PATH_TO_STATS/cron_files/15_"$AREANAME"_"$FENCENAME"_area.sql
-    cp $PATH_TO_STATS/default_files/60_area.sql.default $PATH_TO_STATS/cron_files/60_"$AREANAME"_"$FENCENAME"_area.sql
-    sed -i "s/Alphen/$AREA_NAME/g" $PATH_TO_STATS/cron_files/60_"$AREANAME"_"$FENCENAME"_area.sql
-    sed -i "s/Fency/$FENCE_NAME/g" $PATH_TO_STATS/cron_files/60_"$AREANAME"_"$FENCENAME"_area.sql
-    sed -i "s/FENCE_COORDS/$POLYGON/g" $PATH_TO_STATS/cron_files/60_"$AREANAME"_"$FENCENAME"_area.sql
-    cp $PATH_TO_STATS/default_files/1440_area.sql.default $PATH_TO_STATS/cron_files/1440_"$AREANAME"_"$FENCENAME"_area.sql
-    sed -i "s/Alphen/$AREA_NAME/g" $PATH_TO_STATS/cron_files/1440_"$AREANAME"_"$FENCENAME"_area.sql
-    sed -i "s/Fency/$FENCE_NAME/g" $PATH_TO_STATS/cron_files/1440_"$AREANAME"_"$FENCENAME"_area.sql
-    sed -i "s/FENCE_COORDS/$POLYGON/g" $PATH_TO_STATS/cron_files/1440_"$AREANAME"_"$FENCENAME"_area.sql
+
+  query "$STATS_DB" "insert ignore into geofences (area,fence,type,polygon) values ('$AREANAME','$FENCENAME','mon',st_geomfromtext('POLYGON(($POLYGON))'))"
   done
+
+#cleanup
+  rm -f $PATH_TO_STATS/areas/input
+  rm -f $PATH_TO_STATS/areas/*.mad
 
   stop=$(date '+%Y%m%d %H:%M:%S')
   diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))/60)) $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))%60)))
   echo "[$start] [$stop] [$diff] Fence update pokemon areas" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
-fi
 
 
 # Create pokestop area files based on MAD fences
-if [[ "$FENCE" == "MAD" ]]
-then
 questareas=$(query "$MAD_DB" "select count(*) from settings_geofence where geofence_id in (select geofence_included from settings_area_pokestops where level = 0);")
   if [ $questareas = 0 ]
   then
   echo "no quest areas defined, skip processing"
   else
-  echo "$questareas Quest areas found, creating fencesfrom MADdb"
+  echo "$questareas Quest areas found, creating fences from MADdb"
   echo ""
   start=$(date '+%Y%m%d %H:%M:%S')
   rm -f $PATH_TO_STATS/areas/*.quest
+
+# delete existing
+  query "$STATS_DB" "delete from geofences where type = 'quest'"
 
 # get MAD pokestop fence data
         while read -r geofence_id name;
@@ -146,59 +136,32 @@ questareas=$(query "$MAD_DB" "select count(*) from settings_geofence where geofe
         select geofence_id, name from settings_geofence where geofence_id in (select geofence_included from settings_area_pokestops where level = 0);
 EOF
         )")
-  rm -f $PATH_TO_STATS/areas/input_quest
 
-# create quest area RPL 15+60 files
-  rm -f $PATH_TO_STATS/cron_files/15*_area_quest.sql
-  rm -f $PATH_TO_STATS/cron_files/60*_area_quest.sql
-  rm -f $PATH_TO_STATS/cron_files/60_area_quest.sql
-  for area in "$PATH_TO_STATS"areas/*.quest
+# process to db
+  for area in $PATH_TO_STATS/areas/*.quest
   do
-    echo "$area"
     source $area
     FENCENAME=$(echo $FENCE_NAME | sed s/' '/_/g)
     AREANAME=$(echo $AREA_NAME | sed s/' '/_/g)
-    cp $PATH_TO_STATS/default_files/15_area_quest.sql.default $PATH_TO_STATS/cron_files/15_"$AREANAME"_"$FENCENAME"_area_quest.sql
-    sed -i "s/Alphen/$AREA_NAME/g" $PATH_TO_STATS/cron_files/15_"$AREANAME"_"$FENCENAME"_area_quest.sql
-    sed -i "s/Fency/$FENCE_NAME/g" $PATH_TO_STATS/cron_files/15_"$AREANAME"_"$FENCENAME"_area_quest.sql
-    sed -i "s/FENCE_COORDS/$POLYGON/g" $PATH_TO_STATS/cron_files/15_"$AREANAME"_"$FENCENAME"_area_quest.sql
-    cp $PATH_TO_STATS/default_files/60_area_quest.sql.default $PATH_TO_STATS/cron_files/60_"$AREANAME"_"$FENCENAME"_area_quest.sql
-    sed -i "s/Alphen/$AREA_NAME/g" $PATH_TO_STATS/cron_files/60_"$AREANAME"_"$FENCENAME"_area_quest.sql
-    sed -i "s/Fency/$FENCE_NAME/g" $PATH_TO_STATS/cron_files/60_"$AREANAME"_"$FENCENAME"_area_quest.sql
-    sed -i "s/FENCE_COORDS/$POLYGON/g" $PATH_TO_STATS/cron_files/60_"$AREANAME"_"$FENCENAME"_area_quest.sql
+
+  query "$STATS_DB" "insert ignore into geofences (area,fence,type,polygon) values ('$AREANAME','$FENCENAME','quest',st_geomfromtext('POLYGON(($POLYGON))'))"
   done
+
+
+#cleanup
+  rm -f $PATH_TO_STATS/areas/input_quest
+  rm -f $PATH_TO_STATS/areas/*.quest
+
 
 stop=$(date '+%Y%m%d %H:%M:%S')
 diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))/60)) $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))%60)))
 echo "[$start] [$stop] [$diff] Fence update quest areas" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
 
 
-#adjust for scanner type
-    if [ -z ${vmad+x} ]
-    then
-      sed -i "s/-- yy //g" $PATH_TO_STATS/cron_files/*_area_quest.sql
-    else
-      sed -i "s/-- xx //g" $PATH_TO_STATS/cron_files/*_area_quest.sql
-    fi
   fi
-fi
-
-# adjust databases
-cp $PATH_TO_STATS/default_files/10080_area.sql.default $PATH_TO_STATS/cron_files/10080_area.sql
-sed -i "s/pogodb/$STATS_DB/g" $PATH_TO_STATS/cron_files/*_area.sql
-sed -i "s/rmdb/$MAD_DB/g" $PATH_TO_STATS/cron_files/*_area.sql
-sed -i "s/pogodb/$STATS_DB/g" $PATH_TO_STATS/cron_files/*_area_quest.sql
-sed -i "s/rmdb/$MAD_DB/g" $PATH_TO_STATS/cron_files/*_area_quest.sql
-
-# Add area files for unfenced data
-cp $PATH_TO_STATS/default_files/15_area_unfenced.sql.default $PATH_TO_STATS/cron_files/15_ZZZZZ_Unfenced_area.sql
-cp $PATH_TO_STATS/default_files/60_area_unfenced.sql.default $PATH_TO_STATS/cron_files/60_ZZZZZ_Unfenced_area.sql
-cp $PATH_TO_STATS/default_files/1440_area_unfenced.sql.default $PATH_TO_STATS/cron_files/1440_ZZZZZ_Unfenced_area.sql
-sed -i "s/pogodb/$STATS_DB/g" $PATH_TO_STATS/cron_files/*_Unfenced_area.sql
-sed -i "s/rmdb/$MAD_DB/g" $PATH_TO_STATS/cron_files/*_Unfenced_area.sql
 
 # Append new devices to table Area
-if [[ "$FENCE" == "MAD" ]] && [[ "$MAD_DEVICE_INSERT" == "true" ]]
+if [[ "$MAD_DEVICE_INSERT" == "true" ]]
 then
   start=$(date '+%Y%m%d %H:%M:%S')
   echo "Append new devices and areas to table Area"
