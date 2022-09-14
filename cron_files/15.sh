@@ -34,7 +34,7 @@ echo "[$start] [$stop] [$diff] Stats rpl15 mon area processing" >> $PATH_TO_STAT
 
 # rpl 15 spawnpoint stats
 start=$(date '+%Y%m%d %H:%M:%S')
-query "CALL rpl15spawnarea();"
+query "SET SESSION tx_isolation = 'READ-UNCOMMITTED'; CALL rpl15spawnarea();"
 stop=$(date '+%Y%m%d %H:%M:%S')
 diff=$(printf '%02dm:%02ds\n' $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))/60)) $(($(($(date -d "$stop" +%s) - $(date -d "$start" +%s)))%60)))
 echo "[$start] [$stop] [$diff] Stats rpl15 spawnpoint area processing" >> $PATH_TO_STATS/logs/log_$(date '+%Y%m').log
